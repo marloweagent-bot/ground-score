@@ -112,6 +112,47 @@
         </div>
     </header>
     
+    <!-- My Festivals Section -->
+    <section id="my-festivals-section">
+        <div class="container">
+            <div class="gs-section-header">
+                <h2 class="gs-section-title">🎪 My Festivals</h2>
+                <div class="gs-section-actions">
+                    <button class="gs-action-btn" onclick="GroundScoreLists.copyShareLink()">📋 Copy Link</button>
+                    <button class="gs-action-btn" onclick="GroundScoreLists.saveMyList()">📧 Email My List</button>
+                </div>
+            </div>
+            
+            <div class="gs-panels">
+                <div class="gs-panel-wrapper">
+                    <button class="gs-panel-toggle" onclick="GroundScoreLists.toggleMyFestivalsPanel('wishlist-panel')" aria-expanded="false" aria-controls="wishlist-panel">
+                        <span>❤️ Wishlist (<span id="wishlist-count">0</span>)</span>
+                        <span class="gs-arrow">▼</span>
+                    </button>
+                    <div id="wishlist-panel" class="gs-panel">
+                        <div class="gs-panel-content" id="wishlist-content">
+                            <p class="gs-empty">No festivals in your wishlist yet</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gs-panel-wrapper">
+                    <button class="gs-panel-toggle" onclick="GroundScoreLists.toggleMyFestivalsPanel('been-panel')" aria-expanded="false" aria-controls="been-panel">
+                        <span>✅ Been There (<span id="been-count">0</span>)</span>
+                        <span class="gs-arrow">▼</span>
+                    </button>
+                    <div id="been-panel" class="gs-panel">
+                        <div class="gs-panel-content" id="been-content">
+                            <p class="gs-empty">No festivals attended yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gs-stats" id="my-festivals-stats"></div>
+        </div>
+    </section>
+    
     <section class="hero">
         <div class="container">
             <h1>Find Your Perfect Festival</h1>
@@ -1532,6 +1573,7 @@
         </div>
     </footer>
     
+    <script src="js/lists.js"></script>
     <script>
         let selectedPriorities = [];
         
