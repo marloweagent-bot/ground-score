@@ -15,38 +15,60 @@
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
-        .festival-hero { padding: 60px 0; background: var(--festival-gradient); position: relative; }
-        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.9) 100%); }
-        .festival-hero .container { position: relative; z-index: 1; }
-        .festival-meta { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
-        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 16px; }
-        .festival-tagline { font-size: 1.25rem; color: rgba(255,255,255,0.9); max-width: 600px; }
-        .score-overview { padding: 40px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
-        .score-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 24px; }
-        .total-score { text-align: center; }
-        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; color: var(--accent); line-height: 1; }
-        .total-score .label { font-size: 1rem; color: var(--text-secondary); margin-top: 8px; }
-        .quick-verdict { max-width: 400px; }
-        .quick-verdict h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; }
-        .quick-verdict p { color: var(--text-secondary); font-size: 0.95rem; }
-        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-        .score-item { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .score-item .icon-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .score-item .score-value { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
-        .score-item .score-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; }
-        .score-item .score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
-        .content-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-        .content-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
-        .content-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent); }
-        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
-        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 24px 0; font-style: italic; color: var(--text-secondary); }
-        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
-        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .fact .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
-        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 600; }
-        .tag-list { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
-        .tag { padding: 6px 14px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.875rem; color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
         footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
         footer a { color: var(--accent); text-decoration: none; }
     </style>
@@ -57,85 +79,150 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Rothbury, MI</span>
+                <span>📍 Rothbury, Michigan</span>
                 <span>📅 June (4 days)</span>
-                <span>👥 ~45,000</span>
+                <span>👥 45,000</span>
+                <span>💵 $350-500</span>
             </div>
             <h1>🌲 Electric Forest</h1>
-            <p class="festival-tagline">A magical, transformative camping festival where Sherwood Forest comes alive with illuminated art and the best community in festivals.</p>
         </div>
     </section>
     
     <section class="score-overview">
         <div class="container">
             <div class="score-header">
-                <div class="total-score">
-                    <div class="number">46</div>
-                    <div class="label">Ground Score / 50</div>
-                </div>
-                <div class="quick-verdict">
-                    <h3>The Verdict</h3>
-                    <p>Electric Forest is the gold standard for transformative festival experiences. The illuminated forest is unlike anything else in the world. Community vibes are unmatched — this is where festival families are made. Voted DJ Mag's best festival multiple times for good reason.</p>
-                </div>
+                <div class="total-score"><span class="number">46</span><span class="max">/ 50</span></div>
+                <p class="verdict-text">Electric Forest is the festival people fall in love with. The illuminated forest is unlike anything else in the world. Community vibes are unmatched — this is where festival families are born. Voted DJ Mag's best festival multiple times.</p>
             </div>
             
             <div class="score-grid">
-                <div class="score-item"><div class="icon-label"><span class="icon">🎵</span><span class="label">Sound</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎪</span><span class="label">Scene</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✨</span><span class="label">Vibe</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🚿</span><span class="label">Flow</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🍕</span><span class="label">Fuel</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✈️</span><span class="label">Access</span></div><div class="score-value">3.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">💰</span><span class="label">Value</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎨</span><span class="label">Extra</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🏔️</span><span class="label">Setting</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎯</span><span class="label">Hype Check</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Eclectic lineup blending electronic, jam bands, hip-hop, and everything in between. String Cheese Incident anchors as resident headliners. The curated forest stages create intimate moments you won't find at mega-festivals. Sound quality in the forest is surprisingly excellent.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Sherwood Forest is the crown jewel — a real forest transformed into an illuminated wonderland. Thousands of lights, art installations hidden between trees, stages that emerge from the woods. At night, it's genuinely otherworldly. Nothing else compares.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Electric Forest has the strongest community feel of any major festival. The "Forest Family" is real — deep bonds form over the 4 days. PLUR is actually lived here, not just talked about. People return year after year to reunite with their crew.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Generally well-organized but bathrooms are a known weak point ("disaster even by festival standards" per some reviews). Entry/exit flows smoothly. The grounds are walkable. Weather can cause evacuations — both 2023 and 2024 had storm-related issues.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Great food vendor variety with lots of creative options. Spicy Pie is a festival legend. Prices are reasonable by festival standards. Good vegetarian/vegan options. Lines manageable except during headliners.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Rothbury, Michigan is in the middle of nowhere — that's part of the charm. Nearest airports are Grand Rapids (2hr) or Chicago (4hr). You need a car or shuttle. Entry lines on Day 1 can be brutal. Leave extra time.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>4 days of camping, world-class art, eclectic music, and transformative experiences for $350-500. You're not paying for frills — you're paying for something genuine. Most people feel it's worth every penny.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Beyond the music: yoga, workshops, kayaking, scavenger hunts, the Dream Emporium, time travel booths, silent disco in the forest, and countless hidden experiences. You could skip every main stage set and still have a life-changing weekend.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Sherwood Forest is the most unique festival venue in North America. Real trees, real magic. Walking through the illuminated forest at 3AM is a core memory you'll never forget. The natural setting creates an immersive world.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Electric Forest consistently exceeds expectations. First-timers often call it life-changing. Veterans return for a decade. The hype is earned — this is genuinely a transformative experience for most attendees.</p></div>
+                </div>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
+    <section class="made-for">
         <div class="container">
-            <h2>Quick Facts</h2>
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item"><div class="icon">🌲</div><div><h3>Nature Lovers</h3><p>If you want to escape into a magical forest, feel the grass under your feet, and wake up to birds — EF is your home.</p></div></div>
+                <div class="made-for-item"><div class="icon">💫</div><div><h3>Transformation Seekers</h3><p>If you're looking for more than just music — genuine connection, personal growth, and experiences that stick with you — this is it.</p></div></div>
+                <div class="made-for-item"><div class="icon">🎭</div><div><h3>Art Explorers</h3><p>If you love discovering hidden installations, interactive art, and environments that blur reality — the forest is your playground.</p></div></div>
+                <div class="made-for-item"><div class="icon">🏕️</div><div><h3>Campers Who Commit</h3><p>If you're ready for 4 days of camping, community living, and full immersion — Electric Forest rewards the committed.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed"><div class="platform">📱 TikTok</div><div class="title">"The moment you walk into Sherwood Forest for the first time"</div><div class="stats">3.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div></div>
+                <div class="social-embed"><div class="platform">📷 Instagram</div><div class="title">"Forest fam reunion 💚 see you next year"</div><div class="stats">450K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div></div>
+                <div class="social-embed"><div class="platform">🎬 YouTube</div><div class="title">"Electric Forest 2024 — Why This Festival Changed My Life"</div><div class="stats">890K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Electric Forest Experience</h2>
+            <p class="intro">Your guide to the most magical festival in America.</p>
+            
             <div class="quick-facts">
-                <div class="fact"><div class="label">Ticket Price</div><div class="value">$350-$500</div></div>
-                <div class="fact"><div class="label">Best For</div><div class="value">Transformational seekers</div></div>
-                <div class="fact"><div class="label">Camping?</div><div class="value">Yes (required)</div></div>
-                <div class="fact"><div class="label">First Timer?</div><div class="value">Life-changing</div></div>
-                <div class="fact"><div class="label">Duration</div><div class="value">4 days</div></div>
-                <div class="fact"><div class="label">Stages</div><div class="value">7+ stages</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">Late June (4 days)</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Required</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">45,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Vibe</div><div class="value">Transformational</div></div>
             </div>
-            <div class="tag-list">
-                <span class="tag">🌲 Scenic</span>
-                <span class="tag">✨ Magical</span>
-                <span class="tag">🏕️ Camping</span>
-                <span class="tag">🎨 Art</span>
-                <span class="tag">💚 Community</span>
-                <span class="tag">👶 First-Timer Friendly</span>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Electric Forest is a camping festival — there's no hotel option. You're in for 4 days of outdoor living.</p>
+                <ul>
+                    <li><strong>Camping gear:</strong> Tent, sleeping pad, sleeping bag rated for Michigan June nights (can get chilly). Or upgrade to Good Life camping for extra amenities.</li>
+                    <li><strong>Weather prep:</strong> Michigan weather is unpredictable. Bring rain gear, sun protection, and layers. Evacuations have happened.</li>
+                    <li><strong>Tickets sell out fast:</strong> Loyalty program gives returning attendees first access. General sale usually sells out within hours.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Forest Experience</h3>
+                <p>Sherwood Forest is the heart of Electric Forest — a real forest transformed into an illuminated wonderland.</p>
+                <blockquote class="quote">"I said 'Wow, look at that!' at least 3000 times during the week. The lit-up trees, the hammocks, the atmosphere — it's unmatched in festivals."<cite>— Electric Forest attendee, 2024</cite></blockquote>
+                <ul>
+                    <li><strong>Main stages:</strong> Ranch Arena (main), Sherwood Court (electronic), Tripolee (bass), Observatory (intimate)</li>
+                    <li><strong>Forest stages:</strong> Hidden stages that appear between trees. Some of the best sets happen here.</li>
+                    <li><strong>The Hangar:</strong> Indoor stage and art gallery — perfect for weather breaks and intimate discoveries.</li>
+                    <li><strong>Extras:</strong> Dream Emporium, kayaking, yoga, scavenger hunts, workshops, and secret experiences you'll discover on your own.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Community</h3>
+                <p>Electric Forest isn't just a festival — it's a community. The "Forest Family" concept is real.</p>
+                <ul>
+                    <li><strong>Camp neighbors become friends:</strong> 4 days of camping creates bonds. Bring extra supplies to share.</li>
+                    <li><strong>Kandi and trading:</strong> PLUR culture is alive. Make kandi, bring gifts, participate in the giving.</li>
+                    <li><strong>Return rate is massive:</strong> Many attendees have been coming for 5-10+ years. You'll see familiar faces.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Arrive early on Day 1:</strong> Line to get in can be brutal. Early arrival means better camping spots.</li>
+                    <li><strong>Bring a wagon:</strong> The walk from car to campsite can be far. Wagons are essential.</li>
+                    <li><strong>Pace yourself:</strong> It's 4 days. Don't peak on night one. The best sets are often late weekend.</li>
+                    <li><strong>Explore the forest at night:</strong> This is when the magic happens. Get lost intentionally.</li>
+                </ul>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
-        <div class="container">
-            <h2>The Full Breakdown</h2>
-            
-            <h3>🌲 Setting (5/5)</h3>
-            <p>Sherwood Forest is the crown jewel — a real forest transformed into an illuminated wonderland. Walking through the trees at night with thousands of lights, art installations, and hidden stages is genuinely otherworldly. Nothing else compares.</p>
-            
-            <h3>✨ Vibe (5/5)</h3>
-            <p>EF has the strongest community feel of any major festival. Deep bonds form over the 4 days. PLUR is actually lived here, not just talked about. The "Forest Family" is real — people return year after year to reunite with their crew.</p>
-            
-            <blockquote class="quote">"Electric Forest isn't a festival you attend — it's a community you join. You'll leave with friends for life."<cite>— DJ Mag</cite></blockquote>
-            
-            <h3>🎵 Sound (4.5/5)</h3>
-            <p>Eclectic lineup blending electronic, jam bands, and everything in between. The curated stages in the forest create intimate moments. String Cheese Incident holds it down as resident headliner. Sound quality in the forest stages is surprisingly excellent.</p>
-            
-            <h3>🎨 Extra (5/5)</h3>
-            <p>Beyond the music: yoga, workshops, secret sets, interactive art, the Hangar (indoor stage/art gallery), silent disco in the forest, and countless hidden experiences. You could skip every main stage set and still have a life-changing weekend.</p>
-        </div>
-    </section>
+    <footer><div class="container"><p>Ground Score — Find your perfect festival</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
     
-    <footer><div class="container"><p>Ground Score — The insider's guide to music festivals</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
 </body>
 </html>

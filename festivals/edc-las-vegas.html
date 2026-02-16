@@ -6,357 +6,92 @@
     <title>EDC Las Vegas — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --accent: #00ff88;
-            --accent-dim: #00cc6a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --border: #2a2a3a;
-            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
-            --festival-gradient: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
-        }
-        
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
         
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        
-        .back-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.875rem;
-        }
-        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
         
-        /* Hero */
-        .festival-hero {
-            padding: 60px 0;
-            background: var(--festival-gradient);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .festival-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.9) 100%);
-        }
-        
-        .festival-hero .container { position: relative; z-index: 1; }
-        
-        .festival-meta {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-        
-        .festival-meta span {
-            font-size: 0.875rem;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .festival-hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        
-        .festival-tagline {
-            font-size: 1.25rem;
-            color: rgba(255,255,255,0.9);
-            max-width: 600px;
-        }
+        /* Hero with real photo */
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
         
         /* Score Overview */
-        .score-overview {
-            padding: 40px 0;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-        }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
         
-        .score-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
+        /* Expandable Score Cards */
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
         
-        .total-score {
-            text-align: center;
-        }
+        /* Made For Section */
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
         
-        .total-score .number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 5rem;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1;
-        }
+        /* Social Section */
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
         
-        .total-score .label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
+        /* Full Breakdown */
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
         
-        .quick-verdict {
-            max-width: 400px;
-        }
-        
-        .quick-verdict h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            margin-bottom: 12px;
-        }
-        
-        .quick-verdict p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        /* Score Grid */
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-        }
-        
-        .score-item {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .score-item .icon-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        
-        .score-item .icon { font-size: 1.25rem; }
-        
-        .score-item .label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .score-item .score-value {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .score-item .score-bar {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .score-item .score-bar-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-        }
-        
-        /* Content Sections */
-        .content-section {
-            padding: 48px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .content-section h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.75rem;
-            margin-bottom: 24px;
-        }
-        
-        .content-section h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            margin: 24px 0 12px;
-            color: var(--accent);
-        }
-        
-        .content-section p {
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-        
-        .quote {
-            border-left: 3px solid var(--accent);
-            padding-left: 20px;
-            margin: 24px 0;
-            font-style: italic;
-            color: var(--text-secondary);
-        }
-        
-        .quote cite {
-            display: block;
-            margin-top: 8px;
-            font-style: normal;
-            font-size: 0.875rem;
-            color: var(--accent);
-        }
-        
-        /* Trend Section */
-        .trend-section {
-            padding: 48px 0;
-        }
-        
-        .trend-section h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.75rem;
-            margin-bottom: 24px;
-        }
-        
-        .trend-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 24px;
-            height: 200px;
-            padding: 20px;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        
-        .trend-year {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .trend-bar {
-            width: 60px;
-            background: var(--accent);
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 8px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            color: var(--bg-dark);
-        }
-        
-        .trend-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Tags */
-        .tag-list {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 24px 0;
-        }
-        
-        .tag {
-            padding: 6px 14px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 20px;
-            font-size: 0.875rem;
-            color: var(--accent);
-        }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
         
         /* Quick Facts */
-        .quick-facts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 24px;
-        }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
         
-        .fact {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .fact .label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-        
-        .fact .value {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-        
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
         footer a { color: var(--accent); text-decoration: none; }
         
         @media (max-width: 768px) {
             .festival-hero h1 { font-size: 2rem; }
-            .total-score .number { font-size: 3.5rem; }
             .score-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
@@ -364,10 +99,7 @@
 <body>
     <header>
         <div class="container header-inner">
-            <a href="../index.html" class="logo">
-                <span class="logo-icon">⚡</span>
-                Ground Score
-            </a>
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
             <a href="../index.html" class="back-link">← All Festivals</a>
         </div>
     </header>
@@ -375,12 +107,12 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Las Vegas Motor Speedway, NV</span>
+                <span>📍 Las Vegas Motor Speedway</span>
                 <span>📅 May (3 nights)</span>
-                <span>👥 ~170,000 attendees</span>
+                <span>👥 170,000</span>
+                <span>💵 $400-600</span>
             </div>
             <h1>🎡 EDC Las Vegas</h1>
-            <p class="festival-tagline">The largest electronic dance music festival in North America — three nights under the electric sky.</p>
         </div>
     </section>
     
@@ -388,163 +120,282 @@
         <div class="container">
             <div class="score-header">
                 <div class="total-score">
-                    <div class="number">44</div>
-                    <div class="label">Ground Score / 50</div>
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
                 </div>
-                <div class="quick-verdict">
-                    <h3>The Verdict</h3>
-                    <p>EDC is a bucket-list experience for any electronic music fan. The production is unmatched, the energy is electric, and three nights gives you time to explore everything. Just prepare for the Vegas heat and late-night schedule.</p>
-                </div>
+                <p class="verdict-text">EDC is the gold standard for electronic music production. If you want to feel like you're inside a video game while 170,000 people dance under fireworks, this is it. Logistics can be rough, but the spectacle is worth it.</p>
             </div>
             
             <div class="score-grid">
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🎵</span><span class="label">Sound</span></div>
-                    <div class="score-value">4.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>150+ artists across 8 stages covering every subgenre of electronic music. The bass stages (bassrush, wasteLAND) are fan favorites. Sound systems are top-tier with perfect clarity even at massive scale. Insomniac's booking team consistently delivers both legends and rising talent.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🎪</span><span class="label">Scene</span></div>
-                    <div class="score-value">5.0</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where EDC has no competition. kineticFIELD alone is worth the ticket — a massive, animated stage structure that changes yearly. Add in the nightly fireworks, drone shows, LED everything, and stages that feel like different worlds. Production budget is seemingly unlimited.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">✨</span><span class="label">Vibe</span></div>
-                    <div class="score-value">4.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>PLUR is alive at EDC. Kandi trading, random acts of kindness, genuine connections with strangers. The dusk-to-dawn schedule (7PM-5:30AM) means everyone is committed. Bass stages and smaller areas tend to have tighter community vibes than main stage crowds.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🚿</span><span class="label">Flow</span></div>
-                    <div class="score-value">3.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>EDC's Achilles heel. The venue is massive — expect lots of walking. Shuttle lines can be brutal (improved in recent years but still rough). Water stations reduced in 2024 caused complaints. Entry and exit improved but plan for waits. Camp EDC helps avoid shuttle chaos.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🍕</span><span class="label">Fuel</span></div>
-                    <div class="score-value">4.0</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Solid vendor variety — everything from pizza to acai bowls. Quality is above average for festivals. Prices are steep ($15-20 entrees, $12+ drinks) but that's Vegas. Lines can be long during peak hours. Pro tip: eat before the headliners.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">✈️</span><span class="label">Access</span></div>
-                    <div class="score-value">4.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Las Vegas is one of the easiest festival cities to reach — cheap flights from everywhere, tons of hotels. The speedway is 20-30 min from the Strip. Shuttles, rideshare, and Camp EDC all work. Post-festival traffic is rough, but getting TO Vegas is easy.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">💰</span><span class="label">Value</span></div>
-                    <div class="score-value">4.0</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three nights of world-class production, 150+ artists, and an unforgettable experience — the value is there. Total trip cost ($1,500-2,500) is high but comparable to other major festivals. You get what you pay for.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🎨</span><span class="label">Extra</span></div>
-                    <div class="score-value">4.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond the music: carnival rides, art cars, roaming performers, interactive art installations, wedding chapel (yes, really), and countless Instagram moments. The festival grounds are a playground. There's always something new to discover.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🏔️</span><span class="label">Setting</span></div>
-                    <div class="score-value">4.5</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>A speedway isn't naturally scenic, but EDC transforms it into another world. The desert setting means incredible sunrises to close each night. Mountains in the distance, stars overhead, and 8 stages glowing in every direction.</p>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <div class="icon-label"><span class="icon">🎯</span><span class="label">Hype Check</span></div>
-                    <div class="score-value">5.0</div>
-                    <div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>EDC delivers what it promises. If you expect spectacle and scale, you get it. Veterans return year after year because it consistently hits. First-timers are rarely disappointed. The hype is earned.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
+    <section class="made-for">
         <div class="container">
-            <h2>Quick Facts</h2>
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎆</div>
+                    <div>
+                        <h3>Spectacle Seekers</h3>
+                        <p>If you want to feel like you're in a movie, EDC's production is unmatched. Fireworks every night, drone shows, and stages that defy physics.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>EDM Purists</h3>
+                        <p>150+ electronic artists across every subgenre. If you live for bass drops and builds, this is your Super Bowl.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Night Owls</h3>
+                        <p>7PM to 5:30AM schedule means you're dancing through the night. If you hate early mornings, EDC's got you.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Vegas makes group logistics easy — hotels, flights, activities. Perfect for festival crews and squad trips.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: Your first EDC sunrise at kineticFIELD"</div>
+                    <div class="stats">2.4M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The moment the fireworks hit during Illenium's set 😭"</div>
+                    <div class="stats">890K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"EDC Las Vegas 2024 | Full Weekend Vlog + Tips"</div>
+                    <div class="stats">1.2M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete EDC Experience</h2>
+            <p class="intro">Everything you need to know before, during, and after the electric sky.</p>
+            
             <div class="quick-facts">
-                <div class="fact">
-                    <div class="label">Ticket Price</div>
-                    <div class="value">$400-600</div>
-                </div>
-                <div class="fact">
-                    <div class="label">Best For</div>
-                    <div class="value">EDM purists</div>
-                </div>
-                <div class="fact">
-                    <div class="label">Camping?</div>
-                    <div class="value">Camp EDC available</div>
-                </div>
-                <div class="fact">
-                    <div class="label">First Timer?</div>
-                    <div class="value">Great choice</div>
-                </div>
-                <div class="fact">
-                    <div class="label">Hours</div>
-                    <div class="value">Dusk to Dawn</div>
-                </div>
-                <div class="fact">
-                    <div class="label">Stages</div>
-                    <div class="value">8+ stages</div>
-                </div>
+                <div class="fact"><div class="label">When</div><div class="value">May (3 nights)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">7PM - 5:30AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">8+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">170,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Camp EDC</div></div>
             </div>
             
-            <div class="tag-list">
-                <span class="tag">🎉 Wild</span>
-                <span class="tag">🎪 Epic Production</span>
-                <span class="tag">🌙 All Night</span>
-                <span class="tag">🏕️ Camping Option</span>
-                <span class="tag">✈️ Easy Access</span>
-                <span class="tag">🔊 Bass Heavy</span>
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>EDC is a marathon, not a sprint. Three nights of 10+ hour sessions requires preparation.</p>
+                <ul>
+                    <li><strong>Book early:</strong> Hotels near the Strip fill up fast. Shuttles sell out. Don't wait.</li>
+                    <li><strong>Camp EDC vs Hotels:</strong> Camp EDC eliminates shuttle stress but adds camping logistics. Hotels give you a real bed but mean late-night transport.</li>
+                    <li><strong>Physical prep:</strong> You'll walk 10+ miles per night. Start breaking in those shoes now.</li>
+                    <li><strong>Heat prep:</strong> May in Vegas hits 100°F+ during the day. Hydrate before you arrive.</li>
+                </ul>
             </div>
-        </div>
-    </section>
-    
-    <section class="content-section">
-        <div class="container">
-            <h2>The Full Breakdown</h2>
             
-            <h3>🎵 Sound (4.5/5)</h3>
-            <p>EDC consistently books the biggest names in electronic music across all subgenres. From main stage headliners like Tiësto and Martin Garrix to underground techno at Neon Garden, there's something for everyone. The sound systems are top-tier — Insomniac doesn't cut corners.</p>
-            
-            <blockquote class="quote">
-                "The sound at kinetic Field was insane. Even from the back, you could feel every bass drop in your chest."
-                <cite>— YouTube vlogger, EDC 2024</cite>
-            </blockquote>
-            
-            <h3>🎪 Scene (5/5)</h3>
-            <p>This is where EDC truly shines. The stage designs are mind-blowing, updated every year with new themes and technology. KineticFIELD alone is worth the price of admission. LED panels, pyrotechnics, fireworks, lasers — it's a sensory overload in the best way.</p>
-            
-            <h3>✨ Vibe (4.5/5)</h3>
-            <p>PLUR is alive and well at EDC. The crowd is generally friendly, kandi trading is everywhere, and there's a genuine sense of community. The dusk-to-dawn schedule means everyone is there to party, not pose.</p>
-            
-            <h3>🚿 Flow (3.5/5)</h3>
-            <p>The speedway venue is massive, which means lots of walking. Water stations can have lines during peak hours. Entry and exit have improved over the years but still expect some waits. Parking lot exodus is notorious.</p>
-            
-            <h3>💰 Value (4/5)</h3>
-            <p>For three nights of world-class production, 150+ artists, and an unforgettable experience — the value is solid. Just budget for Vegas hotel prices and the overall trip cost.</p>
-        </div>
-    </section>
-    
-    <section class="trend-section">
-        <div class="container">
-            <h2>3-Year Trend</h2>
-            <div class="trend-chart">
-                <div class="trend-year">
-                    <div class="trend-bar" style="height: 80%;">42</div>
-                    <span class="trend-label">2023</span>
-                </div>
-                <div class="trend-year">
-                    <div class="trend-bar" style="height: 85%;">43</div>
-                    <span class="trend-label">2024</span>
-                </div>
-                <div class="trend-year">
-                    <div class="trend-bar" style="height: 90%;">44</div>
-                    <span class="trend-label">2025</span>
-                </div>
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Las Vegas is one of the easiest festival cities to access — cheap flights from everywhere, tons of hotel inventory. The speedway is about 20 miles from the Strip.</p>
+                <ul>
+                    <li><strong>Shuttles:</strong> Official shuttles from Strip hotels. Expect waits of 30-90 minutes, especially post-festival.</li>
+                    <li><strong>Rideshare:</strong> Works but surges hard. Post-festival Ubers can be $100+.</li>
+                    <li><strong>Driving + Premier Parking:</strong> Fastest exit but costs $$$. Worth it if you have a group.</li>
+                    <li><strong>Entry:</strong> Metal detectors and bag checks. Lines vary by entrance — research which gates are fastest.</li>
+                </ul>
             </div>
-            <p style="margin-top: 16px; color: var(--text-secondary); font-size: 0.875rem;">EDC has consistently improved year over year, with better logistics and fresh stage designs keeping the experience evolving.</p>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Las Vegas Motor Speedway becomes a neon wonderland. Eight stages, each with a distinct vibe:</p>
+                <ul>
+                    <li><strong>kineticFIELD:</strong> The main stage. Massive, animated, and where headliners play. Gets crowded.</li>
+                    <li><strong>circuitGROUNDS:</strong> Second biggest. More diverse bookings, often better crowd flow.</li>
+                    <li><strong>bassPOD / wasteLAND:</strong> Where the bass heads live. Dubstep, riddim, heavy stuff.</li>
+                    <li><strong>neonGARDEN:</strong> House and techno haven. More intimate, great for sunrise sets.</li>
+                    <li><strong>cosmicMEADOW:</strong> Chill grass area with a mix of genres. Good for reset moments.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The production is legendary — drone shows, fireworks nightly, 8 stages that each feel like different festivals. If you expect spectacle, EDC delivers."
+                    <cite>— Ground Score Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>You're dancing in the desert for 10 hours. Plan accordingly.</p>
+                <ul>
+                    <li><strong>Water:</strong> Free water stations exist but can have lines. Bring an empty CamelBak or hydration pack.</li>
+                    <li><strong>Food:</strong> Solid variety — pizza, tacos, acai, everything. Prices are Vegas-level ($15-20 entrees).</li>
+                    <li><strong>Pro tip:</strong> Eat before peak hours (10PM-2AM). Lines are shorter early and late.</li>
+                    <li><strong>Electrolytes:</strong> Bring powder packets. You'll sweat more than you think.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>170,000 people sounds intimidating, but EDC's crowd is generally friendly and welcoming.</p>
+                <ul>
+                    <li><strong>PLUR is real:</strong> Kandi trading, random compliments, helping strangers — it happens.</li>
+                    <li><strong>Bass stages have the best vibes:</strong> Smaller, tighter communities. More headbangers than posers.</li>
+                    <li><strong>Main stage can feel impersonal:</strong> If you want intimate energy, explore the smaller stages.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Recovery is part of the experience.</p>
+                <ul>
+                    <li><strong>Don't book a 6AM flight:</strong> You'll regret it. Build in a recovery day.</li>
+                    <li><strong>Pool parties:</strong> Vegas pool clubs go hard during EDC week. Pace yourself.</li>
+                    <li><strong>Sleep:</strong> The hotel blackout curtains exist for a reason. Use them.</li>
+                </ul>
+            </div>
         </div>
     </section>
     
     <footer>
         <div class="container">
-            <p>Ground Score — The insider's guide to music festivals</p>
+            <p>Ground Score — Find your perfect festival</p>
             <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
         </div>
     </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
 </body>
 </html>

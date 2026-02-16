@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ground Score — Find Your Festival</title>
+    <title>Ground Score — Find Your Perfect Festival</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,418 +15,209 @@
             --text-secondary: #a0a0b0;
             --border: #2a2a3a;
             --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
-            --gradient-2: linear-gradient(135deg, #ff0088 0%, #ff8800 100%);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         
         /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         
         /* Hero */
-        .hero {
-            padding: 80px 0;
-            text-align: center;
-        }
+        .hero { padding: 60px 0 40px; text-align: center; }
+        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 20px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 16px; }
+        .hero .emphasis { color: var(--text-primary); font-weight: 500; }
         
-        .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        /* Priority Picker */
+        .priority-picker { padding: 40px 0; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .priority-picker h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; text-align: center; margin-bottom: 8px; }
+        .priority-picker .subtitle { text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px; }
         
-        .hero .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
+        .priority-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 900px; margin: 0 auto 24px; }
         
-        .hero .tagline {
-            display: inline-block;
-            padding: 8px 16px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 24px;
-            font-size: 0.875rem;
-            color: var(--accent);
-            margin-bottom: 24px;
-        }
+        .priority-btn { background: var(--bg-dark); border: 2px solid var(--border); border-radius: 12px; padding: 16px 12px; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .priority-btn:hover { border-color: var(--accent); }
+        .priority-btn.selected { border-color: var(--accent); background: rgba(0, 255, 136, 0.1); }
+        .priority-btn .icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .priority-btn .name { font-weight: 600; font-size: 0.875rem; color: var(--text-primary); margin-bottom: 2px; }
+        .priority-btn .desc { font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3; }
         
-        /* Score System Explainer */
-        .score-system {
-            padding: 60px 0;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
+        .selected-count { text-align: center; margin-bottom: 16px; font-size: 0.875rem; color: var(--text-secondary); }
+        .selected-count strong { color: var(--accent); }
         
-        .score-system h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 48px;
-        }
+        .find-btn { display: block; margin: 0 auto; padding: 14px 32px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg-dark); font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.2s, opacity 0.2s; }
+        .find-btn:hover { transform: translateY(-2px); }
+        .find-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
-        .criteria-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-        }
+        /* Quick Filters */
+        .quick-filters { padding: 24px 0; text-align: center; }
+        .quick-filters .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .filter-btn { padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-primary); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-dark); }
         
-        .criteria-card {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-        
-        .criteria-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        
-        .criteria-card .icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-        
-        .criteria-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-        }
-        
-        .criteria-card p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Filter Section */
-        .filters {
-            padding: 40px 0;
-        }
-        
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-        }
-        
-        .filter-btn {
-            padding: 10px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: var(--bg-dark);
-        }
+        /* Score System (Compact) */
+        .score-system { padding: 32px 0; border-bottom: 1px solid var(--border); }
+        .score-system h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; text-align: center; margin-bottom: 16px; color: var(--text-secondary); }
+        .criteria-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 1000px; margin: 0 auto; }
+        .criteria-tag { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; }
+        .criteria-tag .icon { font-size: 0.875rem; }
+        .criteria-tag .text { color: var(--text-secondary); }
         
         /* Festival Cards */
-        .festivals-section {
-            padding: 60px 0;
-        }
+        .festivals-section { padding: 48px 0; }
+        .festivals-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .festivals-section .section-subtitle { color: var(--text-secondary); margin-bottom: 24px; }
         
-        .festivals-section h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 32px;
-        }
+        .festival-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
         
-        .festival-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-        }
+        .festival-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.2s, border-color 0.2s; text-decoration: none; color: inherit; display: block; }
+        .festival-card:hover { transform: translateY(-4px); border-color: var(--accent); }
         
-        .festival-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
+        .festival-card .image { height: 160px; background-size: cover; background-position: center; position: relative; }
+        .festival-card .image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%); }
+        .festival-card .image .score-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); padding: 6px 12px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); font-size: 0.9rem; z-index: 1; }
         
-        .festival-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-        }
+        .festival-card .content { padding: 20px; }
+        .festival-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; margin-bottom: 4px; }
+        .festival-card .location { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px; }
         
-        .festival-card .image {
-            height: 180px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
+        .festival-card .highlights { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .festival-card .highlight { padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 0.7rem; color: var(--text-secondary); }
+        .festival-card .highlight.strong { background: rgba(0, 255, 136, 0.15); color: var(--accent); }
         
-        .festival-card .content {
-            padding: 24px;
-        }
-        
-        .festival-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-        
-        .festival-card .location {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 16px;
-        }
-        
-        .festival-card .score-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .ground-score {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .ground-score .number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        
-        .ground-score .max {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .tags {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .tag {
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Mini Score Bars */
-        .mini-scores {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-        
-        .mini-score {
-            text-align: center;
-        }
-        
-        .mini-score .label {
-            font-size: 0.625rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-        
-        .mini-score .bar {
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .mini-score .bar-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-        }
+        .festival-card .mini-scores { display: flex; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+        .festival-card .mini-score { flex: 1; text-align: center; }
+        .festival-card .mini-score .label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
+        .festival-card .mini-score .value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); }
         
         /* Footer */
-        footer {
-            padding: 40px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
         
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .criteria-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .festival-grid {
-                grid-template-columns: 1fr;
-            }
+            .hero h1 { font-size: 2.25rem; }
+            .priority-grid { grid-template-columns: repeat(2, 1fr); }
+            .festival-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-icon">⚡</span>
-                Ground Score
-            </a>
+            <a href="/" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
         </div>
     </header>
     
     <section class="hero">
         <div class="container">
-            <span class="tagline">The Michelin Guide for Music Festivals</span>
             <h1>Find Your Perfect Festival</h1>
             <p class="subtitle">
-                Ground Score rates festivals across 10 key dimensions so you can discover events that match your vibe, budget, and experience level.
+                The best festival isn't the biggest or most hyped — <span class="emphasis">it's the one that fits YOU.</span>
             </p>
+            <p class="subtitle">
+                Some people want to camp under the stars and get sweaty. Others want world-class stage design. Some just want easy logistics and good vibes. Ground Score helps you and your crew find the experience you're actually looking for.
+            </p>
+        </div>
+    </section>
+    
+    <section class="priority-picker">
+        <div class="container">
+            <h2>What matters most to you?</h2>
+            <p class="subtitle">Select up to 3 priorities and we'll show you the best matches.</p>
+            
+            <div class="priority-grid">
+                <button class="priority-btn" data-category="sound" onclick="togglePriority(this)">
+                    <div class="icon">🎵</div>
+                    <div class="name">Music & Lineup</div>
+                    <div class="desc">Quality artists, diverse genres, great bookings</div>
+                </button>
+                <button class="priority-btn" data-category="scene" onclick="togglePriority(this)">
+                    <div class="icon">🎪</div>
+                    <div class="name">Production & Stages</div>
+                    <div class="desc">Mind-blowing visuals, LED walls, lasers</div>
+                </button>
+                <button class="priority-btn" data-category="vibe" onclick="togglePriority(this)">
+                    <div class="icon">✨</div>
+                    <div class="name">Crowd & Community</div>
+                    <div class="desc">Good energy, friendly people, real connections</div>
+                </button>
+                <button class="priority-btn" data-category="flow" onclick="togglePriority(this)">
+                    <div class="icon">🚿</div>
+                    <div class="name">Easy Logistics</div>
+                    <div class="desc">Short lines, clean bathrooms, smooth entry</div>
+                </button>
+                <button class="priority-btn" data-category="fuel" onclick="togglePriority(this)">
+                    <div class="icon">🍕</div>
+                    <div class="name">Food & Drinks</div>
+                    <div class="desc">Quality vendors, reasonable prices, variety</div>
+                </button>
+                <button class="priority-btn" data-category="access" onclick="togglePriority(this)">
+                    <div class="icon">✈️</div>
+                    <div class="name">Travel & Access</div>
+                    <div class="desc">Easy to get to, good transit, parking</div>
+                </button>
+                <button class="priority-btn" data-category="value" onclick="togglePriority(this)">
+                    <div class="icon">💰</div>
+                    <div class="name">Value for Money</div>
+                    <div class="desc">Worth the price, budget-friendly options</div>
+                </button>
+                <button class="priority-btn" data-category="extra" onclick="togglePriority(this)">
+                    <div class="icon">🎨</div>
+                    <div class="name">Beyond the Music</div>
+                    <div class="desc">Art, workshops, unique experiences</div>
+                </button>
+                <button class="priority-btn" data-category="setting" onclick="togglePriority(this)">
+                    <div class="icon">🏔️</div>
+                    <div class="name">Beautiful Setting</div>
+                    <div class="desc">Scenic venue, natural beauty, unique location</div>
+                </button>
+                <button class="priority-btn" data-category="hype" onclick="togglePriority(this)">
+                    <div class="icon">🎯</div>
+                    <div class="name">Lives Up to Hype</div>
+                    <div class="desc">Reality matches expectations, no letdowns</div>
+                </button>
+            </div>
+            
+            <div class="selected-count">Selected: <strong id="priority-count">0</strong> / 3</div>
+            <button class="find-btn" id="find-btn" disabled onclick="findFestivals()">Find My Festivals</button>
+        </div>
+    </section>
+    
+    <section class="quick-filters">
+        <div class="container">
+            <div class="label">Or try a quick filter</div>
+            <div class="filter-bar">
+                <button class="filter-btn" onclick="applyFilter('all')">All Festivals</button>
+                <button class="filter-btn" onclick="applyFilter('camping')">🏕️ Camping</button>
+                <button class="filter-btn" onclick="applyFilter('urban')">🌆 Urban</button>
+                <button class="filter-btn" onclick="applyFilter('budget')">💰 Budget-Friendly</button>
+                <button class="filter-btn" onclick="applyFilter('scenic')">🌲 Scenic</button>
+                <button class="filter-btn" onclick="applyFilter('wild')">🎉 Wild Energy</button>
+                <button class="filter-btn" onclick="applyFilter('firsttimer')">👶 First-Timer</button>
+                <button class="filter-btn" onclick="applyFilter('toprated')">🔥 Top Rated</button>
+            </div>
         </div>
     </section>
     
     <section class="score-system">
         <div class="container">
-            <h2>The Ground Score System</h2>
-            <div class="criteria-grid">
-                <div class="criteria-card">
-                    <div class="icon">🎵</div>
-                    <h3>Sound</h3>
-                    <p>Music quality, lineup curation, artist diversity and booking</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🎪</div>
-                    <h3>Scene</h3>
-                    <p>Stage design, production value, visual experience</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">✨</div>
-                    <h3>Vibe</h3>
-                    <p>Crowd energy, community feel, overall atmosphere</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🚿</div>
-                    <h3>Flow</h3>
-                    <p>In-event logistics: water, bathrooms, entry lines</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🍕</div>
-                    <h3>Fuel</h3>
-                    <p>Food and drink quality, accessibility, pricing</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">✈️</div>
-                    <h3>Access</h3>
-                    <p>Travel ease, airport proximity, parking situation</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">💰</div>
-                    <h3>Value</h3>
-                    <p>Bang for your buck — ticket price vs total experience</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🎨</div>
-                    <h3>Extra</h3>
-                    <p>Art installations, workshops, experiences beyond music</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🏔️</div>
-                    <h3>Setting</h3>
-                    <p>Natural beauty, venue uniqueness, scenic factor</p>
-                </div>
-                <div class="criteria-card">
-                    <div class="icon">🎯</div>
-                    <h3>Hype Check</h3>
-                    <p>Reality vs expectations — overhyped or underrated?</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="filters">
-        <div class="container">
-            <div class="filter-bar">
-                <button class="filter-btn active">All Festivals</button>
-                <button class="filter-btn">🏕️ Camping</button>
-                <button class="filter-btn">🌆 Urban</button>
-                <button class="filter-btn">💰 Budget-Friendly</button>
-                <button class="filter-btn">🌲 Scenic</button>
-                <button class="filter-btn">🎉 Wild</button>
-                <button class="filter-btn">👶 First-Timer Friendly</button>
-                <button class="filter-btn">🔥 Top Rated</button>
+            <h3>Every festival rated across 10 dimensions</h3>
+            <div class="criteria-row">
+                <span class="criteria-tag"><span class="icon">🎵</span><span class="text">Music Quality</span></span>
+                <span class="criteria-tag"><span class="icon">🎪</span><span class="text">Stage Production</span></span>
+                <span class="criteria-tag"><span class="icon">✨</span><span class="text">Crowd Vibe</span></span>
+                <span class="criteria-tag"><span class="icon">🚿</span><span class="text">Logistics</span></span>
+                <span class="criteria-tag"><span class="icon">🍕</span><span class="text">Food & Drink</span></span>
+                <span class="criteria-tag"><span class="icon">✈️</span><span class="text">Accessibility</span></span>
+                <span class="criteria-tag"><span class="icon">💰</span><span class="text">Value</span></span>
+                <span class="criteria-tag"><span class="icon">🎨</span><span class="text">Extras</span></span>
+                <span class="criteria-tag"><span class="icon">🏔️</span><span class="text">Setting</span></span>
+                <span class="criteria-tag"><span class="icon">🎯</span><span class="text">Hype Check</span></span>
             </div>
         </div>
     </section>
@@ -434,208 +225,115 @@
     <section class="festivals-section">
         <div class="container">
             <h2>Top Rated Festivals</h2>
-            <div class="festival-grid">
-                <!-- EDC Las Vegas -->
-                <a href="festivals/edc-las-vegas.html" class="festival-card">
-                    <div class="image" style="background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);">🎡</div>
-                    <div class="content">
-                        <h3>EDC Las Vegas</h3>
-                        <p class="location">📍 Las Vegas, NV • May</p>
-                        <div class="score-row">
-                            <div class="ground-score">
-                                <span class="number">44</span>
-                                <span class="max">/ 50</span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">🎉 Wild</span>
-                                <span class="tag">🎪 Epic Production</span>
-                            </div>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score">
-                                <div class="label">Sound</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Scene</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Vibe</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Flow</div>
-                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Value</div>
-                                <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
+            <p class="section-subtitle">Based on overall Ground Score across all categories.</p>
+            
+            <div class="festival-grid" id="festival-grid">
                 <!-- Electric Forest -->
-                <a href="festivals/electric-forest.html" class="festival-card">
-                    <div class="image" style="background: linear-gradient(135deg, #00ff00 0%, #004400 100%);">🌲</div>
+                <a href="festivals/electric-forest.html" class="festival-card" data-tags="camping,scenic,toprated,firsttimer" data-scores='{"sound":4.5,"scene":5,"vibe":5,"flow":4,"fuel":4.5,"access":3.5,"value":4.5,"extra":5,"setting":5,"hype":5}'>
+                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&q=80');">
+                        <span class="score-badge">46/50</span>
+                    </div>
                     <div class="content">
                         <h3>Electric Forest</h3>
                         <p class="location">📍 Rothbury, MI • June</p>
-                        <div class="score-row">
-                            <div class="ground-score">
-                                <span class="number">46</span>
-                                <span class="max">/ 50</span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">🌲 Scenic</span>
-                                <span class="tag">✨ Magical</span>
-                            </div>
+                        <div class="highlights">
+                            <span class="highlight strong">Best Setting</span>
+                            <span class="highlight strong">Best Community</span>
+                            <span class="highlight">4-Day Camping</span>
                         </div>
                         <div class="mini-scores">
-                            <div class="mini-score">
-                                <div class="label">Sound</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Scene</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Vibe</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Flow</div>
-                                <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Setting</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Coachella -->
-                <a href="festivals/coachella.html" class="festival-card">
-                    <div class="image" style="background: linear-gradient(135deg, #ff8800 0%, #ff0088 100%);">🌴</div>
-                    <div class="content">
-                        <h3>Coachella</h3>
-                        <p class="location">📍 Indio, CA • April</p>
-                        <div class="score-row">
-                            <div class="ground-score">
-                                <span class="number">41</span>
-                                <span class="max">/ 50</span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">📸 Iconic</span>
-                                <span class="tag">🎨 Art</span>
-                            </div>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score">
-                                <div class="label">Sound</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Scene</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Vibe</div>
-                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Value</div>
-                                <div class="bar"><div class="bar-fill" style="width: 50%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Hype</div>
-                                <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Ultra Miami -->
-                <a href="festivals/ultra-miami.html" class="festival-card">
-                    <div class="image" style="background: linear-gradient(135deg, #00ccff 0%, #0066ff 100%);">🌊</div>
-                    <div class="content">
-                        <h3>Ultra Miami</h3>
-                        <p class="location">📍 Miami, FL • March</p>
-                        <div class="score-row">
-                            <div class="ground-score">
-                                <span class="number">40</span>
-                                <span class="max">/ 50</span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">🌆 Urban</span>
-                                <span class="tag">🔊 Bass</span>
-                            </div>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score">
-                                <div class="label">Sound</div>
-                                <div class="bar"><div class="bar-fill" style="width: 95%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Scene</div>
-                                <div class="bar"><div class="bar-fill" style="width: 85%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Access</div>
-                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Flow</div>
-                                <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Value</div>
-                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
-                            </div>
+                            <div class="mini-score"><div class="label">Vibe</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Setting</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Extras</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Value</div><div class="value">4.5</div></div>
                         </div>
                     </div>
                 </a>
                 
                 <!-- Burning Man -->
-                <a href="festivals/burning-man.html" class="festival-card">
-                    <div class="image" style="background: linear-gradient(135deg, #ff4400 0%, #ffaa00 100%);">🔥</div>
+                <a href="festivals/burning-man.html" class="festival-card" data-tags="camping,scenic,wild" data-scores='{"sound":4,"scene":5,"vibe":5,"flow":2,"fuel":3,"access":1.5,"value":4,"extra":5,"setting":5,"hype":5}'>
+                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=600&q=80');">
+                        <span class="score-badge">45/50</span>
+                    </div>
                     <div class="content">
                         <h3>Burning Man</h3>
                         <p class="location">📍 Black Rock City, NV • Aug-Sept</p>
-                        <div class="score-row">
-                            <div class="ground-score">
-                                <span class="number">45</span>
-                                <span class="max">/ 50</span>
-                            </div>
-                            <div class="tags">
-                                <span class="tag">🎨 Art</span>
-                                <span class="tag">🏜️ Extreme</span>
-                            </div>
+                        <div class="highlights">
+                            <span class="highlight strong">Unmatched Art</span>
+                            <span class="highlight">Extreme</span>
+                            <span class="highlight">8 Days</span>
                         </div>
                         <div class="mini-scores">
-                            <div class="mini-score">
-                                <div class="label">Scene</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Vibe</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Extra</div>
-                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Flow</div>
-                                <div class="bar"><div class="bar-fill" style="width: 40%;"></div></div>
-                            </div>
-                            <div class="mini-score">
-                                <div class="label">Access</div>
-                                <div class="bar"><div class="bar-fill" style="width: 30%;"></div></div>
-                            </div>
+                            <div class="mini-score"><div class="label">Scene</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Extras</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Vibe</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Access</div><div class="value">1.5</div></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- EDC Las Vegas -->
+                <a href="festivals/edc-las-vegas.html" class="festival-card" data-tags="wild,toprated" data-scores='{"sound":4.5,"scene":5,"vibe":4.5,"flow":3.5,"fuel":4,"access":4.5,"value":4,"extra":4.5,"setting":4.5,"hype":5}'>
+                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80');">
+                        <span class="score-badge">44/50</span>
+                    </div>
+                    <div class="content">
+                        <h3>EDC Las Vegas</h3>
+                        <p class="location">📍 Las Vegas, NV • May</p>
+                        <div class="highlights">
+                            <span class="highlight strong">Best Production</span>
+                            <span class="highlight">3 Nights</span>
+                            <span class="highlight">170K People</span>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score"><div class="label">Scene</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.5</div></div>
+                            <div class="mini-score"><div class="label">Hype</div><div class="value">5.0</div></div>
+                            <div class="mini-score"><div class="label">Flow</div><div class="value">3.5</div></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Ultra Miami -->
+                <a href="festivals/ultra-miami.html" class="festival-card" data-tags="urban,wild" data-scores='{"sound":4.5,"scene":4.5,"vibe":3,"flow":3,"fuel":3,"access":4.5,"value":3,"extra":3.5,"setting":4.5,"hype":3.5}'>
+                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=600&q=80');">
+                        <span class="score-badge">37/50</span>
+                    </div>
+                    <div class="content">
+                        <h3>Ultra Miami</h3>
+                        <p class="location">📍 Miami, FL • March</p>
+                        <div class="highlights">
+                            <span class="highlight strong">Elite Sound</span>
+                            <span class="highlight">Urban</span>
+                            <span class="highlight">Music Week</span>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.5</div></div>
+                            <div class="mini-score"><div class="label">Scene</div><div class="value">4.5</div></div>
+                            <div class="mini-score"><div class="label">Access</div><div class="value">4.5</div></div>
+                            <div class="mini-score"><div class="label">Vibe</div><div class="value">3.0</div></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Coachella -->
+                <a href="festivals/coachella.html" class="festival-card" data-tags="camping,scenic" data-scores='{"sound":4,"scene":4,"vibe":3,"flow":3.5,"fuel":4,"access":3.5,"value":2.5,"extra":4.5,"setting":4,"hype":2}'>
+                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=600&q=80');">
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <div class="content">
+                        <h3>Coachella</h3>
+                        <p class="location">📍 Indio, CA • April</p>
+                        <div class="highlights">
+                            <span class="highlight">Cultural Icon</span>
+                            <span class="highlight">Art Forward</span>
+                            <span class="highlight">2 Weekends</span>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score"><div class="label">Extras</div><div class="value">4.5</div></div>
+                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.0</div></div>
+                            <div class="mini-score"><div class="label">Value</div><div class="value">2.5</div></div>
+                            <div class="mini-score"><div class="label">Hype</div><div class="value">2.0</div></div>
                         </div>
                     </div>
                 </a>
@@ -645,9 +343,71 @@
     
     <footer>
         <div class="container">
-            <p>Ground Score — The insider's guide to music festivals</p>
-            <p style="margin-top: 8px;">Built by festival people, for festival people. <a href="#">Learn more</a></p>
+            <p>Ground Score — Find your perfect festival experience</p>
+            <p style="margin-top: 8px;">Built by festival people, for festival people.</p>
         </div>
     </footer>
+    
+    <script>
+        let selectedPriorities = [];
+        
+        function togglePriority(btn) {
+            const category = btn.dataset.category;
+            
+            if (btn.classList.contains('selected')) {
+                btn.classList.remove('selected');
+                selectedPriorities = selectedPriorities.filter(p => p !== category);
+            } else if (selectedPriorities.length < 3) {
+                btn.classList.add('selected');
+                selectedPriorities.push(category);
+            }
+            
+            document.getElementById('priority-count').textContent = selectedPriorities.length;
+            document.getElementById('find-btn').disabled = selectedPriorities.length === 0;
+        }
+        
+        function findFestivals() {
+            if (selectedPriorities.length === 0) return;
+            
+            const cards = document.querySelectorAll('.festival-card');
+            const cardsArray = Array.from(cards);
+            
+            // Calculate scores based on priorities
+            cardsArray.forEach(card => {
+                const scores = JSON.parse(card.dataset.scores);
+                let priorityScore = 0;
+                selectedPriorities.forEach(p => {
+                    priorityScore += scores[p] || 0;
+                });
+                card.dataset.priorityScore = priorityScore;
+            });
+            
+            // Sort by priority score
+            cardsArray.sort((a, b) => b.dataset.priorityScore - a.dataset.priorityScore);
+            
+            const grid = document.getElementById('festival-grid');
+            cardsArray.forEach(card => grid.appendChild(card));
+            
+            // Scroll to results
+            document.querySelector('.festivals-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function applyFilter(filter) {
+            const cards = document.querySelectorAll('.festival-card');
+            
+            // Reset all filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const tags = card.dataset.tags.split(',');
+                    card.style.display = tags.includes(filter) ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
