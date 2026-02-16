@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mo Pop — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #4a90d9 0%, #63b3ed 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.4); padding: 16px 24px; }
+        .status-banner .container { display: flex; align-items: center; gap: 12px; }
+        .status-banner .status-icon { font-size: 1.5rem; }
+        .status-banner .status-text { color: #ffc107; font-weight: 500; }
+        .status-banner .status-detail { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <div class="status-banner">
+        <div class="container">
+            <span class="status-icon">⏸️</span>
+            <div>
+                <div class="status-text">Festival on Hiatus</div>
+                <div class="status-detail">Mo Pop pivoted to "Mo Pop Presents" concert series in 2023. The outdoor festival format hasn't returned since 2022.</div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 West Riverfront Park, Detroit MI</span>
+                <span>📅 July (2 days)</span>
+                <span>👥 15,000-20,000</span>
+                <span>💵 $100-200</span>
+            </div>
+            <h1>🎤 Mo Pop</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">30</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Mo Pop was a charming boutique festival — intimate, well-curated, and Detroit-proud. Electronic content was limited to synth-pop crossovers like M83 and Chromeo. Nice vibe, wrong genre for EDM heads. Currently on indefinite hiatus.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Indie pop/rock focus with occasional electronic-adjacent acts. M83, Chromeo, Passion Pit, Glass Animals have appeared — all synth-pop/indie-electronic crossovers. No dedicated electronic stages, no DJs, no bass music. Detroit's electronic heritage (Movement is right there) didn't cross over to Mo Pop.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Intentionally low-key production. Two stages, clean setups, minimal visual spectacle. The festival leaned into "boutique" identity rather than trying to compete on production. Charming if you're into that; underwhelming if you expect EDM-level visuals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This was Mo Pop's strength — intimate, community-oriented, genuinely welcoming. Small enough that you'd run into the same people multiple times. Detroit locals mixed with Midwest indie kids. More like a big neighborhood party than a corporate festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two stages aligned so you could watch both without moving — intentional design so attendees never had to choose between overlapping sets. 20k attendance kept density comfortable. Small footprint meant minimal walking. Well-executed compact festival logistics.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Strong Detroit food representation — food trucks, local vendors, craft beer focus. The festival emphasized local flavor over generic festival food. Quality good, variety decent, prices reasonable for a festival. Michigan craft beer selection was a highlight.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Detroit isn't a major flight hub but DTW is manageable. West Riverfront Park is just outside downtown, easily accessible. Hotels plentiful and relatively affordable compared to bigger festival cities. Good option for Midwest residents.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$100-200 for two days is reasonable — one of the more affordable multi-day festivals. For electronic fans, value is poor (wrong genre). For indie fans or locals wanting a chill weekend, good value. Detroit hotel prices help keep total trip cost down.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Artisan village, local makers, craft vendors, arcade tent in later years. Nothing massive but curated and interesting. The festival tried to showcase Detroit's creative community beyond music. Smaller scale but thoughtful execution.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Riverfront location with Detroit skyline and Ambassador Bridge views was genuinely scenic. Sunsets over the Detroit River were a highlight. 20-acre park felt spacious without being overwhelming. One of the more attractive urban festival settings.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mo Pop never overhyped itself — it knew what it was: a boutique indie festival for Midwest music lovers. Delivered on that promise. Attendees who understood the vibe loved it. Just don't expect it to be something it's not.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Indie Pop Devotees</h3>
+                        <p>If your playlists are full of Pitchfork-approved indie, this was your kind of festival. Quality curation over quantity.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Small, manageable, friendly — a great intro to festival culture without the overwhelming scale of major fests.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Detroit Locals</h3>
+                        <p>Mo Pop was made for Detroit. Local vendors, riverfront pride, community energy. A celebration of the city.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Mo Pop 2022 was the most slept-on festival"</div>
+                    <div class="stats">234K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Detroit River sunset + M83 = perfect Saturday 🌅"</div>
+                    <div class="stats">45K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Mo Pop Festival Review - Is It Worth It?"</div>
+                    <div class="stats">67K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Mo Pop Story</h2>
+            <p class="intro">What was Mo Pop, and why did it matter?</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Active</div><div class="value">2013-2022</div></div>
+                <div class="fact"><div class="label">Days</div><div class="value">2</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2</div></div>
+                <div class="fact"><div class="label">Peak Attendance</div><div class="value">20,000</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Hiatus</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Rise and Pause</h3>
+                <p>Mo Pop started in 2013 at a suburban amphitheater before moving to Detroit's West Riverfront Park in 2015. It grew steadily, earning comparisons to Bonnaroo and Coachella despite its much smaller scale — a testament to its curation and vibe rather than size.</p>
+                <p>COVID killed 2020 and 2021. The festival returned in 2022, but in February 2023, organizers announced a pivot to "Mo Pop Presents" — a concert series rather than outdoor festival format. The outdoor festival hasn't returned.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Electronic Content (Honest Assessment)</h3>
+                <p>Mo Pop occupied the indie pop/rock space, not electronic. The irony wasn't lost on anyone — Detroit, birthplace of techno, home of Movement Festival, somehow produced a festival with almost no electronic music.</p>
+                <p>Electronic-adjacent acts that appeared over the years:</p>
+                <ul>
+                    <li><strong>M83:</strong> Synth-heavy shoegaze/dream pop</li>
+                    <li><strong>Chromeo:</strong> Electro-funk crossover</li>
+                    <li><strong>Passion Pit:</strong> Synth-pop</li>
+                    <li><strong>Glass Animals:</strong> Psychedelic-electronic pop</li>
+                    <li><strong>Matt and Kim:</strong> Dance-punk energy</li>
+                </ul>
+                <p>If you wanted actual electronic music in Detroit, Movement was (and is) the answer.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <blockquote class="quote">
+                    "Mo Pop felt like what festivals used to be — small enough to feel personal, curated enough to trust the bookings, and genuinely connected to its city."
+                    <cite>— Festival Attendee, 2019</cite>
+                </blockquote>
+                <p>The two-stage setup with staggered times meant you never had to choose between sets. The Detroit River backdrop provided natural beauty. The local food and vendor focus gave it authentic character. It was proof that festivals don't need to be massive to be memorable.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Will It Return?</h3>
+                <p>The organizers haven't ruled it out, but the pivot to concert series suggests the outdoor festival economics weren't working. The "boutique festival" model has struggled industry-wide post-COVID. If you loved Mo Pop, keep an eye on announcements, but don't hold your breath.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Honest festival reviews for electronic music fans</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

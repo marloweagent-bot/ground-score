@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights All Night — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Dallas Market Hall, Dallas TX</span>
+                <span>📅 Dec 30-31 (NYE)</span>
+                <span>👥 15,000+</span>
+                <span>💵 $150-350</span>
+            </div>
+            <h1>💡 Lights All Night</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Texas's longest-running EDM festival celebrates 15+ years of NYE raving in Dallas. Indoor and outdoor stages, strong production values, and a passionate Texas rave community make this the Southwest's go-to NYE destination. Affordable and accessible.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Solid lineup curation spanning mainstream EDM, bass, and house. Past headliners include Tiësto, Excision, Zeds Dead, and rising stars. Multiple stages cover different vibes. Sound systems are punchy and well-balanced. Not the deepest lineup, but quality over quantity.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production has grown significantly over 15 years. LED walls, lasers, and confetti create the visual feast you'd expect. Indoor and outdoor stages offer different atmospheres. The midnight countdown is a spectacle with pyro and production peaks. Punches above its weight class.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Texas rave culture is welcoming and high-energy. The festival has a loyal following that returns year after year. Crowd is diverse across ages (18+) and music tastes. NYE energy is genuine — everyone's celebrating together. Southern hospitality meets rave culture.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Dallas Market Hall handles crowds well with indoor and outdoor areas. Water stations available. Entry can be slow at peak times — arrive early. Layout is straightforward once inside. Parking lot exit is the main bottleneck after the event.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food options — nothing exceptional but adequate. Multiple bar locations for 21+. Prices are typical festival markup. Dallas has great food nearby, so many people eat before arriving. Pro tip: Deep Ellum is right there for pre/post-festival eats.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DFW Airport is a major hub with cheap flights. Dallas Market Hall is centrally located near downtown, 15-20 minutes from most hotels. Uber/Lyft work well. Parking available on-site. Easy drive from Houston, Austin, or San Antonio for regional ravers.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two nights of solid production for $150-350 is excellent value. Dallas hotels are reasonable. Total trip cost ($600-1,200) undercuts Denver and Vegas options. VIP tiers offer genuine upgrades (sky lounge, express entry, elevated viewing).</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations and interactive elements throughout. VIP experiences add extras (sky lounge, viewing platforms). Not as many side activities as larger festivals, but the focus remains on music and production. Merch game is strong.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Market Hall is a multi-purpose venue — functional but not scenic. Indoor and outdoor areas give variety. December weather in Dallas is mild (40-60°F). The venue transforms nicely with production, but it's not a destination setting. Location near Deep Ellum adds appeal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>15+ years of consistent delivery builds trust. The longest-running EDM festival in Texas has earned its reputation. Loyal fanbase returns annually. Expectations are realistic and met — you know what you're getting. Reliable NYE experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🤠</div>
+                    <div>
+                        <h3>Texas Ravers</h3>
+                        <p>Easy access from Houston, Austin, San Antonio. No flights needed for the Texas crew to ring in the new year properly.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Manageable size, friendly crowd, affordable pricing. Great entry point for NYE festival newbies.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget Ravers</h3>
+                        <p>Lower ticket prices, affordable Dallas hotels, cheap flights. NYE celebration without destroying your wallet.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>EDM Generalists</h3>
+                        <p>Lineup spans genres without going too deep in any direction. Something for everyone without the niche focus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Texas does NYE different 🤠🎆 #LightsAllNight"</div>
+                    <div class="stats">680K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"15 years of Lights All Night and still going strong 💡"</div>
+                    <div class="stats">45K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Lights All Night 2025 Full Weekend Experience | Dallas NYE"</div>
+                    <div class="stats">320K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Lights All Night Experience</h2>
+            <p class="intro">Everything you need to know for Texas's longest-running EDM festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Dec 30-31</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">6PM - 2AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">15,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Type</div><div class="value">Indoor/Outdoor</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>LAN is a two-night indoor/outdoor festival. Dallas weather in December is mild but can vary.</p>
+                <ul>
+                    <li><strong>Book near Deep Ellum:</strong> The nearby entertainment district has hotels, restaurants, and afterparty potential.</li>
+                    <li><strong>Layer options:</strong> December Dallas can be 40-60°F. Indoor stages are warm, outdoor can be chilly.</li>
+                    <li><strong>VIP worth it?:</strong> Sky Lounge, express entry, and elevated viewing. Worth considering for NYE night.</li>
+                    <li><strong>Two-day recommended:</strong> Single days available, but the full experience spans both nights.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Dallas Market Hall is at 2200 N Stemmons Fwy, centrally located in Dallas.</p>
+                <ul>
+                    <li><strong>Fly into DFW:</strong> Major hub with competitive pricing. 20-30 minutes to venue.</li>
+                    <li><strong>Drive:</strong> Easy for Texas residents. Houston, Austin, San Antonio all within driving distance.</li>
+                    <li><strong>Parking:</strong> On-site parking available. Lots and box office open at 5PM.</li>
+                    <li><strong>Entry:</strong> Standard security. Arrive early on NYE to avoid peak lines.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Dallas Market Hall offers indoor and outdoor spaces with multiple stages.</p>
+                <ul>
+                    <li><strong>Main Stage (Indoor):</strong> Headliners and prime production. Climate controlled.</li>
+                    <li><strong>Outdoor Stage:</strong> Different vibe, fresh air, often bass-heavy programming.</li>
+                    <li><strong>Support Stages:</strong> Smaller rooms with emerging artists and different genres.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The longest running EDM festival in Texas lights up New Year's Eve with confetti-exploding talent. The production is top-notch, with stages and light shows that has fans raving."
+                    <cite>— Music Festival Wizard</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Standard festival logistics with Texas hospitality.</p>
+                <ul>
+                    <li><strong>Water:</strong> Refill stations available. Bring an empty bottle or CamelBak.</li>
+                    <li><strong>Food:</strong> Multiple vendors with typical festival options. Prices are $12-18.</li>
+                    <li><strong>Deep Ellum:</strong> Pre-festival dinner options within 10 minutes. Great Texas BBQ nearby.</li>
+                    <li><strong>Weather:</strong> December Dallas is mild. Check forecast and layer accordingly.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Texas rave community is passionate and welcoming.</p>
+                <ul>
+                    <li><strong>Local love:</strong> Strong DFW scene with returning fans each year.</li>
+                    <li><strong>Regional draw:</strong> Houston, Austin, San Antonio crews make the drive.</li>
+                    <li><strong>Age range:</strong> 18+ crowd, diverse across ages and backgrounds.</li>
+                    <li><strong>Southern hospitality:</strong> Generally friendly, helpful vibes throughout.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Dallas offers options for continuing the party.</p>
+                <ul>
+                    <li><strong>Deep Ellum:</strong> The entertainment district has bars, clubs, and late-night food.</li>
+                    <li><strong>Lost & Found:</strong> Email lostandfound@lightsallnight.com for any items left behind.</li>
+                    <li><strong>Outlet:</strong> LAN partners with Outlet Mental Health for support resources.</li>
+                    <li><strong>Recovery:</strong> Texas brunch game is strong. Sleep in, then feast.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

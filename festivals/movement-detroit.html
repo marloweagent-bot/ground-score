@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement Detroit — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Hart Plaza, Detroit</span>
+                <span>📅 Memorial Day Weekend</span>
+                <span>👥 100,000+</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🎛️ Movement Detroit</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">41</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">A pilgrimage to the birthplace of techno. Movement is for purists who want legendary DJs, legendary afterparties, and a city that actually invented the sound. Skip if you need elaborate production—come for the music and the history.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is techno's home. Movement books the genre's legends (Carl Cox, Richie Hawtin, Kevin Saunderson) alongside cutting-edge underground acts. Six stages cover techno, house, and experimental electronic. Sound quality is exceptional—the festival takes audio seriously. You won't find mainstream EDM here, and that's the point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Movement isn't about elaborate stage design—it's about the music. Hart Plaza is industrial and urban, not immersive wonderland. The Detroit skyline, riverfront, and brutalist architecture create atmosphere, but don't expect LED spectacles. The scene is the city itself, not manufactured production.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Underground, knowledgeable, welcoming. Movement crowds actually know the music—you'll hear conversations about Detroit pioneers and obscure labels. Less kandi, more head nods. The vibe is mature and musical, not frenetic. International pilgrims mix with local heads who've been at this for decades.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hart Plaza is compact and walkable—you can hit all six stages without marathon walks. Entry is generally smooth. Water stations adequate. The downtown location means easy escape to restaurants, hotels, and your own restroom. Layout flows well between stages.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Festival food is standard fare—nothing exceptional but gets the job done. The real win: you're downtown with restaurants within walking distance. Detroit's food scene has exploded in recent years. Coney dogs are mandatory. Leave the venue for proper meals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Detroit Metro Airport (DTW) is a hub with reasonable flights. Downtown hotels are walkable to Hart Plaza. The People Mover connects downtown. Parking exists but driving isn't necessary—stay downtown and walk. Much easier logistics than remote festival venues.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>One of the best value propositions in electronic music. Tickets $200-350 for three days of world-class techno. Detroit hotels are affordable compared to Vegas or Miami. The afterparties are often the highlight—$20-40 tickets to see legends in intimate clubs. Total trip cost is fraction of bigger festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Movement is music-focused—don't expect carnival rides or art installations. The "extras" are Detroit itself: the Motown Museum, urban exploration, the revitalized downtown scene. The afterparties are the real extra—Movement is really a 5-day event when you count pre-parties and after-hours clubs.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hart Plaza sits on the Detroit River with Windsor, Canada visible across the water. The Renaissance Center and downtown skyline provide an urban backdrop. Late May weather is usually ideal—warm days, cool nights. Memorial Day weekend timing is perfect for outdoor dancing.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Movement's reputation is earned through musical credibility, not marketing. It delivers exactly what it promises: techno pilgrimage to the birthplace. The hype is about heritage and authenticity, and it's real. Veterans return annually. If you expect EDC spectacle, you'll be disappointed. If you want techno, this is the source.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>If you know the difference between Detroit techno and Berlin techno, if you've argued about the Belleville Three, Movement is your spiritual home.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Downtown festival plus legendary afterparties in Detroit clubs. The festival ends at midnight—the real party starts at 2AM at warehouse venues and historic clubs.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Night Owls</h3>
+                        <p>Movement afterparties run until dawn and beyond. If you want to dance until the sun comes up, Detroit's club scene delivers nightly.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>Mature Crowds</h3>
+                        <p>Less teenager energy, more knowledgeable adults. 21+ afterparties, industry professionals, international techno tourists. Conversations about music are deep.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Why Movement Detroit hits different than any other festival 🖤"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Carl Cox closing the Underground Stage at sunrise afterparty 🎛️"</div>
+                    <div class="stats">145K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Movement Detroit Complete Guide: Festival + All Afterparties"</div>
+                    <div class="stats">320K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Movement Experience</h2>
+            <p class="intro">Three days at Hart Plaza, five days of music when you count the afterparties.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Memorial Day Weekend</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 12AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">6</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">100,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Movement is different from mainstream festivals. Set your expectations accordingly.</p>
+                <ul>
+                    <li><strong>Research the lineup:</strong> This isn't Spotify playlist territory. Look up the Detroit pioneers, check Resident Advisor for artist backgrounds.</li>
+                    <li><strong>Book afterparties early:</strong> The famous ones (TV Lounge, Marble Bar, Magic Stick) sell out. These are as important as the festival itself.</li>
+                    <li><strong>Stay downtown:</strong> Walk to everything. Hotels near Hart Plaza mean no transport headaches.</li>
+                    <li><strong>Pace yourself:</strong> The festival runs noon to midnight, but afterparties go until 6AM+. Plan your sleep strategy.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Detroit Metro Airport is a major hub with affordable flights from most cities. The downtown location makes logistics simple.</p>
+                <ul>
+                    <li><strong>Fly into DTW:</strong> 25 minutes to downtown. Uber/Lyft straightforward.</li>
+                    <li><strong>Stay downtown:</strong> Westin, Marriott, and budget options all walking distance to Hart Plaza.</li>
+                    <li><strong>Entry:</strong> Multiple gates around Hart Plaza. Lines are reasonable—nothing like EDC.</li>
+                    <li><strong>Re-entry:</strong> Yes! Leave for dinner, hit a nearby bar, return. Downtown location is your friend.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Hart Plaza is compact but packed with six stages, each with a distinct musical identity.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Biggest sound, biggest names, biggest crowds. The headliners play here.</li>
+                    <li><strong>Underground Stage:</strong> Where the deeper techno lives. Fan favorite for serious heads.</li>
+                    <li><strong>Pyramid Stage:</strong> Diverse programming from house to experimental.</li>
+                    <li><strong>Stargate/Movement Stage:</strong> Local talent, emerging artists, discovery zone.</li>
+                    <li><strong>Red Bull Music Academy Stage:</strong> Curated programming, often the most interesting bookings.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Movement is a techno pilgrimage. You come to Detroit because this is where it started—the Belleville Three, Underground Resistance, the whole foundation of electronic music. The afterparties in Detroit's legendary clubs are half the experience."
+                    <cite>— Ground Score Research, 2025</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>The downtown location changes the food game completely.</p>
+                <ul>
+                    <li><strong>Festival food:</strong> Standard fare—pizza, tacos, etc. Nothing special.</li>
+                    <li><strong>Leave for meals:</strong> You're downtown. Walk to actual restaurants. Slow's BBQ, Dearborn's Middle Eastern, Coney dogs everywhere.</li>
+                    <li><strong>Water:</strong> Free stations available. Late May weather is usually comfortable.</li>
+                    <li><strong>Bathrooms:</strong> Your hotel is nearby. Use it.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Movement draws a specific type: music lovers who know their stuff.</p>
+                <ul>
+                    <li><strong>International pilgrims:</strong> Europeans, Japanese tourists, global techno heads making the Detroit trip.</li>
+                    <li><strong>Industry people:</strong> DJs, producers, label owners. You might be dancing next to your favorite artists.</li>
+                    <li><strong>Local Detroit heads:</strong> People who've been at this since the beginning. Respect the elders.</li>
+                    <li><strong>Less costumes, more dancing:</strong> Movement crowds dress for comfort, not spectacle.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Afterparties</h3>
+                <p>This is what makes Movement special. The festival ends at midnight—the city wakes up.</p>
+                <ul>
+                    <li><strong>TV Lounge:</strong> Underground techno institution. Gets legendary bookings during Movement weekend.</li>
+                    <li><strong>Marble Bar:</strong> Basement club vibes. Runs until dawn.</li>
+                    <li><strong>Magic Stick:</strong> Multi-room venue with diverse programming.</li>
+                    <li><strong>Warehouse parties:</strong> Unofficial events pop up everywhere. Follow the right people on social.</li>
+                    <li><strong>Budget $100-200 extra:</strong> You'll want to hit at least 3-4 afterparties over the weekend.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

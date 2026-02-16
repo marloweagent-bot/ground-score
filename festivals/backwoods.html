@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backwoods — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #2d5016 0%, #8b4513 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+
+        .legacy-banner { background: linear-gradient(90deg, #8b4513 0%, #2d5016 100%); padding: 12px 24px; text-align: center; }
+        .legacy-banner p { font-size: 0.9rem; color: white; margin: 0; }
+        .legacy-banner strong { color: #ffd700; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+
+    <div class="legacy-banner">
+        <p>⚠️ <strong>STATUS: UNCERTAIN</strong> — 2024 edition was cancelled. No confirmed plans for future events. Scores reflect historical experience.</p>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Mulberry Mountain, Arkansas</span>
+                <span>📅 Labor Day Weekend</span>
+                <span>👥 ~10,000</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🌲 Backwoods</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">A scrappy Midwest crossover gem that bridged bass, jam, and folk in the Ozark mountains. Backwoods carved out a unique niche for fans who wanted Zeds Dead AND Yonder Mountain String Band on the same weekend. The 2024 cancellation leaves its future uncertain.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Backwoods' strength was genre diversity. Headliners like Illenium, STS9, Disco Biscuits, and Thievery Corporation alongside bass acts and bluegrass bands. The crossover booking was intentional — fans who wanted electronic AND acoustic could find both. Sound systems were solid but not audiophile-tier.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was mid-tier — not mega-fest spectacle but above basic. The natural setting of Mulberry Mountain provided much of the ambiance. Art installations and stage design improved after the move to Arkansas but remained modest compared to flagship fests.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Community was tight-knit — the festival attracted loyal returnees who appreciated the unique crossover. Less mainstream crowd than bigger fests. The blend of bass heads, bluegrass folks, and eclectic music fans created interesting energy. Regional crowd with Midwest warmth.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mountain venue means terrain challenges — expect hills and uneven ground. Camping was rustic. The festival improved infrastructure over the years but never reached premium levels. Smaller scale meant manageable crowds and walkable distances between stages.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare — functional but not memorable. Regional food vendors. Prices were reasonable by festival standards. Adequate options but not a culinary destination.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Remote Ozark location — that was part of the appeal but also a challenge. Northwest Arkansas Regional Airport (XNA) or Tulsa (TUL) were closest options. Required driving through rural roads. Beautiful but logistically demanding.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Good value for diverse lineups at regional festival prices. $200-350 for headliners that would cost more at larger fests. Labor Day weekend timing was convenient. The crossover programming justified the trip for fans of multiple genres.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art and experiences were emphasized but modest. Workshops, local vendors, community spaces. The festival was more about musical discovery than immersive art experiences. Functional extras without being a highlight.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mulberry Mountain was beautiful — forested Ozark hills, natural amphitheater setting, gorgeous scenery. One of the prettier festival venues in the region. Labor Day weather was typically pleasant. The mountain setting was a genuine selling point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Never achieved mainstream recognition but built a dedicated regional following. Those who knew it loved it; most festival-goers hadn't heard of it. The cancellation and uncertain future make the legacy complicated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Genre Blenders</h3>
+                        <p>Fans who wanted bass music AND bluegrass, electronic AND acoustic, without picking separate festivals. The crossover was the point.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Purists</h3>
+                        <p>Rustic mountain camping in the Ozarks. This wasn't glamping — it was real camping with real music fans in a beautiful setting.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Midwest Festival Seekers</h3>
+                        <p>A quality option for the region without flying to Vegas or Colorado. Labor Day timing made it accessible for working schedules.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Discovery Hunters</h3>
+                        <p>Lineups featured undercard gems alongside headliners. Fans who explored beyond main stage found rewarding sets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Remembered on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 Reddit</div>
+                    <div class="title">"RIP Backwoods — that Zeds Dead into Yonder Mountain sequence was peak crossover"</div>
+                    <div class="stats">r/festivals • <a href="https://reddit.com" target="_blank">View discussion →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Mulberry Mountain sunsets hit different 🌲🌅"</div>
+                    <div class="stats">Archive post • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Backwoods 2019 | The Last Great Year?"</div>
+                    <div class="stats">189K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Backwoods Story</h2>
+            <p class="intro">A scrappy Midwest gem that bridged genres before the crossover was cool.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Labor Day</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3-4 Days</div></div>
+                <div class="fact"><div class="label">Ran</div><div class="value">2008-2019</div></div>
+                <div class="fact"><div class="label">Locations</div><div class="value">OK → AR</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Uncertain</div></div>
+                <div class="fact"><div class="label">RIP</div><div class="value">2024 cancelled</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>History</h3>
+                <p>Backwoods started as a boutique Oklahoma event in 2008, grew through various iterations, and found its groove as a crossover festival bridging electronic and jam scenes.</p>
+                <ul>
+                    <li><strong>2008-2013:</strong> Early years in Oklahoma, building regional following</li>
+                    <li><strong>2014:</strong> Rebranded, moved to Tatanka Ranch on Route 66 in Stroud, Oklahoma</li>
+                    <li><strong>2017:</strong> Took a break year to restructure</li>
+                    <li><strong>2018:</strong> Moved to Mulberry Mountain, Arkansas (former Wakarusa site)</li>
+                    <li><strong>2019:</strong> Final full edition with headliners including Zeds Dead, REZZ, Umphrey's McGee</li>
+                    <li><strong>2024:</strong> Attempted return cancelled weeks before event date</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <p>Backwoods occupied a unique niche — festivals usually commit to one scene, but Backwoods intentionally bridged electronic and acoustic.</p>
+                
+                <blockquote class="quote">
+                    "Where else could you see Illenium one night and Yonder Mountain String Band the next? Backwoods was for people who didn't want to choose."
+                    <cite>— Festival veteran, r/festivals 2019</cite>
+                </blockquote>
+                
+                <ul>
+                    <li><strong>Crossover booking:</strong> Bass, bluegrass, jam, and eclectic acts sharing stages</li>
+                    <li><strong>Mountain setting:</strong> Mulberry Mountain was genuinely beautiful</li>
+                    <li><strong>Regional accessibility:</strong> Served Midwest fans who couldn't travel to coastal fests</li>
+                    <li><strong>Labor Day timing:</strong> End-of-summer celebration before fall</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The 2024 Cancellation</h3>
+                <p>Backwoods announced a 2024 return with a strong lineup including Illenium, CloZee, and Thievery Corporation. Weeks before the event, organizers cancelled citing unspecified circumstances.</p>
+                <ul>
+                    <li><strong>Refunds:</strong> Eventually processed for ticket holders</li>
+                    <li><strong>Future:</strong> No official announcement about 2025 or beyond</li>
+                    <li><strong>Speculation:</strong> Financial pressures, venue issues, and the challenging festival landscape post-pandemic</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Legacy & Alternatives</h3>
+                <p>For fans mourning Backwoods, similar crossover energy can be found at:</p>
+                <ul>
+                    <li><strong>Resonance:</strong> Ohio-based festival with similar jam/electronic crossover</li>
+                    <li><strong>Hulaween:</strong> Florida jam fest with electronic integration</li>
+                    <li><strong>Secret Dreams:</strong> Legend Valley's bass/jam fusion (see our page)</li>
+                    <li><strong>Arise:</strong> Colorado festival with eclectic booking (when active)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something Wonderful — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff1493 0%, #ffd700 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(90deg, #333 0%, #555 100%); padding: 12px 0; text-align: center; }
+        .status-banner p { font-weight: 600; font-size: 0.9rem; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .successor-section { padding: 40px 0; background: linear-gradient(135deg, rgba(0,255,136,0.1) 0%, rgba(0,204,255,0.1) 100%); border-bottom: 1px solid var(--border); }
+        .successor-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; color: var(--accent); }
+        .successor-card { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 16px; padding: 24px; }
+        .successor-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .successor-card p { color: var(--text-secondary); margin-bottom: 16px; }
+        .successor-link { display: inline-block; background: var(--gradient-1); color: var(--bg-dark); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>⚰️ DEFUNCT — Ran 2015-2017. Replaced by Ubbi Dubbi in 2019. See below for current Texas EDM options.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Dallas, TX (Various Venues)</span>
+                <span>📅 April (1-2 days)</span>
+                <span>👥 16,000+</span>
+                <span>💵 $80-200</span>
+            </div>
+            <h1>✨ Something Wonderful</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">32</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Disco Donnie's springtime Dallas experiment brought EDM to North Texas, but venue struggles and operational issues plagued its short run. The concept was solid; the execution was rocky. Now replaced by Ubbi Dubbi.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Disco Donnie Presents brought solid lineups — Deadmau5, Kaskade, Zeds Dead, Excision headlined various years. Genre coverage spanned main stage EDM to bass to trance. Booking power was respectable for a regional fest. Sound quality was adequate when things worked properly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was decent but not standout. Stage designs were adequate. Lasers and lights delivered on festival basics. Art installations present but minimal. The "Something" brand (shared with Something Wicked in Houston) had a whimsical theme that wasn't fully realized in production.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Texas rave community showed up with enthusiasm. PLUR culture present. The crowd was eager to have a spring festival in DFW. Unfortunately, operational issues (2015 especially) created frustration that dampened the mood. When things worked, the vibe was good.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">2.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This was the festival's Achilles heel. The 2015 Cotton Bowl edition was a disaster — fire code issues prevented most ticket holders from reaching the main stage. Overcrowding, police confrontations, refunds offered. Later years at Texas Motor Speedway improved but logistics remained challenging. Entry/exit issues plagued multiple editions.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food vendors. Texas prices (reasonable). Nothing exceptional but adequate. Water stations existed. Lines varied. Food quality was typical festival fare.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DFW is a major hub — easy flights from anywhere. Hotels plentiful and affordable. Venue locations varied (Cotton Bowl, Texas Motor Speedway) with different access considerations. Rideshare worked. Parking available. Texas is car-centric which helps festival access.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Ticket prices were reasonable ($80-150 for single day, $150-200 for weekend). Dallas trip costs are moderate. When the festival worked, the value was fair. The 2015 issues led to refunds, which at least showed accountability.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Limited extras beyond the music. Some art installations and photo ops. Totem competitions (Disco Donnie signature). No camping or extended experience. It was a straightforward music festival without significant extras.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Cotton Bowl (2015) had historic significance but was problematic. Texas Motor Speedway (2016-2017) was functional but not scenic — speedways rarely are. April in Dallas means warm but manageable weather. Nothing about the setting was memorable beyond being in Texas.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Something Wonderful's hype exceeded its delivery. Texas EDM fans were hungry for a spring festival. The 2015 debut damaged trust immediately. Later years showed improvement but couldn't overcome the rocky start. It was discontinued after 2017 and replaced by Ubbi Dubbi, suggesting lessons learned.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🤠</div>
+                    <div>
+                        <h3>Texas Ravers</h3>
+                        <p>DFW and surrounding areas finally had a spring EDM festival. The Texas scene was hungry and showed up despite issues.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>An accessible single-day option for those not ready for camping or multi-day commitment. Lower barrier to entry.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Headliner Chasers</h3>
+                        <p>Despite issues, the lineups featured major names. If you wanted to see Deadmau5 or Kaskade in Texas, this was an option.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget-Conscious Fans</h3>
+                        <p>Reasonable ticket prices and affordable Texas trip costs made this accessible for those watching spending.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="successor-section">
+        <div class="container">
+            <h2>🔄 The Successor: Ubbi Dubbi</h2>
+            <div class="successor-card">
+                <h3>Ubbi Dubbi Festival</h3>
+                <p>In 2019, Disco Donnie Presents launched Ubbi Dubbi as the spiritual successor to Something Wonderful. Now held at Panther Island Pavilion in Fort Worth, the festival offers camping options and has learned from Something Wonderful's mistakes.</p>
+                <ul style="color: var(--text-secondary); margin: 16px 0 16px 20px;">
+                    <li><strong>When:</strong> Memorial Day Weekend (May)</li>
+                    <li><strong>Where:</strong> Panther Island Pavilion, Fort Worth TX</li>
+                    <li><strong>What's New:</strong> Camping available, better venue logistics, expanded to 2 days</li>
+                    <li><strong>Vibe:</strong> Similar Texas EDM energy with improved execution</li>
+                </ul>
+                <a href="ubbi-dubbi.html" class="successor-link">View Ubbi Dubbi Page →</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Remember Something Wonderful 2015? That was WILD 💀"</div>
+                    <div class="stats">340K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Throwback to when Texas EDM fests were just getting started"</div>
+                    <div class="stats">18K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Something Wonderful 2017 | Texas Motor Speedway Vlog"</div>
+                    <div class="stats">95K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Something Wonderful Story</h2>
+            <p class="intro">A cautionary tale of ambition, execution failures, and lessons learned. The birth and death of Dallas's spring EDM festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Active</div><div class="value">2015-2017</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">4PM - 12AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2-3</div></div>
+                <div class="fact"><div class="label">Peak Attendance</div><div class="value">16,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Disco Donnie Empire</h3>
+                <p>Disco Donnie Presents is one of America's longest-running electronic music promoters, founded in the 1990s New Orleans rave scene. By 2015, DDP was producing events across 100+ cities, including flagship festivals:</p>
+                <ul>
+                    <li><strong>Something Wicked:</strong> Houston Halloween festival (sister event)</li>
+                    <li><strong>Freaky Deaky:</strong> Texas Halloween event</li>
+                    <li><strong>Ubbi Dubbi:</strong> Current Texas spring festival</li>
+                    <li><strong>Sun City Music Festival:</strong> El Paso Labor Day event</li>
+                </ul>
+                <p>Something Wonderful was intended to bring the "Something" brand to Dallas as a springtime counterpart to Houston's fall event.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Infamous 2015 Debut</h3>
+                <p>Something Wonderful's first year at the Cotton Bowl is remembered for all the wrong reasons:</p>
+                <ul>
+                    <li><strong>Fire code disaster:</strong> Majority of 16,000 ticket holders couldn't reach the main stage area</li>
+                    <li><strong>Overcrowding:</strong> Bottlenecks created dangerous conditions</li>
+                    <li><strong>Police involvement:</strong> Accusations of police brutality emerged</li>
+                    <li><strong>Refunds offered:</strong> Festival issued refunds amid public backlash</li>
+                </ul>
+                <blockquote class="quote">
+                    "The reason the majority of concertgoers couldn't get to the main stage area was due to fire code restrictions."
+                    <cite>— Cotton Bowl manager Roland Rainey, 2015</cite>
+                </blockquote>
+                <p>The debut nearly killed the brand before it started. Trust was damaged immediately.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Recovery Attempts (2016-2017)</h3>
+                <p>DDP moved the festival to Texas Motor Speedway and expanded to two days:</p>
+                <ul>
+                    <li><strong>Better venue:</strong> More space, better logistics (in theory)</li>
+                    <li><strong>Expanded lineup:</strong> Added more artists and stages</li>
+                    <li><strong>Improved operations:</strong> Addressed some 2015 complaints</li>
+                </ul>
+                <p>The 2016 and 2017 editions showed improvement but couldn't fully escape the 2015 shadow. Attendance was modest. The brand never built the momentum needed to sustain.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The End and New Beginning</h3>
+                <p>After 2017, Something Wonderful was quietly discontinued. In 2019, Disco Donnie launched Ubbi Dubbi as a fresh start:</p>
+                <ul>
+                    <li><strong>New name:</strong> Clean slate without 2015 baggage</li>
+                    <li><strong>New venue:</strong> Panther Island Pavilion in Fort Worth</li>
+                    <li><strong>Camping added:</strong> Something Wonderful never had</li>
+                    <li><strong>Memorial Day weekend:</strong> Different timing than Something Wonderful's April dates</li>
+                </ul>
+                <p>Ubbi Dubbi has had its own challenges (logistics complaints, venue issues) but represents DDP's continued commitment to Texas spring festivals.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Texas EDM Alternatives</h3>
+                <p>If you're looking for Texas electronic festivals today:</p>
+                <ul>
+                    <li><strong>Ubbi Dubbi:</strong> Memorial Day weekend, Fort Worth (DDP's current spring fest)</li>
+                    <li><strong>Freaky Deaky:</strong> Halloween weekend, Houston</li>
+                    <li><strong>Sun City Music Festival:</strong> Labor Day, El Paso</li>
+                    <li><strong>Seismic Dance Event:</strong> Austin techno-focused event</li>
+                    <li><strong>Day For Night:</strong> Houston arts/music (when active)</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Lessons Learned</h3>
+                <p>Something Wonderful's short run offers lessons for festival organizers:</p>
+                <ul>
+                    <li><strong>Venue capacity matters:</strong> Understanding fire codes BEFORE selling tickets is essential</li>
+                    <li><strong>First impressions are critical:</strong> A disastrous debut can doom a brand</li>
+                    <li><strong>Sometimes starting fresh is better:</strong> Ubbi Dubbi's rebrand allowed escape from negative associations</li>
+                    <li><strong>Community trust must be earned:</strong> Texas fans were forgiving but wary</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

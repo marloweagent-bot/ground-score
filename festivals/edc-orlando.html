@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDC Orlando — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Tinker Field, Orlando</span>
+                <span>📅 November (3 days)</span>
+                <span>👥 80,000</span>
+                <span>💵 $300-450</span>
+            </div>
+            <h1>🎡 EDC Orlando</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">41</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The East Coast EDC experience. Same Insomniac production quality, ideal November weather, and more manageable scale than Vegas. Perfect for anyone who wants the Under the Electric Sky magic without the desert heat and logistical chaos.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>EDC lineups are stacked—period. You get the same caliber of artists as Vegas across all EDM subgenres. 8+ stages means genre diversity from house to bass to trance. Sound systems are excellent. The booking is top-tier with headliners and deep undercard.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Full Insomniac production—kineticFIELD, circuitGROUNDS, neonGARDEN, and more. Stage designs are spectacular with fireworks, lasers, pyro, and LED everything. Not quite Vegas scale but still world-class production. Art installations and carnival elements throughout.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>PLUR vibes are strong at all EDC events. The Orlando crowd has great energy—East Coast ravers bring the heat. More manageable than Vegas means less overwhelm and more connection. Kandi trading, random kindness, genuine community feeling.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Tinker Field is compact compared to the Vegas Speedway. Walking between stages is reasonable. Entry lines improved in recent years. Water stations adequate. November weather means no heat exhaustion. Layout flows well. Still crowded at headliners but manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard EDC food vendor setup. Decent variety, typical festival pricing ($15-20). Quality is acceptable. Lines manageable outside peak times. Nothing special but gets the job done. Eat before the night gets going.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Orlando is a major hub—cheap flights from everywhere. Tons of hotel inventory (it's Disney territory). Tinker Field is close to downtown Orlando. Shuttles run from major hotels. Rideshare works. Much easier logistics than Vegas.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three days of EDC production for less than Vegas. Orlando hotels are cheaper. Flights are often cheaper. Same Insomniac quality at lower total trip cost. You're getting 85% of Vegas EDC for maybe 60% of the price. Strong value proposition.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Carnival rides, art cars, performers, interactive installations—all the EDC extras are here. Not as expansive as Vegas but plenty to explore. Photo ops, art pieces, and surprises throughout. The EDC experience translated to East Coast.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>November in Florida means ideal weather—70s during the day, 60s at night. No Vegas desert heat or May humidity. Tinker Field isn't naturally scenic but transforms beautifully. The setting is comfortable and the weather is perfect for dancing.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>EDC Orlando delivers the EDC experience at manageable scale. It's not overhyped—people know what they're getting. Veterans appreciate the friendlier logistics. First-timers get the full Insomniac magic. The reputation is earned and accurate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>EDM Purists</h3>
+                        <p>Same Insomniac booking quality as Vegas. Every EDM subgenre represented across 8+ stages. If you love electronic music, you'll find your corner.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌴</div>
+                    <div>
+                        <h3>East Coast Ravers</h3>
+                        <p>No cross-country flight to Vegas. Accessible from Florida, Georgia, Carolina, and beyond. Your annual pilgrimage doesn't require PTO for travel days.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎆</div>
+                    <div>
+                        <h3>Spectacle Seekers</h3>
+                        <p>kineticFIELD, fireworks every night, full Insomniac production. If you want to feel like you're inside a music video, EDC Orlando delivers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers (Who Want Big)</h3>
+                        <p>Want the EDC experience without Vegas chaos? Orlando is your move. Full production, friendlier scale, easier logistics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"EDC Orlando hits different when the weather is actually perfect 🌴"</div>
+                    <div class="stats">1.5M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"kineticFIELD at EDC Orlando is everything 🎡✨"</div>
+                    <div class="stats">210K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"EDC Orlando 2025 Complete Guide + All Stages Walkthrough"</div>
+                    <div class="stats">450K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete EDC Orlando Experience</h2>
+            <p class="intro">Three nights Under the Electric Sky—East Coast edition.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Early November</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">1PM - 12AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">8+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">80,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>EDC Orlando closes festival season with perfect November weather.</p>
+                <ul>
+                    <li><strong>November timing is ideal:</strong> Florida humidity is gone, temps are 65-75°F. Best weather of any major EDM festival.</li>
+                    <li><strong>Book hotels early:</strong> Orlando has infinite hotels but EDC weekend prices spike. International Drive area is popular.</li>
+                    <li><strong>Plan your stages:</strong> 8+ stages means schedule conflicts. Use the app and prioritize your must-sees.</li>
+                    <li><strong>Layer for night:</strong> November evenings can drop to 55-60°F. Bring a light jacket or hoodie.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Orlando is one of the most accessible festival cities in America.</p>
+                <ul>
+                    <li><strong>MCO airport:</strong> Major hub with cheap flights from everywhere. Spirit, Frontier, JetBlue all serve it heavily.</li>
+                    <li><strong>Hotels:</strong> Thousands of options—International Drive, Downtown, Disney area. All within 15-30 min of Tinker Field.</li>
+                    <li><strong>Shuttles:</strong> Insomniac runs shuttles from major hotel zones. Worth it for no parking hassle.</li>
+                    <li><strong>Rideshare:</strong> Works fine. Post-festival surge is real but not as bad as Vegas.</li>
+                    <li><strong>Entry:</strong> Standard security with multiple gates. Arrive early to avoid the rush.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Tinker Field transforms into a full EDC wonderland.</p>
+                <ul>
+                    <li><strong>kineticFIELD:</strong> The iconic main stage with animated structures, massive production. Headliners and fireworks here.</li>
+                    <li><strong>circuitGROUNDS:</strong> Second main stage with equally impressive design. Often has the best set time conflicts.</li>
+                    <li><strong>neonGARDEN:</strong> House and techno haven. More intimate, dedicated community.</li>
+                    <li><strong>bassPOD:</strong> Where the bass heads gather. Dubstep, riddim, heavy stuff.</li>
+                    <li><strong>Additional stages:</strong> wasteLAND (hardstyle), stereoBLOOM, and discovery stages round out the experience.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "EDC Orlando is the East Coast answer to Vegas—same Insomniac magic, ideal November weather, more manageable scale. If you want the Under the Electric Sky experience without the desert heat and logistical nightmare, this is your festival."
+                    <cite>— Ground Score Research, 2025</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>November weather makes survival much easier than summer festivals.</p>
+                <ul>
+                    <li><strong>Weather advantage:</strong> No heat exhaustion, no dust storms, no monsoons. Just comfortable dancing weather.</li>
+                    <li><strong>Water:</strong> Free fill stations throughout. Stay hydrated but you won't be sweating like Vegas May.</li>
+                    <li><strong>Food:</strong> Standard EDC vendors. Eat before peak hours or during less popular sets.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll walk a lot but Tinker Field is more compact than the Speedway.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>EDC Orlando draws a mix of locals, East Coast pilgrims, and Vegas veterans.</p>
+                <ul>
+                    <li><strong>Florida ravers:</strong> Strong local scene with experienced festival-goers.</li>
+                    <li><strong>East Coast representation:</strong> Georgia, Carolina, Virginia crews make the trip.</li>
+                    <li><strong>Friendlier scale:</strong> 80,000 feels manageable compared to Vegas 170,000. More room to breathe.</li>
+                    <li><strong>PLUR culture:</strong> All EDC events maintain that community feeling. Kandi, kindness, connection.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Orlando has plenty to offer before and after EDC.</p>
+                <ul>
+                    <li><strong>Theme parks:</strong> You're in Orlando. Disney, Universal, and more if you want to extend your trip.</li>
+                    <li><strong>Club scene:</strong> Downtown Orlando has afterparties and clubs for those with energy left.</li>
+                    <li><strong>Recovery day:</strong> Build in time before flying home. Pool day at the hotel or theme park adventure.</li>
+                    <li><strong>Festival season closer:</strong> EDC Orlando traditionally ends the major festival calendar. Go big.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

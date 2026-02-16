@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrasound — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Harmony Park, Minnesota</span>
+                <span>📅 May (4 days)</span>
+                <span>👥 ~3,500</span>
+                <span>💵 $240</span>
+            </div>
+            <h1>🔊 Infrasound</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">46</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The holy grail for sound system purists. Infrasound is a pilgrimage destination for anyone who cares about actual audio quality — Funktion-One, Element 5, and Void systems across three stages. Underground dubstep done right.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is it. The best sound quality at any bass festival in North America. Three stages running Funktion-One, Element 5, and Void sound systems respectively. Each stage is tuned perfectly. The lineup is pure underground — real dubstep, deep bass, no commercial filler. Artists like Alix Perez, Truth, Mala, The Widdler, and Ternion Sound define the sound here. If you know, you know.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is focused where it matters — the sound systems are the star. Stage designs are solid but not flashy. The forest setting does most of the aesthetic heavy lifting. LED walls take a backseat to perfect audio. This is intentional. You come here to hear music properly, not to watch a light show.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Infrasound has the chillest vibe of any bass festival. No aggressive security, no checkpoints, no dickish staff. Just music lovers who understand what they came for. The crowd is knowledgeable and appreciative — people dance, but also listen. "Once you start attending Infrasound, you don't stop" is the running sentiment. It's earned.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>"Easiest fest you'll ever go to" is how veterans describe it. Small enough that nothing is far. Stages are never packed to the point of discomfort. Entry is smooth. The only minor complaint: there's no dedicated hangout area away from the music if you need a quiet break. But with this crowd, even the stages feel chill.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Solid vendor selection for a festival this size. Nothing fancy but everything you need. Prices are reasonable. The standout: kLL sMTH's live hybrid DJ/cooking set "gRLL sMTH" where he actually cooks food while mixing. That's the kind of weird you get here.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Harmony Park is in rural Minnesota — most people drive in from Minneapolis (~90 min), Chicago (~6 hours), or across the Midwest. MSP airport is the closest hub. Not difficult to reach but definitely requires planning. RV camping is available for those who want to bring their own setup.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>~$240 including camping for FOUR DAYS of world-class sound and underground dubstep? This is absurd value. You'd pay more for a single night in some cities. The "phattest festival lineup for under $500" as one Redditor put it. Top-tier audio quality at budget prices.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Some workshops and art installations but this is fundamentally about the music. The forest setting offers natural beauty. Late-night camp vibes are excellent. Don't come expecting transformational festival extras — come for the sound system culture and community.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Harmony Park is beautiful — Minnesota forest, trees everywhere, natural amphitheater vibes. May weather is pleasant (not too hot). The tree coverage provides natural shade for camping. The venue has hosted festivals for years and knows what it's doing. One of the prettiest wooded festival settings in the Midwest.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Infrasound exceeds expectations. People come with extremely high hopes for the sound quality and leave gushing. "Easily one of the best festivals I've ever been to, and I've been to a lot" is a common sentiment. The reputation is earned every single year. No hype inflation here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Sound System Purists</h3>
+                        <p>If you know what Funktion-One means and why it matters, Infrasound is mandatory. The best audio quality at any bass festival. Period.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>Real Dubstep Heads</h3>
+                        <p>UK dubstep roots, deep bass, 140 BPM — the sound that started it all. Not brostep. Not riddim. The real thing.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>Forest setting, trees for days, natural beauty. The Midwest's best wooded festival venue.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget-Conscious Audiophiles</h3>
+                        <p>$240 for four days with this sound quality? The value proposition is unmatched anywhere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The Funktion-One at Infrasound hits different. My chest has never vibrated like this 🔊"</div>
+                    <div class="stats">456K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"3AM in the Minnesota forest. The bass is perfect. This is why we travel for sound."</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Infrasound 2024 | The Best Sound System Festival in America"</div>
+                    <div class="stats">178K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Infrasound Experience</h2>
+            <p class="intro">Everything you need to know about the pilgrimage to sound system culture.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~3,500</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Infrasound rewards preparation but doesn't punish spontaneity.</p>
+                <ul>
+                    <li><strong>Show up early:</strong> Thursday arrival gets you the best camping spots in the trees.</li>
+                    <li><strong>Bring earplugs:</strong> Sounds counterintuitive but the systems are LOUD. Protect your hearing to enjoy all four days.</li>
+                    <li><strong>Know the lineup:</strong> This isn't mainstream — research artists beforehand to plan your must-sees.</li>
+                    <li><strong>May in Minnesota:</strong> Weather is usually pleasant but pack layers for cool nights.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Harmony Park is in Clarks Grove, Minnesota — rural but accessible.</p>
+                <ul>
+                    <li><strong>From Minneapolis:</strong> ~90 minutes south. Easy day-of drive.</li>
+                    <li><strong>From Chicago:</strong> ~6 hours. Worth the drive.</li>
+                    <li><strong>Airport:</strong> MSP (Minneapolis-St. Paul) is closest for fly-ins.</li>
+                    <li><strong>Entry:</strong> No aggressive security. No power-tripping staff. Smooth and welcoming.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Three stages, three world-class sound systems, one mission: audio perfection.</p>
+                <ul>
+                    <li><strong>Main Stage (Funktion-One):</strong> The crown jewel. Headliners and the deepest bass you'll ever feel.</li>
+                    <li><strong>Second Stage (Element 5):</strong> Different sonic character, equally impressive.</li>
+                    <li><strong>Third Stage (Void):</strong> Smaller but no less powerful. Late-night home.</li>
+                    <li><strong>Layout:</strong> Compact and easy. Nothing is far from anything else.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Easily one of the best festivals I've ever been to, and I've been to a lot. The combo of chill vibes, non-packed stages, no checkpoints, no dick security people, and all the trees/beautiful venue + INSANE sound and stage production is just so rare to find."
+                    <cite>— r/Infrasound community member</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Straightforward logistics in a forgiving environment.</p>
+                <ul>
+                    <li><strong>Water:</strong> Stations available, but bring your own hydration pack.</li>
+                    <li><strong>Food:</strong> Multiple vendors, reasonable prices, solid variety.</li>
+                    <li><strong>Special mention:</strong> kLL sMTH's "gRLL sMTH" live cooking/DJ set is legendary.</li>
+                    <li><strong>Camp cooking:</strong> Bring your own setup if you want to save money.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Sound system culture attracts a specific — and wonderful — type of person.</p>
+                <ul>
+                    <li><strong>Knowledgeable:</strong> People here know the music. Conversations are great.</li>
+                    <li><strong>Respectful:</strong> Nobody saw anyone in the med tent all weekend, one attendee noted.</li>
+                    <li><strong>No posers:</strong> Everyone is genuinely there for the sound.</li>
+                    <li><strong>Returning pilgrims:</strong> "Once you start attending Infrasound, you don't stop."</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The sound stays with you.</p>
+                <ul>
+                    <li><strong>Ear recovery:</strong> Even with protection, give your ears a rest day after.</li>
+                    <li><strong>Follow the artists:</strong> Many Infrasound acts tour. Keep the energy going.</li>
+                    <li><strong>Join the community:</strong> r/Infrasound is active year-round.</li>
+                    <li><strong>Book next year early:</strong> This festival grows each year and will eventually cap.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

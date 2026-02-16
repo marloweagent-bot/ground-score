@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What the Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #228b22 0%, #4169e1 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+
+        .legacy-banner { background: linear-gradient(90deg, #333 0%, #666 100%); padding: 12px 24px; text-align: center; }
+        .legacy-banner p { font-size: 0.9rem; color: white; margin: 0; }
+        .legacy-banner strong { color: #ffd700; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+
+    <div class="legacy-banner">
+        <p>🕯️ <strong>LEGACY FESTIVAL</strong> — What the Festival ended after 2019. This page preserves memories of the Pacific Northwest's boutique gem.</p>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Wolf Run Ranch, Oregon</span>
+                <span>📅 June (Summer Solstice)</span>
+                <span>👥 ~5,000</span>
+                <span>💵 $250-400</span>
+            </div>
+            <h1>🎪 What the Festival (WTF)</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The Pacific Northwest's answer to Burning Man — boutique electronic music meets immersive art in the Oregon hills. WTF raised the bar for what a small festival could achieve. Its 2019 sunset left a void no PNW festival has fully filled.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Funktion-One systems throughout — WTF was known for audiophile-grade sound despite its boutique scale. Lineup featured electronic deep cuts, bass music, and psychedelic acts. Not mainstream EDM, but carefully curated for the sonically adventurous.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This was WTF's superpower. Burning Man-inspired art installations, immersive stages, themed areas, performance art throughout. The 250-acre Wolf Run Ranch was transformed into a wonderland. Quality over scale — every corner had something to discover.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Intimate, creative, playful. The crowd self-selected for art-loving weirdos and music explorers. Costumes encouraged, participation rewarded, genuine connections formed. Summer solstice timing added magic. This wasn't a "festival" — it was an experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Small scale meant walkable grounds. Water stations adequate. Camping was glamping-adjacent — boutique options available. Hills added terrain challenge but also visual interest. Never felt overcrowded.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Curated food vendors matching the eclectic vibe. Pacific Northwest focus on quality ingredients. Prices were festival-level but portions and quality justified it. Not just fuel — part of the experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Wolf Run Ranch was ~90 miles east of Portland near Dufur. Remote location required driving. Portland (PDX) was closest major airport. The drive through the Columbia Gorge was beautiful. Logistics were manageable for PNW residents.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$250-400 for boutique production quality was fair. You were paying for the art, the experience, the curation — not just the music. Glamping options added cost but delivered on the promise. Premium pricing for premium experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art was the point. Interactive installations, performance art, themed camps, workshops, yoga, wellness programming. The festival was designed as an immersive experience first, music second. Every area was intentionally crafted.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Oregon high desert — rolling hills, pine forests, dramatic skies. Summer solstice meant long days and magical twilight hours. The natural beauty enhanced the artistic installations. Weather was typically pleasant with cool nights.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Cult following that grew each year. Those who attended became evangelists. The festival delivered on its "Burning Man lite" positioning without the desert harshness. Its ending was mourned deeply by the community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Burner-Curious</h3>
+                        <p>All the immersive art and participatory culture of Burning Man without the desert logistics, ticket lottery, and extreme conditions. The gateway drug to transformational festivals.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎨</div>
+                    <div>
+                        <h3>Art Appreciators</h3>
+                        <p>If you wanted a festival where art wasn't an afterthought but the foundation. Every installation was intentional, every space designed for discovery.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌲</div>
+                    <div>
+                        <h3>PNW Locals</h3>
+                        <p>The Pacific Northwest's flagship boutique fest. Close enough for Portland and Seattle folks to drive, far enough to feel like an escape.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">✨</div>
+                    <div>
+                        <h3>Experience Seekers</h3>
+                        <p>Music was part of it, but the real draw was the totality — sunrise yoga, late-night art walks, random performance encounters, community magic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Remembered</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 Reddit</div>
+                    <div class="title">"WTF was the most magical festival I've ever attended. Still nothing like it."</div>
+                    <div class="stats">r/festivals • <a href="https://reddit.com" target="_blank">View discussion →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"That Illumination Village sunrise set still haunts me ✨🌅"</div>
+                    <div class="stats">Archive post • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"What The Festival | The Magic of Wolf Run Ranch (2012-2019)"</div>
+                    <div class="stats">312K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The WTF Legacy</h2>
+            <p class="intro">How a quirky Oregon festival became the Pacific Northwest's transformational landmark.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">June Solstice</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4 Days</div></div>
+                <div class="fact"><div class="label">Ran</div><div class="value">2012-2019</div></div>
+                <div class="fact"><div class="label">Capacity</div><div class="value">~5,000</div></div>
+                <div class="fact"><div class="label">Home</div><div class="value">Wolf Run Ranch</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Ended</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Origins</h3>
+                <p>What the Festival was founded by Glen and Tiffany Boyd, who sold their web analytics company WebTrends in the early 2000s and brought their Burning Man camp experience to Oregon.</p>
+                <ul>
+                    <li><strong>2012:</strong> First WTF held at White River Canyon near Tygh Valley</li>
+                    <li><strong>2013:</strong> Moved to Wolf Run Ranch (250 acres purchased by organizers) near Dufur</li>
+                    <li><strong>2013-2019:</strong> Grew into the Pacific Northwest's premiere boutique festival</li>
+                    <li><strong>2019:</strong> Final edition — organizers announced the festival would not return</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <p>WTF was designed from the ground up as an immersive art experience that happened to have great music.</p>
+                
+                <blockquote class="quote">
+                    "WTF wasn't just a festival — it was a portal. You stepped through the gates and reality shifted. Every corner was designed to surprise, delight, or make you question what you just saw."
+                    <cite>— Festival Squad, 2016</cite>
+                </blockquote>
+                
+                <ul>
+                    <li><strong>Funktion-One sound:</strong> World-class audio throughout, not just main stage</li>
+                    <li><strong>Immersive art:</strong> Burning Man-caliber installations in an accessible setting</li>
+                    <li><strong>Boutique scale:</strong> ~5,000 people meant you saw familiar faces by day 2</li>
+                    <li><strong>Oregon twist:</strong> Pacific Northwest aesthetic and values</li>
+                    <li><strong>Summer solstice:</strong> Longest days of the year added magic</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Ending</h3>
+                <p>In 2019, organizers announced that WTF would not return. The exact reasons were never fully detailed, but the festival community speculated about rising costs, burnout, and the increasingly difficult festival landscape.</p>
+                <ul>
+                    <li><strong>The website now reads:</strong> "What The Festival Will Not Be Returning. Thank you for all the amazing memories."</li>
+                    <li><strong>Wolf Run Ranch:</strong> The property remains, but no successor festival has emerged</li>
+                    <li><strong>Community impact:</strong> Left a genuine void in the PNW festival scene</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Spiritual Successors</h3>
+                <p>For those seeking WTF's energy, some festivals carry similar DNA:</p>
+                <ul>
+                    <li><strong>Lightning in a Bottle:</strong> California's transformational festival with similar art focus</li>
+                    <li><strong>Symbiosis / The Bloom:</strong> When active, carried similar West Coast transformational vibes</li>
+                    <li><strong>Shambhala:</strong> Canadian festival with strong art/community emphasis</li>
+                    <li><strong>Regional Burns:</strong> Oregon regional burns carry some of the same energy</li>
+                    <li><strong>Beloved Festival:</strong> Oregon gathering with community focus (smaller scale)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

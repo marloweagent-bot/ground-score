@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Bloom — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #2980b9 0%, #1abc9c 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(90deg, #e67e22 0%, #d35400 100%); padding: 12px 0; text-align: center; }
+        .status-banner p { font-size: 0.9rem; font-weight: 500; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>⏸️ STATUS: On Hiatus — 2024 cancelled due to permit issues. Future uncertain. Check official channels.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Hummingbird Ranch, Rye CO</span>
+                <span>📅 June (4 days)</span>
+                <span>👥 ~8,000</span>
+                <span>💵 $250-400</span>
+            </div>
+            <h1>🌸 Sonic Bloom</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">41</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Colorado's premier transformational electronic festival. Sonic Bloom built 18 years of community around "Universal Field Theory" — the idea that everything is connected. Mountain sunrises, bass music until dawn, and workshops on everything from yoga to flow arts. When it runs, it's magic.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Expertly curated electronic lineups mixing bass, experimental, and live electronic. CloZee, Lotus, Dirtwire, Papadosio, KOAN Sound, Alix Perez — artists who bridge production and live instrumentation. Two nights go until sunrise. Sound quality is excellent across stages. The programming favors thoughtful electronic over commercial EDM.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production balances natural beauty with thoughtful design. The mountain backdrop does heavy lifting. Stages integrate with the landscape rather than fighting it. Art installations, live painting, and community-built elements throughout. Not massive LED spectacle — intentional, earthy production that serves the setting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sonic Bloom is built on community and connection. The "Universal Field Theory" philosophy isn't marketing — it's lived. 18 years of consistent values created a tribe that returns year after year. Colorado's electronic music community considers this home. The vibe is welcoming, conscious, and genuinely fun without pretense.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hummingbird Ranch is sprawling but navigable. Mountain terrain means some hiking between areas. At ~8,000 people, it doesn't feel overcrowded. Water and facilities adequate for the scale. The remote location means less infrastructure than urban venues, but that's part of the appeal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Conscious food vendors aligned with festival values. Expect organic, local, and vegetarian-friendly options. Not a massive food court but quality over quantity. Bringing your own food for camping is common and encouraged.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hummingbird Ranch is in southern Colorado, southwest of Pueblo. Remote by design. Colorado Springs or Denver airports, then 2-3 hour drive. The Spanish Peaks setting is stunning but requires commitment to reach. Carpools are common within Colorado's festival community.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Four days of quality electronic music, sunrise sets, workshops, yoga, and mountain beauty for $250-400. The experience justifies the price for those seeking transformational over commercial. Community and connection are free, and that's the real value.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Workshops on personal growth, sustainability, yoga, meditation, and flow arts throughout the festival. Art installations and live painting. Community health and growth aren't add-ons — they're central to the vision. The sunrise programming on two nights extends the experience into magic hours.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Spanish Peaks foothills are spectacular. Mountain views, clear Colorado skies, high-altitude sunrises that will ruin other festivals for you. June weather is warm days and cool nights at elevation. The natural beauty is world-class — no production can compete with the setting itself.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sonic Bloom delivers what it promises when it happens. 18 years of consistent execution built deserved trust. The current hiatus creates uncertainty — permit issues and low ticket sales reportedly caused 2024's cancellation. The hype is justified by history, but the future requires patience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>Two nights of music until dawn. Mountain sunrises while dancing. If you live for those magic hours, this is your festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>Thoughtful Electronic Fans</h3>
+                        <p>Bass and experimental over commercial EDM. Live electronic over cookie-cutter drops. If you want music that makes you think and feel, welcome home.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏔️</div>
+                    <div>
+                        <h3>Mountain Lovers</h3>
+                        <p>The Spanish Peaks setting is incomparable. If festivals in flat fields feel incomplete, Colorado mountain magic awaits.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Transformational Seekers</h3>
+                        <p>Universal Field Theory is the founding philosophy. Workshops, yoga, meditation, and growth practices are central, not peripheral.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Sonic Bloom sunrise over the Spanish Peaks... this is why I do festivals 🌄✨"</div>
+                    <div class="stats">680K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"4am CloZee set with mountains in the background — peak Colorado 🏔️🎵"</div>
+                    <div class="stats">52K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"10 Iconic Sets From 16 Years of Sonic Bloom"</div>
+                    <div class="stats">234K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Sonic Bloom Experience</h2>
+            <p class="intro">Everything you need to know about Colorado's transformational electronic festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">June (4 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">Until Sunrise (2 nights)</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~8,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Current Status</h3>
+                <p>Sonic Bloom took 2024 off and the future is uncertain. Reports suggest permit issues with local authorities and financial challenges from low ticket sales contributed to the hiatus. The 18-year-old festival has weathered challenges before, but the current situation requires patience from the community.</p>
+                <p>If you're hoping to attend, follow official channels and be prepared for uncertainty. The community remains hopeful but realistic about a return.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>History</h3>
+                <p>Sonic Bloom has evolved significantly since 2006:</p>
+                <ul>
+                    <li><strong>2006:</strong> Founded at Mishawaka Amphitheater near Fort Collins as a 2-day event</li>
+                    <li><strong>Evolution:</strong> Grew into 4-day immersive camping festival</li>
+                    <li><strong>Hummingbird Ranch:</strong> Found its home in the Spanish Peaks foothills</li>
+                    <li><strong>2017:</strong> Collaborated on Oregon Eclipse with Symbiosis</li>
+                    <li><strong>Present:</strong> On hiatus after permit and financial challenges</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Philosophy</h3>
+                <p>Sonic Bloom was founded on "Universal Field Theory" — the idea that everything and everyone is universally connected:</p>
+                <ul>
+                    <li><strong>Sustainability:</strong> Environmental consciousness built into operations</li>
+                    <li><strong>Transformation:</strong> Personal and community growth as central values</li>
+                    <li><strong>Unification:</strong> Breaking down barriers between people and genres</li>
+                    <li><strong>Fun:</strong> Joy and celebration as spiritual practice</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Sonic Bloom's focus has always been sustainability, transformation, unification, and fun in a beautiful natural setting. The lineups are full of local and world-renowned electronic acts with two nights going until sunrise."
+                    <cite>— Festival Description</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Setting</h3>
+                <p>Hummingbird Ranch in the Spanish Peaks foothills offers some of the best festival scenery in America:</p>
+                <ul>
+                    <li><strong>Elevation:</strong> High-altitude Colorado mountain setting</li>
+                    <li><strong>Views:</strong> Spanish Peaks visible throughout the grounds</li>
+                    <li><strong>Weather:</strong> June brings warm days and cool nights</li>
+                    <li><strong>Sunrises:</strong> Mountain dawn is worth staying awake for</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Hummingbird Ranch is remote by design — southwest of Pueblo in Spanish Peaks country:</p>
+                <ul>
+                    <li><strong>From Denver:</strong> 3+ hour drive south</li>
+                    <li><strong>From Colorado Springs:</strong> 2+ hours</li>
+                    <li><strong>Airports:</strong> Denver (DEN) or Colorado Springs (COS)</li>
+                    <li><strong>Carpools:</strong> Colorado's festival community organizes rideshares</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Music</h3>
+                <p>Sonic Bloom's curation emphasizes thoughtful electronic and live hybrid acts:</p>
+                <ul>
+                    <li><strong>Bass & Experimental:</strong> CloZee, KOAN Sound, Alix Perez, A Hundred Drums</li>
+                    <li><strong>Live Electronic:</strong> Lotus, Papadosio, SunSquabi, Dirtwire</li>
+                    <li><strong>Sunrise Sets:</strong> Two nights of music until dawn</li>
+                    <li><strong>Discovery:</strong> Local and rising talent alongside headliners</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Workshops & Growth</h3>
+                <p>Programming extends far beyond music:</p>
+                <ul>
+                    <li><strong>Yoga:</strong> Daily practice in mountain settings</li>
+                    <li><strong>Meditation:</strong> Guided and open sessions</li>
+                    <li><strong>Flow Arts:</strong> Workshops and late-night spinning communities</li>
+                    <li><strong>Sustainability:</strong> Education on environmental practice</li>
+                    <li><strong>Personal Growth:</strong> Various modalities and approaches</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

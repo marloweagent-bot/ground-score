@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakastella — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504851149312-7a075b496cc7?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%); padding: 12px 24px; text-align: center; }
+        .status-banner p { font-weight: 600; color: #fff; font-size: 0.95rem; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <div class="status-banner">
+        <p>⚠️ STATUS UNCERTAIN — Check official channels for 2025/2026 editions. Last confirmed: 2022</p>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Virginia Key Beach, Miami</span>
+                <span>📅 Art Basel Weekend (December)</span>
+                <span>👥 10,000+</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>🌴 Rakastella</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Miami's most sophisticated Art Basel party — a collaboration between Innervisions and Life & Death on the sand of Virginia Key. When it happens, it's one of the best single-day electronic events in America. Dreamy house and techno from noon to sunrise.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Impeccable curation from two of electronic music's most respected labels. Innervisions (Dixon, Âme) and Life & Death bring deep house, melodic techno, and left-field electronic acts you won't see on mainstream festival bills. Past lineups have included Dixon, DJ Harvey, Seth Troxler, Diplo (DJ set), and rising stars. No filler.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Understated elegance over spectacle. Multiple stages blend into the beach landscape. Production is tasteful — good sound, ambient lighting, art that enhances rather than overwhelms. This isn't about LED screens; it's about atmosphere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The crowd knows why they're here. Art Basel brings an international, cultured crowd to Miami, and Rakastella attracts the ones who prioritize music over bottle service. Less "see and be seen" than other Basel parties, more about dancing from day to night to sunrise.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beach layout is naturally manageable. Multiple stages spaced well apart. 14-hour duration (afternoon to sunrise) means crowds ebb and flow — you can always find space. Getting to Virginia Key requires planning, but once there, flow is smooth.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Adequate food and bar service for a day party format. Not the focus, but you won't go hungry. Bring cash for faster service. Pro tip: eat well before arriving — you're here for the music, not the menu.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Miami during Art Basel is chaos, but Virginia Key is accessible by causeway. Shuttles typically offered from Miami Beach. Uber surge is real but manageable. Miami flights are abundant, but book hotels early — Basel week sells out.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For what you get — 14 hours of world-class curation in a beach setting — $150-300 is fair. Art Basel week inflates all Miami prices, so total trip cost is high, but the event itself delivers value for electronic music devotees.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, beach lounging, and the general Art Basel Miami context add dimension. This is a music-first event, but the cultural moment of Basel week creates natural synergy. The beach is the extra.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Virginia Key Beach is stunning — palm trees, sand, Biscayne Bay. Dancing from golden hour through sunset into the night with Miami's skyline glowing across the water is legitimately magical. December weather is Miami's best: warm days, cool nights.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Rakastella built a loyal following among house and techno connoisseurs. It's not overhyped — the people who know, know. The uncertain scheduling (not always annual) creates scarcity that adds to anticipation when it does happen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>If Innervisions and Life & Death mean something to you, this is your pilgrimage. Deep, melodic, sophisticated programming.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>14 hours from afternoon to sunrise. If you live for that 5am beach moment when the crowd thins and the music deepens, Rakastella delivers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Art Basel week transforms Miami. Make Rakastella the centerpiece of a cultural weekend with galleries, parties, and beach time.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>Mature, cultured audience. Less rowdy than mainstream festivals, more about the music and the moment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Sunrise at Rakastella hits different when Dixon's playing 🌅"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Virginia Key at golden hour. This is why we fly to Miami. ✨"</div>
+                    <div class="stats">220K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Rakastella 2022 | The Best Art Basel Party in Miami"</div>
+                    <div class="stats">340K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Rakastella Experience</h2>
+            <p class="intro">What you need to know about Miami's most sophisticated Art Basel weekend party.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Art Basel Weekend</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">14 Hours</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~10,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">3PM - 5AM+</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Rakastella typically happens the first weekend of December during Art Basel Miami Beach. Scheduling has been inconsistent — check official channels.</p>
+                <ul>
+                    <li><strong>Status:</strong> The event last confirmed for 2022. 2023 and 2024 editions unclear. Follow official channels for updates.</li>
+                    <li><strong>Tickets:</strong> When announced, tickets sell through Resident Advisor, DICE, or official site. Expect $150-300.</li>
+                    <li><strong>Hotels:</strong> Book EARLY. Art Basel week sells out Miami Beach months in advance. Expect inflated prices.</li>
+                    <li><strong>Weather:</strong> December in Miami is ideal — highs around 75-80°F, cool evenings. Light layers for after dark.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Virginia Key is an island east of downtown Miami, connected by the Rickenbacker Causeway.</p>
+                <ul>
+                    <li><strong>Shuttles:</strong> Rakastella typically runs shuttles from Miami Beach. Book them — much easier than rideshare.</li>
+                    <li><strong>Uber/Lyft:</strong> Works but surge pricing during Basel is brutal. Plan for $50-100+ for return trips.</li>
+                    <li><strong>Driving:</strong> Parking available but limited. Expect traffic on the causeway.</li>
+                    <li><strong>Entry:</strong> 21+ with ID. Lines can be long early afternoon but move steadily.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Virginia Key Beach Park transforms into a multi-stage dance paradise.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Larger capacity, headline acts, Innervisions programming.</li>
+                    <li><strong>Life & Death Stage:</strong> Label showcase with deeper, darker sounds.</li>
+                    <li><strong>Beach areas:</strong> Lounging, socializing, watching the sunset. The setting is the experience.</li>
+                    <li><strong>Timeline:</strong> Afternoon is laid-back beach vibes. Energy builds through sunset. Night gets deep. Sunrise is transcendent.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Rakastella is what happens when people who actually care about electronic music throw a party during Art Basel. No bottle service bullshit, just 14 hours of incredible curation on a beautiful beach."
+                    <cite>— Resident Advisor review</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>It's a long day. Pace yourself.</p>
+                <ul>
+                    <li><strong>Hydration:</strong> Bars throughout, water available. Miami December isn't peak heat, but you're dancing all day.</li>
+                    <li><strong>Food:</strong> Vendor options on-site. Eat before you arrive for best energy management.</li>
+                    <li><strong>Pace:</strong> 14 hours is a marathon. Find your rhythm — it's okay to chill on the beach between sets.</li>
+                    <li><strong>Footwear:</strong> Sand. Plan accordingly.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Rakastella attracts a self-selected crowd of electronic music devotees.</p>
+                <ul>
+                    <li><strong>Who's here:</strong> International crowd, mix of locals and Basel visitors. People who know the labels, the artists, the culture.</li>
+                    <li><strong>Vibe:</strong> Dance-focused rather than scene-focused. Less phones, more movement.</li>
+                    <li><strong>Dress:</strong> Beach chic meets European club. Comfortable but put-together.</li>
+                    <li><strong>Age:</strong> 21+ crowd, but skews 25-45. Mature energy.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>You'll dance until sunrise. Plan for recovery.</p>
+                <ul>
+                    <li><strong>Transportation:</strong> Have a plan for 5-6AM exit. Pre-book shuttle or have Uber ready.</li>
+                    <li><strong>Recovery:</strong> Sleep late, hit the beach, eat well. Don't plan early activities Sunday.</li>
+                    <li><strong>Art Basel:</strong> Use the rest of the weekend to see art, hit galleries, explore Miami's Basel week offerings.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

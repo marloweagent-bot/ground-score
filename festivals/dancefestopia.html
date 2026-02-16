@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dancefestopia — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b00 0%, #ff00ff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 La Cygne, KS (near Kansas City)</span>
+                <span>📅 September (7 days)</span>
+                <span>👥 15,000</span>
+                <span>💵 $250-400</span>
+            </div>
+            <h1>🌲 Dancefestopia</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">40</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The Midwest's underground bass sanctuary. A week-long forest camping adventure for headbangers who want intimate vibes, affordable prices, and community that feels like family. Not flashy, but deeply authentic.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bass-heavy lineup that's gone full dubstep/riddim in recent years. NGHTMRE, Boogie T, Eptic, ATLiens, Snails, Slander headline 2025. If you want variety across EDM subgenres, look elsewhere — but for bass music specifically, they book deep and book right. Strong regional and underground talent too.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Not a production-heavy festival — stages are solid but won't blow your mind with pyro and lasers. The magic is in the setting: forest camping, natural beauty, and DIY art installations from the community. Don't come expecting EDC-level visuals; do come expecting genuine atmosphere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>"Homey and intimate" is how regulars describe it. At 15,000 people, you'll see the same faces throughout the week. Neighbors become friends. The Midwest bass scene is tight-knit and welcoming. Everyone is committed — you don't camp for a week casually. Heavy headbanger energy but without the aggression.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Small festival means easy navigation. Multiple stages but nothing is a 30-minute walk. Camping is spread across zones with different vibes (forest vs car camping). Seven-day format means no rushing — you can actually pace yourself. Water stations are adequate, and crowd density never gets uncomfortable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food vendors — nothing gourmet but solid options. Most campers bring their own food since you're there for a week. Car camping makes coolers easy. Prices are reasonable compared to coastal festivals. Bring your own supplies and cook at camp to stretch the budget.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>La Cygne is rural — about an hour south of Kansas City. Most people drive. If flying, Kansas City MCI is your airport, then rent a car. No shuttle options. The upside: once you're there, you're there for the week. No daily commute logistics to worry about.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Seven days of camping + music for $250-400 is exceptional value. Payment plans stretch up to 11 months. No expensive hotels or shuttles needed. Compare to a 3-day coastal fest at $600+ with $200/night hotels — Dancefestopia delivers way more music for way less money. Best value bass festival in the country.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Week-long format means more time for activities: swimming, exploring, camping shenanigans. Community art projects and small workshops. It's not Electric Forest level of extra programming, but the extended timeline creates space for organic experiences. The festival is what you make of it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Wildwood Outdoor Education Center is beautiful — rolling hills, forests, lakes. Shaded camping spots are actually shaded (unlike desert festivals). September weather in Kansas is usually perfect: warm days, cool nights. Natural scenery beats parking lots and speedways. One of the prettier camping festival venues.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Zero hype, maximum delivery. Dancefestopia doesn't market itself as the next big thing — it's a grassroots fest for Midwest bass heads who know. Attendees return year after year. If you're expecting a spectacle, adjust expectations. If you want a genuine community camping festival, it delivers exactly what it promises.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Dubstep, riddim, heavy bass — that's the whole menu. If you live for the wubs, this is your week-long retreat.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Seven days of forest camping means full immersion. Wake up, headbang, sleep under trees, repeat. Festival as lifestyle.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget Ravers</h3>
+                        <p>Best price-to-music ratio in the game. A week of bass for what others charge for a weekend. Payment plans make it accessible.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>Rolling Kansas hills, forests, lakes. If you want raving wrapped in natural beauty (not parking lots), this is your spot.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: Week 2 at Dancefestopia when you've made 47 new friends"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Forest bass sanctuary hits different at 3am 🌲🔊"</div>
+                    <div class="stats">45K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Dancefestopia 2024 | Full Week Camping Vlog + Survival Guide"</div>
+                    <div class="stats">180K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Dancefestopia Experience</h2>
+            <p class="intro">Everything you need to know for a week in the Kansas bass forest.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">September (7 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">Noon - 4AM+</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">15,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Required</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>This is a week-long camping festival. Prepare accordingly — you're not going home to recharge.</p>
+                <ul>
+                    <li><strong>Camping gear:</strong> You need everything — tent, sleeping bag, camp chairs, cooking supplies. This isn't glamping unless you upgrade.</li>
+                    <li><strong>Payment plans:</strong> Up to 11 months to pay, starting around $25/month. Most accessible festival financially.</li>
+                    <li><strong>Car vs Forest camping:</strong> Car camping lets you park next to your site (easy supply access). Forest camping is more scenic but you'll walk.</li>
+                    <li><strong>Food prep:</strong> Bring coolers, easy meals, snacks. A week of festival food adds up fast.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Rural Kansas means you're driving. Plan accordingly.</p>
+                <ul>
+                    <li><strong>By car:</strong> About 1 hour south of Kansas City. La Cygne is small — follow festival directions.</li>
+                    <li><strong>By plane:</strong> Fly into Kansas City MCI, rent a car. No shuttle services exist.</li>
+                    <li><strong>Arrival:</strong> Gates open early in the week. Don't try to arrive late on the main festival nights — traffic backs up.</li>
+                    <li><strong>Check-in:</strong> Get your camping zone assignment at the gate. Forest camping fills up — arrive early for best spots.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Wildwood Outdoor Education Center is a natural amphitheater of sorts — hills, trees, and stages nestled into the landscape.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Headliners and heavy hitters. Good production but not EDC-scale.</li>
+                    <li><strong>Secondary Stages:</strong> Where underground acts shine. Often better vibes than main stage.</li>
+                    <li><strong>The Forest:</strong> Camping areas under tree cover. Shaded spots are gold in September heat.</li>
+                    <li><strong>Lake access:</strong> Swimming and cooling off during the day. Festival life meets outdoor life.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The vibes are so homey and intimate and everyone is so inviting. It's different than the big festivals — you're not anonymous here."
+                    <cite>— r/Dancefestopia</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>You're camping for a week. Self-sufficiency is key.</p>
+                <ul>
+                    <li><strong>Bring supplies:</strong> Coolers, non-perishables, camp stove if you want hot food. You'll save hundreds cooking at camp.</li>
+                    <li><strong>Water:</strong> Fill stations available. Bring multiple containers — you need more water than you think.</li>
+                    <li><strong>Vendor food:</strong> Standard festival fare available but budget $15-20 per meal if you rely on it.</li>
+                    <li><strong>September heat:</strong> Kansas can still be 90°F in September. Shade, electrolytes, and pacing matter.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>This is where Dancefestopia shines. Small festival + extended timeline = real connections.</p>
+                <ul>
+                    <li><strong>Midwest bass scene:</strong> Tight-knit community that returns every year. You'll recognize regulars.</li>
+                    <li><strong>Headbanger-friendly:</strong> Heavy music, mosh pits, rail riding — but without toxic energy. People look out for each other.</li>
+                    <li><strong>Camp neighbors:</strong> You'll spend a week next to the same people. Bring extra supplies to share.</li>
+                    <li><strong>No pretense:</strong> This isn't an influencer scene. People come for the music and community, period.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>A week of camping takes its toll. Plan recovery time.</p>
+                <ul>
+                    <li><strong>Don't drive home same day:</strong> You'll be exhausted. Book a hotel in Kansas City for the night after.</li>
+                    <li><strong>Cleanup:</strong> Pack out everything you packed in. Leave no trace.</li>
+                    <li><strong>Post-fest depression:</strong> After a week of community, real life hits hard. Stay connected with the friends you made.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seismic Dance Event — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 The Concourse Project, Austin TX</span>
+                <span>📅 November (3 days)</span>
+                <span>👥 ~10,000</span>
+                <span>💵 $200-400</span>
+            </div>
+            <h1>🌋 Seismic Dance Event</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The South's premier house and techno festival. Three days at one of America's best venues, world-class lineups, and a crowd that actually knows the music. Austin's answer to Movement Detroit.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Impeccable curation — Charlotte de Witte, Four Tet, Underworld, Lane 8, Gorgon City, Duke Dumont. RealMusic Events books with taste and intention. Global headliners mixed with regional talent. The lineup rivals any house/techno festival in the world.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Concourse Project is a purpose-built dance music venue — not a repurposed warehouse. State-of-the-art sound, thoughtful lighting, indoor/outdoor flow. Production quality matches the booking quality. DJ Mag ranked it #27 worldwide and #4 in the US.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This crowd knows house and techno. Not a mainstream EDM fest — people come for the music. Austin's weird energy shows up in a good way. The "famous vibes" reputation is earned. Homegrown community mixed with traveling heads.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Single venue with multiple stages (Volcano, Tsunami, Frequency) keeps everything tight. Indoor/outdoor layout means you're never far from anything. 18+ keeps it accessible. Water stations are well-placed. Lines exist but move reasonably.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Austin food truck culture shows up. Solid variety, reasonable quality, Texas-sized portions. Prices are typical festival markup but nothing egregious. Dietary options available. It's Austin — the food scene is strong.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Austin-Bergstrom Airport is one of the best regional airports in America — easy flights from everywhere. The Concourse Project is near the airport, 15 minutes from downtown. Rideshare works perfectly. Hotels throughout the city.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$200-400 for three days of world-class house and techno is competitive. Total trip cost (flights, hotel, tickets) is reasonable for a destination festival. Austin hotels can spike during busy weekends but November is manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, performers, and a Techno Bus add visual interest. This is a music-focused festival though — extras are thoughtful but not the main attraction. The venue itself is art. Austin's food/bar scene is the real "extra."</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>November in Austin is perfect — 60-70°F days, cool nights. The Concourse Project's indoor/outdoor design works beautifully. Not a natural setting but a purpose-built dance music space. Texas sky sunsets are a bonus.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two DJ Mag nominations, Austin Chronicle recognition, and 8 editions deep. The reputation is earned and growing. Not overhyped — consistently delivers what it promises. The only boutique house/techno festival in the South.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>This is explicitly curated for house and techno fans. No mainstream EDM, no dubstep, just underground electronic music done right.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Austin's music scene, food culture, and nightlife extend the festival. This isn't isolated camping — it's a city festival with all the amenities.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Easy flights, abundant hotels, Uber-able venue. Perfect for squads coordinating from different cities. November timing avoids summer chaos.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💎</div>
+                    <div>
+                        <h3>VIP Seekers</h3>
+                        <p>Premium tiers offer elevated viewing, dedicated bars, and actual value. Not just "fast entry" — genuine enhanced experience options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Charlotte de Witte at Seismic just DESTROYED this crowd 🔥🔊"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The Concourse Project is hands down one of the best venues in America. @seismicdanceevent gets it."</div>
+                    <div class="stats">156K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Seismic Dance Event 2024 Full Recap | Austin's Best Kept Secret"</div>
+                    <div class="stats">467K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Seismic Experience</h2>
+            <p class="intro">Boutique house and techno in the heart of Texas — the South's underground destination.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">November</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~10,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>This is a city festival — no camping, just flights, hotels, and dancing.</p>
+                <ul>
+                    <li><strong>Book flights early:</strong> Austin-Bergstrom has tons of routes but prices climb closer to the event.</li>
+                    <li><strong>Hotels downtown:</strong> Stay on East 6th or South Congress for the full Austin experience.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be standing/dancing for hours on concrete. Plan accordingly.</li>
+                    <li><strong>Layer up:</strong> November nights can get cool. Bring a light jacket.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Austin is absurdly accessible — one of the easiest destination festivals to reach.</p>
+                <ul>
+                    <li><strong>Austin-Bergstrom (AUS):</strong> Direct flights from most major cities. 15 mins from venue.</li>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work perfectly. Surge pricing after headliners but manageable.</li>
+                    <li><strong>The Concourse Project:</strong> Near the airport, southeast Austin. Easy to find.</li>
+                    <li><strong>Entry:</strong> Standard security. Bag policy is reasonable. Lines move efficiently.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Concourse Project is purpose-built for electronic music — not a repurposed warehouse.</p>
+                <ul>
+                    <li><strong>Volcano Stage:</strong> The main outdoor stage. Massive sound, open sky, headliner energy.</li>
+                    <li><strong>Tsunami Stage:</strong> Indoor warehouse vibes. Darker, sweatier, more intimate.</li>
+                    <li><strong>Frequency Stage:</strong> Smaller room for underground and local acts.</li>
+                    <li><strong>Techno Bus:</strong> A traveling sound system that brings extra chaos.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Seismic is what happens when people who actually love house and techno build a festival from scratch. No corporate compromise, just music."
+                    <cite>— Ground Score Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Austin food truck culture meets festival grounds.</p>
+                <ul>
+                    <li><strong>Food trucks:</strong> Variety is solid — tacos, BBQ, vegan options, late-night bites.</li>
+                    <li><strong>Bars:</strong> Multiple bar areas with cocktails and local beer. Texas doesn't mess around.</li>
+                    <li><strong>Water:</strong> Refill stations available. November weather makes hydration easier.</li>
+                    <li><strong>Pacing:</strong> Three days is manageable. Don't go hard day one.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>The "famous vibes" reputation comes from the people.</p>
+                <ul>
+                    <li><strong>Music nerds:</strong> This crowd knows the deep cuts. Conversations about music are real.</li>
+                    <li><strong>Austin locals:</strong> The homegrown community built this. They're proud and welcoming.</li>
+                    <li><strong>Traveling heads:</strong> People fly in specifically for Seismic. That says something.</li>
+                    <li><strong>Respectful energy:</strong> Dancing, not pushing. Community, not chaos.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Austin's nightlife and food scene extend the experience.</p>
+                <ul>
+                    <li><strong>After-hours:</strong> Local clubs and bars keep the energy going. Check listings.</li>
+                    <li><strong>Recovery food:</strong> Breakfast tacos are an Austin religion. Indulge.</li>
+                    <li><strong>South Congress:</strong> Shopping, coffee, people-watching. Classic Austin vibes.</li>
+                    <li><strong>Don't rush:</strong> Build in a recovery day. Austin is worth exploring.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

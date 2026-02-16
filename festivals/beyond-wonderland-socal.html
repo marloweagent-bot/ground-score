@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond Wonderland SoCal — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #9b59b6 0%, #3498db 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 NOS Events Center, San Bernardino</span>
+                <span>📅 March (2 days)</span>
+                <span>👥 65,000+</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>🐰 Beyond Wonderland SoCal</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The perfect gateway festival. Beyond Wonderland is Alice in Wonderland themed, accessibly sized, and has all the Insomniac production polish without EDC's logistical chaos. Ideal for first-timers or anyone wanting quality rave vibes in a manageable package.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Insomniac consistently books strong lineups. You'll get mainstream headliners, rising stars, and solid undercard across house, bass, trance, and everything in between. Sound quality is good—standard Insomniac systems. Not as deep as single-genre festivals but excellent genre coverage.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Alice in Wonderland theming is well-executed. Cheshire Cat grins, mushroom forests, Queen of Hearts vibes—it's immersive without being overwhelming. Stage designs are impressive with good LED, lasers, and pyro. Not EDC-level spectacle but above average production for a two-day festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Welcoming, colorful, playful. Beyond draws a slightly younger crowd with strong first-timer energy. PLUR vibes are present but less intense than hardcore rave crowds. The theme encourages costumes and creativity. It's accessible without being corporate—a nice balance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS Events Center is a manageable size—walkable between all stages without exhausting yourself. Entry is typically smooth. Water stations adequate. Crowds can get dense at main stage headliners but you always have room to move. Much better logistics than massive festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard Insomniac vendor setup. Decent variety with typical festival pricing ($12-18 entrees). Quality is acceptable but not memorable. Lines manageable outside peak hours. You won't go hungry but this isn't a culinary destination.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Bernardino is about an hour east of LA—requires a car or shuttle. ONT airport is closest, LAX works with longer drive. Parking is available on-site. Shuttles run from LA. Not the most convenient but manageable. March weather is usually ideal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where Beyond shines. Two-day passes around $150-200 for full Insomniac production quality. Hotels in San Bernardino/Ontario are affordable. Total trip cost is fraction of EDC/Ultra. You get 80% of the experience at 40% of the price. Excellent entry point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, photo opportunities, interactive experiences throughout the Wonderland theme. It's not Electric Forest level of immersion but plenty to explore between sets. Performers in costume, themed environments, and Instagram moments throughout.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS Events Center is an event venue, not natural beauty. The setting is industrial transformed by production. March weather in SoCal is usually perfect—70s during the day, cool nights. Mountain views in the distance. It's not the Gorge but it's comfortable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond delivers exactly what it promises: accessible, themed Insomniac experience at reasonable scale. First-timers consistently love it. Veterans appreciate the manageable size. The hype is appropriate—it's not claiming to be EDC, and that's the point.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Never been to a rave? Beyond is the perfect introduction. Manageable size, friendly crowds, full production quality without overwhelming logistics.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Costume Lovers</h3>
+                        <p>Alice in Wonderland theme means creative costumes are encouraged and appreciated. Mad Hatter, Queen of Hearts, Cheshire Cat—express yourself.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Two days keeps it simple for coordinating crews. Affordable pricing, reasonable hotels, and manageable layout for group logistics.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget-Conscious Ravers</h3>
+                        <p>Insomniac production at a fraction of EDC cost. If you want quality without breaking the bank, Beyond is your move.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"My first rave was Beyond Wonderland and I'm obsessed 🐰✨"</div>
+                    <div class="stats">1.8M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Cheshire Cat stage just hits different at Beyond 💜"</div>
+                    <div class="stats">95K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Beyond Wonderland 2025 Full Vlog + What to Expect"</div>
+                    <div class="stats">280K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Beyond Experience</h2>
+            <p class="intro">Two days down the rabbit hole—all the magic, none of the marathon.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Late March</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">3PM - 2AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">65,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Beyond Wonderland is beginner-friendly with minimal prep required.</p>
+                <ul>
+                    <li><strong>Two days = sustainable:</strong> Unlike multi-day camping festivals, you can actually sleep in a bed and recover between days.</li>
+                    <li><strong>Study the lineup:</strong> Build your schedule but leave room for discovery. Beyond books great undercard acts worth exploring.</li>
+                    <li><strong>Plan your costume:</strong> The theme encourages creativity. Check the weather (usually 65-75°F) and dress for dancing.</li>
+                    <li><strong>Book hotel in Ontario/Rancho Cucamonga:</strong> Closer to venue with better options than downtown San Bernardino.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>NOS Events Center is accessible but requires some planning.</p>
+                <ul>
+                    <li><strong>From LA:</strong> About an hour drive. Expect traffic on I-10. Leave early.</li>
+                    <li><strong>Shuttles:</strong> Insomniac runs shuttles from LA stops. Worth it if you don't want to deal with parking or driving.</li>
+                    <li><strong>Parking:</strong> On-site parking available. Premier parking worth it for easy exit.</li>
+                    <li><strong>Entry:</strong> Standard festival security. Arrive early to avoid lines.</li>
+                    <li><strong>Re-entry:</strong> Yes! You can leave and return, unlike some festivals.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>NOS Events Center transforms into a Wonderland with five stages.</p>
+                <ul>
+                    <li><strong>Queen's Domain (Main Stage):</strong> Biggest production, headliners, massive LED walls. Gets crowded for closing sets.</li>
+                    <li><strong>Mad Hatter's Castle:</strong> Trance and harder styles. Dedicated community with loyal fans.</li>
+                    <li><strong>Caterpillar's Garden:</strong> House and techno. More intimate vibes, great sound.</li>
+                    <li><strong>Cheshire Woods:</strong> Bass music. Where the headbangers gather.</li>
+                    <li><strong>Looking Glass:</strong> Discovery stage for emerging artists.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Beyond Wonderland is the perfect gateway festival—Alice in Wonderland themed, accessible scale, full Insomniac production quality without EDC's logistical chaos. If you've never been to a rave, start here."
+                    <cite>— Ground Score Research, 2025</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>March weather makes Beyond one of the more comfortable SoCal festivals.</p>
+                <ul>
+                    <li><strong>Weather:</strong> Expect 65-75°F days, 50-60°F nights. Bring a light jacket for later hours.</li>
+                    <li><strong>Water:</strong> Free fill stations throughout. Bring a refillable bottle or CamelBak.</li>
+                    <li><strong>Food:</strong> Standard festival vendors. Eat before peak hours to avoid lines.</li>
+                    <li><strong>Comfortable footwear:</strong> You'll walk but not as much as massive festivals. Sneakers work fine.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Beyond draws a diverse, welcoming crowd with strong first-timer energy.</p>
+                <ul>
+                    <li><strong>First-timers welcome:</strong> Many people's intro to rave culture. Veterans are generally helpful and friendly.</li>
+                    <li><strong>SoCal locals:</strong> Heavy local presence means people actually know how to rave.</li>
+                    <li><strong>Costume culture:</strong> Alice-themed outfits, kandi trading, creative expression encouraged.</li>
+                    <li><strong>Age range:</strong> Skews 18-28 but all ages present. Less aggressive than pure bass festivals.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Two-day format means easier recovery.</p>
+                <ul>
+                    <li><strong>Night one recovery:</strong> You're sleeping in a hotel, not a tent. Shower, sleep, repeat.</li>
+                    <li><strong>After-parties:</strong> LA's club scene has events during Beyond weekend. Check Resident Advisor.</li>
+                    <li><strong>Sunday exit:</strong> Festival ends around 2AM. Plan for traffic or stay overnight and drive Monday.</li>
+                    <li><strong>Explore SoCal:</strong> If you're visiting, add a beach day or LA exploration before/after.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

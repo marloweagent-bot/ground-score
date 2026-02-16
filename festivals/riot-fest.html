@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riot Fest — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #dc2626 0%, #1f1f1f 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .warning-banner { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 16px; text-align: center; }
+        .warning-banner p { color: #fff; font-weight: 600; font-size: 0.9rem; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="warning-banner">
+        <p>⚠️ HONEST TAKE: Riot Fest is a punk/rock festival. Electronic music is virtually nonexistent here. If you're looking for EDM, this is NOT your festival.</p>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Douglass Park, Chicago</span>
+                <span>📅 September (3 days)</span>
+                <span>👥 ~45,000</span>
+                <span>💵 $250-350</span>
+            </div>
+            <h1>🤘 Riot Fest</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">19</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Let's be blunt: Riot Fest is not for electronic music fans. It's a punk, rock, emo, and metal festival. Blink-182, Green Day, Fall Out Boy — that's the vibe. If you came here looking for bass drops, you're in the wrong place. Respect the fest for what it is, but know it's not your scene.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">1.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Zero electronic music. This is punk rock central — NOFX, Alkaline Trio, Circle Jerks, The Offspring. You might find ONE act with electronic elements (Rico Nasty's production has some), but calling that EDM is a stretch. If you want electronic music, Riot Fest is the wrong festival. Period.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">2.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is intentionally stripped-down punk aesthetic. No LED walls, no pyrotechnics, no elaborate stage designs. Carnival rides add some color, but this isn't a visual spectacle festival. The focus is the music, not the production.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The vibe is mosh pits, crowd surfing, and screaming lyrics with strangers. Punk energy is aggressive-friendly — different from rave PLUR culture. If you're an electronic fan, you'll feel out of place. The crowd is there for nostalgia rock, not drops.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Douglass Park is manageable — not massive. Multiple stages spread across the park but walkable. 45K attendance is reasonable. September Chicago weather can be unpredictable (mud has been an issue). Water and facilities adequate.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare — Chicago-style options available. Carnival food vibes match the carnival ride aesthetic. Prices are typical. Nothing exceptional but nothing terrible. You won't starve.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Chicago is easy to reach (O'Hare, Midway). Douglass Park is on the West Side, accessible via CTA Pink/Blue Lines. Rideshare works. Hotels throughout the city. September weather is pleasant. Location isn't a barrier.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">1.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For electronic fans: zero value. You'd be paying $300+ for a weekend of music you don't listen to. For punk fans, it's great value. For you? Complete waste of money. Don't buy this ticket hoping for EDM — you will regret it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Carnival rides are Riot Fest's signature extra — Ferris wheel, tilt-a-whirl, classic fairground attractions. Sideshow performers, punk vendors. If you like carnival vibes mixed with rock, it's fun. For electronic fans, none of this is relevant to your interests.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Douglass Park is a city park — grass, trees, urban setting. Nothing scenic. Has been muddy in rainy years. Chicago September can be beautiful (70s) or rough (cold/wet). Not ugly, not special. Functional.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">1.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For electronic fans: any hype you've heard is irrelevant to you. Riot Fest has earned its reputation as a legendary punk festival — for punk fans. Zero hype value for EDM heads. Wrong festival, wrong audience, wrong music.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🤘</div>
+                    <div>
+                        <h3>Punk Rock Lifers</h3>
+                        <p>If you grew up on NOFX, Bad Religion, and Against Me!, this is your festival. One of the last great punk institutions.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🖤</div>
+                    <div>
+                        <h3>Emo Nostalgia Seekers</h3>
+                        <p>My Chemical Romance, Fall Out Boy, Taking Back Sunday — the 2000s emo revival lives here.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎢</div>
+                    <div>
+                        <h3>Carnival + Music Crossovers</h3>
+                        <p>The carnival rides make this unique. Rock on the Ferris wheel is something.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">❌</div>
+                    <div>
+                        <h3>NOT For: Electronic Music Fans</h3>
+                        <p>We cannot stress this enough: if you want EDM, house, techno, bass, dubstep — GO SOMEWHERE ELSE. This is punk rock.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Blink-182 just played all of Enema and I'm emotionally destroyed 😭🤘"</div>
+                    <div class="stats">2.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"20 years of Riot Fest. 20 years of punk not dead. @riot_fest"</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Why Riot Fest Is The Last Real Punk Festival"</div>
+                    <div class="stats">456K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Riot Fest Experience (For the Right Audience)</h2>
+            <p class="intro">A legendary punk festival — and why electronic fans should skip it entirely.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">September (3 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 10PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~45,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Why This Page Exists</h3>
+                <p>We include Riot Fest because people search for it when comparing Chicago festivals. The honest answer:</p>
+                <ul>
+                    <li><strong>Zero electronic music:</strong> Literally zero. No dedicated stage, no booked EDM acts, no crossover potential.</li>
+                    <li><strong>Wrong genre entirely:</strong> Punk, hardcore, emo, metal, alternative rock. Not a single DJ.</li>
+                    <li><strong>Different culture:</strong> Mosh pits ≠ dance floors. Circle pits ≠ shuffling. Very different energies.</li>
+                    <li><strong>We're being helpful:</strong> By telling you NOT to go, we're saving you time and money.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Riot Fest Actually Is</h3>
+                <p>For context on what you'd be skipping:</p>
+                <ul>
+                    <li><strong>Punk rock institution:</strong> One of the largest independently-owned punk festivals in America. Running since 2005.</li>
+                    <li><strong>Reunion capital:</strong> Known for booking bands that haven't played together in years. The Misfits reunion (2016) was historic.</li>
+                    <li><strong>Full album performances:</strong> Bands play entire classic albums front-to-back. Green Day doing "Dookie," My Chemical Romance doing "The Black Parade."</li>
+                    <li><strong>2025 headliners:</strong> Blink-182, Weezer, Jack White, Green Day — massive rock names, zero EDM.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "I saw someone on r/aves ask about Riot Fest and I had to laugh. It's like asking if a steakhouse has good vegan options. Wrong restaurant, friend."
+                    <cite>— Reddit, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Where Chicago Electronic Fans Should Go Instead</h3>
+                <p>If you're in Chicago and want electronic music, here are your actual options:</p>
+                <ul>
+                    <li><strong>ARC Music Festival:</strong> Chicago's dedicated house/techno festival. Union Park, Labor Day weekend. THIS is what you want.</li>
+                    <li><strong>Spring Awakening:</strong> EDM-focused festival when it runs. Check if active.</li>
+                    <li><strong>Smartbar:</strong> Legendary house/techno club. Year-round bookings, world-class sound.</li>
+                    <li><strong>Spybar:</strong> Intimate techno venue with international DJs.</li>
+                    <li><strong>Radius:</strong> Large venue hosting electronic acts regularly.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Final Verdict for Electronic Fans</h3>
+                <p>This is the clearest recommendation we can give:</p>
+                <ul>
+                    <li><strong>Do not buy tickets to Riot Fest expecting electronic music.</strong></li>
+                    <li><strong>Do not go "just to check it out" if you only like EDM.</strong></li>
+                    <li><strong>Do not assume multi-genre means your genre is included.</strong></li>
+                    <li><strong>This festival is excellent — for punk fans. You are not the audience.</strong></li>
+                </ul>
+                <p>We respect Riot Fest for what it is: a legendary punk institution celebrating 20 years. But respecting it means being honest that it's not for everyone — and definitely not for electronic music fans.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

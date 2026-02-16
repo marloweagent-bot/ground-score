@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Effort — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #4a0e4e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Downtown Los Angeles</span>
+                <span>📅 Halloween & NYE</span>
+                <span>👥 ~3,000-5,000</span>
+                <span>💵 $60-150</span>
+            </div>
+            <h1>🖤 Minimal Effort</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">41</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">LA's underground techno institution. Halloween and NYE events that bring real techno to downtown — dark rooms, proper sound systems, and bookings that matter. When LA wants to get weird, Minimal Effort delivers.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where Minimal Effort shines — booking taste. Pete Tong, Adam Beyer, Tiga, Bonobo, TEED, Mark Farina, Coyu, Dosem. They bring underground veterans to LA with intention. House, techno, minimal, and experimental. No mainstream filler.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DTLA warehouse and venue aesthetics — industrial, dark, authentic. Multiple rooms with distinct vibes. Not trying to be a festival with lasers — letting the architecture and sound do the work. The Belasco and LA Center Studios have hosted memorable editions.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Darker, more intense than the average LA party. People come for the music, not the Instagram content. Halloween editions are particularly committed — costumes go hard. The crowd skews older and more knowledgeable. Less scene, more substance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Venue-dependent but generally tight layouts. Multi-room setups mean different energies to explore. Entry has had organizational issues in the past (particularly NYE) — arrive early. Once inside, flow is good. Water stations exist but bars are the focus.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is a party, not a festival. Food options are minimal to none — eat before you arrive. Bar service is the priority. DTLA has restaurants nearby for pre-gaming. Come fed and ready to dance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Downtown LA is central and accessible. Rideshare works well (surge pricing on NYE, obviously). Nearby hotels for out-of-towners. Metro accessible for locals. No camping logistics — just get to DTLA.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$60-150 for world-class techno bookings is excellent value. No multi-day commitment, no camping gear, no travel logistics for LA locals. Get in, dance to incredible artists, go home. The experience-to-dollar ratio is strong.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween costumes are the main "extra" — and they're incredible. Art installations vary by venue. This is music-focused — extras are minimal (pun intended). The aesthetic is the extra.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Industrial DTLA venues — historic theaters, warehouses, parking structures transformed. Not natural beauty but urban authenticity. The skyline backdrop at outdoor editions is genuinely LA. Setting serves the vibe.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Minimal Effort has been doing this for years and has earned its reputation. Known for importing underground veterans to mainstream LA settings without sacrificing authenticity. The hype is deserved — when LA techno heads want to go out, this is often the answer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>Real underground bookings in LA. If you know the artists on the lineup, you're in the right place. No explanation needed.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Costume/Themed Lovers</h3>
+                        <p>Halloween editions are legendary. The crowd commits to costumes in ways that other LA parties don't. Creativity is rewarded.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Night Owls</h3>
+                        <p>Late-night party energy. These aren't sunset-and-done events. When LA needs a proper late night, Minimal Effort delivers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>Adult party vibes. The crowd is there to dance, not document. Conversations about music happen naturally.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Minimal Effort Halloween is where LA techno goes CRAZY 🎃🔊"</div>
+                    <div class="stats">456K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"When they book Adam Beyer for a warehouse in DTLA... @minimaleffortla knows what they're doing"</div>
+                    <div class="stats">78K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Minimal Effort NYE 2024 | LA's Underground New Year"</div>
+                    <div class="stats">189K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Minimal Effort Experience</h2>
+            <p class="intro">LA's underground techno institution — quality over quantity since day one.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Halloween & NYE</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">Single Night</div></div>
+                <div class="fact"><div class="label">Rooms</div><div class="value">2-3</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">3,000-5,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Type</div><div class="value">Event Series</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>This is a party, not a festival — preparation is minimal.</p>
+                <ul>
+                    <li><strong>Eat beforehand:</strong> Food options inside are limited. Come fed.</li>
+                    <li><strong>Halloween costumes:</strong> If attending the Halloween edition, commit. The crowd does.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be dancing for hours on concrete.</li>
+                    <li><strong>Cash and card:</strong> Bars take both but have cash as backup.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>DTLA is accessible — the challenge is timing.</p>
+                <ul>
+                    <li><strong>Arrive early:</strong> Entry lines have been an issue. Don't arrive at peak time.</li>
+                    <li><strong>Rideshare:</strong> Works well. Surge pricing on NYE is brutal — plan alternatives.</li>
+                    <li><strong>Metro:</strong> Downtown stations are close. Consider public transit.</li>
+                    <li><strong>Parking:</strong> DTLA has lots but they fill up. Rideshare is easier.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Venue</h3>
+                <p>Venues rotate but the aesthetic is consistent — industrial DTLA.</p>
+                <ul>
+                    <li><strong>Multiple rooms:</strong> Different sound, different energy. Explore.</li>
+                    <li><strong>Main room:</strong> Headliners, biggest sound system, most energy.</li>
+                    <li><strong>Side rooms:</strong> Deeper cuts, more intimate, different genres.</li>
+                    <li><strong>Outdoor areas:</strong> When available, offer skyline views and fresh air.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Minimal Effort elevates the techno underground to a broader stage without sacrificing the scene's authenticity. That's harder than it sounds."
+                    <cite>— Dancing Astronaut Review</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>This is a party — come prepared.</p>
+                <ul>
+                    <li><strong>No food vendors:</strong> Eat before you arrive. DTLA has options nearby.</li>
+                    <li><strong>Bars:</strong> Full bar service. Cocktails, beer, wine.</li>
+                    <li><strong>Water:</strong> Available but bars are the priority. Stay hydrated between drinks.</li>
+                    <li><strong>Pace yourself:</strong> It's a long night. Energy management matters.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>LA's techno community shows up when it matters.</p>
+                <ul>
+                    <li><strong>Music-focused:</strong> People are here to dance, not be seen.</li>
+                    <li><strong>Older crowd:</strong> Skews late 20s-40s. Experienced ravers.</li>
+                    <li><strong>Costume creativity:</strong> Halloween editions bring out LA's creative side.</li>
+                    <li><strong>Respectful energy:</strong> Underground community norms apply.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Party</h3>
+                <p>DTLA options exist for extending the night.</p>
+                <ul>
+                    <li><strong>After-hours:</strong> LA has options if you know where to look.</li>
+                    <li><strong>Late-night food:</strong> DTLA has late-night spots for post-party recovery.</li>
+                    <li><strong>Rideshare surge:</strong> Wait 30 minutes after close and prices drop.</li>
+                    <li><strong>Recovery:</strong> It's a single night — damage is limited.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

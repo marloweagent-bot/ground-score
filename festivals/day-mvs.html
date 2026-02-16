@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAY.MVS — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #0288d1 0%, #26c6da 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 San Diego Waterfront</span>
+                <span>📅 Summer/Year-round</span>
+                <span>👥 ~8,000-15,000</span>
+                <span>💵 $80-200</span>
+            </div>
+            <h1>🌴 DAY.MVS</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">CRSSD's little sibling. FNGRS CRSSD brings house and techno to San Diego's waterfront with the same curation quality in a more accessible format. Perfect San Diego weather, gorgeous bay views, and proper underground bookings.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>FNGRS CRSSD booking quality applies — Fisher, MK, Eric Prydz, Brennen Grey, Tiga, Danny Daze. House and techno focus with occasional crossover acts. Quality rivals CRSSD Festival in a smaller format. Sound systems are dialed.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two-stage setup (DAY.MVS XL) with quality production. Not trying to be massive — appropriate scale for the event. The waterfront/Petco Park settings do visual work naturally. San Diego skyline and bay provide the backdrop.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Diego brings relaxed, positive energy. The crowd is similar to CRSSD — house and techno heads who know the music. Less LA pretense, more genuine party vibes. The local community is passionate and welcoming.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Waterfront Park layout is well-established from CRSSD. Compact, walkable, well-organized. Two stages mean easy transitions. Water stations are adequate. Crowd density increases during headliners but manageable overall.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Diego food culture shows up. Craft beer is a major focus (this is San Diego). Food vendors offer variety. Prices are typical festival level. Quality is better than average — the FNGRS CRSSD team cares about curation across categories.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Diego International is one of the most convenient airports in America — 10 minutes from downtown. The venue is in the heart of the city. Rideshare, walking, trolley all work. Hotels everywhere. For locals, it's a trolley ride away.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$80-200 for quality house and techno in a gorgeous setting. San Diego locals save significantly on travel/lodging. DAY.MVS XL (two days) competes with CRSSD at a lower price point. Strong value proposition.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is a music event, not an immersive experience. Extras are minimal. San Diego itself — beaches, Gaslamp, craft beer — is the real extra. The event delivers what it promises: quality house and techno.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Diego's Waterfront Park is stunning — bay views, downtown skyline, perfect weather nearly year-round. Dancing with sailboats in the background. The Petco Park venue offers different vibes but equally San Diego. Setting is a major selling point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Lives in CRSSD's shadow but delivers comparable quality. The FNGRS CRSSD reputation precedes it. Not overhyped — delivers what it promises. Regulars know it's the move when CRSSD isn't happening. Consistent quality builds trust.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>FNGRS CRSSD booking quality — if you trust CRSSD, you'll trust DAY.MVS. Same team, same standards, different format.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>San Diego Bay, waterfront park, perfect weather. This isn't a warehouse — it's outdoor dancing in one of America's most beautiful cities.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Downtown San Diego, Gaslamp Quarter, craft breweries, beaches. The festival is part of a larger San Diego experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>More accessible than CRSSD — lower commitment, lower price, same quality. Great entry point into the FNGRS CRSSD ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"DAY.MVS XL gave us the best lineup San Diego has seen all summer 🌴🔊"</div>
+                    <div class="stats">534K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Dancing on the waterfront with the bay behind you... this is why San Diego hits different"</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"DAY.MVS XL 2024 | San Diego's Summer House & Techno Party"</div>
+                    <div class="stats">267K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete DAY.MVS Experience</h2>
+            <p class="intro">CRSSD's summer sibling — same quality, different format, gorgeous San Diego.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Summer + Events</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">1-2 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">8,000-15,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>San Diego makes festival prep easy.</p>
+                <ul>
+                    <li><strong>Book early for summer:</strong> San Diego hotels fill up. Plan ahead.</li>
+                    <li><strong>Sunscreen required:</strong> San Diego sun is intense. Reapply throughout the day.</li>
+                    <li><strong>Light layers:</strong> Warm days, cool ocean breeze at night.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be dancing on grass and concrete.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>San Diego is absurdly accessible.</p>
+                <ul>
+                    <li><strong>San Diego International (SAN):</strong> 10 minutes from downtown. One of America's most convenient airports.</li>
+                    <li><strong>Rideshare:</strong> Works perfectly. Short rides, manageable surge.</li>
+                    <li><strong>Trolley:</strong> San Diego's light rail gets you close for cheap.</li>
+                    <li><strong>Walking:</strong> If staying downtown, you might be able to walk.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Waterfront Park or Petco Park — both deliver San Diego vibes.</p>
+                <ul>
+                    <li><strong>Waterfront Park:</strong> The CRSSD venue. Green grass, bay views, fountain wading between sets.</li>
+                    <li><strong>Petco Park:</strong> Baseball stadium transformed. Different energy, same quality.</li>
+                    <li><strong>Two stages:</strong> North and South with distinct sounds. Easy to move between.</li>
+                    <li><strong>The fountains:</strong> Yes, you can wade in them. Yes, you should.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "DAY.MVS XL felt like a mini-CRSSD Festival — same quality, same vibes, but more accessible. The lineup competes with their best CRSSD bookings."
+                    <cite>— EDM Identity Review</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>San Diego culture meets festival logistics.</p>
+                <ul>
+                    <li><strong>Craft beer:</strong> This is San Diego — the beer selection is excellent.</li>
+                    <li><strong>Food vendors:</strong> Quality variety. San Diego takes food seriously.</li>
+                    <li><strong>Water stations:</strong> Available throughout. The fountains also help with cooling.</li>
+                    <li><strong>Weather management:</strong> Sun is intense. Shade is limited. Plan accordingly.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>San Diego's house and techno community is real.</p>
+                <ul>
+                    <li><strong>CRSSD veterans:</strong> Many attendees are CRSSD regulars. They know what they're getting.</li>
+                    <li><strong>San Diego locals:</strong> Strong local support. This is their party.</li>
+                    <li><strong>LA spillover:</strong> SoCal heads make the trip. Worth the drive.</li>
+                    <li><strong>Chill vibes:</strong> San Diego energy is inherently relaxed. Less aggro than LA.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>San Diego doesn't stop when the music ends.</p>
+                <ul>
+                    <li><strong>Gaslamp Quarter:</strong> Bars, restaurants, nightlife right next to the venue.</li>
+                    <li><strong>Craft breweries:</strong> San Diego is craft beer capital. Explore.</li>
+                    <li><strong>Beach recovery:</strong> Coronado, La Jolla, Pacific Beach. Sun, sand, sleep.</li>
+                    <li><strong>Tacos:</strong> San Diego tacos are elite. Find the good ones.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

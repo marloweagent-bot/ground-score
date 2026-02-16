@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Ship! Wrecked — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #00ccff 0%, #ff6b6b 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .info-box { background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin: 24px 0; }
+        .info-box h4 { color: var(--accent); margin-bottom: 8px; font-family: 'Space Grotesk', sans-serif; }
+        .info-box p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Hard Rock Riviera Maya, Mexico</span>
+                <span>📅 December (4 nights)</span>
+                <span>👥 3,000+</span>
+                <span>💵 $1,700-3,700</span>
+            </div>
+            <h1>🏝️ Holy Ship! Wrecked</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The legendary cruise festival evolved into a beachfront resort takeover. Four nights at an all-inclusive Hard Rock property with 50+ artists, unlimited food and drinks, and the tight-knit Shipfam community. Premium price, premium experience.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Holy Ship's curation has always been top-tier. 50+ artists spanning house, bass, techno, and everything in between. Past lineups include Fisher, Claude VonStroke, Destructo, and underground gems. Multiple stages across the resort. Quality over quantity — every set matters.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Resort setting means different vibes than a traditional festival. Beach stages, pool parties, intimate indoor venues. Production is strong but not arena-level — the setting IS the spectacle. Sunsets over the Caribbean while dancing hits different.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The "Shipfam" community is legendary. Smaller, more intimate crowd means genuine connections. Everyone's on vacation together for 4 days. No outsiders, no day-trippers. The vibe is unmatched — like a destination wedding but with better music. This is Holy Ship's secret sauce.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Resort layout is designed for ease. Walk from pool to beach to stage. No massive venue to traverse. Your room is right there when you need a break. All-inclusive means no lines for basic drinks. The pace is vacation-mode, not survival-mode.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>All-inclusive Hard Rock resort. Unlimited food at multiple restaurants. Unlimited drinks at every bar. No meal planning, no budgeting, no lines with credit cards. Just eat and drink whenever you want. This category alone justifies the price delta vs. standard festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Fly into Cancún (CUN), which has direct flights from most US cities. Free shuttle service from airport to resort — no Uber stress. International travel means passport required. Once you're at the resort, you're set for 4 days. Simple logistics once booked.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$1,700-3,700 is a premium price, but includes: 4 nights luxury resort, all food, all drinks, 50+ artists, airport transfers. When you add up what a comparable experience costs separately, the value emerges. No hidden costs once you're there. Worth it for the right person.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond music: pool parties, beach activities, themed events, water sports, spa access. It's a full resort with all amenities. Group activities and meetups organized. The vacation component is built-in, not bolted-on.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Caribbean beachfront at a luxury resort. Turquoise water, white sand, palm trees. Stages on the beach with ocean views. Sunset sets are transcendent. This is destination festival beauty — the Riviera Maya is stunning. Weather is warm and perfect.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Holy Ship has legendary status from its cruise era. The transition to "Wrecked" maintains the community but changed the format. Veterans miss the ship, but the experience remains special. Reputation is strong — Shipfam loyalty runs deep.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🍹</div>
+                    <div>
+                        <h3>All-Inclusive Lovers</h3>
+                        <p>If you want unlimited food and drinks without thinking about money for 4 days straight, this is your festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🤝</div>
+                    <div>
+                        <h3>Community Seekers</h3>
+                        <p>The Shipfam is real. If you want genuine connections with fellow ravers over 4 days, not just anonymous crowds.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>Curated lineup leans underground and house-forward. Quality over quantity for discerning ears.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌴</div>
+                    <div>
+                        <h3>Vacation Ravers</h3>
+                        <p>Festival + vacation in one package. Beach, sun, luxury resort, and world-class music without separate planning.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Holy Ship Wrecked is literally a rave vacation 🏝️🎧"</div>
+                    <div class="stats">1.4M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Beach stage sunset sets hit different 🌅"</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Holy Ship! Wrecked 2024 | Full Resort Takeover Experience"</div>
+                    <div class="stats">560K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Holy Ship! Wrecked Experience</h2>
+            <p class="intro">Everything you need to know for the ultimate all-inclusive festival vacation.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">December</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4 Nights</div></div>
+                <div class="fact"><div class="label">Artists</div><div class="value">50+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">3,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Type</div><div class="value">All-Inclusive</div></div>
+            </div>
+            
+            <div class="info-box">
+                <h4>🎫 Unique Booking Process</h4>
+                <p>Holy Ship! Wrecked requires a room reservation, not a standard ticket. Packages include your room at Hard Rock Riviera Maya plus all-inclusive food, drinks, and festival access. Prices are per-person based on room occupancy. A $250 deposit secures your spot with full payment due later.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>This is a destination festival in Mexico. Plan accordingly.</p>
+                <ul>
+                    <li><strong>Passport required:</strong> Valid US passport needed for Mexico. Check expiration dates early.</li>
+                    <li><strong>Book together:</strong> Room packages are per-person. Coordinate with your crew for room assignments.</li>
+                    <li><strong>Payment plans:</strong> $250 deposit to hold, then payment plans available for the balance.</li>
+                    <li><strong>Room categories:</strong> Options range from standard to suites. Price varies accordingly ($1,700-3,700).</li>
+                    <li><strong>Pack light:</strong> It's beach and pool vibes. Swimsuits, resort casual, comfortable dancing shoes.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Fly into Cancún International Airport (CUN) — free shuttles handle the rest.</p>
+                <ul>
+                    <li><strong>Flights to CUN:</strong> Direct flights from most major US cities. Book early for best prices.</li>
+                    <li><strong>Airport shuttles:</strong> Free transfers included with your package. No Uber needed.</li>
+                    <li><strong>Arrival timing:</strong> Check official guidance for shuttle schedules and check-in windows.</li>
+                    <li><strong>Check-in:</strong> Standard resort check-in at Hard Rock. Room ready, wristband, you're set.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Resort Experience</h3>
+                <p>Hard Rock Riviera Maya becomes a 4-day festival grounds with all resort amenities active.</p>
+                <ul>
+                    <li><strong>Beach stage:</strong> Main stage on the sand with Caribbean backdrop. Sunset sets are legendary.</li>
+                    <li><strong>Pool parties:</strong> Pool-side stages running during the day. Drinks in hand, music on point.</li>
+                    <li><strong>Indoor venues:</strong> Intimate after-hours and late-night sets throughout the resort.</li>
+                    <li><strong>Your room:</strong> A real hotel room, steps away. Nap when needed, shower whenever.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The all-inclusive package means access to everything you can eat and drink for the entirety of your stay. Free shuttle service to and from the airport. This is a waterfront festival that won't capsize your finances when you factor it all in."
+                    <cite>— EDM.com Analysis</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>All-Inclusive Details</h3>
+                <p>The price includes literally everything once you arrive.</p>
+                <ul>
+                    <li><strong>Food:</strong> Multiple restaurants, 24-hour room service, snacks everywhere. All included.</li>
+                    <li><strong>Drinks:</strong> All bars, all drinks — beer, cocktails, premium spirits. Unlimited.</li>
+                    <li><strong>Activities:</strong> Water sports, pools, beach access, spa facilities (some treatments extra).</li>
+                    <li><strong>Music:</strong> All stages, all artists, all 4 days. No separate tickets needed.</li>
+                    <li><strong>No tipping required:</strong> It's Mexico all-inclusive style — tips appreciated but not expected.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Shipfam Community</h3>
+                <p>Holy Ship has always been about community, and that translates to Wrecked.</p>
+                <ul>
+                    <li><strong>Intimate size:</strong> ~3,000 people vs. 30,000+ at major festivals. You'll see the same faces.</li>
+                    <li><strong>4-day bonding:</strong> No day-trippers. Everyone's committed for the full experience.</li>
+                    <li><strong>Returning fam:</strong> Many attendees are veterans who return yearly. Welcoming culture.</li>
+                    <li><strong>Artist access:</strong> Smaller festival means more intimate artist interactions.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Departure & After</h3>
+                <p>Leaving paradise is the hard part.</p>
+                <ul>
+                    <li><strong>Checkout:</strong> Standard resort checkout on final day. Shuttles to airport.</li>
+                    <li><strong>Flight timing:</strong> Don't book red-eye departure. Give yourself buffer time.</li>
+                    <li><strong>Extend your stay?:</strong> Some people extend before/after at the resort or explore Mexico.</li>
+                    <li><strong>Post-festival depression:</strong> Real. The Shipfam stays connected online between years.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

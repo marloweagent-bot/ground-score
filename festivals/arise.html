@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARISE Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #e74c3c 0%, #9b59b6 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%); padding: 12px 0; text-align: center; }
+        .status-banner p { font-size: 0.9rem; font-weight: 500; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>❌ STATUS: Permanently Cancelled — Permit denied in 2022 after multiple challenges. The festival has ended.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Sunrise Ranch / The Cradle, Colorado</span>
+                <span>📅 August (3 days)</span>
+                <span>👥 ~10,000</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🌅 ARISE Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Colorado's conscious music festival brought multi-genre programming and intentional community to stunning mountain settings for seven years. ARISE proved that conscious values and great music could coexist — until permit battles ended the dream. A festival remembered fondly by those who gathered there.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Multi-genre programming across 7 stages: funk, reggae, bluegrass, jam, hip-hop, rock, and electronic. ARISE booked conscious performers who aligned with the festival's values — artists like The Polish Ambassador, Rising Appalachia, and Nahko. The music served the message without compromising quality. Genre diversity meant something for everyone.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was intentional rather than spectacular. Seven stages created variety, but the focus was community over spectacle. Art installations, interactive elements, and spaces for connection. The venues — Sunrise Ranch and later The Cradle — provided natural beauty that complemented modest production. Visuals served the vibe.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARISE's greatest strength. "Community through creativity" wasn't a slogan — it was lived experience. The intention to "facilitate and amplify inspiration into real life action" attracted genuine seekers. Attendees from 2013 called it Colorado's best festival of the year. The community was its core identity, and that community deeply mourns its loss.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sunrise Ranch (Loveland) and The Cradle (Boone) both offered spacious grounds with Colorado mountain backdrops. At ~10,000 people, density was manageable. Seven stages meant options without overwhelming distances. Standard camping festival infrastructure — adequate without luxury.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Vendors aligned with the festival's conscious values — local, organic options available alongside standard festival fare. Quality was solid for the scale. Nothing exceptional but everything adequate. The community valued nourishment over indulgence.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sunrise Ranch was near Loveland, about an hour from Denver — relatively accessible for Colorado festivals. The Cradle in Boone was more remote, in southern Colorado near Pueblo. Denver airport provided reasonable access. Regional festival requiring some commitment but not extreme remoteness.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three days of multi-genre music, workshops, yoga, speakers, healing, and community for $200-350. The value was excellent for conscious festival seekers. Total trip cost stayed reasonable with camping included. You got more than music — you got a transformational container.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARISE was built on extras. Yoga throughout the day. Speakers addressing consciousness, activism, and growth. Healing practitioners offering sessions. Art installations and interactive experiences. Workshops on everything from permaculture to personal development. The "diverse daily activities" weren't add-ons — they were the foundation.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Both Sunrise Ranch and The Cradle offered sweeping Colorado vistas and mountain beauty. August weather provided warm days and cool nights. The natural settings supported the festival's intention to "connect with nature, stretch out, dive in, and dance." Colorado mountain magic delivered.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARISE delivered on its vision when it ran, earning devoted fans. However, the years of struggle — permit losses, producer changes, pandemic cancellations, and finally permanent cancellation — created uncertainty that frustrated the community. The 2022 cancellation two weeks before the event, after the festival had purchased property specifically to host it, was a painful end to a beloved gathering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Conscious Community Builders</h3>
+                        <p>"Facilitate and amplify inspiration into real life action" — if you wanted festivals to mean something beyond entertainment, ARISE was home.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Genre Explorers</h3>
+                        <p>Seven stages covering funk, reggae, bluegrass, jam, hip-hop, rock, and electronic. If your taste is eclectic, ARISE had range.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏔️</div>
+                    <div>
+                        <h3>Colorado Locals</h3>
+                        <p>This was Colorado's conscious festival. If you lived in the state and valued intentional gathering, ARISE was the annual pilgrimage.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌱</div>
+                    <div>
+                        <h3>Activist Artists</h3>
+                        <p>Artists who used music for message. Speakers addressing real issues. If you believe art should inspire action, ARISE aligned.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"RIP ARISE Festival... Colorado's best conscious gathering is gone forever 😢"</div>
+                    <div class="stats">145K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Throwback to ARISE 2019 — still chasing that feeling at every festival since 🌅"</div>
+                    <div class="stats">18K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"ARISE Music Festival: 7 Years of Community Through Creativity"</div>
+                    <div class="stats">89K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete ARISE Story</h2>
+            <p class="intro">A look back at Colorado's beloved conscious music festival — 2013 to 2022.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Active</div><div class="value">2013-2019, 2022*</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~10,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Ended</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Happened</h3>
+                <p>ARISE faced a cascade of challenges that ultimately proved fatal:</p>
+                <ul>
+                    <li><strong>2019:</strong> Final successful edition at Sunrise Ranch near Loveland</li>
+                    <li><strong>2020:</strong> Larimer County denied permit; producers separated</li>
+                    <li><strong>2020-2021:</strong> Pandemic hiatus</li>
+                    <li><strong>2022:</strong> Festival owner Luke Comer purchased The Cradle property in Boone for a permanent home</li>
+                    <li><strong>May 2022:</strong> Pueblo County denied special event permit two weeks before the festival</li>
+                    <li><strong>June 2022:</strong> Permanent cancellation announced</li>
+                </ul>
+                <p>The dream of a permanent festival home — owning the land to avoid permit battles — ended when the new county also rejected the event.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Vision</h3>
+                <p>ARISE was built on intentional community values:</p>
+                <blockquote class="quote">
+                    "The music is like the fire... and we all gather around it to warm our souls. The intention of the festival is to facilitate and amplify that inspiration into real life action."
+                    <cite>— Paul Bassis, ARISE Producer</cite>
+                </blockquote>
+                <ul>
+                    <li><strong>Conscious performers:</strong> Artists selected for alignment with values, not just popularity</li>
+                    <li><strong>Diverse activities:</strong> Programming beyond music was central, not supplementary</li>
+                    <li><strong>Community building:</strong> Connection and transformation as explicit goals</li>
+                    <li><strong>All ages welcome:</strong> Families and multi-generational gathering</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Music</h3>
+                <p>Seven stages hosted an eclectic range of conscious artists:</p>
+                <ul>
+                    <li><strong>Funk:</strong> Lettuce, The Motet, Turkuaz</li>
+                    <li><strong>Reggae:</strong> Rebelution, SOJA, Trevor Hall</li>
+                    <li><strong>Bluegrass/Folk:</strong> Rising Appalachia, Elephant Revival</li>
+                    <li><strong>Jam:</strong> String Cheese Incident, Umphrey's McGee</li>
+                    <li><strong>Hip-Hop:</strong> Nahko and Medicine for the People</li>
+                    <li><strong>Electronic:</strong> The Polish Ambassador, Random Rab</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Venues</h3>
+                <p><strong>Sunrise Ranch (2013-2019):</strong> Near Loveland, about an hour from Denver. The spiritual community's land provided sweeping vistas and mountain beauty. Permit was eventually denied.</p>
+                <p><strong>The Cradle (2022):</strong> Property purchased in Boone, southern Colorado. The vision of a permanent festival home ended when Pueblo County denied the permit, reportedly over "unforeseen circumstances."</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Beyond the Music</h3>
+                <p>ARISE's programming extended far beyond stages:</p>
+                <ul>
+                    <li><strong>Yoga:</strong> Daily practice in mountain settings</li>
+                    <li><strong>Speakers:</strong> Thought leaders on consciousness, activism, environment</li>
+                    <li><strong>Healing:</strong> Practitioners offering bodywork and energy sessions</li>
+                    <li><strong>Workshops:</strong> Skills and practices for conscious living</li>
+                    <li><strong>Art:</strong> Installations, live painting, interactive experiences</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Legacy</h3>
+                <p>ARISE proved that conscious values and quality festival production could coexist. For seven years, it gathered Colorado's conscious community and created lasting bonds. The 2013 edition was called "Colorado's best festival of the year" by attendees who recognized something special.</p>
+                <p>The community that gathered at ARISE didn't disappear — it dispersed to other festivals, maintained connections, and carries forward the intention of community through creativity. The festival may be gone, but its spirit lives in those who experienced it.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>For Those Who Remember</h3>
+                <p>If you attended ARISE, you know what was lost. If you never made it, understand that this was a gathering where the values were real, the community was genuine, and the music served something larger than entertainment.</p>
+                <p>Colorado's conscious music scene continues at other festivals, but ARISE left a specific hole that hasn't been filled. May something arise in its place.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

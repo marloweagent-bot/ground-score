@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangout Music Fest — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #00d4ff 0%, #ff6b35 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Gulf Shores, Alabama</span>
+                <span>📅 May (3 days)</span>
+                <span>👥 ~40,000</span>
+                <span>💵 $300-400</span>
+            </div>
+            <h1>🏖️ Hangout Music Fest</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">36</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">A beach festival with surprisingly decent electronic programming. ODESZA, Subtronics, Dom Dolla, Alison Wonderland — they're booking real acts. Dancing on white sand with the Gulf as your backdrop is special. Not a dedicated EDM fest, but electronic fans won't starve here.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Better than you'd expect for a beach festival. 2024 had ODESZA headlining plus Subtronics, Dom Dolla, Alison Wonderland, Kasbo, Disco Lines, Odd Mob x OMNOM — that's a legitimate electronic contingent. Not the depth of a dedicated fest, but 8-10 electronic acts across 3 days is workable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is solid but not spectacular. The Boom Boom Tent is the dedicated electronic stage — indoor tent with club-style lighting and sound. Main stages (Hangout, Surf) are beach-facing with good sightlines. Don't expect EDC-level pyro, but the beach setting is inherently scenic.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beach vacation meets music festival. Crowds are friendly and relaxed — you're on the beach, after all. Mix of electronic fans, country fans, and general festivalgoers. The electronic stages attract the more dedicated music heads. Less intense than dedicated rave crowds, but genuinely fun.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Walking in sand adds a workout. Stages on opposite ends of the beach means real travel time. But 40K attendance keeps it manageable — no crushing. Water stations available. You can literally swim in the ocean to cool off. Entry lines can build but move reasonably.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beach food vibes — seafood, tacos, BBQ. Gulf Shores restaurant scene isn't world-class, but festival vendors are decent. Prices typical for festivals. Stay hydrated — May in Alabama is hot. Pro tip: some hotels are close enough to walk back for real food.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Gulf Shores isn't the easiest reach. Closest airports: Pensacola (PNS, ~45 min) or Mobile (MOB, ~1.5 hr). Most people drive from regional cities. Once there, beachfront hotels are walkable to the venue. Parking available but fills up. It's a destination commitment.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$300-400 for 3 days is reasonable. Gulf Shores hotels are cheaper than major city destinations. If you're coming for the beach + electronic acts, you're getting a vacation and a festival. Total trip cost can be quite manageable for a destination festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beach activities! Roller disco, tropical spa, beach sports, psychedelic bus, puppy kissing booth (proceeds to animal shelter). You can swim, tan, paddleboard between sets. The festival leans into its setting. It's genuinely a beach vacation + music, not just music on a beach.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>White sand beaches on the Gulf of Mexico. This is objectively beautiful. Turquoise water, palm trees, sunset sets with the ocean behind you. May weather is warm but not brutal (~80°F). If you want a scenic festival, Hangout's setting is elite. Dancing with your toes in the sand is something.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hangout delivers on the "beach festival" promise. If you expect a beach vacation with solid live music, you'll be happy. Don't expect underground bookings or massive EDM productions — that's not the sell. Know what you're getting and it hits.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🏖️</div>
+                    <div>
+                        <h3>Beach Lovers</h3>
+                        <p>If the ocean calls to you, this is your festival. Actually swim, tan, and relax between sets. The beach is the venue.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Electronic + Vacation Seekers</h3>
+                        <p>Want ODESZA at sunset on the beach? This delivers that. Enough electronic acts to fill your card without being overwhelming.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Beach house rentals make this perfect for crews. Split a rental, walk to the festival, have pool parties in between.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunset Chasers</h3>
+                        <p>Gulf sunsets + live music = magic. The stages face the water, and golden hour sets are legitimately beautiful.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: ODESZA sunset set on the Gulf 🌅🎵"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"When the beach is literally the festival 🏖️ @hangoutfest"</div>
+                    <div class="stats">156K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Hangout Fest 2024: Is This The Best Beach Festival?"</div>
+                    <div class="stats">234K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Hangout Experience</h2>
+            <p class="intro">Beach vibes meet music festival — here's how electronic fans can maximize the experience.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May (3 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">2PM - 12AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4-5</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~40,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Hangout is a beach vacation that happens to have great music. Plan accordingly.</p>
+                <ul>
+                    <li><strong>Book beachfront:</strong> Hotels/condos on the beach are walkable to the venue. Worth the premium.</li>
+                    <li><strong>Study the electronic acts:</strong> They're spread across stages. Know where Boom Boom Tent is, plan your route to catch electronic acts on main stages.</li>
+                    <li><strong>Pack for beach + festival:</strong> Swimsuit by day, festival outfit by night. Sunscreen is essential.</li>
+                    <li><strong>Hydrate before you arrive:</strong> May in Alabama is hot. Start hydrating days before.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Gulf Shores requires some planning, but it's manageable.</p>
+                <ul>
+                    <li><strong>Fly into Pensacola:</strong> PNS is ~45 min drive. More flight options than Mobile.</li>
+                    <li><strong>Mobile airport:</strong> MOB is ~1.5 hours. Sometimes cheaper flights.</li>
+                    <li><strong>Driving:</strong> Most attendees drive from regional cities. Easy 4-8 hour drives from Atlanta, Nashville, New Orleans, Houston.</li>
+                    <li><strong>Walk from your hotel:</strong> Beachfront properties mean no transport needed. This is the move.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The beach IS the grounds. Stages on the sand.</p>
+                <ul>
+                    <li><strong>Hangout Stage:</strong> Main stage at one end of the beach. Headliners play here. Good sightlines from the sand.</li>
+                    <li><strong>Surf Stage:</strong> Other end of the beach. Second-tier acts. Scenic ocean backdrop.</li>
+                    <li><strong>Boom Boom Tent:</strong> The electronic home base. Indoor tent with club-style production. This is where you'll spend most time if you're chasing electronic acts.</li>
+                    <li><strong>Beach between stages:</strong> Walking in sand takes time. Budget for it. Or make it part of the experience.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Nothing beats catching Subtronics in the Boom Boom Tent and then walking out onto the beach with the Gulf right there. The contrast is wild."
+                    <cite>— Reddit Hangout veteran, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Beach festival survival is different.</p>
+                <ul>
+                    <li><strong>Sunscreen is non-negotiable:</strong> You will burn. Reapply constantly.</li>
+                    <li><strong>Hydrate aggressively:</strong> Heat + dancing + alcohol = danger zone. Water stations available.</li>
+                    <li><strong>Festival food is decent:</strong> Seafood emphasis makes sense given location. Typical festival prices.</li>
+                    <li><strong>Walkable hotels:</strong> If you're close enough, you can leave for real food and return. Some people do lunch at their condo.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Beach festival brings a specific energy.</p>
+                <ul>
+                    <li><strong>Vacation mode:</strong> People are relaxed. It's a beach trip. Less intense than dedicated EDM festivals.</li>
+                    <li><strong>Mixed genres:</strong> You'll share the beach with country fans, rock fans, everyone. The electronic stages have the dance music heads.</li>
+                    <li><strong>18+ means young:</strong> College crowds from the South are well-represented. Expect that energy.</li>
+                    <li><strong>Friendly vibes:</strong> Beach setting keeps everyone chill. Hard to be angry when you're on vacation.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Gulf Shores is a beach town. Lean into it.</p>
+                <ul>
+                    <li><strong>Late-night beach walks:</strong> The beach doesn't close. Post-festival beach time is peaceful.</li>
+                    <li><strong>Hotel/condo parties:</strong> The real afterparties. Crews rent beach houses and continue the party.</li>
+                    <li><strong>Next-day recovery:</strong> Sleep in, hit the beach, prepare for another night. It's a vacation rhythm.</li>
+                    <li><strong>Seafood crawls:</strong> Gulf Shores has excellent fresh seafood. Eat well between days.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

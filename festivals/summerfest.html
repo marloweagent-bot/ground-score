@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summerfest — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .highlight-box { background: rgba(255, 230, 109, 0.1); border: 1px solid rgba(255, 230, 109, 0.3); border-radius: 12px; padding: 16px; margin: 20px 0; }
+        .highlight-box h4 { color: #FFE66D; font-size: 0.9rem; margin-bottom: 8px; }
+        .highlight-box p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Milwaukee, Wisconsin</span>
+                <span>📅 June-July (9 days, 3 weekends)</span>
+                <span>👥 600,000+</span>
+                <span>💵 $25-30 daily</span>
+            </div>
+            <h1>🎪 Summerfest</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">34</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The "World's Largest Music Festival" lives up to its name with 600,000+ attendees across 9 days. Electronic programming exists but is scattered among 12+ stages covering every genre. Incredible value for music lovers, but dedicated EDM fans should look elsewhere.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Electronic acts pop up occasionally — Loud Luxury, Lindsey Stirling — but there's no dedicated EDM stage or consistent electronic booking. Summerfest covers literally every genre: rock, country, hip-hop, metal, pop, R&B. Electronic is a small slice of a massive pie. Don't come here expecting bass music.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>12+ permanent stages with $150M+ invested in infrastructure. Production is solid but this isn't about LED walls and lasers — it's about functional, professional concert setups. The lakefront setting adds natural beauty. Think state fair meets mega-concert, not EDC.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Midwest friendly all the way. This is a community celebration — families, groups of friends, date nights, solo explorers. The energy varies by stage and day. No PLUR culture here, but genuine Midwestern hospitality. Beer is a major part of the experience (Miller is a sponsor).</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The 75-acre Henry Maier Festival Park is purpose-built and well-organized. 12+ stages spread along Lake Michigan's shore. Permanent infrastructure means good facilities. The spread-out format over 3 weekends means crowds are never overwhelming on any single day.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Milwaukee food culture is well-represented — cheese curds, brats, and beer are essentials. Wide variety beyond the basics. Prices are reasonable for a festival. The beer selection reflects Wisconsin's brewing heritage. This isn't gourmet, but it's satisfying.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Milwaukee is a mid-sized city — General Mitchell Airport (MKE) serves it with regional connections. Chicago O'Hare is 90 minutes south with more options. The festival grounds are downtown on the lakefront, accessible by car, rideshare, or the Hop streetcar. Hotels are affordable compared to major cities.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where Summerfest destroys the competition. $25-30 for daily GA admission to see 100+ artists is absurd value. Headliner shows at the amphitheater cost extra, but the grounds stages are included. Total trip cost in Milwaukee is fraction of coastal festivals. Best value in American music festivals, period.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond music: marketplace vendors, some carnival elements, sponsor activations. It's not an arts festival — the focus is squarely on music across every genre. The lakefront setting provides natural beauty but don't expect art installations.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Right on Lake Michigan's shore with downtown Milwaukee as backdrop. Summer weather in Wisconsin is typically pleasant (70s-80s). The lakefront breeze helps. Beautiful sunsets over the water. Not mountain majesty, but urban waterfront has its own appeal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>"World's Largest Music Festival" is bold, but 600,000+ attendees backs it up. Summerfest delivers exactly what it promises — massive variety, Midwest vibes, affordable prices. It won't blow your mind with production, but it consistently delivers solid festival value.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎵</div>
+                    <div>
+                        <h3>Genre Explorers</h3>
+                        <p>Rock, country, hip-hop, metal, pop, R&B — all on the same grounds. If you appreciate music broadly, Summerfest delivers unmatched variety.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget Seekers</h3>
+                        <p>$25-30 daily admission for 100+ artists is the best value in American festivals. Add affordable Milwaukee hotels and you have a budget-friendly trip.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>Beer Lovers</h3>
+                        <p>Wisconsin takes beer seriously. Miller sponsors the festival, and the selection reflects the state's brewing culture. Drink responsibly and often.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👨‍👩‍👧</div>
+                    <div>
+                        <h3>Midwest Families</h3>
+                        <p>All-ages, family-friendly, and community-focused. This is a regional tradition — many families attend year after year.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>📊 The Numbers Are Insane</h4>
+                <p>9 days. 3 weekends. 12+ stages. 600,000+ attendees. 1,000+ performances. $150M+ invested in the venue. Summerfest's scale is unmatched. The "World's Largest Music Festival" claim isn't marketing — it's math.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"$28 for ALL THIS?! Summerfest is insane value"</div>
+                    <div class="stats">445K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Lake Michigan sunset + live music = Milwaukee summer 🌅"</div>
+                    <div class="stats">67K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Summerfest 2024: World's Largest Music Festival Guide"</div>
+                    <div class="stats">189K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Summerfest Experience</h2>
+            <p class="intro">Everything you need to know about the world's largest music festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">June-July</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">9 days / 3 weekends</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">12+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">600,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Summerfest's scale requires some planning, but it's approachable.</p>
+                <ul>
+                    <li><strong>Pick your weekend(s):</strong> Three weekends means different headliners each time. Check the schedule and choose based on who you want to see.</li>
+                    <li><strong>Headliner tickets:</strong> Amphitheater shows (biggest headliners) cost extra. Grounds admission doesn't include these.</li>
+                    <li><strong>Milwaukee hotels:</strong> Affordable by festival standards. Downtown puts you close to the action.</li>
+                    <li><strong>Weather check:</strong> Wisconsin summer is usually pleasant, but occasional storms happen. Have a backup plan.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Downtown Milwaukee location makes access straightforward.</p>
+                <ul>
+                    <li><strong>Fly into MKE:</strong> General Mitchell Airport is 15 minutes from downtown. Affordable flights from regional hubs.</li>
+                    <li><strong>Chicago option:</strong> O'Hare is 90 minutes south with more flight options.</li>
+                    <li><strong>Driving:</strong> Parking available but downtown garages work too.</li>
+                    <li><strong>The Hop:</strong> Milwaukee's streetcar connects downtown to the festival grounds.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Henry Maier Festival Park is 75 acres along Lake Michigan with permanent infrastructure.</p>
+                <ul>
+                    <li><strong>American Family Insurance Amphitheater:</strong> The big headliner venue. Separate tickets required.</li>
+                    <li><strong>Grounds stages:</strong> 11+ permanent stages included with GA. Each has its own genre focus.</li>
+                    <li><strong>Uline Warehouse:</strong> Eclectic mix of acts with Milwaukee skyline as backdrop.</li>
+                    <li><strong>Genre concentration:</strong> Different stages tend toward different genres. Find your home base.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Summerfest isn't trying to be cool or exclusive. It's a Midwest party that welcomes everyone, plays everything, and charges almost nothing. That's its superpower."
+                    <cite>— Ground Score Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Wisconsin comfort food meets festival fare.</p>
+                <ul>
+                    <li><strong>Essential eats:</strong> Cheese curds, brats, and cream puffs are Summerfest traditions.</li>
+                    <li><strong>Beer:</strong> Miller sponsors, but craft options exist. Wisconsin takes beer seriously.</li>
+                    <li><strong>Prices:</strong> Reasonable for a festival. This isn't Coachella pricing.</li>
+                    <li><strong>Hydration:</strong> Summer in Wisconsin can be humid. Water stations available.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Quintessentially Midwest — friendly, unpretentious, beer-loving.</p>
+                <ul>
+                    <li><strong>Demographics:</strong> Everyone. Families, couples, groups, solo explorers. All ages, all backgrounds.</li>
+                    <li><strong>Energy:</strong> Varies by stage and day. Country nights get rowdy, indie sets are chill.</li>
+                    <li><strong>Local pride:</strong> This is Milwaukee's festival. Locals show up in force.</li>
+                    <li><strong>Midwest nice:</strong> Genuine friendliness is the norm. People talk to strangers here.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Milwaukee's Third Ward and downtown have plenty of options.</p>
+                <ul>
+                    <li><strong>Third Ward:</strong> Hip neighborhood with bars and restaurants, short walk from the grounds.</li>
+                    <li><strong>Brady Street:</strong> More nightlife options with a local vibe.</li>
+                    <li><strong>Late-night food:</strong> Milwaukee has solid late-night dining, especially for comfort food.</li>
+                    <li><strong>No official afterparties:</strong> But local venues often book complementary shows during the festival.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

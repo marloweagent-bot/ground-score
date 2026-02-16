@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjunadeep Open Air — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a4a6e 0%, #4a90a4 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Touring (Red Rocks, Brooklyn, DC, LA)</span>
+                <span>📅 Various (Spring-Fall)</span>
+                <span>👥 2,000-10,000</span>
+                <span>💵 $50-150</span>
+            </div>
+            <h1>🌊 Anjunadeep Open Air</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Above & Beyond's deep house imprint brings their curated sound to iconic outdoor venues. Not a traditional festival — more like a traveling label showcase. For progressive house and melodic techno devotees, it's a pilgrimage. Red Rocks is the crown jewel.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This IS the sound. Anjunadeep is one of the most respected deep house/progressive house labels in the world. Every artist is handpicked from their roster — Yotto, Lane 8, Ben Böhmer, Marsh, Jody Wisternoff. Pure genre immersion with zero filler. If you love the Anjuna sound, there's no better live experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is tasteful but minimal — the focus is on the music and venue, not pyro and lasers. Lighting is elegant, sound systems are top-tier. No massive LED screens or fireworks. The venue IS the scene, especially at places like Red Rocks where nature provides the spectacle.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Dedicated, passionate crowd who genuinely love the music. The Anjuna family is real — people travel internationally for these events. Intimate enough that you might meet the DJs between sets. Less "raging" energy, more collective appreciation and emotional connection. Bring tissues for the sunrise sets.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Single-stage format means no schedule conflicts — everyone experiences the same journey together. Crowd density is comfortable. Venues handle capacity well. Red Rocks has famously steep stairs but great sightlines. Water and facilities adequate for crowd sizes.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Depends entirely on venue. Red Rocks has standard amphitheater concessions. Brooklyn and DC events may vary. These are single-evening shows, not multi-day festivals — most people eat before/after. Bars serve alcohol at most venues.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Shows in major cities with good airport access. Red Rocks requires Denver flight + car/shuttle (30 min from downtown). Brooklyn and DC are transit-accessible. Single-day format means no hotel required unless traveling. Tickets sell fast — Anjuna family is loyal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent value — $50-150 for 6-8 hours of curated music at iconic venues. No camping gear, no multi-day commitment. Per-hour entertainment value rivals or beats most festivals. Red Rocks shows are bucket-list worthy.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Pure music focus — no art installations, carnival rides, or workshops. Merch booth for label gear. Some shows have meet-and-greet opportunities. The "extra" is the community and the shared emotional experience, not physical activations.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where Open Air shines. Red Rocks is arguably the most beautiful music venue on Earth — ancient rock formations, mountain views, sunset into stars. Brooklyn and DC shows use scenic outdoor spaces. The label specifically books venues where nature enhances the music.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For Anjuna fans, it exceeds expectations. The label's curation is legendary. Veterans return year after year. For non-fans, it might feel niche — you need to appreciate the specific sound. But if you're in, it's transcendent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>Deep house, progressive house, melodic techno — if these are your genres, this is your church. Pure, uncompromised sound.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>Some shows run to sunrise. The emotional arc of dancing through dusk into dawn, surrounded by nature, is unmatched.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>Red Rocks, outdoor amphitheaters, scenic venues — nature is part of the experience. The setting IS the production.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Emotional Dancers</h3>
+                        <p>Anjunadeep is known for music that makes you feel things. Expect tears during peak moments. Bring tissues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"When Ben Böhmer drops 'Breathing' at Red Rocks and the whole crowd is crying"</div>
+                    <div class="stats">1.8M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Sunrise at Anjunadeep Open Air — this is why we travel"</div>
+                    <div class="stats">320K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Anjunadeep Open Air Red Rocks 2024 | Full Set Compilation"</div>
+                    <div class="stats">890K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Anjunadeep Experience</h2>
+            <p class="intro">A label showcase in extraordinary venues. Here's what the journey holds.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Format</div><div class="value">Single Day</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">6-10 Hours</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">1</div></div>
+                <div class="fact"><div class="label">Genre</div><div class="value">Deep/Prog House</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+/21+</div></div>
+                <div class="fact"><div class="label">Label</div><div class="value">Anjunadeep</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Is Anjunadeep?</h3>
+                <p>Anjunadeep is the deeper, more introspective sister label to Anjunabeats, both founded by Above & Beyond. While Anjunabeats is trance and euphoria, Anjunadeep is:</p>
+                <ul>
+                    <li><strong>Deep house:</strong> Warm, groovy, soulful</li>
+                    <li><strong>Progressive house:</strong> Building journeys, emotional peaks</li>
+                    <li><strong>Melodic techno:</strong> Driving yet cerebral</li>
+                    <li><strong>Organic house:</strong> Acoustic elements, world music influences</li>
+                </ul>
+                <p>Key artists include Lane 8, Yotto, Ben Böhmer, Marsh, Tinlicker, Jody Wisternoff, and dozens more. If you don't know these names, start with Lane 8's "This Never Happened" or Ben Böhmer's "Breathing."</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>US Tour Locations</h3>
+                <p>Open Air events happen at carefully selected outdoor venues:</p>
+                <ul>
+                    <li><strong>Red Rocks (Colorado):</strong> The flagship. Natural amphitheater carved into mountain rocks. Usually November, but check dates. This is the bucket-list show.</li>
+                    <li><strong>Brooklyn (NYC):</strong> Various outdoor spaces. Great for East Coast fans. Urban but scenic.</li>
+                    <li><strong>Washington DC:</strong> Recent additions like A.i (The Great Lawn). Spring/summer dates.</li>
+                    <li><strong>Los Angeles:</strong> Periodic shows at outdoor venues.</li>
+                    <li><strong>Global:</strong> London, Hong Kong, Barcelona — the label tours worldwide.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <ul>
+                    <li><strong>Tickets sell fast:</strong> Anjuna family is dedicated. Sign up for label emails for presale access.</li>
+                    <li><strong>Know the sound:</strong> Don't expect bangers. This is journey music — builds, peaks, emotions.</li>
+                    <li><strong>Dress in layers:</strong> Outdoor shows mean temperature swings. Red Rocks gets cold at night.</li>
+                    <li><strong>Red Rocks altitude:</strong> 6,450 feet. Hydrate extra, take it easy on alcohol, expect to feel winded.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Show Experience</h3>
+                <p>Single-stage, curated journey:</p>
+                <ul>
+                    <li><strong>Format:</strong> Back-to-back sets, usually 4-6 artists over 6-10 hours</li>
+                    <li><strong>Sound:</strong> Impeccable. The label doesn't compromise on audio quality.</li>
+                    <li><strong>Transitions:</strong> Often seamless between artists. The whole night flows as one experience.</li>
+                    <li><strong>Phones:</strong> Lane 8's "This Never Happened" ethos influences the culture — many put phones away.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The awesome crowd and the chance to hang out with the DJs the whole time made it worth it for me. I listen to Anjunadeep pretty much nonstop."
+                    <cite>— r/AboveandBeyond, 2018</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Anjuna family is real:</p>
+                <ul>
+                    <li><strong>International:</strong> People fly from around the world for these shows, especially Red Rocks.</li>
+                    <li><strong>Dedicated:</strong> These aren't casual attendees — everyone knows the music.</li>
+                    <li><strong>Emotional:</strong> Expect people crying during peak moments. It's encouraged.</li>
+                    <li><strong>Accessible artists:</strong> Small enough scene that you might meet your favorite DJ at the bar.</li>
+                    <li><strong>Age range:</strong> Skews older (25-45) than mainstream EDM events.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Related Events</h3>
+                <p>Beyond Open Air, the label family offers:</p>
+                <ul>
+                    <li><strong>Anjunadeep Explorations:</strong> Week-long destination events (Croatia, Ibiza)</li>
+                    <li><strong>Group Therapy (ABGT):</strong> Above & Beyond's Anjunabeats showcase — bigger, more trance</li>
+                    <li><strong>This Never Happened:</strong> Lane 8's phone-free events</li>
+                    <li><strong>Label club nights:</strong> Regular shows in major cities</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightning in a Bottle — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ffcc00 0%, #ff6699 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Buena Vista Lake, Bakersfield</span>
+                <span>📅 May (5 days)</span>
+                <span>👥 25,000+</span>
+                <span>💵 $400-600</span>
+            </div>
+            <h1>⚡ Lightning in a Bottle</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Not just a festival — a transformational experience. Do Lab's flagship event combines eclectic electronic music with yoga, workshops, art, and a lakeside setting that feels like adult summer camp. If you want more than just beats, LiB delivers a complete journey.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>LiB's music curation is intentionally eclectic — house, techno, bass, live bands, world music, and everything in between. The Lightning stage brings headliners, Thunder handles bass and experimental, Woogie is your house/techno home. If you love the Do Lab stage at Coachella, imagine an entire festival of that energy. Less mainstream, more taste-making.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Do Lab builds some of the most creative, organic stage structures in the festival world. Expect wood, fabric, LEDs, and water features integrated into nature. The entire venue feels like a curated art installation. Less about pyro and lasers, more about immersive environments. Think Burning Man's little sibling.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is LiB's superpower. The crowd is creative, open-minded, and genuinely weird in the best way. Reviews describe it as "psychedelic" and "transformational." People come to explore, not just party. It's family-friendly during the day, hedonistic at night. Expect glitter, costumes, spontaneous connections, and people actually looking you in the eye.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The venue wraps around Buena Vista Lake, creating a natural flow. Walking distances are moderate. Festival is designed for exploration — you'll discover new areas throughout the weekend. Camping is included with GA, so no commuting. Water access via the lake. Some areas can feel crowded during peak sets, but generally spacious.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Food is a highlight. LiB curates vendors carefully — expect farm-to-table quality, international cuisines, and excellent vegetarian/vegan options. The Marketplace feels like a foodie destination. Prices are premium but quality matches. Some people come partly for the food. Coffee and smoothie options are abundant for morning recovery.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Buena Vista Lake is about 2 hours north of LA, 4 hours from SF — not terrible, but requires commitment. Flying into LAX or Burbank works. No public transit; you'll need a car. The drive through Central California isn't scenic. Entry/exit has improved over the years but day-one arrival can still be slow.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Five days of camping, music, workshops, yoga, and art for $400-600 is solid value when you factor in free camping. The experience-per-dollar rivals any festival. Food and drinks inside are expensive, so budget accordingly. Overall trip cost is moderate — no hotels needed if you camp.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where LiB separates from pure music festivals. The Compass and Beacon stages offer endless workshops — yoga, meditation, breathwork, talks on sustainability, art classes. There's a lake for swimming. Art cars roam the grounds. Interactive installations invite participation. You could skip the music entirely and have a full experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Buena Vista Lake creates a lakeside oasis in California's Central Valley. You can swim. Sunsets over the water are stunning. May weather is warm but not brutal. The landscape isn't dramatic like the Gorge, but the water element and Do Lab's staging transform it into something special. Dust is minimal compared to desert festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>LiB has a cult following, and it mostly delivers. If you expect a transformational, weird, beautiful experience, you'll get it. If you want EDC-style production and mainstream headliners, you'll be disappointed. Know what you're signing up for — it's a journey, not just a party.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Wellness Seekers</h3>
+                        <p>Morning yoga, meditation workshops, breathwork sessions, healthy food — LiB treats mind and body as part of the experience. Dance all night, restore all day.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>A real lake you can swim in. Sunsets. Trees. If you're sick of concrete venues and desert dust, LiB offers actual natural beauty integrated into the experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>The Woogie stage is one of the best house/techno lineups at any US festival. Intimate, grooving, and running long hours. Underground fans will find their people.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Free camping included with GA. The grounds become a community. Wake up, walk to stages, meet neighbors, live the festival life 24/7 for five days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"LiB is what happens when Burning Man and Coachella have a baby 🌈"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Sunrise yoga then Woogie stage until 4am. This is the way. ⚡"</div>
+                    <div class="stats">180K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Lightning in a Bottle 2024 | A Complete First-Timer's Guide"</div>
+                    <div class="stats">520K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete LiB Experience</h2>
+            <p class="intro">Everything you need to know about California's premier transformational festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May (5 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">24/7</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">25,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>LiB requires more preparation than most festivals. Five days of camping demands planning.</p>
+                <ul>
+                    <li><strong>Camping gear:</strong> Bring everything. Tent, sleeping bag, shade structure, cooler. The sun is real in May. Good shade setup is essential.</li>
+                    <li><strong>Explore the schedule:</strong> LiB isn't just music. Plan which workshops, talks, and activities interest you. The Beacon and Compass stages have transformational programming.</li>
+                    <li><strong>Wednesday arrival:</strong> Consider the early arrival pass. Thursday is crowded for setup; Wednesday lets you settle in and explore early.</li>
+                    <li><strong>Costumes and expression:</strong> LiB is creative. Pack outfits that feel like you. Glitter, color, texture — express yourself.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Buena Vista Lake is Central California — accessible but requires a drive.</p>
+                <ul>
+                    <li><strong>From LA:</strong> About 2 hours north on I-5. Easy drive, but leave early on opening day.</li>
+                    <li><strong>From SF:</strong> About 4 hours south. Consider carpooling — LiB encourages it.</li>
+                    <li><strong>Entry:</strong> Thursday morning is the worst time. Aim for Wednesday (early arrival) or Thursday afternoon/evening.</li>
+                    <li><strong>Exit:</strong> Monday can be slow. Pack up early if you need to leave by a specific time.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The venue wraps around Buena Vista Lake, creating distinct zones to explore.</p>
+                <ul>
+                    <li><strong>Lightning Stage:</strong> The main stage. Biggest production, headliners, and crowds. Good for must-see sets.</li>
+                    <li><strong>Thunder Stage:</strong> Bass, experimental, and multi-genre. Open-air theater feel with diverse programming.</li>
+                    <li><strong>Woogie Stage:</strong> House and techno home. Runs Thursday through Sunday with deep lineups. The heartbeat for groove lovers.</li>
+                    <li><strong>Compass & Beacon:</strong> Workshop areas. Yoga, meditation, talks, interactive sessions. Not music but equally important.</li>
+                    <li><strong>The Lake:</strong> Yes, you can swim. Bring a towel. Perfect for afternoon cooling off.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Do Lab completely transformed this venue into a summer camp-like playground for both adults and children. From top to toe, the festival rattled my senses and distorted my perception of normalcy."
+                    <cite>— Amplified SD, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Five days of camping means thinking about sustenance seriously.</p>
+                <ul>
+                    <li><strong>The Marketplace:</strong> LiB food vendors are curated and quality. Expect $12-20 meals, but worth it. Great vegan/vegetarian options.</li>
+                    <li><strong>Bring your own:</strong> Coolers are allowed. Stock up on breakfast food, snacks, and hydration supplies. Save food money for special meals.</li>
+                    <li><strong>Water:</strong> Essential. Stations available, but bring a reusable bottle and/or CamelBak. May heat is real.</li>
+                    <li><strong>Coffee:</strong> Multiple coffee vendors. Morning coffee lines are social scenes themselves.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>LiB attracts a specific type of person — creative, curious, and open.</p>
+                <ul>
+                    <li><strong>Age range:</strong> Genuinely diverse — college kids to 50-somethings. Families with children during the day.</li>
+                    <li><strong>Vibe:</strong> Less party-hard, more explore-and-connect. People make eye contact and start conversations.</li>
+                    <li><strong>Costumes:</strong> Elaborate, creative, expressive. Not Halloween costumes — more art pieces.</li>
+                    <li><strong>Drugs:</strong> It's California. Psychedelics are common. Take care of yourself and your crew.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Coming back from LiB is its own experience.</p>
+                <ul>
+                    <li><strong>Leave No Trace:</strong> LiB is serious about sustainability. Clean up your campsite completely. Pack out everything you packed in.</li>
+                    <li><strong>Integration:</strong> Five days of transformation can hit hard when you return to normal life. Give yourself time to process.</li>
+                    <li><strong>The community:</strong> LiB friendships often continue. Exchange info with camp neighbors — these connections last.</li>
+                    <li><strong>Monday recovery:</strong> Don't schedule anything important for Monday or Tuesday. You'll need the rest.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

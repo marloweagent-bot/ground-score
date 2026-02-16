@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mysteryland USA — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b00 0%, #9b59b6 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+
+        .legacy-banner { background: linear-gradient(90deg, #ff6b00 0%, #9b59b6 100%); padding: 12px 24px; text-align: center; }
+        .legacy-banner p { font-size: 0.9rem; color: white; margin: 0; }
+        .legacy-banner strong { color: #ffd700; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .history-box { background: linear-gradient(135deg, rgba(255,107,0,0.1) 0%, rgba(155,89,182,0.1) 100%); border: 1px solid #ff6b00; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .history-box h3 { font-family: 'Space Grotesk', sans-serif; color: #ff6b00; margin-bottom: 12px; }
+        .history-box p { color: var(--text-secondary); margin-bottom: 8px; }
+        .history-box a { color: var(--accent); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+
+    <div class="legacy-banner">
+        <p>🕯️ <strong>LEGACY FESTIVAL</strong> — Mysteryland USA ended after 2016. The Dutch original continues in the Netherlands.</p>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Bethel Woods, New York</span>
+                <span>📅 Memorial Day Weekend</span>
+                <span>👥 ~25,000</span>
+                <span>💵 $200-400</span>
+            </div>
+            <h1>🌀 Mysteryland USA</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The ambitious attempt to bring Dutch festival magic to the site of the original Woodstock. Mysteryland USA delivered European production values and eclectic lineups to American camping festivals — for three glorious years before financial realities intervened.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>European curation brought diversity American fests often lacked. Headliners like Kaskade, Moby, Steve Aoki mixed with European house acts and underground selectors. The Dutch brought their booking philosophy — genre diversity over mainstream consistency.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ID&T brought Dutch production values — theatrical stages, immersive design, attention to detail. European festival production was ahead of most American counterparts at the time. The stages felt like experiences, not just speaker stacks.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Woodstock connection added gravitas. Dancing on sacred music history ground felt meaningful. The crowd was curious early adopters willing to try something different. International flavor from European attendees added worldly energy.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bethel Woods venue was manageable but not optimal for camping festivals. Hilly terrain, some logistical growing pains. Water and facilities were adequate. The European organizers were learning American festival logistics in real-time.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare — adequate but not remarkable. European touch in vendor selection. Prices were typical festival markup. Not a culinary destination but functional.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bethel, NY is ~90 miles from NYC — drivable but not convenient. No nearby major airport. Required car access. The Catskills location was beautiful but remote. Memorial Day weekend timing helped with travel logistics.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$200-400 for European-quality production was solid value. ID&T invested heavily in the American launch. Attendees got more production value than typical for the price point. The problem was the economics didn't work for the organizers.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Themed areas, art installations, and experiences reflected Dutch festival philosophy. The "Healing Garden" and wellness programming were ahead of American trends. Multiple curated stages and environments to explore.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>THE ORIGINAL WOODSTOCK SITE. Dancing where Hendrix played. The historical weight was real. Rolling Catskills hills, Memorial Day weather typically pleasant. The setting itself was the strongest selling point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Launched with big ambitions but struggled to build American audience. The Dutch Mysteryland brand didn't translate immediately. Those who attended loved it; not enough people attended. The 2017 cancellation suggested the hype never materialized at scale.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="history-box">
+            <h3>🇳🇱 The Dutch Original Continues</h3>
+            <p><strong>Mysteryland Netherlands</strong> has been running since 1993 and continues annually near Amsterdam. It's one of the world's longest-running electronic music festivals.</p>
+            <p>The 2025 edition is scheduled for August 22-24 at Haarlemmermeer.</p>
+            <p>🔗 <a href="https://www.mysteryland.nl" target="_blank">mysteryland.nl</a></p>
+        </div>
+    </div>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">✌️</div>
+                    <div>
+                        <h3>Music History Buffs</h3>
+                        <p>Dancing on the actual Woodstock grounds. Where Hendrix played. Where the counterculture was born. The historical significance was real and felt.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🇪🇺</div>
+                    <div>
+                        <h3>Europhiles</h3>
+                        <p>If you'd been to European festivals and wished Americans would learn, Mysteryland USA was the answer. Dutch production values on American soil.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>European curation meant more underground house and techno than typical American lineups. ID&T knew how to book beyond mainstream EDM.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🗽</div>
+                    <div>
+                        <h3>NYC Escapees</h3>
+                        <p>Close enough to NYC for a Memorial Day weekend escape, far enough to feel like a getaway. The Catskills setting was a city-dweller's dream.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Remembered</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 Reddit</div>
+                    <div class="title">"Mysteryland USA was too good for us. We didn't deserve that production quality."</div>
+                    <div class="stats">r/aves • <a href="https://reddit.com" target="_blank">View discussion →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Dancing where Woodstock happened. That energy was different. ✌️🎸"</div>
+                    <div class="stats">Archive post • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Mysteryland USA 2016 | European Magic at Woodstock"</div>
+                    <div class="stats">234K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Mysteryland USA Story</h2>
+            <p class="intro">An ambitious Dutch export that burned bright and brief on sacred American ground.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Memorial Day</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3-4 Days</div></div>
+                <div class="fact"><div class="label">Ran</div><div class="value">2014-2016</div></div>
+                <div class="fact"><div class="label">Capacity</div><div class="value">~25,000</div></div>
+                <div class="fact"><div class="label">Parent Fest</div><div class="value">Since 1993</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Ended</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>History</h3>
+                <p>ID&T, the Dutch company behind Mysteryland (running since 1993 in the Netherlands), launched an American edition at the legendary Bethel Woods — the site of the 1969 Woodstock festival.</p>
+                <ul>
+                    <li><strong>2014:</strong> Mysteryland USA debuts Memorial Day weekend. Headliners include Kaskade, Moby, Steve Aoki, Dillon Francis, Flosstradamus</li>
+                    <li><strong>2015:</strong> Second edition with improved production, growing attendance</li>
+                    <li><strong>2016:</strong> Third and final edition — critically well-received but financially struggling</li>
+                    <li><strong>2017:</strong> Announced then cancelled "due to unforeseen circumstances"</li>
+                    <li><strong>2018+:</strong> No return, the American experiment ended</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <p>Mysteryland USA brought European festival philosophy to America — and America wasn't quite ready for it.</p>
+                
+                <blockquote class="quote">
+                    "The production was insane for a camping festival. Europeans know how to do this. We were spoiled for three years and didn't even know it."
+                    <cite>— r/festivals, 2017</cite>
+                </blockquote>
+                
+                <ul>
+                    <li><strong>The Woodstock connection:</strong> Dancing on sacred music history ground</li>
+                    <li><strong>European production:</strong> ID&T brought their A-game — theatrical stages, immersive design</li>
+                    <li><strong>Diverse curation:</strong> Dutch booking philosophy meant more underground alongside mainstream</li>
+                    <li><strong>The Healing Garden:</strong> Wellness programming ahead of American trends</li>
+                    <li><strong>Camping culture:</strong> Encouraging full festival immersion over day-tripping</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Why It Ended</h3>
+                <p>The 2017 cancellation was announced vaguely as "unforeseen circumstances." Reading between the lines:</p>
+                <ul>
+                    <li><strong>Ticket sales:</strong> Never reached the scale needed to justify European production investment</li>
+                    <li><strong>Brand recognition:</strong> Mysteryland didn't have the American name recognition of Insomniac events</li>
+                    <li><strong>Location challenges:</strong> Bethel was beautiful but remote — logistics were expensive</li>
+                    <li><strong>Competition:</strong> American festival market was saturating with well-funded competitors</li>
+                    <li><strong>Economics:</strong> Bringing European production to America without European budgets proved unsustainable</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Legacy & Alternatives</h3>
+                <p>For those who experienced Mysteryland USA and seek similar energy:</p>
+                <ul>
+                    <li><strong>Mysteryland Netherlands:</strong> The original continues — worth the flight to Amsterdam</li>
+                    <li><strong>Tomorrowland:</strong> Belgian festival with similar European production philosophy</li>
+                    <li><strong>Electric Forest:</strong> American camping fest with production focus</li>
+                    <li><strong>Elements Festival:</strong> East Coast fest with some similar spirit</li>
+                    <li><strong>The Governors Ball:</strong> NYC area option (different vibe, but accessible)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

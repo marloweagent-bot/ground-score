@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Glow — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 RFK Festival Grounds, Washington DC</span>
+                <span>📅 April/May (2 days)</span>
+                <span>👥 40,000+</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>✨ Project Glow</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Insomniac brings their magic to the East Coast in partnership with Club Glow. Quality production and world-class talent fill a major gap in the Northeast festival landscape. Still growing, still improving — a festival with genuine potential.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Insomniac booking power means big names: Illenium, Zedd, Rezz, Tiësto have all headlined. Three stages cover different flavors — the main Eternal Stage for headliners, Pulse Stage for variety, and Secret Garden for intimate house/techno. 2024 brought 75-minute extended headliner sets. Quality over quantity approach to the lineup.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Insomniac production values are evident — pyro, fireworks, solid stage designs. The Electra statue and Rise fire installation add visual anchors. Not EDC-level, but respectable for a two-day regional fest. Stages have been upgraded each year. 2024 brought improved Eternal Stage design and better lighting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Consistently praised as one of the friendliest festival crowds. PLUR energy is real — strangers interact, groups are welcoming, solo attendees feel included. Club Glow has cultivated 20+ years of dance music culture in DC. The Secret Garden stage especially brings tight-knit vibes.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Room for improvement here. 2024's layout change put stages closer together, creating sound bleed issues — especially in VIP. The walk from drop-off to gates got longer. VIP had limited food options, no water stations, and longer restroom waits than GA. Water stations in GA can have lines. Entry is generally smooth though.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food with DC prices. VIP food options limited (vendors ran out by 8PM in 2024). $16 hot dogs were mentioned as pain points. Variety is decent but not exceptional. Lines manageable at off-peak times. Bring cash for shorter waits at some vendors.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DC is well-connected — Reagan National is close, Dulles and BWI are options. Metro accessible (though stadium station may require walk). Hotels plentiful at various price points. Central East Coast location means easy drives from Philly, Baltimore, Richmond. Rideshare works fine for drop-off/pickup.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two-day passes are reasonable ($150-200 GA, $300+ VIP). DC hotels can be pricey but options exist. For East Coast residents, it's more accessible than flying to EDC. VIP value questionable given 2024 issues — GA+ might be the sweet spot. You get Insomniac quality without mega-fest prices.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations are present but not the focus — Electra, Rise, photo ops, roaming performers. The real "extra" is the afterparty ecosystem: Echostage hosts official afterparties with extended sets. The 2024 Zedd b2b Knock2 afterparty was legendary. DC's club scene extends the experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>RFK Festival Grounds is functional but not scenic — the crumbling stadium in the background is more dystopian than beautiful. Open grass fields provide space. April/May weather is variable — 2024 Day 1 had rain and cool temps, Day 2 was sunny and hot. Not a "setting" festival, but it works.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Project Glow fills a genuine void — the Northeast lacks major EDM festivals. It's delivering on its promise of bringing Insomniac quality to the East Coast. Three years in, it's still improving and building reputation. The hype is earned, and the festival is meeting expectations while acknowledging room to grow.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>East Coast Ravers</h3>
+                        <p>Finally, Insomniac quality without flying to Vegas. Perfect for DC, Philly, Baltimore, and NYC crowds who want a proper festival closer to home.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>The Secret Garden stage delivers intimate vibes and quality underground bookings. Club Glow's DNA ensures house music is well-represented.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Afterparty Chasers</h3>
+                        <p>Echostage afterparties extend the experience into the early morning. The festival is just the beginning — DC nightlife takes over after.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>A manageable two-day festival with friendly crowds and good organization. Lower barrier than camping festivals or EDC-scale events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"When Illenium drops fireworks at Project Glow 😭🔥"</div>
+                    <div class="stats">1.8M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Secret Garden vibes hit different at 2AM"</div>
+                    <div class="stats">85K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Project Glow 2024 | Full Weekend + Echostage Afterparty"</div>
+                    <div class="stats">420K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Project Glow Experience</h2>
+            <p class="intro">Insomniac's East Coast expansion brings world-class EDM to the nation's capital. Here's what to expect.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">April/May</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">1PM - 11PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">40,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Partnership</h3>
+                <p>Project Glow is a collaboration between Insomniac (the EDC/Beyond Wonderland powerhouse) and Club Glow, the East Coast's dominant electronic music promoter. Club Glow has been cultivating DC's dance music scene for 20+ years through their flagship venue Echostage. Together, they launched Project Glow in Spring 2022.</p>
+                <p>The partnership brings Insomniac's production expertise and booking power to Club Glow's local infrastructure and community knowledge. It's a model that works — and shows what regional promoters can achieve with the right backing.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Three Stages</h3>
+                <ul>
+                    <li><strong>Eternal Stage:</strong> Main stage for headliners. New improved design in 2024 with pyro and fireworks. Gets crowded for big names.</li>
+                    <li><strong>Pulse Stage:</strong> Mid-size stage with diverse bookings. 2024's new leaf-adorned design. Good alternative when main stage is packed.</li>
+                    <li><strong>Secret Garden:</strong> Intimate house and techno haven. Where the real heads gather. Often the best vibes of the festival.</li>
+                </ul>
+                <blockquote class="quote">
+                    "The Secret Garden is where you find the community. Main stage is great, but the real connections happen in the intimate spaces."
+                    <cite>— Project Glow regular</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Echostage Connection</h3>
+                <p>The festival doesn't end at 11PM. Echostage hosts official afterparties that often rival the festival itself:</p>
+                <ul>
+                    <li><strong>Extended sets:</strong> Headliners do 2+ hour sets in club environment</li>
+                    <li><strong>Intimate b2bs:</strong> 2024's Zedd b2b Knock2 was legendary</li>
+                    <li><strong>Production:</strong> Echostage recently upgraded with insane laser systems</li>
+                    <li><strong>Energy:</strong> Often more packed and hyped than the festival</li>
+                </ul>
+                <p>Budget for afterparty tickets. This is half the experience.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Logistics & Tips</h3>
+                <ul>
+                    <li><strong>Getting there:</strong> Rideshare to RFK Festival Grounds. Expect a walk from drop-off.</li>
+                    <li><strong>Weather prep:</strong> April DC weather is unpredictable. Bring rain gear and layers.</li>
+                    <li><strong>VIP consideration:</strong> 2024 VIP had issues (sound bleed, limited food). GA+ might be better value.</li>
+                    <li><strong>Hydration:</strong> Water stations exist but can have lines. Bring empty CamelBak.</li>
+                    <li><strong>Pacing:</strong> Hot sun on Sunday, rain possible any day. Stay hydrated, rest when needed.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Known Issues (And Improvements)</h3>
+                <p>Project Glow has been transparent about growth areas:</p>
+                <ul>
+                    <li><strong>Sound bleed:</strong> 2024's new layout made VIP viewing problematic. Pulse/Eternal too close.</li>
+                    <li><strong>VIP experience:</strong> Limited food, no water stations, long restroom waits reported</li>
+                    <li><strong>Shade:</strong> Limited shade structures on sunny days</li>
+                    <li><strong>Walk distance:</strong> Getting longer from drop-off to gates each year</li>
+                </ul>
+                <p>The festival listens to feedback — each year has brought improvements. Expect continued iteration.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The DC Weekend</h3>
+                <p>Make a trip of it. DC offers plenty beyond the festival:</p>
+                <ul>
+                    <li><strong>Pre-game:</strong> Explore museums (free!), monuments, Georgetown</li>
+                    <li><strong>Afterparties:</strong> Echostage is the anchor, but Flash DC and Soundcheck also host events</li>
+                    <li><strong>Recovery:</strong> Brunch culture is strong in DC. Build in a rest day.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Untz Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #6b5b95 0%, #feb236 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Sycamore Ranch, Browns Valley CA</span>
+                <span>📅 May (3 days)</span>
+                <span>👥 ~2,000</span>
+                <span>💵 $275-325</span>
+            </div>
+            <h1>🎛️ The Untz Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The underground's underground. If you care about experimental bass, glitch, and sound design over mainstream appeal, The Untz has been championing these artists since 2009. Small, weird, and exactly what the deep diggers are looking for.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where The Untz shines brightest. The lineup is a bass head's deep cuts playlist come to life — Resonant Language, Truth, Space Jesus alumni, experimental producers you've never heard of who will become your favorites. Spanning dubstep, trap, UK garage, glitch, and experimental bass. Label showcases and collective takeovers mean curated sets from the underground's best crews. Production and sound quality prioritized. If you're tired of the same 20 headliners everywhere, this is your festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is solid for a festival this size — not massive spectacle but thoughtfully designed stages with proper sound systems. The venue (formerly Mariposa, now Sycamore Ranch) provides natural California beauty. Art installations and visual production are present but secondary to the music. This is intentional — the focus is on the audio experience, not competing with EDC's LED walls.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>"Super vibes all around" — the crowd is self-selected for people who actually care about underground music. No mainstream tourists, no Instagram posers. Everyone is there because they dug deep enough to find this festival. The result is a community of genuine music lovers who geek out together over sound design. Small size (~2,000) means intimate connections and recognizing faces all weekend.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Small festival = smooth logistics. Nothing is far, stages aren't overcrowded, entry is easy. Walk-in camping is first-come first-serve with premium car camping available. The intimate size means you won't spend your festival hiking between stages or fighting crowds. Water stations and amenities are adequate for the attendance level.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard camping festival food situation — vendors are present, nothing extraordinary. Bring your own camp supplies for the best experience. Prices are reasonable for California. The focus isn't on culinary excellence but the basics are covered. Workshops and community events sometimes include food experiences.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sycamore Ranch in Browns Valley is about 60-90 minutes north of Sacramento, 2+ hours from San Francisco. Driveable for California bass heads, requires planning for out-of-staters. Fly into Sacramento (SMF) or San Francisco (SFO). Rural location but not impossibly remote. Better accessibility than many underground festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$275-325 for three days of underground bass with camping included? Exceptional value. You won't find this level of curation at this price anywhere. Flying from the East Coast one attendee said it was "def worth it." The dollar-per-discovered-artist ratio is off the charts. Budget-friendly for the quality delivered.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Workshops, yoga, art installations, and label/collective showcases round out the experience. The community aspect is strong with opportunities to connect with artists and fellow attendees. Production workshops for aspiring producers sometimes featured. It's modest but thoughtful extras, fitting the underground ethos.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Northern California ranch setting — rolling hills, trees, classic West Coast festival environment. May weather is typically excellent (warm days, cool nights). The previous Mariposa venue was beloved, and Sycamore Ranch has earned praise as a worthy successor. Natural beauty without being too remote. Good vibes from the land.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Untz has been doing this since 2009 — the reputation is earned through consistent delivery. People hope it doesn't get too big and lose the magic. Veterans return year after year. There's no overhyping because the festival intentionally stays small and underground. What you expect is what you get, and for the target audience, it exceeds expectations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔬</div>
+                    <div>
+                        <h3>Sound Design Nerds</h3>
+                        <p>If you analyze synth patches and argue about resampling techniques, this is your people. Production-focused attendees who care about the craft.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Underground Seekers</h3>
+                        <p>Tired of the same headliners everywhere? The Untz books the artists who will be headliners in 3 years — and some who never will be (by choice).</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌲</div>
+                    <div>
+                        <h3>West Coast Bass Community</h3>
+                        <p>California's underground bass scene treats this as home base. If you're part of that world, attendance is expected.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Budget-Conscious Discovery</h3>
+                        <p>Maximum musical discovery per dollar spent. Perfect for those who want quality over quantity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The Untz is what festivals felt like before everything got corporate 🙏"</div>
+                    <div class="stats">234K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Day 2: 13 hours of bass and my face still hasn't recovered 🤯"</div>
+                    <div class="stats">45K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"The Untz Festival 2024 | Underground Bass Paradise"</div>
+                    <div class="stats">89K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Untz Experience</h2>
+            <p class="intro">Everything you need to know about California's underground bass destination.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2-3</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~2,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>The Untz rewards those who do their homework.</p>
+                <ul>
+                    <li><strong>Research the lineup:</strong> You may not know these names. That's the point. Listen before you go.</li>
+                    <li><strong>3-day pass for Friday:</strong> Friday requires a 3-day pass. Plan accordingly.</li>
+                    <li><strong>Car camping optional:</strong> Walk-in camping is free with ticket. Premium car camping costs extra.</li>
+                    <li><strong>California May:</strong> Warm days, cool nights. Layers and sun protection both needed.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Northern California — accessible but requires driving.</p>
+                <ul>
+                    <li><strong>From Sacramento:</strong> ~60-90 minutes. Easy day-of drive.</li>
+                    <li><strong>From SF Bay Area:</strong> ~2-2.5 hours. Worth the trek.</li>
+                    <li><strong>Flying in:</strong> Sacramento (SMF) is closest. Rent a car.</li>
+                    <li><strong>Entry:</strong> Friday gates open at 1pm for 3-day. Saturday at 9am for 2-day.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Sycamore Ranch (formerly at Mariposa) — intimate and well-designed.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Where headliners and biggest names play.</li>
+                    <li><strong>Label Takeovers:</strong> Collective and label showcases on secondary stages.</li>
+                    <li><strong>Layout:</strong> Compact, everything walkable, never feels overcrowded.</li>
+                    <li><strong>Music hours:</strong> 8pm Friday to 4am Monday. Pace yourself.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Untz is a really great fest. I flew in from NY. It's def worth it & super vibes all around. The lineup is always fire and they book artists others won't take risks on."
+                    <cite>— r/SpaceBass community member</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Standard camping festival logistics.</p>
+                <ul>
+                    <li><strong>Water:</strong> Bring your own supply and hydration pack. Stations available.</li>
+                    <li><strong>Food:</strong> Vendors present but bring camp food for best experience.</li>
+                    <li><strong>Camp setup:</strong> Premium car camping has electricity and water hookups.</li>
+                    <li><strong>Pack out:</strong> All vehicles must exit by 1pm Monday.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>The deep diggers of bass music.</p>
+                <ul>
+                    <li><strong>Knowledgeable:</strong> People here know their stuff. Great conversations await.</li>
+                    <li><strong>Welcoming:</strong> Small size means inclusive community.</li>
+                    <li><strong>Artist accessible:</strong> You might camp next to someone playing that night.</li>
+                    <li><strong>No posers:</strong> Everyone found this place by caring about the music.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>New favorite artists guaranteed.</p>
+                <ul>
+                    <li><strong>Discovery mode:</strong> You'll leave with a massive list of new artists to follow.</li>
+                    <li><strong>NorCal exploration:</strong> Extend your trip to explore Northern California.</li>
+                    <li><strong>Follow the website:</strong> TheUntz.com continues championing underground bass year-round.</li>
+                    <li><strong>Plan for next year:</strong> If this is your vibe, you'll be back.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

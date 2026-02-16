@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sun City Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #4a5568 0%, #2d3748 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .status-banner { background: linear-gradient(90deg, #742a2a 0%, #4a1a1a 100%); padding: 16px 0; text-align: center; border-bottom: 1px solid var(--border); }
+        .status-banner p { font-size: 0.95rem; color: #fc8181; margin-bottom: 4px; }
+        .status-banner strong { color: #ff6b6b; }
+        .status-banner .subtitle { font-size: 0.8rem; color: #a0a0b0; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; filter: grayscale(30%); }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .history-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .history-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
+        .history-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-top: 24px; margin-bottom: 12px; color: var(--accent); }
+        .history-section p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+        .history-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 16px; }
+        .history-section li { margin-bottom: 8px; }
+        
+        .lineup-history { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .lineup-history h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .lineup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .lineup-year { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .lineup-year h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; margin-bottom: 12px; color: var(--accent); }
+        .lineup-year ul { list-style: none; color: var(--text-secondary); font-size: 0.9rem; }
+        .lineup-year li { margin-bottom: 4px; }
+        
+        .legacy-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .legacy-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .legacy-section p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .alternatives { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .alternatives h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .alternatives p { color: var(--text-secondary); margin-bottom: 16px; }
+        .alt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .alt-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .alt-item h3 { font-size: 1rem; margin-bottom: 8px; }
+        .alt-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .alt-item a { color: var(--accent); text-decoration: none; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>⚠️ <strong>DISCONTINUED</strong> — Sun City Music Festival has not been held since 2017</p>
+            <p class="subtitle">Cancelled in 2018 with hopes to return; never resumed. This page documents the festival's history.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 El Paso, TX (Ascarate Park)</span>
+                <span>📅 Labor Day Weekend (2011-2017)</span>
+                <span>👥 20,000-30,000</span>
+                <span>💵 $100-200</span>
+            </div>
+            <h1>☀️ Sun City Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="history-section">
+        <div class="container">
+            <h2>What Was Sun City Music Festival?</h2>
+            <p>Sun City Music Festival (SCMF) was the Southwest's largest electronic music festival, held annually over Labor Day weekend in El Paso, Texas. For seven years (2011-2017), it brought world-class EDM to the border region, establishing El Paso as an unexpected but beloved destination on the festival circuit.</p>
+            
+            <p>Founded by SMG Events and Disco Donnie Presents, SCMF earned a reputation for punching above its weight — booking headliners like Tiësto, Armin van Buuren, and Steve Aoki while maintaining an intimate, community-driven atmosphere that larger festivals often lack.</p>
+            
+            <h3>Key Details</h3>
+            <ul>
+                <li><strong>Active Years:</strong> 2011-2017 (7 editions)</li>
+                <li><strong>Location:</strong> Ascarate Park, El Paso, TX (Cohen Stadium in 2011)</li>
+                <li><strong>When:</strong> Labor Day Weekend (Saturday-Sunday)</li>
+                <li><strong>Stages:</strong> 3 stages covering all EDM genres, including a Beatport Stage</li>
+                <li><strong>Founders:</strong> SMG Events + Disco Donnie Presents</li>
+                <li><strong>Attendance:</strong> Started at ~20,000 (2011), grew each year</li>
+            </ul>
+            
+            <h3>Why It Ended</h3>
+            <p>In May 2018, organizers announced SCMF would not be held that year. The official statement was vague:</p>
+            
+            <blockquote class="quote">
+                "...the Disco and SMG teams work diligently to ensure every single time you enter the gates of Sun City Music Festival, the best possible experience awaits you. Throughout the calendar year, the SCMF team works extremely hard to meet this momentous task with rigorous standards in place. Unfortunately, we don't believe that goal can be accomplished in 2018."
+                <cite>— SCMF Official Statement, May 2018</cite>
+            </blockquote>
+            
+            <p>There were hopes of returning in 2019, and Disco Donnie mentioned moving deposits to 2021 during the pandemic, but the festival never resumed. The exact reasons remain unclear — possible factors include:</p>
+            <ul>
+                <li>Financial challenges in the competitive festival market</li>
+                <li>El Paso's relative isolation making logistics complex</li>
+                <li>Competition from other Labor Day weekend events</li>
+                <li>COVID-19 pandemic disrupting any 2020-2021 return plans</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="lineup-history">
+        <div class="container">
+            <h2>Notable Past Lineups</h2>
+            <div class="lineup-grid">
+                <div class="lineup-year">
+                    <h3>2011 (Debut)</h3>
+                    <ul>
+                        <li>Armin van Buuren</li>
+                        <li>Afrojack</li>
+                        <li>Wolfgang Gartner</li>
+                        <li>Martin Solveig</li>
+                        <li>Nero</li>
+                        <li>Feed Me</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2012</h3>
+                    <ul>
+                        <li>David Guetta</li>
+                        <li>Zedd</li>
+                        <li>Flux Pavilion</li>
+                        <li>Knife Party</li>
+                        <li>Dada Life</li>
+                        <li>Above & Beyond</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2013</h3>
+                    <ul>
+                        <li>Tiësto</li>
+                        <li>Steve Aoki</li>
+                        <li>Alesso</li>
+                        <li>Dillon Francis</li>
+                        <li>Adventure Club</li>
+                        <li>Baauer</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2014-2017</h3>
+                    <ul>
+                        <li>Deadmau5</li>
+                        <li>Kaskade</li>
+                        <li>Bassnectar</li>
+                        <li>RL Grime</li>
+                        <li>Excision</li>
+                        <li>Flosstradamus</li>
+                        <li>Gesaffelstein</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="legacy-section">
+        <div class="container">
+            <h2>The SCMF Experience</h2>
+            <p>For those who attended, Sun City Music Festival offered something special:</p>
+            
+            <p><strong>The Setting:</strong> Ascarate Park provided an open-air desert venue with mountain views. September in El Paso meant warm days and cool nights — ideal festival weather. The park's grass fields and lake created a scenic backdrop unusual for EDM festivals.</p>
+            
+            <p><strong>The Community:</strong> SCMF served a region often overlooked by touring festivals. El Paso locals, along with fans from New Mexico, Arizona, West Texas, and across the Mexican border, created a tight-knit community. The festival was genuinely beloved by its attendees.</p>
+            
+            <p><strong>The Production:</strong> Despite being in a smaller market, SCMF invested in legitimate production. Three stages covered the full spectrum of electronic music — main stage for headliners, Beatport stage for underground sounds, and a third for variety. Free water, good sound systems, and solid organization earned praise.</p>
+            
+            <p><strong>The Value:</strong> Affordable compared to major festivals. Travel to El Paso was cheap, hotels were reasonable, and tickets never hit the premium prices of EDC or Ultra. For the lineup quality, it was exceptional value.</p>
+            
+            <blockquote class="quote">
+                "Great two-day electronic music festival with high quality acts. Plenty of room to dance. Free water. Production is amazing each of the two years I've been."
+                <cite>— Yelp Review, 2017</cite>
+            </blockquote>
+            
+            <p><strong>The Border Connection:</strong> El Paso's proximity to Ciudad Juárez meant a significant cross-border audience. SCMF was a cultural bridge, bringing together fans from both sides of the US-Mexico border in celebration of electronic music.</p>
+        </div>
+    </section>
+    
+    <section class="alternatives">
+        <div class="container">
+            <h2>Looking for Something Similar?</h2>
+            <p>SCMF left a void in the Southwest festival scene. Here are alternatives for Labor Day weekend and the region:</p>
+            
+            <div class="alt-grid">
+                <div class="alt-item">
+                    <h3>🏜️ Goldrush (Phoenix, AZ)</h3>
+                    <p>Relentless Beats' September festival in Arizona. Similar desert vibe, strong EDM lineup, accessible Southwest location. Late September timing.</p>
+                </div>
+                <div class="alt-item">
+                    <h3>💎 Gem & Jam (Tucson, AZ)</h3>
+                    <p>February festival combining electronic music with gem shows. Unique concept, strong bass music presence, Arizona desert setting.</p>
+                </div>
+                <div class="alt-item">
+                    <h3>🌅 Ubbi Dubbi (Dallas, TX)</h3>
+                    <p>Disco Donnie's Texas festival (same promoter as SCMF). April timing, massive production, carries some SCMF DNA.</p>
+                </div>
+                <div class="alt-item">
+                    <h3>🎪 Freaky Deaky (Texas)</h3>
+                    <p>Halloween-weekend EDM festival in Texas. Different timing but serves the Texas electronic music community.</p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 24px;"><strong>For El Paso specifically:</strong> The local scene still exists with club nights and smaller events, but no festival has filled SCMF's shoes. Some fans travel to Phoenix, Dallas, or Denver for major EDM festivals.</p>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+</body>
+</html>

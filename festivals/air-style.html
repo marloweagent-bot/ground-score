@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air + Style — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #4a5568 0%, #2d3748 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .status-banner { background: linear-gradient(90deg, #742a2a 0%, #4a1a1a 100%); padding: 16px 0; text-align: center; border-bottom: 1px solid var(--border); }
+        .status-banner p { font-size: 0.95rem; color: #fc8181; margin-bottom: 4px; }
+        .status-banner strong { color: #ff6b6b; }
+        .status-banner .subtitle { font-size: 0.8rem; color: #a0a0b0; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1200&q=80'); background-size: cover; background-position: center; position: relative; filter: grayscale(30%); }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .history-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .history-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
+        .history-section p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+        .history-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 16px; }
+        .history-section li { margin-bottom: 8px; }
+        
+        .lineup-history { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .lineup-history h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .lineup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .lineup-year { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .lineup-year h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; margin-bottom: 12px; color: var(--accent); }
+        .lineup-year ul { list-style: none; color: var(--text-secondary); font-size: 0.9rem; }
+        .lineup-year li { margin-bottom: 4px; }
+        
+        .legacy-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .legacy-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .legacy-section p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+        
+        .alternatives { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .alternatives h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .alternatives p { color: var(--text-secondary); margin-bottom: 16px; }
+        .alt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .alt-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .alt-item h3 { font-size: 1rem; margin-bottom: 8px; }
+        .alt-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .alt-item a { color: var(--accent); text-decoration: none; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>⚠️ <strong>DISCONTINUED</strong> — Air + Style has not been held since 2019</p>
+            <p class="subtitle">This page documents the festival's history for archival purposes.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Los Angeles, CA (Expo Park)</span>
+                <span>📅 February (2015-2019)</span>
+                <span>👥 30,000-50,000</span>
+                <span>💵 $75-150</span>
+            </div>
+            <h1>🏂 Air + Style</h1>
+        </div>
+    </section>
+    
+    <section class="history-section">
+        <div class="container">
+            <h2>What Was Air + Style?</h2>
+            <p>Air + Style was Shaun White's unique fusion of professional snowboarding competition and music festival. The Olympic gold medalist brought an event that had previously only existed in Austria and China to Los Angeles, creating something unlike anything else in the American festival landscape.</p>
+            
+            <p>The concept was audacious: build a massive 16-story snowboard jump in the middle of LA's Expo Park, bring world-class snow athletes to compete, and pair it with a major music lineup. The result was a two-day spectacle that blended action sports culture with festival culture.</p>
+            
+            <h3 style="margin-top: 24px; margin-bottom: 12px; color: var(--accent);">Key Details</h3>
+            <ul>
+                <li><strong>US Run:</strong> 2015-2019 (5 years in Los Angeles)</li>
+                <li><strong>Location:</strong> Expo Park, Downtown Los Angeles (Rose Bowl first year)</li>
+                <li><strong>Format:</strong> 2-day event (Saturday-Sunday in February)</li>
+                <li><strong>Unique feature:</strong> Professional snowboard Big Air competition on artificial snow ramp</li>
+                <li><strong>Founder:</strong> Shaun White (Olympic snowboarder)</li>
+                <li><strong>Original event:</strong> Started in Innsbruck, Austria (1993)</li>
+            </ul>
+            
+            <h3 style="margin-top: 24px; margin-bottom: 12px; color: var(--accent);">Why It Ended</h3>
+            <p>No official reason was given for the discontinuation. The 2019 edition appears to have been the last, with no events held since. Possible factors include:</p>
+            <ul>
+                <li>High production costs (building a snow ramp in Los Angeles is expensive)</li>
+                <li>Competition with other February events</li>
+                <li>Shaun White's shifting focus and eventual retirement from competitive snowboarding (2022)</li>
+                <li>The unique niche made it difficult to scale</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="lineup-history">
+        <div class="container">
+            <h2>Notable Past Lineups</h2>
+            <div class="lineup-grid">
+                <div class="lineup-year">
+                    <h3>2015 (Debut)</h3>
+                    <ul>
+                        <li>Kendrick Lamar</li>
+                        <li>Diplo</li>
+                        <li>Portugal. The Man</li>
+                        <li>Phantogram</li>
+                        <li>The Black Lips</li>
+                        <li>METZ</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2016</h3>
+                    <ul>
+                        <li>J. Cole</li>
+                        <li>Incubus</li>
+                        <li>Kaskade</li>
+                        <li>HAIM</li>
+                        <li>Vince Staples</li>
+                        <li>SZA</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2017</h3>
+                    <ul>
+                        <li>Major Lazer</li>
+                        <li>Flume</li>
+                        <li>ZHU</li>
+                        <li>Chromeo</li>
+                        <li>TV on the Radio</li>
+                        <li>YG</li>
+                        <li>Atmosphere</li>
+                    </ul>
+                </div>
+                <div class="lineup-year">
+                    <h3>2018-2019</h3>
+                    <ul>
+                        <li>Phoenix</li>
+                        <li>Wu-Tang Clan</li>
+                        <li>Anderson .Paak</li>
+                        <li>A$AP Ferg</li>
+                        <li>BROCKHAMPTON</li>
+                        <li>Alison Wonderland</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="legacy-section">
+        <div class="container">
+            <h2>The Air + Style Experience</h2>
+            <p>For those who attended, Air + Style offered something genuinely unique:</p>
+            
+            <p><strong>The Visual Spectacle:</strong> Watching professional snowboarders launch 60+ feet in the air against the Los Angeles skyline was surreal. The artificial snow ramp was an engineering marvel — snow in February LA.</p>
+            
+            <p><strong>The Crowd:</strong> A mix of action sports enthusiasts, music festival fans, and LA locals created an eclectic atmosphere. Less "rave" than pure EDM festivals, more cross-cultural.</p>
+            
+            <p><strong>The Sound Issues:</strong> The 2015 debut was marred by sound problems — Kendrick Lamar famously criticized the sound system mid-set and cut his performance short. Later years improved, but it remained a cautionary tale.</p>
+            
+            <p><strong>February Timing:</strong> Unique positioning in the festival calendar. A mid-winter outdoor event in LA worked because of the mild climate, but limited the audience to those available in February.</p>
+            
+            <blockquote style="border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary);">
+                "The visuals are remarkable, the music is unforgettable, and the experience is one-of-a-kind. For the second year, snowboard icon Shaun White brought his Air + Style festival to Los Angeles for two days of athletes catching air and musicians dominating crowds."
+                <cite style="display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent);">— Rolling Stone, 2016</cite>
+            </blockquote>
+        </div>
+    </section>
+    
+    <section class="alternatives">
+        <div class="container">
+            <h2>Looking for Something Similar?</h2>
+            <p>Air + Style occupied a unique niche, but here are festivals with overlapping appeal:</p>
+            
+            <div class="alt-grid">
+                <div class="alt-item">
+                    <h3>🏔️ X Games (Aspen)</h3>
+                    <p>ESPN's action sports competition includes music performances. The original action sports + music combo. January/February in Aspen, Colorado.</p>
+                </div>
+                <div class="alt-item">
+                    <h3>🎿 SnowGlobe (Lake Tahoe)</h3>
+                    <p>New Year's Eve EDM festival at a ski resort. Three days of electronic music in the snow. <a href="snowglobe.html">Read our review →</a></p>
+                </div>
+                <div class="alt-item">
+                    <h3>🎵 CRSSD Festival (San Diego)</h3>
+                    <p>Boutique electronic festival in February/March. Similar timing, curated lineup, outdoor SoCal vibes.</p>
+                </div>
+                <div class="alt-item">
+                    <h3>🌴 Winter festivals in warm climates</h3>
+                    <p>For February escapes: Okeechobee (FL), Gem & Jam (AZ), or Dirtybird Campout West (various).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+</body>
+</html>

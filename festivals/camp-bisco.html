@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camp Bisco — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff1493 0%, #00bfff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+
+        .legacy-banner { background: linear-gradient(90deg, #ff1493 0%, #00bfff 100%); padding: 12px 24px; text-align: center; }
+        .legacy-banner p { font-size: 0.9rem; color: white; margin: 0; }
+        .legacy-banner strong { color: #ffd700; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .successor-box { background: linear-gradient(135deg, rgba(0,255,136,0.1) 0%, rgba(0,191,255,0.1) 100%); border: 1px solid var(--accent); border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .successor-box h3 { font-family: 'Space Grotesk', sans-serif; color: var(--accent); margin-bottom: 12px; }
+        .successor-box p { color: var(--text-secondary); margin-bottom: 8px; }
+        .successor-box a { color: var(--accent); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+
+    <div class="legacy-banner">
+        <p>🕯️ <strong>LEGACY FESTIVAL</strong> — Camp Bisco ended after 2019. The Disco Biscuits now host BISCOLAND at Wonderland Forest, NY.</p>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Montage Mountain, Pennsylvania</span>
+                <span>📅 July (3 days)</span>
+                <span>👥 ~25,000</span>
+                <span>💵 $200-400</span>
+            </div>
+            <h1>🎪 Camp Bisco</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">40</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The original jamtronica festival — 20 years of Disco Biscuits sets, bass music evolution, and Northeast wook culture. Camp Bisco was legendary, chaotic, and uniquely itself. Montage Mountain summers defined a generation of festival-goers.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Camp Bisco pioneered the jam-meets-bass booking formula. Six Disco Biscuits sets anchored lineups featuring Bassnectar, Tipper, STS9, GRiZ, and deep bass cuts. The festival was patient zero for jamtronica — watching these genres merge in real-time was special.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was solid but not spectacular. Montage Mountain's ski resort setting provided built-in infrastructure. The waterpark was a unique addition. Stage production improved through the years but never matched EDC-scale festivals. Character over polish.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Legendary and notorious. Camp Bisco's crowd was... committed. The wook factor was high, the energy was chaotic, and the community was tight. Security had opinions about this crowd. If you knew, you knew — it wasn't for everyone.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Ski mountain logistics meant elevation changes and some hikes. The waterpark was a clutch cooling-off spot. Camping ranged from convenient to "why did I pitch my tent here." Infrastructure was functional but festival veterans learned the tricks.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare. The ski lodge had some options. Vendors were adequate but not a highlight. Scranton surroundings offered post-fest recovery options. Functional, not memorable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Scranton, PA was surprisingly accessible — drivable from NYC, Philly, Boston. Wilkes-Barre/Scranton airport for flights. The Northeast location made it the region's flagship camping festival. Easy enough for Northeast corridor residents.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent value for the lineup depth. $200-400 got you six Biscuits sets plus major bass acts. Affordable by major festival standards. The waterpark access was included. For Northeast fans, the regional accessibility added value.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The waterpark was the big extra — unique among camping festivals. Art installations existed but weren't the focus. The festival was music-first. Silent disco, late-night sets, and the overall chaos were the real extras.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Montage Mountain ski resort — Pennsylvania hills, summer green, waterpark vibes. Not dramatic mountain scenery but pleasant enough. July weather could be hot and humid. The ski lodge provided shelter and infrastructure.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Legendary status in the jam/bass community. Camp Bisco veterans have strong opinions and stronger memories. The festival's reputation — both positive and notorious — preceded it. For two decades, it delivered exactly what it promised.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="successor-box">
+            <h3>🎸 Spiritual Successor: BISCOLAND</h3>
+            <p>The Disco Biscuits launched <strong>BISCOLAND</strong> in 2023 at Wonderland Forest in Lafayette, NY. The 2024 edition expanded to 3 days with Nora En Pure, Lettuce, and multiple Biscuits sets.</p>
+            <p><strong>What's similar:</strong> Multiple Biscuits sets, jam-electronic crossover, camping festival format.</p>
+            <p><strong>What's different:</strong> Smaller scale, new venue, building fresh traditions.</p>
+            <p>🔗 <a href="https://www.bisco.land" target="_blank">bisco.land</a></p>
+        </div>
+    </div>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Disco Biscuits Disciples</h3>
+                        <p>Six sets of jamtronica pioneers over one weekend. If the Biscuits are your band, Camp Bisco was your pilgrimage.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Bassnectar, Tipper, Mersiv, Subtronics — Camp Bisco booked heavy. The bass programming was consistently excellent.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏊</div>
+                    <div>
+                        <h3>Waterpark Ravers</h3>
+                        <p>Literally the only major camping festival with a waterpark. Hot July days + waterslides = clutch.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🗽</div>
+                    <div>
+                        <h3>Northeast Crew</h3>
+                        <p>Drivable from NYC, Boston, Philly, DC. The region's flagship camping festival before Lost Lands and Hulaween.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Remembered</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 Reddit</div>
+                    <div class="title">"Camp Bisco was chaos incarnate and I wouldn't change a thing"</div>
+                    <div class="stats">r/aves • <a href="https://reddit.com" target="_blank">View discussion →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"That Bassnectar sunrise into Biscuits set still haunts me 🌅🔊"</div>
+                    <div class="stats">Archive post • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Camp Bisco | A 20 Year Legacy in Jamtronica"</div>
+                    <div class="stats">567K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Camp Bisco Legacy</h2>
+            <p class="intro">How a Philly jam band built a 20-year festival dynasty.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">July</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Ran</div><div class="value">1999-2019</div></div>
+                <div class="fact"><div class="label">Peak Size</div><div class="value">~25,000</div></div>
+                <div class="fact"><div class="label">Biscuits Sets</div><div class="value">6 per year</div></div>
+                <div class="fact"><div class="label">Successor</div><div class="value">BISCOLAND</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>History</h3>
+                <p>Camp Bisco was born from The Disco Biscuits' ambition to create their own festival — a common jam band move that became something much larger.</p>
+                <ul>
+                    <li><strong>1999:</strong> First Camp Bisco at a campground in Pennsylvania</li>
+                    <li><strong>Early 2000s:</strong> Nomadic years at various Northeast venues</li>
+                    <li><strong>2011-2014:</strong> Indian Lookout Country Club in Mariaville, NY</li>
+                    <li><strong>2015-2019:</strong> Montage Mountain era in Scranton, PA — the peak years</li>
+                    <li><strong>2020:</strong> Announced and postponed due to COVID</li>
+                    <li><strong>2021:</strong> Cancelled outright — never returned in original form</li>
+                    <li><strong>2023:</strong> BISCOLAND launches as spiritual successor</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <p>Camp Bisco was the patient zero of jamtronica festivals — watching electronic and jam scenes merge in real-time.</p>
+                
+                <blockquote class="quote">
+                    "Camp Bisco crowds like ketamine... a lot. Those folks were wild."
+                    <cite>— Security officer quoted on r/festivals, 2024</cite>
+                </blockquote>
+                
+                <ul>
+                    <li><strong>Jamtronica pioneers:</strong> The Disco Biscuits literally invented the genre; the fest showcased it</li>
+                    <li><strong>Bass integration:</strong> Early adopter of Bassnectar, Tipper, and bass music before it was everywhere</li>
+                    <li><strong>Six Biscuits sets:</strong> No other festival gave you this much of your favorite band</li>
+                    <li><strong>The waterpark:</strong> Unique amenity that defined the Montage Mountain experience</li>
+                    <li><strong>Northeast institution:</strong> For 20 years, THE camping festival for the corridor</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Reputation</h3>
+                <p>Camp Bisco was legendary — and notorious. The crowd was committed in ways that made security nervous.</p>
+                <ul>
+                    <li><strong>Wook central:</strong> If you know the term, Camp Bisco defined it</li>
+                    <li><strong>Party hard culture:</strong> This was not a wellness festival</li>
+                    <li><strong>Tight community:</strong> Veterans returned year after year</li>
+                    <li><strong>Not for everyone:</strong> First-timers were either converted or overwhelmed</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The End & BISCOLAND</h3>
+                <p>Camp Bisco 2020 was announced, then COVID cancelled it. It never returned to Montage Mountain.</p>
+                <ul>
+                    <li><strong>2020-2022:</strong> Pandemic limbo, no Camp Bisco</li>
+                    <li><strong>2023:</strong> Disco Biscuits launch BISCOLAND at Wonderland Forest, NY</li>
+                    <li><strong>2024:</strong> BISCOLAND expands to 3 days, builds new traditions</li>
+                    <li><strong>The spirit lives:</strong> Different venue, same band, similar crossover booking</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Alternatives for Camp Bisco Fans</h3>
+                <ul>
+                    <li><strong>BISCOLAND:</strong> The official successor — multiple Biscuits sets, Wonderland Forest NY</li>
+                    <li><strong>Secret Dreams:</strong> Similar bass/jam crossover at Legend Valley</li>
+                    <li><strong>Resonance:</strong> Jam-focused with electronic elements</li>
+                    <li><strong>Hulaween:</strong> Suwannee's jam/electronic hybrid</li>
+                    <li><strong>Peach Music Festival:</strong> Northeast jam focus (Scranton area)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

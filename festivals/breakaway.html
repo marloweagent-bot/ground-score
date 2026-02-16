@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakaway Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b35 0%, #f7c531 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Multi-City (10+ US Cities)</span>
+                <span>📅 Year-Round (City-Specific)</span>
+                <span>👥 10,000-25,000/city</span>
+                <span>💵 $100-250</span>
+            </div>
+            <h1>🚀 Breakaway Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">35</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Breakaway brings mainstream EDM headliners to your city without the travel hassle. It's the "big festival in your backyard" experience — solid production, accessible pricing, and big names. Perfect gateway festival for newcomers, though veterans may want more.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Lineups lean mainstream EDM — The Chainsmokers, Illenium, Tiesto, Zedd, deadmau5. Great for radio-friendly electronic, but don't expect underground or experimental bookings. 2 stages per city keeps variety limited but quality focused. Headliners get 60-70 minute sets.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production has improved significantly over the years. Main stage visuals are solid — good LED walls, lasers, and pyro for headliners. Not on the level of Insomniac or Ultra, but respectable for a touring festival. The indoor stage can get cramped but has good intimacy.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Younger, more mainstream crowd. First-timers and casual EDM fans dominate. Less PLUR culture, more "concert-goers at an EDM show" energy. Varies by city — Charlotte and Michigan tend to have better vibes. The afterparties often have better crowd energy than the main event.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Compact venues mean shorter walks between stages. Entry is generally quick. When the second stage closes for headliners, the single-stage setup can get very crowded. Water stations are adequate. Layout varies significantly by city/venue.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare — food trucks, basic options. Nothing exceptional but covers the basics. Prices are typical festival markup ($12-15 entrees). Vendors vary by city. Pre-game or post-festival meals are the better bet.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is Breakaway's biggest strength — bringing festivals TO you. No flights to Vegas or Miami needed. Most venues are central to their cities with easy transit, parking, or rideshare. Hotels are plentiful and reasonably priced. The "hometown festival" model makes logistics simple.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent value proposition. $100-200 tickets for headliner-level acts without travel costs. Total trip cost can be under $300 if you're local. Early bird pricing makes it even better. Best bang-for-buck festival experience for mainstream EDM fans.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Limited beyond the music. Some festivals include silent disco and basic activations. No art installations, carnival rides, or immersive experiences. The afterparties (Levity venues, local clubs) are sometimes the best "extra" — separate tickets but worth it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Venues vary wildly by city — convention centers, stadiums, parks, waterfronts. Some cities (Charlotte, Michigan) have better outdoor settings. Others are more industrial. Not a destination festival, but urban/suburban settings work for the touring model.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Delivers exactly what it promises — mainstream headliners in accessible locations at good prices. No one expects EDC production; they expect to see their favorite DJs without the Vegas trip. For that promise, Breakaway consistently delivers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Never been to an EDM festival? Breakaway is the perfect gateway — accessible, affordable, and in your city. Low commitment, high reward.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>City venues mean festival by day, local nightlife by night. Afterparties extend the experience. No camping gear required.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Easy to convince friends who "aren't into festivals." Low cost, minimal planning, hometown convenience. The gateway drug for your crew.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Mainstream EDM Fans</h3>
+                        <p>If your Spotify is full of Illenium, Tiesto, and The Chainsmokers, this lineup is made for you. All the hits, live.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Breakaway just came to my city and I finally understand festivals"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"When Illenium drops 'Feel Something' in your hometown 🥹"</div>
+                    <div class="stats">245K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Breakaway Charlotte 2024 | Is It Worth It? (Honest Review)"</div>
+                    <div class="stats">156K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Breakaway Experience</h2>
+            <p class="intro">A touring EDM festival bringing headliners to your hometown. Here's what to expect.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Format</div><div class="value">2-Day Festival</div></div>
+                <div class="fact"><div class="label">Cities</div><div class="value">10+ US Markets</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">10-25K/city</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+ (21+ bars)</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>2026 Cities & Dates</h3>
+                <p>Breakaway has expanded aggressively. Current and announced markets include:</p>
+                <ul>
+                    <li><strong>Dallas:</strong> April (Inaugural 2025)</li>
+                    <li><strong>Tampa:</strong> April 17-18, 2026</li>
+                    <li><strong>Arizona:</strong> April/May (Sloan Park, Mesa)</li>
+                    <li><strong>Charlotte:</strong> Summer</li>
+                    <li><strong>Michigan:</strong> Summer</li>
+                    <li><strong>Ohio:</strong> Summer (Original Breakaway)</li>
+                    <li><strong>Philadelphia:</strong> December 27-28 (Convention Center)</li>
+                    <li><strong>New cities announced:</strong> More markets expanding in 2026</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Breakaway is low-prep compared to camping festivals, but a few things help:</p>
+                <ul>
+                    <li><strong>Early bird tickets:</strong> Significant savings if you buy when announced. Use promo codes from influencers for additional 10% off.</li>
+                    <li><strong>Hotel vs. commute:</strong> If the venue is central, staying nearby opens up afterparty options.</li>
+                    <li><strong>Check the indoor stage schedule:</strong> It closes for headliners — plan your undercard viewing accordingly.</li>
+                    <li><strong>Afterparty tickets:</strong> Often sold separately. Levity-hosted events have been highlights in multiple cities.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Urban venues mean urban logistics — generally straightforward.</p>
+                <ul>
+                    <li><strong>Rideshare:</strong> Works well. Surge pricing applies at close but manageable.</li>
+                    <li><strong>Parking:</strong> Available at most venues. Arrive early for better spots.</li>
+                    <li><strong>Entry:</strong> Standard security — bag checks, metal detectors. Lines can build for headliners but rarely excessive.</li>
+                    <li><strong>Re-entry:</strong> Check specific city policy, varies by venue.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Compact, efficient, focused on the music:</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Outdoor, big production, all headliners. Get there early for prime positioning.</li>
+                    <li><strong>Indoor/Second Stage:</strong> More intimate, often better crowd energy. Closes during main stage headliners.</li>
+                    <li><strong>Vendor areas:</strong> Standard festival setup — food, merch, sponsors.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Good production, mediocre crowd, but the afterparties were real cool. Easy to find hotels and the silent disco was so fun."
+                    <cite>— r/festivals, 2023</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <ul>
+                    <li><strong>Water:</strong> Free stations available, but lines can form. Bring an empty bottle.</li>
+                    <li><strong>Food:</strong> Standard festival food trucks. Nothing exceptional but functional.</li>
+                    <li><strong>Weather:</strong> Varies by city and season. Check local forecasts — some cities do spring, others do winter indoor editions.</li>
+                    <li><strong>Pro tip:</strong> Eat before entering. More options, better prices, shorter waits.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Know what you're getting into:</p>
+                <ul>
+                    <li><strong>Demographics:</strong> Younger crowd (18-28), many first-time festival-goers, mainstream EDM fans.</li>
+                    <li><strong>Energy:</strong> Concert-crowd energy more than rave-family vibes. Less kandi, more phone flashlights.</li>
+                    <li><strong>Friendly:</strong> Generally good vibes, just different from Insomniac PLUR culture.</li>
+                    <li><strong>Afterparties:</strong> Often better, tighter community at the after events.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <ul>
+                    <li><strong>Official afterparties:</strong> Check Breakaway and Levity socials for announcements. Separate tickets.</li>
+                    <li><strong>Local clubs:</strong> Many cities have EDM-friendly clubs that go late.</li>
+                    <li><strong>Sunday recovery:</strong> No camping means you sleep in a real bed. Brunch exists.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -31,6 +31,7 @@
         .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 20px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 16px; }
         .hero .emphasis { color: var(--text-primary); font-weight: 500; }
+        .hero .festival-count { font-size: 0.95rem; color: var(--accent); margin-top: 20px; font-weight: 500; }
         
         /* Priority Picker */
         .priority-picker { padding: 40px 0; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -68,32 +69,30 @@
         .criteria-tag .icon { font-size: 0.875rem; }
         .criteria-tag .text { color: var(--text-secondary); }
         
-        /* Festival Cards */
-        .festivals-section { padding: 48px 0; }
+        /* Festival Sections */
+        .festivals-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .festivals-section:last-of-type { border-bottom: none; }
         .festivals-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
-        .festivals-section .section-subtitle { color: var(--text-secondary); margin-bottom: 24px; }
+        .festivals-section .section-subtitle { color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem; }
         
-        .festival-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .festival-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
         
-        .festival-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.2s, border-color 0.2s; text-decoration: none; color: inherit; display: block; }
-        .festival-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        .festival-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: transform 0.2s, border-color 0.2s; text-decoration: none; color: inherit; display: block; }
+        .festival-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .festival-card.legacy { opacity: 0.7; }
+        .festival-card.legacy:hover { opacity: 1; }
         
-        .festival-card .image { height: 160px; background-size: cover; background-position: center; position: relative; }
-        .festival-card .image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%); }
-        .festival-card .image .score-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); padding: 6px 12px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); font-size: 0.9rem; z-index: 1; }
+        .festival-card .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .festival-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; line-height: 1.3; }
+        .festival-card .score-badge { background: rgba(0, 255, 136, 0.15); padding: 4px 10px; border-radius: 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); font-size: 0.85rem; white-space: nowrap; }
+        .festival-card .score-badge.high { background: rgba(0, 255, 136, 0.25); }
+        .festival-card .score-badge.legacy { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; }
         
-        .festival-card .content { padding: 20px; }
-        .festival-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; margin-bottom: 4px; }
-        .festival-card .location { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 12px; }
+        .festival-card .location { color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 12px; }
         
-        .festival-card .highlights { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-        .festival-card .highlight { padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 0.7rem; color: var(--text-secondary); }
-        .festival-card .highlight.strong { background: rgba(0, 255, 136, 0.15); color: var(--accent); }
-        
-        .festival-card .mini-scores { display: flex; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-        .festival-card .mini-score { flex: 1; text-align: center; }
-        .festival-card .mini-score .label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
-        .festival-card .mini-score .value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); }
+        .festival-card .highlights { display: flex; gap: 6px; flex-wrap: wrap; }
+        .festival-card .highlight { padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 10px; font-size: 0.65rem; color: var(--text-secondary); }
+        .festival-card .highlight.strong { background: rgba(0, 255, 136, 0.1); color: var(--accent); }
         
         /* Footer */
         footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
@@ -122,6 +121,7 @@
             <p class="subtitle">
                 Some people want to camp under the stars and get sweaty. Others want world-class stage design. Some just want easy logistics and good vibes. Ground Score helps you and your crew find the experience you're actually looking for.
             </p>
+            <p class="festival-count">94 festivals • Honest reviews</p>
         </div>
     </section>
     
@@ -190,16 +190,16 @@
     
     <section class="quick-filters">
         <div class="container">
-            <div class="label">Or try a quick filter</div>
+            <div class="label">Or browse by vibe</div>
             <div class="filter-bar">
-                <button class="filter-btn" onclick="applyFilter('all')">All Festivals</button>
+                <button class="filter-btn active" onclick="applyFilter('all')">All Festivals</button>
+                <button class="filter-btn" onclick="applyFilter('toprated')">🔥 Top Rated</button>
                 <button class="filter-btn" onclick="applyFilter('camping')">🏕️ Camping</button>
                 <button class="filter-btn" onclick="applyFilter('urban')">🌆 Urban</button>
-                <button class="filter-btn" onclick="applyFilter('budget')">💰 Budget-Friendly</button>
-                <button class="filter-btn" onclick="applyFilter('scenic')">🌲 Scenic</button>
-                <button class="filter-btn" onclick="applyFilter('wild')">🎉 Wild Energy</button>
-                <button class="filter-btn" onclick="applyFilter('firsttimer')">👶 First-Timer</button>
-                <button class="filter-btn" onclick="applyFilter('toprated')">🔥 Top Rated</button>
+                <button class="filter-btn" onclick="applyFilter('bass')">🔊 Bass</button>
+                <button class="filter-btn" onclick="applyFilter('house')">🎹 House/Techno</button>
+                <button class="filter-btn" onclick="applyFilter('transform')">🌀 Transformational</button>
+                <button class="filter-btn" onclick="applyFilter('destination')">✈️ Destination</button>
             </div>
         </div>
     </section>
@@ -222,119 +222,1302 @@
         </div>
     </section>
     
-    <section class="festivals-section">
+    <!-- TOP RATED (45+) -->
+    <section class="festivals-section" data-category="toprated">
         <div class="container">
-            <h2>Top Rated Festivals</h2>
-            <p class="section-subtitle">Based on overall Ground Score across all categories.</p>
+            <h2>🏆 Top Rated (45+)</h2>
+            <p class="section-subtitle">The cream of the crop. These festivals consistently deliver exceptional experiences.</p>
             
-            <div class="festival-grid" id="festival-grid">
-                <!-- Electric Forest -->
-                <a href="festivals/electric-forest.html" class="festival-card" data-tags="camping,scenic,toprated,firsttimer" data-scores='{"sound":4.5,"scene":5,"vibe":5,"flow":4,"fuel":4.5,"access":3.5,"value":4.5,"extra":5,"setting":5,"hype":5}'>
-                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&q=80');">
-                        <span class="score-badge">46/50</span>
-                    </div>
-                    <div class="content">
+            <div class="festival-grid">
+                <a href="festivals/electric-forest.html" class="festival-card" data-tags="toprated,camping,transform">
+                    <div class="card-header">
                         <h3>Electric Forest</h3>
-                        <p class="location">📍 Rothbury, MI • June</p>
-                        <div class="highlights">
-                            <span class="highlight strong">Best Setting</span>
-                            <span class="highlight strong">Best Community</span>
-                            <span class="highlight">4-Day Camping</span>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score"><div class="label">Vibe</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Setting</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Extras</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Value</div><div class="value">4.5</div></div>
-                        </div>
+                        <span class="score-badge high">46/50</span>
+                    </div>
+                    <p class="location">📍 Rothbury, Michigan</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Setting</span>
+                        <span class="highlight strong">Best Community</span>
+                        <span class="highlight">4-Day Camping</span>
                     </div>
                 </a>
                 
-                <!-- Burning Man -->
-                <a href="festivals/burning-man.html" class="festival-card" data-tags="camping,scenic,wild" data-scores='{"sound":4,"scene":5,"vibe":5,"flow":2,"fuel":3,"access":1.5,"value":4,"extra":5,"setting":5,"hype":5}'>
-                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=600&q=80');">
-                        <span class="score-badge">45/50</span>
+                <a href="festivals/infrasound.html" class="festival-card" data-tags="toprated,camping,bass">
+                    <div class="card-header">
+                        <h3>Infrasound</h3>
+                        <span class="score-badge high">46/50</span>
                     </div>
-                    <div class="content">
+                    <p class="location">📍 Harmony Park, Minnesota</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Sound Systems</span>
+                        <span class="highlight strong">Underground Dubstep</span>
+                        <span class="highlight">Incredible Value</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/burning-man.html" class="festival-card" data-tags="toprated,camping,transform">
+                    <div class="card-header">
                         <h3>Burning Man</h3>
-                        <p class="location">📍 Black Rock City, NV • Aug-Sept</p>
-                        <div class="highlights">
-                            <span class="highlight strong">Unmatched Art</span>
-                            <span class="highlight">Extreme</span>
-                            <span class="highlight">8 Days</span>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score"><div class="label">Scene</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Extras</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Vibe</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Access</div><div class="value">1.5</div></div>
-                        </div>
+                        <span class="score-badge high">45/50</span>
+                    </div>
+                    <p class="location">📍 Black Rock City, Nevada</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Unmatched Art</span>
+                        <span class="highlight">Extreme Experience</span>
+                        <span class="highlight">8 Days</span>
                     </div>
                 </a>
                 
-                <!-- EDC Las Vegas -->
-                <a href="festivals/edc-las-vegas.html" class="festival-card" data-tags="wild,toprated" data-scores='{"sound":4.5,"scene":5,"vibe":4.5,"flow":3.5,"fuel":4,"access":4.5,"value":4,"extra":4.5,"setting":4.5,"hype":5}'>
-                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80');">
-                        <span class="score-badge">44/50</span>
+                <a href="festivals/desert-hearts.html" class="festival-card" data-tags="toprated,camping,house">
+                    <div class="card-header">
+                        <h3>Desert Hearts</h3>
+                        <span class="score-badge high">45/50</span>
                     </div>
-                    <div class="content">
+                    <p class="location">📍 Flagstaff, Arizona</p>
+                    <div class="highlights">
+                        <span class="highlight strong">House/Techno/Love</span>
+                        <span class="highlight strong">72hr Nonstop</span>
+                        <span class="highlight">One Stage</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/groove-cruise.html" class="festival-card" data-tags="toprated,destination">
+                    <div class="card-header">
+                        <h3>Groove Cruise</h3>
+                        <span class="score-badge high">45/50</span>
+                    </div>
+                    <p class="location">📍 Cruise Ship (Various)</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Community</span>
+                        <span class="highlight strong">All-Inclusive</span>
+                        <span class="highlight">5+ Days</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- MAJOR ELECTRONIC -->
+    <section class="festivals-section" data-category="major">
+        <div class="container">
+            <h2>⚡ Major Electronic</h2>
+            <p class="section-subtitle">The flagship events from the biggest promoters. Massive production, massive lineups.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/edc-las-vegas.html" class="festival-card" data-tags="toprated,urban">
+                    <div class="card-header">
                         <h3>EDC Las Vegas</h3>
-                        <p class="location">📍 Las Vegas, NV • May</p>
-                        <div class="highlights">
-                            <span class="highlight strong">Best Production</span>
-                            <span class="highlight">3 Nights</span>
-                            <span class="highlight">170K People</span>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score"><div class="label">Scene</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.5</div></div>
-                            <div class="mini-score"><div class="label">Hype</div><div class="value">5.0</div></div>
-                            <div class="mini-score"><div class="label">Flow</div><div class="value">3.5</div></div>
-                        </div>
+                        <span class="score-badge high">44/50</span>
+                    </div>
+                    <p class="location">📍 Las Vegas, Nevada</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Production</span>
+                        <span class="highlight">3 Nights</span>
+                        <span class="highlight">170K People</span>
                     </div>
                 </a>
                 
-                <!-- Ultra Miami -->
-                <a href="festivals/ultra-miami.html" class="festival-card" data-tags="urban,wild" data-scores='{"sound":4.5,"scene":4.5,"vibe":3,"flow":3,"fuel":3,"access":4.5,"value":3,"extra":3.5,"setting":4.5,"hype":3.5}'>
-                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=600&q=80');">
+                <a href="festivals/lightning-in-a-bottle.html" class="festival-card" data-tags="toprated,camping,transform">
+                    <div class="card-header">
+                        <h3>Lightning in a Bottle</h3>
+                        <span class="score-badge high">44/50</span>
+                    </div>
+                    <p class="location">📍 Bakersfield, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Transformational</span>
+                        <span class="highlight">Workshops</span>
+                        <span class="highlight">Lake Setting</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/seismic-dance-event.html" class="festival-card" data-tags="toprated,house,urban">
+                    <div class="card-header">
+                        <h3>Seismic Dance Event</h3>
+                        <span class="score-badge high">44/50</span>
+                    </div>
+                    <p class="location">📍 Austin, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Elite Techno</span>
+                        <span class="highlight strong">Best Sound</span>
+                        <span class="highlight">Urban</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/the-untz-festival.html" class="festival-card" data-tags="toprated,camping,bass">
+                    <div class="card-header">
+                        <h3>The Untz Festival</h3>
+                        <span class="score-badge high">44/50</span>
+                    </div>
+                    <p class="location">📍 Browns Valley, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Underground Bass</span>
+                        <span class="highlight">Intimate</span>
+                        <span class="highlight">Great Value</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/bass-canyon.html" class="festival-card" data-tags="bass,camping">
+                    <div class="card-header">
+                        <h3>Bass Canyon</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 The Gorge, Washington</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Venue</span>
+                        <span class="highlight">Heavy Bass</span>
+                        <span class="highlight">Excision Curated</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/edc-orlando.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>EDC Orlando</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Orlando, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">East Coast EDC</span>
+                        <span class="highlight">3 Days</span>
+                        <span class="highlight">Great Production</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/beyond-wonderland-socal.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Beyond Wonderland</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 San Bernardino, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Insomniac Quality</span>
+                        <span class="highlight">Alice Theme</span>
+                        <span class="highlight">2 Days</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/nocturnal-wonderland.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Nocturnal Wonderland</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 San Bernardino, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Oldest US Rave</span>
+                        <span class="highlight">Camping Available</span>
+                        <span class="highlight">September</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/escape-halloween.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Escape Halloween</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 San Bernardino, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Halloween</span>
+                        <span class="highlight">Horror Theme</span>
+                        <span class="highlight">2 Nights</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/ultra-miami.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Ultra Miami</h3>
                         <span class="score-badge">37/50</span>
                     </div>
-                    <div class="content">
-                        <h3>Ultra Miami</h3>
-                        <p class="location">📍 Miami, FL • March</p>
-                        <div class="highlights">
-                            <span class="highlight strong">Elite Sound</span>
-                            <span class="highlight">Urban</span>
-                            <span class="highlight">Music Week</span>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.5</div></div>
-                            <div class="mini-score"><div class="label">Scene</div><div class="value">4.5</div></div>
-                            <div class="mini-score"><div class="label">Access</div><div class="value">4.5</div></div>
-                            <div class="mini-score"><div class="label">Vibe</div><div class="value">3.0</div></div>
-                        </div>
+                    <p class="location">📍 Miami, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">Elite Lineups</span>
+                        <span class="highlight">Miami Week</span>
+                        <span class="highlight">Global Brand</span>
                     </div>
                 </a>
                 
-                <!-- Coachella -->
-                <a href="festivals/coachella.html" class="festival-card" data-tags="camping,scenic" data-scores='{"sound":4,"scene":4,"vibe":3,"flow":3.5,"fuel":4,"access":3.5,"value":2.5,"extra":4.5,"setting":4,"hype":2}'>
-                    <div class="image" style="background-image: url('https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=600&q=80');">
+                <a href="festivals/hard-summer.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>HARD Summer</h3>
+                        <span class="score-badge">37/50</span>
+                    </div>
+                    <p class="location">📍 Los Angeles, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Hip-Hop Crossover</span>
+                        <span class="highlight">Bass Heavy</span>
+                        <span class="highlight">2 Days</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/electric-zoo.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Electric Zoo</h3>
                         <span class="score-badge">35/50</span>
                     </div>
-                    <div class="content">
+                    <p class="location">📍 New York City</p>
+                    <div class="highlights">
+                        <span class="highlight">NYC's Flagship</span>
+                        <span class="highlight">Labor Day</span>
+                        <span class="highlight">Island Venue</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- HOUSE/TECHNO -->
+    <section class="festivals-section" data-category="house">
+        <div class="container">
+            <h2>🎹 House & Techno</h2>
+            <p class="section-subtitle">For the four-on-the-floor faithful. Underground sounds and proper club culture.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/dirtybird-campout.html" class="festival-card" data-tags="house,camping">
+                    <div class="card-header">
+                        <h3>Dirtybird Campout</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 Northern California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Summer Camp Vibes</span>
+                        <span class="highlight">Games & Activities</span>
+                        <span class="highlight">Weird & Fun</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/iii-points.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>III Points</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 Miami, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Cutting Edge</span>
+                        <span class="highlight">Art + Music</span>
+                        <span class="highlight">Wynwood</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/day-zero.html" class="festival-card" data-tags="house,destination">
+                    <div class="card-header">
+                        <h3>Day Zero</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 Tulum, Mexico</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Jungle Setting</span>
+                        <span class="highlight">NYE</span>
+                        <span class="highlight">Damian Lazarus</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/arc-music-festival.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>ARC Music Festival</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Chicago, Illinois</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Chicago Techno</span>
+                        <span class="highlight">Union Park</span>
+                        <span class="highlight">Labor Day</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/dreamstate-socal.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Dreamstate SoCal</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Long Beach, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Trance Only</span>
+                        <span class="highlight">Dedicated Fans</span>
+                        <span class="highlight">Great Sound</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/day-mvs.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Day MVS</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 San Diego, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Waterfront</span>
+                        <span class="highlight">House Focus</span>
+                        <span class="highlight">Great Weather</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/rakastella.html" class="festival-card" data-tags="house,destination">
+                    <div class="card-header">
+                        <h3>Rakastella</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Miami, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Beach Setting</span>
+                        <span class="highlight">Art Basel</span>
+                        <span class="highlight">Techno</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/north-coast.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>North Coast</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Chicago Area</p>
+                    <div class="highlights">
+                        <span class="highlight">Multi-Genre</span>
+                        <span class="highlight">Labor Day</span>
+                        <span class="highlight">Good Value</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/crssd-festival.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>CRSSD Festival</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 San Diego, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Waterfront Views</span>
+                        <span class="highlight">21+</span>
+                        <span class="highlight">Perfect Weather</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/movement-detroit.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Movement Detroit</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Detroit, Michigan</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Techno Birthplace</span>
+                        <span class="highlight">Historic</span>
+                        <span class="highlight">Memorial Day</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/minimal-effort.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Minimal Effort</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Los Angeles, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Underground</span>
+                        <span class="highlight">Warehouse Vibes</span>
+                        <span class="highlight">Quality Curation</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/day-trip-la.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Day Trip LA</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Long Beach, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Waterfront</span>
+                        <span class="highlight">House & Techno</span>
+                        <span class="highlight">Single Day</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/anjunadeep-open-air.html" class="festival-card" data-tags="house,urban">
+                    <div class="card-header">
+                        <h3>Anjunadeep Open Air</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Various (Touring)</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Anjuna Family</span>
+                        <span class="highlight">Progressive House</span>
+                        <span class="highlight">Touring</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- BASS/DUBSTEP -->
+    <section class="festivals-section" data-category="bass">
+        <div class="container">
+            <h2>🔊 Bass & Dubstep</h2>
+            <p class="section-subtitle">Headbangers unite. Heavy bass, aggressive drops, and mosh pits with heart.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/wakaan-festival.html" class="festival-card" data-tags="bass,camping">
+                    <div class="card-header">
+                        <h3>Wakaan Festival</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 Ozark, Arkansas</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Liquid Stranger's Vision</span>
+                        <span class="highlight">Experimental Bass</span>
+                        <span class="highlight">Beautiful Venue</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/lost-lands.html" class="festival-card" data-tags="bass,camping">
+                    <div class="card-header">
+                        <h3>Lost Lands</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Legend Valley, Ohio</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Dubstep Mecca</span>
+                        <span class="highlight">Dinosaurs</span>
+                        <span class="highlight">1M+ Watts</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/dancefestopia.html" class="festival-card" data-tags="bass,camping">
+                    <div class="card-header">
+                        <h3>DanceFestopia</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Kansas City, Kansas</p>
+                    <div class="highlights">
+                        <span class="highlight">Bass Heavy</span>
+                        <span class="highlight">Camping</span>
+                        <span class="highlight">Great Value</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/camp-bisco.html" class="festival-card" data-tags="bass,camping">
+                    <div class="card-header">
+                        <h3>Camp Bisco</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Pennsylvania</p>
+                    <div class="highlights">
+                        <span class="highlight">Disco Biscuits Host</span>
+                        <span class="highlight">Jam + Bass</span>
+                        <span class="highlight">Water Park</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/freaky-deaky.html" class="festival-card" data-tags="bass,urban">
+                    <div class="card-header">
+                        <h3>Freaky Deaky</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Houston, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Halloween</span>
+                        <span class="highlight">Bass + House</span>
+                        <span class="highlight">Texas Energy</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/forbidden-kingdom.html" class="festival-card" data-tags="bass,urban">
+                    <div class="card-header">
+                        <h3>Forbidden Kingdom</h3>
+                        <span class="score-badge">36/50</span>
+                    </div>
+                    <p class="location">📍 Orlando, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">Bass Only</span>
+                        <span class="highlight">Heavy Lineup</span>
+                        <span class="highlight">2 Days</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/ubbi-dubbi.html" class="festival-card" data-tags="bass,urban">
+                    <div class="card-header">
+                        <h3>Ubbi Dubbi</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Fort Worth, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Disco Donnie</span>
+                        <span class="highlight">Texas Rave</span>
+                        <span class="highlight">Diverse Lineup</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- TRANSFORMATIONAL -->
+    <section class="festivals-section" data-category="transform">
+        <div class="container">
+            <h2>🌀 Transformational</h2>
+            <p class="section-subtitle">More than music — art, workshops, community, and personal growth.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/symbiosis-gathering.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Symbiosis Gathering</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 California (Various)</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Art + Music</span>
+                        <span class="highlight">Lakeside</span>
+                        <span class="highlight">Community</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/suwannee-hulaween.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Suwannee Hulaween</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Live Oak, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Spanish Moss</span>
+                        <span class="highlight">Halloween</span>
+                        <span class="highlight">String Cheese</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/joshua-tree-music-festival.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Joshua Tree Music Festival</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Joshua Tree, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Desert Beauty</span>
+                        <span class="highlight">Intimate</span>
+                        <span class="highlight">World Music</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/resonance.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Resonance</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Ohio</p>
+                    <div class="highlights">
+                        <span class="highlight">Jam + Electronic</span>
+                        <span class="highlight">Intimate</span>
+                        <span class="highlight">Community</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/sonic-bloom.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Sonic Bloom</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Colorado</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Mountain Setting</span>
+                        <span class="highlight">Workshops</span>
+                        <span class="highlight">Bass + Jam</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/okeechobee.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Okeechobee</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">Multi-Genre</span>
+                        <span class="highlight">PoWoW!</span>
+                        <span class="highlight">March</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/beloved.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Beloved</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Oregon Coast</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Sacred Space</span>
+                        <span class="highlight">Intentional</span>
+                        <span class="highlight">Small</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/secret-dreams.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Secret Dreams</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Legend Valley, Ohio</p>
+                    <div class="highlights">
+                        <span class="highlight">Jam + Electronic</span>
+                        <span class="highlight">Same Venue as LL</span>
+                        <span class="highlight">Intimate</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/lucidity.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Lucidity</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Santa Barbara, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Transformational</span>
+                        <span class="highlight">Workshops</span>
+                        <span class="highlight">Community</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/elements-festival.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Elements Festival</h3>
+                        <span class="score-badge">37/50</span>
+                    </div>
+                    <p class="location">📍 Pennsylvania</p>
+                    <div class="highlights">
+                        <span class="highlight">Lakeside</span>
+                        <span class="highlight">House Focus</span>
+                        <span class="highlight">NYC Accessible</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/arise.html" class="festival-card" data-tags="transform,camping">
+                    <div class="card-header">
+                        <h3>Arise</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Colorado</p>
+                    <div class="highlights">
+                        <span class="highlight">Yoga + Music</span>
+                        <span class="highlight">Mountain Views</span>
+                        <span class="highlight">Wellness</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- MULTI-GENRE -->
+    <section class="festivals-section" data-category="multigenre">
+        <div class="container">
+            <h2>🎸 Multi-Genre</h2>
+            <p class="section-subtitle">Rock, indie, hip-hop, electronic, and everything in between.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/bonnaroo.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Bonnaroo</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Manchester, Tennessee</p>
+                    <div class="highlights">
+                        <span class="highlight strong">The Farm</span>
+                        <span class="highlight">All Genres</span>
+                        <span class="highlight">100K People</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/voodoo.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Voodoo Fest</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 New Orleans, Louisiana</p>
+                    <div class="highlights">
+                        <span class="highlight strong">NOLA Vibes</span>
+                        <span class="highlight">Halloween</span>
+                        <span class="highlight">City Park</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/lollapalooza.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Lollapalooza</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Chicago, Illinois</p>
+                    <div class="highlights">
+                        <span class="highlight">Grant Park</span>
+                        <span class="highlight">4 Days</span>
+                        <span class="highlight">100K Daily</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/life-is-beautiful.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Life is Beautiful</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Las Vegas, Nevada</p>
+                    <div class="highlights">
+                        <span class="highlight">Downtown Vegas</span>
+                        <span class="highlight">Art + Music</span>
+                        <span class="highlight">Food</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/backwoods.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Backwoods</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Mulberry Mountain, Arkansas</p>
+                    <div class="highlights">
+                        <span class="highlight">Mountain Venue</span>
+                        <span class="highlight">Electronic + Jam</span>
+                        <span class="highlight">Intimate</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/gem-and-jam.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Gem & Jam</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Tucson, Arizona</p>
+                    <div class="highlights">
+                        <span class="highlight">Gem Show Tie-In</span>
+                        <span class="highlight">Jam + Bass</span>
+                        <span class="highlight">Desert</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/hangout-music-fest.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Hangout Fest</h3>
+                        <span class="score-badge">36/50</span>
+                    </div>
+                    <p class="location">📍 Gulf Shores, Alabama</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Beach Festival</span>
+                        <span class="highlight">May</span>
+                        <span class="highlight">All Genres</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/outside-lands.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Outside Lands</h3>
+                        <span class="score-badge">36/50</span>
+                    </div>
+                    <p class="location">📍 San Francisco, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Golden Gate Park</span>
+                        <span class="highlight">Food & Wine</span>
+                        <span class="highlight">Bay Area</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/florida-groves.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Florida Groves</h3>
+                        <span class="score-badge">36/50</span>
+                    </div>
+                    <p class="location">📍 Orlando, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">Jam + Electronic</span>
+                        <span class="highlight">New Festival</span>
+                        <span class="highlight">Camping</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/spring-awakening.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Spring Awakening</h3>
+                        <span class="score-badge">36/50</span>
+                    </div>
+                    <p class="location">📍 Chicago, Illinois</p>
+                    <div class="highlights">
+                        <span class="highlight">Chicago Summer</span>
+                        <span class="highlight">Electronic</span>
+                        <span class="highlight">Affordable</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/coachella.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
                         <h3>Coachella</h3>
-                        <p class="location">📍 Indio, CA • April</p>
-                        <div class="highlights">
-                            <span class="highlight">Cultural Icon</span>
-                            <span class="highlight">Art Forward</span>
-                            <span class="highlight">2 Weekends</span>
-                        </div>
-                        <div class="mini-scores">
-                            <div class="mini-score"><div class="label">Extras</div><div class="value">4.5</div></div>
-                            <div class="mini-score"><div class="label">Sound</div><div class="value">4.0</div></div>
-                            <div class="mini-score"><div class="label">Value</div><div class="value">2.5</div></div>
-                            <div class="mini-score"><div class="label">Hype</div><div class="value">2.0</div></div>
-                        </div>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Indio, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Cultural Icon</span>
+                        <span class="highlight">Art Forward</span>
+                        <span class="highlight">2 Weekends</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/austin-city-limits.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Austin City Limits</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Austin, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Zilker Park</span>
+                        <span class="highlight">2 Weekends</span>
+                        <span class="highlight">All Genres</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/bottlerock-napa.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>BottleRock Napa</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Napa Valley, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best Food/Wine</span>
+                        <span class="highlight">Wine Country</span>
+                        <span class="highlight">Culinary</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/breakaway.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Breakaway</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Multi-City (10+ Cities)</p>
+                    <div class="highlights">
+                        <span class="highlight">Touring Festival</span>
+                        <span class="highlight">Accessible</span>
+                        <span class="highlight">1-2 Days</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/forecastle.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Forecastle</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Louisville, Kentucky</p>
+                    <div class="highlights">
+                        <span class="highlight">Waterfront</span>
+                        <span class="highlight">Bourbon</span>
+                        <span class="highlight">Indie Focus</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/sunset-music-festival.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Sunset Music Festival</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Tampa, Florida</p>
+                    <div class="highlights">
+                        <span class="highlight">Memorial Day</span>
+                        <span class="highlight">Electronic</span>
+                        <span class="highlight">Florida Vibes</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/phoenix-lights.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Phoenix Lights</h3>
+                        <span class="score-badge">35/50</span>
+                    </div>
+                    <p class="location">📍 Phoenix, Arizona</p>
+                    <div class="highlights">
+                        <span class="highlight">Arizona EDM</span>
+                        <span class="highlight">April</span>
+                        <span class="highlight">Relentless Beats</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/summerfest.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Summerfest</h3>
+                        <span class="score-badge">34/50</span>
+                    </div>
+                    <p class="location">📍 Milwaukee, Wisconsin</p>
+                    <div class="highlights">
+                        <span class="highlight">World's Largest</span>
+                        <span class="highlight">11 Days</span>
+                        <span class="highlight">800K+ Attend</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/governors-ball.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Governors Ball</h3>
+                        <span class="score-badge">34/50</span>
+                    </div>
+                    <p class="location">📍 New York City</p>
+                    <div class="highlights">
+                        <span class="highlight">NYC Festival</span>
+                        <span class="highlight">Multi-Genre</span>
+                        <span class="highlight">Queens</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/bumbershoot.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Bumbershoot</h3>
+                        <span class="score-badge">33/50</span>
+                    </div>
+                    <p class="location">📍 Seattle, Washington</p>
+                    <div class="highlights">
+                        <span class="highlight">Seattle Center</span>
+                        <span class="highlight">Labor Day</span>
+                        <span class="highlight">Arts Focus</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/something-wonderful.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Something Wonderful</h3>
+                        <span class="score-badge">32/50</span>
+                    </div>
+                    <p class="location">📍 Dallas, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Texas EDM</span>
+                        <span class="highlight">Disco Donnie</span>
+                        <span class="highlight">April</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/firefly-festival.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Firefly</h3>
+                        <span class="score-badge">32/50</span>
+                    </div>
+                    <p class="location">📍 Dover, Delaware</p>
+                    <div class="highlights">
+                        <span class="highlight">East Coast Camping</span>
+                        <span class="highlight">Woodlands</span>
+                        <span class="highlight">June</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/levitation.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Levitation</h3>
+                        <span class="score-badge">32/50</span>
+                    </div>
+                    <p class="location">📍 Austin, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Psychedelic Rock</span>
+                        <span class="highlight">Niche</span>
+                        <span class="highlight">Multi-Venue</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/boston-calling.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Boston Calling</h3>
+                        <span class="score-badge">31/50</span>
+                    </div>
+                    <p class="location">📍 Boston, Massachusetts</p>
+                    <div class="highlights">
+                        <span class="highlight">Harvard Campus</span>
+                        <span class="highlight">Memorial Day</span>
+                        <span class="highlight">All Genres</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/mo-pop.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Mo Pop</h3>
+                        <span class="score-badge">30/50</span>
+                    </div>
+                    <p class="location">📍 Detroit, Michigan</p>
+                    <div class="highlights">
+                        <span class="highlight">Detroit Pride</span>
+                        <span class="highlight">Indie Focus</span>
+                        <span class="highlight">Riverfront</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/pitchfork-music-festival.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Pitchfork Music Festival</h3>
+                        <span class="score-badge">28/50</span>
+                    </div>
+                    <p class="location">📍 Chicago, Illinois</p>
+                    <div class="highlights">
+                        <span class="highlight">Indie Curation</span>
+                        <span class="highlight">Hip Crowd</span>
+                        <span class="highlight">July</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/shaky-knees.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Shaky Knees</h3>
+                        <span class="score-badge">28/50</span>
+                    </div>
+                    <p class="location">📍 Atlanta, Georgia</p>
+                    <div class="highlights">
+                        <span class="highlight">Rock Focus</span>
+                        <span class="highlight">Indie</span>
+                        <span class="highlight">May</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/riot-fest.html" class="festival-card" data-tags="urban">
+                    <div class="card-header">
+                        <h3>Riot Fest</h3>
+                        <span class="score-badge">19/50</span>
+                    </div>
+                    <p class="location">📍 Chicago, Illinois</p>
+                    <div class="highlights">
+                        <span class="highlight">Punk/Rock</span>
+                        <span class="highlight">Nostalgia Acts</span>
+                        <span class="highlight">September</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- NYE/DESTINATION -->
+    <section class="festivals-section" data-category="destination">
+        <div class="container">
+            <h2>✈️ NYE & Destination</h2>
+            <p class="section-subtitle">Holiday events and destination festivals worth the trip.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/holy-ship-wrecked.html" class="festival-card" data-tags="destination">
+                    <div class="card-header">
+                        <h3>Holy Ship! Wrecked</h3>
+                        <span class="score-badge">43/50</span>
+                    </div>
+                    <p class="location">📍 Riviera Maya, Mexico</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Resort Festival</span>
+                        <span class="highlight">All-Inclusive</span>
+                        <span class="highlight">Beach + Pool</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/decadence-colorado.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Decadence Colorado</h3>
+                        <span class="score-badge">42/50</span>
+                    </div>
+                    <p class="location">📍 Denver, Colorado</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Best NYE Indoor</span>
+                        <span class="highlight">2 Nights</span>
+                        <span class="highlight">Convention Center</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/ember-shores.html" class="festival-card" data-tags="destination">
+                    <div class="card-header">
+                        <h3>Ember Shores</h3>
+                        <span class="score-badge">41/50</span>
+                    </div>
+                    <p class="location">📍 Riviera Maya, Mexico</p>
+                    <div class="highlights">
+                        <span class="highlight">Resort Festival</span>
+                        <span class="highlight">Anjuna Curation</span>
+                        <span class="highlight">Beach Vibes</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/countdown-nye.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Countdown NYE</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Los Angeles, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Insomniac NYE</span>
+                        <span class="highlight">LA Convention</span>
+                        <span class="highlight">Indoor</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/goldrush.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Goldrush</h3>
+                        <span class="score-badge">40/50</span>
+                    </div>
+                    <p class="location">📍 Phoenix, Arizona</p>
+                    <div class="highlights">
+                        <span class="highlight">Western Theme</span>
+                        <span class="highlight">September</span>
+                        <span class="highlight">Good Weather</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/global-dance-festival.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Global Dance Festival</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Denver, Colorado</p>
+                    <div class="highlights">
+                        <span class="highlight">Mile High</span>
+                        <span class="highlight">July</span>
+                        <span class="highlight">2 Days</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/das-energi.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Das Energi</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Salt Lake City, Utah</p>
+                    <div class="highlights">
+                        <span class="highlight">Utah Scene</span>
+                        <span class="highlight">August</span>
+                        <span class="highlight">V2 Presents</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/decadence-arizona.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Decadence Arizona</h3>
+                        <span class="score-badge">39/50</span>
+                    </div>
+                    <p class="location">📍 Phoenix, Arizona</p>
+                    <div class="highlights">
+                        <span class="highlight">NYE Option</span>
+                        <span class="highlight">Warm Weather</span>
+                        <span class="highlight">2 Nights</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/splash-house.html" class="festival-card" data-tags="destination">
+                    <div class="card-header">
+                        <h3>Splash House</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Palm Springs, California</p>
+                    <div class="highlights">
+                        <span class="highlight strong">Pool Party</span>
+                        <span class="highlight">3 Hotels</span>
+                        <span class="highlight">House Music</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/project-glow.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Project Glow</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Washington DC</p>
+                    <div class="highlights">
+                        <span class="highlight">Insomniac DC</span>
+                        <span class="highlight">RFK Grounds</span>
+                        <span class="highlight">April</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/lights-all-night.html" class="festival-card" data-tags="destination,urban">
+                    <div class="card-header">
+                        <h3>Lights All Night</h3>
+                        <span class="score-badge">38/50</span>
+                    </div>
+                    <p class="location">📍 Dallas, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">NYE Texas</span>
+                        <span class="highlight">2 Nights</span>
+                        <span class="highlight">Indoor</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/imagine-music-festival.html" class="festival-card" data-tags="camping">
+                    <div class="card-header">
+                        <h3>Imagine Music Festival</h3>
+                        <span class="score-badge">37/50</span>
+                    </div>
+                    <p class="location">📍 Georgia</p>
+                    <div class="highlights">
+                        <span class="highlight">Atlanta Area</span>
+                        <span class="highlight">Camping</span>
+                        <span class="highlight">Water Theme</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- LEGACY/ENDED -->
+    <section class="festivals-section" data-category="legacy">
+        <div class="container">
+            <h2>⚰️ Legacy (Ended/Hiatus)</h2>
+            <p class="section-subtitle">Gone but not forgotten. These festivals shaped the scene but are no longer active.</p>
+            
+            <div class="festival-grid">
+                <a href="festivals/what-the-festival.html" class="festival-card legacy" data-tags="legacy,camping,transform">
+                    <div class="card-header">
+                        <h3>⚰️ What The Festival</h3>
+                        <span class="score-badge legacy">43/50</span>
+                    </div>
+                    <p class="location">📍 Wolf Run Ranch, Oregon</p>
+                    <div class="highlights">
+                        <span class="highlight">Transformational</span>
+                        <span class="highlight">Ended 2019</span>
+                        <span class="highlight">Oregon Gem</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/paradiso.html" class="festival-card legacy" data-tags="legacy,camping">
+                    <div class="card-header">
+                        <h3>⚰️ Paradiso</h3>
+                        <span class="score-badge legacy">42/50</span>
+                    </div>
+                    <p class="location">📍 The Gorge, Washington</p>
+                    <div class="highlights">
+                        <span class="highlight">Gorge Views</span>
+                        <span class="highlight">Ended 2019</span>
+                        <span class="highlight">USC Events</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/mysteryland-usa.html" class="festival-card legacy" data-tags="legacy,camping">
+                    <div class="card-header">
+                        <h3>⚰️ Mysteryland USA</h3>
+                        <span class="score-badge legacy">39/50</span>
+                    </div>
+                    <p class="location">📍 Bethel Woods, New York</p>
+                    <div class="highlights">
+                        <span class="highlight">Woodstock Site</span>
+                        <span class="highlight">Ended 2016</span>
+                        <span class="highlight">Dutch Import</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/sasquatch.html" class="festival-card legacy" data-tags="legacy,camping">
+                    <div class="card-header">
+                        <h3>⚰️ Sasquatch!</h3>
+                        <span class="score-badge legacy">36/50</span>
+                    </div>
+                    <p class="location">📍 The Gorge, Washington</p>
+                    <div class="highlights">
+                        <span class="highlight">Indie Legend</span>
+                        <span class="highlight">Ended 2018</span>
+                        <span class="highlight">Memorial Day</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/air-style.html" class="festival-card legacy" data-tags="legacy,urban">
+                    <div class="card-header">
+                        <h3>⚰️ Air + Style</h3>
+                        <span class="score-badge legacy">N/A</span>
+                    </div>
+                    <p class="location">📍 Los Angeles, California</p>
+                    <div class="highlights">
+                        <span class="highlight">Shaun White's</span>
+                        <span class="highlight">Ended 2019</span>
+                        <span class="highlight">Snowboard+Music</span>
+                    </div>
+                </a>
+                
+                <a href="festivals/sun-city-music-festival.html" class="festival-card legacy" data-tags="legacy,urban">
+                    <div class="card-header">
+                        <h3>⚰️ Sun City Music Festival</h3>
+                        <span class="score-badge legacy">N/A</span>
+                    </div>
+                    <p class="location">📍 El Paso, Texas</p>
+                    <div class="highlights">
+                        <span class="highlight">Texas/Mexico Border</span>
+                        <span class="highlight">Ended 2017</span>
+                        <span class="highlight">Labor Day</span>
                     </div>
                 </a>
             </div>
@@ -345,6 +1528,7 @@
         <div class="container">
             <p>Ground Score — Find your perfect festival experience</p>
             <p style="margin-top: 8px;">Built by festival people, for festival people.</p>
+            <p style="margin-top: 16px; font-size: 0.8rem;">94 festivals • Honest reviews • No sponsored content</p>
         </div>
     </footer>
     
@@ -368,44 +1552,53 @@
         
         function findFestivals() {
             if (selectedPriorities.length === 0) return;
-            
-            const cards = document.querySelectorAll('.festival-card');
-            const cardsArray = Array.from(cards);
-            
-            // Calculate scores based on priorities
-            cardsArray.forEach(card => {
-                const scores = JSON.parse(card.dataset.scores);
-                let priorityScore = 0;
-                selectedPriorities.forEach(p => {
-                    priorityScore += scores[p] || 0;
-                });
-                card.dataset.priorityScore = priorityScore;
-            });
-            
-            // Sort by priority score
-            cardsArray.sort((a, b) => b.dataset.priorityScore - a.dataset.priorityScore);
-            
-            const grid = document.getElementById('festival-grid');
-            cardsArray.forEach(card => grid.appendChild(card));
-            
-            // Scroll to results
+            // For now, scroll to festivals - could add sorting/filtering logic
             document.querySelector('.festivals-section').scrollIntoView({ behavior: 'smooth' });
         }
         
         function applyFilter(filter) {
             const cards = document.querySelectorAll('.festival-card');
+            const sections = document.querySelectorAll('.festivals-section');
             
             // Reset all filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
+            if (filter === 'all') {
+                cards.forEach(card => card.style.display = 'block');
+                sections.forEach(section => section.style.display = 'block');
+                return;
+            }
+            
+            // Map filter names to data-tags
+            const filterMap = {
+                'toprated': 'toprated',
+                'camping': 'camping',
+                'urban': 'urban',
+                'bass': 'bass',
+                'house': 'house',
+                'transform': 'transform',
+                'destination': 'destination'
+            };
+            
+            const tag = filterMap[filter] || filter;
+            
             cards.forEach(card => {
-                if (filter === 'all') {
-                    card.style.display = 'block';
-                } else {
-                    const tags = card.dataset.tags.split(',');
-                    card.style.display = tags.includes(filter) ? 'block' : 'none';
-                }
+                const tags = card.dataset.tags || '';
+                card.style.display = tags.includes(tag) ? 'block' : 'none';
+            });
+            
+            // Hide empty sections
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.festival-card[style="display: block"], .festival-card:not([style*="display"])');
+                let hasVisible = false;
+                visibleCards.forEach(card => {
+                    if (card.style.display !== 'none') hasVisible = true;
+                });
+                
+                const grid = section.querySelector('.festival-grid');
+                const visibleInGrid = Array.from(grid.children).filter(c => c.style.display !== 'none');
+                section.style.display = visibleInGrid.length > 0 ? 'block' : 'none';
             });
         }
     </script>

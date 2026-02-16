@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groove Cruise — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #0066ff 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .info-box { background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin: 24px 0; }
+        .info-box h4 { color: var(--accent); margin-bottom: 8px; font-family: 'Space Grotesk', sans-serif; }
+        .info-box p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Royal Caribbean Cruise Ship</span>
+                <span>📅 January (4-5 days)</span>
+                <span>👥 4,000+</span>
+                <span>💵 $1,200-4,000+</span>
+            </div>
+            <h1>🚢 Groove Cruise Miami</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">45</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The largest music cruise in history. 96 hours of non-stop EDM across 11 stages on Royal Caribbean's Allure of the Seas, with 90+ artists, themed parties, artist experiences, and a private beach party. The ultimate floating festival experience.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>90+ artists spanning house, techno, trance, bass, and everything in between. 11 stages across the ship mean there's always something playing. From headliners to underground gems. 96 hours of non-stop music. The depth and variety is unmatched for a cruise festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The ship itself is spectacular — Allure of the Seas is one of the largest cruise ships ever built. Two-deck dance hall, pool deck stages, theater, intimate lounges. Pop-up stages in unexpected spots. Production is strong throughout. The setting IS the production.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The GC Family is legendary. 20+ years of building community shows. Everyone's on a ship together for 4-5 days with no escape — genuine bonds form. Veterans welcome newcomers. Theme parties bring creative expression. The vibe is vacation meets rave family reunion.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Massive ship means walking distances between stages. Elevators can get crowded. But your cabin is always nearby for reset. Free drinks at multiple bars (drink package). Pool deck can get packed for peak sets. Learn the ship layout early — it's big.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Royal Caribbean's food game is strong. Buffets included in cruise fare. Specialty restaurants available (extra cost). Room service anytime. 19 bars and lounges. Drink packages available. You won't go hungry — the ship feeds you constantly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Fly into Miami (MIA or FLL) — major hub with cheap flights. Ship departs from Port of Miami or nearby. Cruise embarkation is straightforward. Once on board, you're set for 4-5 days. Return to same port. Cruise logistics are well-oiled.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$1,200-4,000+ sounds steep but includes: cabin for 4-5 nights, all food, 90+ artists, 11 stages, private beach party, ship amenities. Add drink package and gratuities to budget. When you factor everything in, it's comparable to major festival + hotel + food costs.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>80+ artist-hosted experiences: wine tastings, fitness sessions, drag brunches, blackjack tournaments, exclusive dinners. 8 themed parties across the voyage. Ice skating rink, surf simulator, zip line, pools, spa. This is a cruise AND a festival — both fully realized.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Open ocean, Caribbean sunsets, private beach party in Labadee (Haiti). Dancing on the pool deck under stars. Sunrise sets with nothing but ocean in every direction. The setting is uniquely magical — you can't replicate this on land. Destination stops add variety.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>20+ years of Groove Cruise. Celebrated as the pioneer and leader in music cruises. The 2025 edition was billed as "the largest music cruise in history." Reputation is impeccable. Veterans return for decades. The hype is completely earned.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House Music Purists</h3>
+                        <p>Groove Cruise's roots are in house music. While it's expanded, house heads will find their home across multiple stages.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>96 hours of non-stop music means sunrise sets on the ocean. If that visual moves you, this is your festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Costume Lovers</h3>
+                        <p>8 themed parties mean 8 opportunities to dress up. The GC community goes ALL OUT on themes. Express yourself.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Adventurers</h3>
+                        <p>Cabins fit groups. Coordinating crews is easier than land festivals. Everyone's on the same boat — literally.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Sunrise set on the pool deck of a cruise ship 🌅🚢"</div>
+                    <div class="stats">2.8M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The largest music cruise in history. 11 stages. 90+ artists. We're not okay."</div>
+                    <div class="stats">156K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Groove Cruise Miami 2025 | Full 5-Day Experience on Allure of the Seas"</div>
+                    <div class="stats">890K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Groove Cruise Experience</h2>
+            <p class="intro">Everything you need to know for the ultimate festival at sea.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">January</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4-5 Days</div></div>
+                <div class="fact"><div class="label">Artists</div><div class="value">90+</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">11</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Ship</div><div class="value">Allure of the Seas</div></div>
+            </div>
+            
+            <div class="info-box">
+                <h4>🎫 Cabin Booking System</h4>
+                <p>Groove Cruise uses cabin bookings, not traditional tickets. Prices are per person based on cabin type (interior, ocean view, balcony, suite) and occupancy. Payment plans available. Book early — cabins sell out and prices increase. Gratuities and drink packages are additional.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>A cruise festival requires different prep than a land festival.</p>
+                <ul>
+                    <li><strong>Book cabins early:</strong> Best prices and cabin selection go fast. Payment plans help spread the cost.</li>
+                    <li><strong>Cruise documents:</strong> US citizens need passport or birth certificate + government ID. Check requirements.</li>
+                    <li><strong>Drink package:</strong> Optional but recommended. All-you-can-drink for a flat rate. Worth it for most.</li>
+                    <li><strong>Theme party prep:</strong> 8 themes mean 8 outfits. Start planning costumes early. The community goes hard.</li>
+                    <li><strong>Artist experiences:</strong> Sign up for hosted activities once booking opens. Popular ones fill up.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Ship: Allure of the Seas</h3>
+                <p>One of the largest cruise ships ever built becomes a floating festival grounds.</p>
+                <ul>
+                    <li><strong>Two-deck dance hall:</strong> Main stage production with massive LED walls and sound.</li>
+                    <li><strong>Pool deck:</strong> Outdoor stages with ocean views. Sunrise and sunset sets hit different here.</li>
+                    <li><strong>Theater:</strong> Seated shows and intimate performances in a proper concert hall.</li>
+                    <li><strong>Lounges & bars:</strong> Pop-up stages in unexpected spots. 19 bars total.</li>
+                    <li><strong>Amenities:</strong> Ice skating, surf simulator, zip line, spa, pools, rock climbing. It's a cruise.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Groove Cruise takes everything EDM fans love about festivals on land — the plethora of artists, the themes, the costumes — and turns up the intensity. Five days at sea with 100+ dance music artists across 11 unique stages."
+                    <cite>— Fifty Grande</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>96 Hours of Music</h3>
+                <p>The music literally never stops for the entire voyage.</p>
+                <ul>
+                    <li><strong>90+ artists:</strong> House, techno, trance, bass, and everything between. Something for everyone.</li>
+                    <li><strong>11 stages:</strong> Always multiple options playing simultaneously. Never bored.</li>
+                    <li><strong>Sunrise sets:</strong> Pool deck at dawn, ocean in every direction. Transcendent.</li>
+                    <li><strong>Surprise B2Bs:</strong> The intimate setting enables spontaneous artist collaborations.</li>
+                    <li><strong>After-hours:</strong> Music continues in lounges through the night. Rest when you can.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Artist-Hosted Experiences</h3>
+                <p>80+ activities beyond the music. This is what sets Groove Cruise apart.</p>
+                <ul>
+                    <li><strong>Wine tastings</strong> with your favorite DJs</li>
+                    <li><strong>Fitness sessions</strong> led by artists</li>
+                    <li><strong>Drag brunches</strong> with performances</li>
+                    <li><strong>Blackjack tournaments</strong> in the casino</li>
+                    <li><strong>Exclusive dinners</strong> at specialty restaurants</li>
+                    <li><strong>Pool games</strong> and competitions</li>
+                    <li><strong>Beach workouts</strong> at port destinations</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Private Beach Party: Labadee</h3>
+                <p>Royal Caribbean's private paradise in Haiti hosts a full beach party.</p>
+                <ul>
+                    <li><strong>Beach stage:</strong> Music continues on the sand with Caribbean backdrop.</li>
+                    <li><strong>Dragon's Breath:</strong> Longest overwater zipline in the world. Adrenaline break.</li>
+                    <li><strong>Water activities:</strong> Jet skiing, kayaking, parasailing, Arawak Aqua Park.</li>
+                    <li><strong>Private cabanas:</strong> Reserve for VIP beach experience.</li>
+                    <li><strong>Cultural tours:</strong> Optional excursions for those wanting to explore.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Theme Parties</h3>
+                <p>8 themed parties across the voyage. Costumes are essential.</p>
+                <ul>
+                    <li><strong>Two themes per day:</strong> Plan your outfits accordingly. Storage space matters.</li>
+                    <li><strong>All out:</strong> The GC community doesn't half-ass themes. Go big or go home.</li>
+                    <li><strong>Deck décor:</strong> Each theme transforms the venue spaces.</li>
+                    <li><strong>Photo ops:</strong> Capture the creativity. Instagram gold.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food & Drinks</h3>
+                <p>Royal Caribbean feeds you well. Budget for extras accordingly.</p>
+                <ul>
+                    <li><strong>Included:</strong> Main dining room, buffets, room service, pizza, casual spots.</li>
+                    <li><strong>Extra cost:</strong> Specialty restaurants (steakhouse, sushi, etc.). Worth trying once.</li>
+                    <li><strong>Drink packages:</strong> Optional but recommended. Unlimited drinks for flat fee.</li>
+                    <li><strong>Gratuities:</strong> Added to your onboard account. Budget $15-20/day per person.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The GC Family</h3>
+                <p>20+ years of community building creates something special.</p>
+                <ul>
+                    <li><strong>Veterans:</strong> Many have sailed 10+ cruises. They welcome newcomers.</li>
+                    <li><strong>First-timers:</strong> You'll be adopted by the family. Everyone remembers their first.</li>
+                    <li><strong>Year-round community:</strong> Facebook groups, meetups, friendships that last beyond the ship.</li>
+                    <li><strong>Ship romances:</strong> They happen. The magic is real.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

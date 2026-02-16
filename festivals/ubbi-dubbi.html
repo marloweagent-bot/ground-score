@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubbi Dubbi — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Panther Island Pavilion, Fort Worth TX</span>
+                <span>📅 Memorial Day Weekend (2 days)</span>
+                <span>👥 25,000+</span>
+                <span>💵 $150-350</span>
+            </div>
+            <h1>🎪 Ubbi Dubbi</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">35</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Disco Donnie's Texas spring festival rebrand brings camping and improved logistics to DFW. All electronic genres from house to dubstep represented. Still working out venue kinks, but Texas fans show up with energy.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Disco Donnie books solid lineups spanning all electronic genres. Past headliners include Illenium, Galantis, Zeds Dead, Borgore, Destructo. House, dubstep, techno, trap — something for everyone. Multiple stages cover different vibes. Sound quality is respectable. Booking power competitive for regional fests.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is solid but not spectacular. Stage designs are decent with good lights and lasers. The whimsical "Ubbi Dubbi" theme (derived from a silly language) encourages playfulness. Art installations present. Not Insomniac-level production, but adequate for the ticket price.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Texas rave community brings genuine energy. PLUR culture present. The silly name ("Ubbi Dubbi" is Pig Latin-adjacent nonsense) sets a playful tone. Camping builds community. Memorial Day weekend draws people ready to party. Friendly crowd overall.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Venue logistics have been challenging. Panther Island's layout funnels everyone through narrow paths to the main stage, causing congestion. Parking issues reported in 2022. Entry/exit can be slow. Water stations exist but lines occur. The festival has improved year over year, but this remains a weakness.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Good food variety for a regional fest. Texas prices (reasonable). Food vendors in both festival and camping areas. Lines vary by timing. Ceviche bars, tacos, festival staples all available. Hydration important in Texas heat — water stations available.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DFW is a major hub — cheap flights from anywhere. Fort Worth hotels plentiful and affordable. Panther Island is accessible by car. Camping eliminates transport hassle once you arrive. Rideshare works for day passes. Texas is easy to reach and navigate.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two-day passes reasonably priced ($150-200 GA). Camping packages add value if you want the full experience. Texas trip costs are moderate. For what you get — solid lineup, camping option, friendly community — the value is fair. Not quite tier-1 but good for regional.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, photo ops, the usual festival extras. Camping community adds extended experience. Friday pre-parties in Fort Worth. The "Ubbi Dubbi" language theme is gimmicky but fun. Not heavy on non-music activities, but adequate.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Panther Island is along the Trinity River — not stunning but pleasant. Water features add atmosphere. Memorial Day weekend means HOT (90s°F possible). Texas heat is part of the experience — prepare accordingly. Sunsets can be nice. Not a destination venue, but works.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Ubbi Dubbi delivers a solid Texas festival experience. It's not trying to be EDC — it's serving the regional market. Expectations are calibrated accordingly. Venue issues have dampened some enthusiasm, but the festival shows improvement each year. Texas fans appreciate having a spring camping festival option.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🤠</div>
+                    <div>
+                        <h3>Texas Ravers</h3>
+                        <p>The only camping EDM festival in North Texas. Perfect for DFW locals and regional fans who don't want to travel to California or Nevada.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Unlike its predecessor Something Wonderful, Ubbi Dubbi offers camping. The full festival experience without daily commutes.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Disco Donnie books strong bass/dubstep acts. Excision affiliates, Zeds Dead, and heavy hitters frequently appear.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Manageable size, friendly Texas crowd, camping intro. A good entry point to festival culture without mega-fest overwhelm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Ubbi Dubbi 2024 campground tour 🏕️"</div>
+                    <div class="stats">520K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Texas heat can't stop us 🔥 #UbbiDubbi"</div>
+                    <div class="stats">28K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Ubbi Dubbi 2024 | Full Weekend Vlog + Survival Tips"</div>
+                    <div class="stats">145K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Ubbi Dubbi Experience</h2>
+            <p class="intro">Texas's camping EDM festival — all genres, Memorial Day weekend, and the lessons learned from Something Wonderful.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Memorial Day Weekend</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">3PM - 2AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">25,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What's an "Ubbi Dubbi"?</h3>
+                <p>Ubbi Dubbi is a language game where you insert "ub" before every vowel sound. "Hello" becomes "Hubelluboh." It's silly, nonsensical, and perfectly captures the playful spirit Disco Donnie wanted for the festival.</p>
+                <p>The name represents a fresh start from Something Wonderful — new branding, new venue, new vibe. No baggage from 2015's Cotton Bowl disaster.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Venue: Panther Island</h3>
+                <p>Panther Island Pavilion sits along the Trinity River in Fort Worth:</p>
+                <ul>
+                    <li><strong>Location:</strong> Urban-adjacent but feels removed from city bustle</li>
+                    <li><strong>Waterfront:</strong> Trinity River adds some atmosphere</li>
+                    <li><strong>Layout issues:</strong> Narrow paths to main stage create bottlenecks</li>
+                    <li><strong>Camping:</strong> On-site camping across the river from stages</li>
+                </ul>
+                <blockquote class="quote">
+                    "The only annoying thing is that the main stage is a long-ass narrow path from the rest of the festival which tends to get crowded since everyone gets funneled in there."
+                    <cite>— Reddit r/aves, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Camping at Ubbi Dubbi</h3>
+                <p>The biggest upgrade from Something Wonderful — actual camping:</p>
+                <ul>
+                    <li><strong>General Camping:</strong> Basic plots, bring your tent, community forms</li>
+                    <li><strong>Premium Camping:</strong> Better location, extra amenities</li>
+                    <li><strong>Arrival:</strong> Check-in starts Friday (or Thursday for early birds)</li>
+                    <li><strong>Experience:</strong> Pre-parties, late-night hangouts, extended community</li>
+                </ul>
+                <p>If you're doing Ubbi Dubbi, camping is the move. Day passes work, but you miss the community aspect.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <p>Memorial Day in Texas means HEAT. Prepare accordingly:</p>
+                <ul>
+                    <li><strong>Hydration:</strong> Drink constantly. Bring electrolyte packets.</li>
+                    <li><strong>Shade:</strong> Canopy for your campsite is essential</li>
+                    <li><strong>Timing:</strong> Take breaks during peak afternoon heat (3-6 PM)</li>
+                    <li><strong>Clothing:</strong> Breathable fabrics, hat, sunscreen</li>
+                    <li><strong>Coolers:</strong> Ice runs available; keep food/drinks cold</li>
+                    <li><strong>Portable fans:</strong> Battery-powered fans are lifesavers in tents</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Known Issues</h3>
+                <p>Ubbi Dubbi has improved but still has challenges:</p>
+                <ul>
+                    <li><strong>Venue layout:</strong> Main stage access path creates congestion</li>
+                    <li><strong>Parking:</strong> 2022 was reportedly a "shitshow" — improved since but watch announcements</li>
+                    <li><strong>Heat:</strong> Not the festival's fault, but Texas Memorial Day is brutal</li>
+                    <li><strong>Scale:</strong> Venue may be at capacity limit; growth unclear</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Fort Worth Extras</h3>
+                <p>Make a long weekend of it:</p>
+                <ul>
+                    <li><strong>Friday pre-parties:</strong> Sugarmans and other venues host DJs</li>
+                    <li><strong>Fort Worth Stockyards:</strong> Texas culture, honky-tonks, BBQ</li>
+                    <li><strong>Food scene:</strong> Dallas-Fort Worth has excellent restaurants</li>
+                    <li><strong>Recovery Monday:</strong> Memorial Day off = built-in rest day</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Honest Assessment</h3>
+                <p>Ubbi Dubbi is a solid regional festival — not trying to be EDC, just serving Texas. If you go in with appropriate expectations:</p>
+                <ul>
+                    <li><strong>Pros:</strong> Camping option, friendly crowd, diverse lineup, affordable Texas trip</li>
+                    <li><strong>Cons:</strong> Venue logistics, extreme heat, production not tier-1</li>
+                    <li><strong>Verdict:</strong> Worth it for Texas locals and regional fans. Not a destination fest for out-of-staters unless camping fests are your thing.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

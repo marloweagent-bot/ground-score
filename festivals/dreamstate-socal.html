@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamstate SoCal — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #9933ff 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Queen Mary Waterfront, Long Beach</span>
+                <span>📅 November (2 nights)</span>
+                <span>👥 25,000+</span>
+                <span>💵 $180-350</span>
+            </div>
+            <h1>🌌 Dreamstate SoCal</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The only all-trance festival of this scale in North America. If you've ever felt chills from an uplifting breakdown or lost yourself in a psytrance spiral, Dreamstate is a pilgrimage. The Queen Mary backdrop is magical, and the crowd actually knows every track.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is the definitive trance lineup in North America. From uplifting legends like Aly & Fila and Paul van Dyk to psytrance heavyweights like Vini Vici and Captain Hook, every subgenre is covered. You'll hear artists you can't see anywhere else in the US. The Sequence stage for psytrance and The Vision stage for classic/uplifting create perfect programming balance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is solid but focused — trance is about the music, not overwhelming pyro. The stages feature hypnotic LED panels and laser shows that complement the melodic journey. The Queen Mary herself adds incredible atmosphere, especially lit up at night. It's more intimate than EDC but still feels like an event.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where Dreamstate truly shines. The trance community is tight-knit, welcoming, and genuinely connected to the music. People dance with their eyes closed, hands in the air, fully present. No phone farms, no posers — just people who know every breakdown and drop. Reviews call it "a slice of rave heaven" with vibes from a decade ago.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Queen Mary Waterfront is compact and walkable — you can hit all stages without marathon treks. Crowd density is manageable even at headliners. Water stations are adequate. Entry is straightforward. The only friction is that stages are close enough that sound bleed can occasionally happen, but Insomniac has improved this yearly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard Insomniac vendor selection — adequate but not exceptional. You'll find the usual festival fare: pizza, tacos, burgers, some vegetarian options. Prices are typical SoCal festival rates ($12-18 entrees). Lines can get long during peak hours. Pro tip: eat dinner before arriving; focus on hydration inside.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Long Beach is incredibly accessible — LAX is 25 minutes away, hotels are plentiful and affordable, and the Queen Mary area has its own accommodation options. Parking is available on-site. Uber/Lyft work smoothly at this venue. No desert drives or remote camping required.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For trance fans, this is exceptional value. Where else can you see 50+ trance artists over two nights for under $350? Total trip cost is very reasonable — affordable Long Beach hotels, no camping gear needed, walkable venue. Compared to flying to Europe for a trance festival, Dreamstate is a bargain.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Dreamstate keeps the focus on music. There are art installations and performers, but this isn't a transformational festival with workshops and activities. You're here to dance to trance, not to explore carnival rides. For trance purists, that's exactly right. If you want more variety, look elsewhere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Queen Mary is an iconic venue. Dancing on the waterfront with a historic ocean liner as your backdrop is uniquely beautiful. November weather in Long Beach is perfect — cool but not cold, no dust, no extreme heat. The harbor lights and ocean breeze add to the ethereal atmosphere that trance music deserves.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Dreamstate isn't overhyped because it's a niche festival. Trance fans know exactly what they're getting, and it delivers. If you're not into trance, this isn't for you — and that's the point. For its target audience, it meets or exceeds expectations every year. The 10th anniversary in 2025 added extra magic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>Trance Purists</h3>
+                        <p>If you know the difference between 138 BPM uplifting and tech-trance, if you've cried during an Armin ASOT set, if "Adagio for Strings" gives you chills — this is your festival. No genre-hopping required.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>Trance and sunrises are a spiritual pairing. While Dreamstate ends before dawn, the emotional peaks during closing sets hit the same way. Plus, afterparties extend the journey.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Time Trance Converts</h3>
+                        <p>Curious about trance but never dove in? Dreamstate is the best possible introduction. The community welcomes newcomers, and you'll leave understanding why trance fans are so devoted.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Professionals</h3>
+                        <p>Trance skews older than mainstream EDM. The crowd is mostly 25-45, with careers and mortgages. Less chaotic energy, more mature appreciation. Perfect for those who aged out of massive raves but still want to dance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"When the Gouryella melody hits at 2AM and the whole crowd is crying 😭"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The Queen Mary at night 🚢✨ Dreamstate 2024 was everything"</div>
+                    <div class="stats">245K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Dreamstate SoCal 2024 | Why Trance Will Never Die"</div>
+                    <div class="stats">380K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Dreamstate Experience</h2>
+            <p class="intro">Everything you need to know about North America's premier trance pilgrimage.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">November (2 nights)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">4PM - 2AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">25,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Dreamstate requires less preparation than most festivals, but understanding the trance landscape helps.</p>
+                <ul>
+                    <li><strong>Know your subgenres:</strong> Uplifting, tech-trance, psytrance, progressive — each has a different energy. Research the lineup and identify your must-sees.</li>
+                    <li><strong>Check the afterparties:</strong> Dreamstate afterparties extend into the early morning. Academy LA and Exchange LA typically host official events.</li>
+                    <li><strong>Hotel strategy:</strong> Long Beach hotels fill up but aren't impossible. Downtown Long Beach or nearby Shoreline Village area keeps you walkable.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be dancing for hours. This is a marathon of movement, not standing and watching.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>The Queen Mary Waterfront is one of the most accessible festival venues in SoCal.</p>
+                <ul>
+                    <li><strong>Flying in:</strong> LAX is 25-30 minutes away. Long Beach Airport (LGB) is even closer for some routes.</li>
+                    <li><strong>Parking:</strong> On-site parking available but fills up. Arrive early or use rideshare.</li>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work great here. Designated pickup/dropoff areas. Surge pricing is moderate compared to larger festivals.</li>
+                    <li><strong>Entry:</strong> Standard Insomniac security — bag checks, metal detectors. Usually flows smoothly; arrive 30+ min before must-see sets.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Compact, walkable, and designed for music discovery. You can genuinely explore every stage.</p>
+                <ul>
+                    <li><strong>The Dream:</strong> Main stage. This is where the headliners play — expect the biggest production and crowds.</li>
+                    <li><strong>The Vision:</strong> Focused on classic and uplifting trance. Often features legendary artists and emotional moments.</li>
+                    <li><strong>The Sequence:</strong> Psytrance central. Faster BPMs, more intense energy, dedicated psy community.</li>
+                    <li><strong>The Timeless:</strong> Rotating stage for special sets, classics, and unique programming.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Dreamstate SoCal is a slice of rave heaven on Earth and, quite honestly, one of the only places where you'll find the vibes that permeated the scene over a decade ago."
+                    <cite>— EDM Identity, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>November weather makes Dreamstate comfortable, but you're still dancing for hours.</p>
+                <ul>
+                    <li><strong>Weather:</strong> Expect 55-65°F at night. Bring a light jacket or hoodie — the waterfront gets breezy.</li>
+                    <li><strong>Hydration:</strong> Water stations available. You'll sweat less than summer festivals but still need to hydrate.</li>
+                    <li><strong>Food:</strong> Standard festival vendors. Eat dinner before arriving to maximize dance time.</li>
+                    <li><strong>Ear protection:</strong> Sound systems are powerful. Bring quality earplugs — you'll thank yourself.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Dreamstate attracts a different crowd than mainstream EDM festivals.</p>
+                <ul>
+                    <li><strong>Age range:</strong> Skews older — expect many 25-45 year olds who've been in the scene for years.</li>
+                    <li><strong>Knowledge level:</strong> People know the music. They'll recognize deep cuts and cheer for specific melodies.</li>
+                    <li><strong>Dance floor energy:</strong> Eyes closed, hands up, full commitment. Less phone filming, more presence.</li>
+                    <li><strong>International travelers:</strong> Trance fans fly in from around the world. You'll meet people from Europe, Asia, South America.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The night doesn't end when Dreamstate closes.</p>
+                <ul>
+                    <li><strong>Afterparties:</strong> Official afterparties at LA clubs run until 4-6AM. Check announcements closer to the event.</li>
+                    <li><strong>Recovery:</strong> Long Beach has great breakfast spots. Pike outlets and waterfront are walkable for daytime exploration.</li>
+                    <li><strong>Monday flights:</strong> If possible, book Monday afternoon departures. You'll want recovery time.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

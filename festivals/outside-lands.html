@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outside Lands — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b35 0%, #1a936f 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Golden Gate Park, SF</span>
+                <span>📅 August (3 days)</span>
+                <span>👥 225,000</span>
+                <span>💵 $425-530</span>
+            </div>
+            <h1>🌲 Outside Lands</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">36</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Outside Lands has solid electronic programming through SOMA and Dolores' stages, but it's fundamentally a multi-genre festival. Great for the house/techno curious, but dedicated EDM fans may find the selection limited compared to pure electronic events.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Electronic acts are well-curated but limited in quantity. SOMA stage focuses on quality house and techno (Black Coffee, Floating Points, Claude VonStroke). Recent years have added John Summit, Jamie xx, Kaytranada as headliners. If you only want electronic, you'll spend most time at 2 stages while 5+ others play rock/indie/hip-hop.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>SOMA received major upgrades in 2025 with enhanced audio, lighting, and visuals. It's a proper open-air club experience now. The overall festival production is polished — not EDC-level pyrotechnics, but tasteful art installations and stage design that suits the park setting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>San Francisco crowds skew older, more chill, and less "rave culture" than dedicated EDM events. SOMA and Dolores' have their own communities — house heads and LGBTQ+ dancers respectively — but don't expect wall-to-wall PLUR energy. It's sophisticated, not chaotic.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Golden Gate Park is beautiful but sprawling. Walking between stages takes real time, especially if you're bouncing between SOMA and the main stages. Entry lines have improved with RFID wristbands. Water stations adequate. No camping means daily logistics.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is OSL's secret weapon. San Francisco restaurant scene shows up hard — actual quality food, not just festival slop. Wine Lands, Beer Lands, Cheese Lands (!!) are highlights. Vegetarian/vegan options abundant. Prices high but portions and quality justify it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>SFO and OAK airports well-connected. MUNI runs extra service to the park. Rideshare works but surge pricing is brutal. Hotels in SF are expensive but plentiful. No on-site camping means you need lodging sorted. Shuttle options from designated pickup points.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$500+ tickets plus SF hotel prices ($200-400/night) makes this expensive. If you're coming primarily for electronic music, the cost-per-electronic-act is high since most of the lineup isn't your thing. Better value if you appreciate the full multi-genre experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond music: comedy tent (actual good comedians), Grass Lands (cannabis experiences — this is SF after all), Wine Lands with curated tastings, art installations throughout. Dolores' stage is a dedicated queer dance party with drag performances. Plenty to explore.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Golden Gate Park is stunning. Eucalyptus trees, rolling meadows, that San Francisco fog rolling through. August weather is perfect (60-70°F). This isn't a parking lot or speedway — it's an actual beautiful park. One of the most scenic festival settings in America.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For electronic fans specifically: temper expectations. OSL is marketed as San Francisco's premier festival, and it delivers on that — for the general audience. For pure electronic heads, the hype can mislead. Know that you're getting 2 dedicated stages, not a full EDM experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>SOMA stage books quality underground acts. If you prefer Black Coffee over mainstream EDM, OSL's electronic curation is actually solid.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌈</div>
+                    <div>
+                        <h3>LGBTQ+ Community</h3>
+                        <p>Dolores' stage is a dedicated queer dance party with drag performers and inclusive energy. One of the few major festivals with this specific space.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍷</div>
+                    <div>
+                        <h3>Festival Foodies</h3>
+                        <p>If you care about eating well while you dance, OSL is unmatched. Wine Lands, Cheese Lands, and actual SF restaurants on-site.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎵</div>
+                    <div>
+                        <h3>Genre Explorers</h3>
+                        <p>Perfect if you want electronic but also appreciate indie rock, hip-hop, and variety. Less ideal if you only want bass drops.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The way SOMA hits different when the fog rolls in at sunset 🌫️"</div>
+                    <div class="stats">680K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Dolores stage giving everything today 🌈✨ @outsidelands"</div>
+                    <div class="stats">124K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Outside Lands 2024 Guide: Is It Worth It For EDM Fans?"</div>
+                    <div class="stats">89K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Outside Lands Experience</h2>
+            <p class="intro">San Francisco's signature festival — here's what electronic fans need to know.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">August (3 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 10PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">75,000/day</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Outside Lands is a multi-genre festival first, electronic second. Adjust expectations accordingly.</p>
+                <ul>
+                    <li><strong>Study the electronic lineup:</strong> SOMA and Dolores' are your home bases. Check set times and plan your day around them.</li>
+                    <li><strong>SF hotels book fast:</strong> August is peak tourist season. Book 2-3 months ahead or pay premium prices.</li>
+                    <li><strong>Layer up:</strong> San Francisco summer means 60-70°F and potentially foggy. Bring a light jacket — you'll need it by evening.</li>
+                    <li><strong>No camping:</strong> This is a daily festival. You'll need to commute each day, so choose lodging location carefully.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Golden Gate Park is accessible but SF traffic is real.</p>
+                <ul>
+                    <li><strong>MUNI is your friend:</strong> Extra N-Judah service runs to the park. Takes longer than rideshare but avoids surge pricing.</li>
+                    <li><strong>Rideshare surge:</strong> End of night surge pricing is brutal. Consider walking to a pickup spot farther from the park.</li>
+                    <li><strong>Driving discouraged:</strong> Limited parking, expensive, and you won't want to be sober driver after this.</li>
+                    <li><strong>Entry:</strong> RFID wristband system. Lines worst during first hour of gates opening — arrive early or fashionably late.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Know where your people are:</p>
+                <ul>
+                    <li><strong>SOMA:</strong> The dedicated house/techno stage in Marx Meadow. Recently upgraded with better sound and visuals. This is where electronic purists live.</li>
+                    <li><strong>Dolores':</strong> LGBTQ+ focused dance stage with drag performances and queer artists. More party vibes, less underground.</li>
+                    <li><strong>Twin Peaks:</strong> Second main stage. Occasionally books electronic-adjacent acts (Jamie xx, Kaytranada) when they're headlining.</li>
+                    <li><strong>Other stages:</strong> Lands End, Sutro, Panhandle — mostly rock, indie, hip-hop. Skip unless you want variety.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "SOMA is legit for house and techno — the booking is quality even if the quantity is limited. Just know that you're paying for a full festival when you really want one stage."
+                    <cite>— r/OutsideLands, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>This is OSL's strength — embrace it.</p>
+                <ul>
+                    <li><strong>Eat well:</strong> Real SF restaurants operate here. The food is genuinely good, not just "good for a festival."</li>
+                    <li><strong>Wine Lands:</strong> Curated California wine tastings. Actually educational if you care.</li>
+                    <li><strong>Grass Lands:</strong> Legal cannabis lounge. Welcome to California.</li>
+                    <li><strong>Water:</strong> Free refill stations throughout. SF weather means you won't overheat, but stay hydrated.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>SF festival crowds are their own thing.</p>
+                <ul>
+                    <li><strong>Older demographic:</strong> More 25-40 than 18-25. Professionals who can afford SF prices.</li>
+                    <li><strong>Chill energy:</strong> Less raging, more vibing. Don't expect mosh pits or headbanging.</li>
+                    <li><strong>SOMA community:</strong> House/techno heads who know what they're there for. Quality over quantity crowd.</li>
+                    <li><strong>Dolores' community:</strong> LGBTQ+ celebration with incredible energy and acceptance.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The party continues if you know where to look.</p>
+                <ul>
+                    <li><strong>Afterparties:</strong> SOMA artists often play late-night sets at SF clubs. Check Audio, Monarch, Public Works.</li>
+                    <li><strong>Night scene:</strong> SF's house/techno scene is active year-round. Use OSL as an introduction.</li>
+                    <li><strong>Recovery:</strong> Late-night burritos in the Mission are traditional. Taquerias stay open late.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

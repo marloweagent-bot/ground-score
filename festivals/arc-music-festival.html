@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff3366 0%, #6633ff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Union Park, Chicago</span>
+                <span>📅 Labor Day Weekend (3 days)</span>
+                <span>👥 25,000+</span>
+                <span>💵 $200-400</span>
+            </div>
+            <h1>🏠 ARC Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">House music comes home. ARC honors Chicago's heritage as the birthplace of house while showcasing the global scene's best. If you care about Carl Cox, Green Velvet, and four-on-the-floor, this is a pilgrimage. The city's afterparty scene completes the experience.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARC books the house and techno lineup other festivals wish they had. Carl Cox, Honey Dijon, Disclosure, Green Velvet, Dom Dolla — legends and tastemakers alike. The Grid stage brings headliners, Expansions goes deeper and more experimental, and Elrow brings the party. 2024 added UK Garage programming. If you're a house/techno purist, this is your Super Bowl.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARC focuses on sound over spectacle, but production is still strong. The Grid stage has industrial vibes fitting Chicago's character. Elrow brings its signature colorful chaos with confetti, inflatables, and costumed performers. Expansions is more minimal and focused on the music. You're not here for pyro — you're here for the groove.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The crowd knows their stuff. These are people who've been following house music for years, not just chasing TikTok trends. Chicago locals mixed with pilgrims from around the world create an informed, appreciative audience. Less kandi, more head-nodding. The energy is mature but not stuffy — people come to dance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Union Park is compact — you can hit all stages without marathon walks. The festival has grown, and Expansions stage can get crowded for popular sets. Water stations adequate. 10PM curfew means everything wraps up at a reasonable hour (which feeds into the afterparty scene). Entry is generally smooth.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Chicago knows food. Festival vendors are solid with local favorites. You're also in a real neighborhood — leave the festival and hit West Loop restaurants. Deep dish is a short Uber away. Prices inside are typical festival range. Pro tip: the surrounding neighborhood has excellent dinner options for pre-show.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Chicago is a major hub — cheap flights from everywhere. O'Hare and Midway both work. Union Park is central, accessible via CTA (Ashland Green/Pink lines). Hotels throughout downtown and the West Loop. No car needed. This is peak urban festival accessibility.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three days of elite house/techno curation for $200-400 is reasonable. Chicago hotels can be expensive for Labor Day, but total trip cost is competitive with other majors. The afterparty scene extends value — your wristband gets you into the festival, the city gives you everything else.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARC is focused — music is the draw, not carnival rides or wellness workshops. There are art installations and the Elrow experience brings theatrics, but this isn't a transformational festival. The "extra" is Chicago itself — architecture tours, deep dish debates, and legendary clubs.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Union Park is an urban green space in Chicago's West Loop. Not scenic like the Gorge, but there's something fitting about dancing to house music in the city that invented it. September weather is ideal — warm days, cool nights. The Chicago skyline adds character. You're in a real neighborhood, not an isolated fairground.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ARC has built serious credibility in just five years. For house/techno purists, it delivers exactly what it promises — world-class booking in the genre's birthplace. If you expect massive EDM drops and mainstream names, you'll be confused. Know your audience, know your vibe, and ARC rewards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>If you know the difference between tech-house and deep house, if Carl Cox is a legend not just a name, if you've followed Chicago house history — this is your festival. No compromises on genre.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Festival ends at 10PM, and Chicago's club scene takes over. Afterparties at legendary venues, late-night food, a real city to explore. The festival is just part of the weekend.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>The crowd skews older than mainstream EDM festivals. Professionals, longtime fans, people who can afford a nice dinner before the show. Mature energy without being boring.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Music Historians</h3>
+                        <p>Chicago invented house music. Dancing in its birthplace while local legends like Terry Hunter and Mike Dunn play is a spiritual experience for those who know the history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"When Carl Cox drops at sunset and everyone just vibes 🏠"</div>
+                    <div class="stats">780K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"House music homecoming. Chicago did NOT disappoint 🙌"</div>
+                    <div class="stats">145K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"ARC 2024 | Why Chicago Is Still the House Music Capital"</div>
+                    <div class="stats">420K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete ARC Experience</h2>
+            <p class="intro">Everything you need to know about the house music homecoming.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Labor Day Weekend</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 10PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">25,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Afterparties</div><div class="value">Essential</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>ARC rewards preparation — especially around the afterparty strategy.</p>
+                <ul>
+                    <li><strong>Afterparty tickets:</strong> Book early. The best official afterparties sell out fast. These aren't optional — they're part of the experience.</li>
+                    <li><strong>Study the lineup:</strong> Four stages means conflicts. Know your must-sees and plan your day around them.</li>
+                    <li><strong>Hotel location:</strong> West Loop or downtown keeps you close. CTA access matters more than driving.</li>
+                    <li><strong>Dress code:</strong> ARC is more stylish than your average rave. Think club attire, not kandi kids.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Chicago makes this easy. No desert drives, no camping logistics.</p>
+                <ul>
+                    <li><strong>Flying in:</strong> O'Hare (ORD) is the major hub. Midway (MDW) often has cheaper Southwest fares.</li>
+                    <li><strong>Getting around:</strong> CTA trains and buses work great. Uber/Lyft reliable. You don't need a car.</li>
+                    <li><strong>To the festival:</strong> Union Park is served by Ashland station (Green/Pink lines). Walk from the West Loop.</li>
+                    <li><strong>Entry:</strong> Generally smooth. Gates open at noon; headliners aren't until evening.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Union Park is compact but well-designed for dancing.</p>
+                <ul>
+                    <li><strong>The Grid:</strong> Main stage with industrial aesthetic. Biggest names, biggest crowds. Carl Cox territory.</li>
+                    <li><strong>Expansions:</strong> Deeper house and techno. Longer sets, more experimental. Where the heads congregate.</li>
+                    <li><strong>Elrow:</strong> The party within the party. Colorful, chaotic, theatrical. Confetti will get everywhere.</li>
+                    <li><strong>Fourth Stage:</strong> Rotating focus on Midwest talent, UK Garage (2024), and special programming.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "House has traveled from Chicago to Detroit and throughout the world. ARC brings the global scene back to the birthplace — it's a homecoming."
+                    <cite>— Chicago Sun-Times, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Chicago means good food. The festival and surrounding area deliver.</p>
+                <ul>
+                    <li><strong>Inside the festival:</strong> Solid vendors with local options. Prices are typical festival range ($12-18).</li>
+                    <li><strong>West Loop dining:</strong> The neighborhood is a culinary destination. Pre-show dinner at a proper restaurant is worth it.</li>
+                    <li><strong>Weather:</strong> September in Chicago is perfect — 70s and sunny usually. Pack a light layer for evening.</li>
+                    <li><strong>Hydration:</strong> Water stations available. You're dancing all day in the sun; take care of yourself.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>ARC attracts a specific type — informed, stylish, here for the music.</p>
+                <ul>
+                    <li><strong>Age range:</strong> Older than EDC crowd. Plenty of 25-50 year olds who've been dancing for decades.</li>
+                    <li><strong>Knowledge level:</strong> People know the DJs, the labels, the history. Conversations about music are substantive.</li>
+                    <li><strong>Local pride:</strong> Chicago house heads are passionate about their city's contribution to dance music.</li>
+                    <li><strong>International visitors:</strong> ARC draws pilgrims from around the world — house music is global.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Afterparty Scene</h3>
+                <p>This is non-negotiable. ARC's 10PM curfew means the real party continues elsewhere.</p>
+                <ul>
+                    <li><strong>Official afterparties:</strong> Announced closer to the event at clubs like Spybar, Prysm, Concord. Book immediately.</li>
+                    <li><strong>The scene:</strong> Chicago's club culture is legendary. Warehouse parties, intimate venues, proper sound systems.</li>
+                    <li><strong>Pacing yourself:</strong> If you're doing afterparties until 4AM, plan your festival day accordingly. It's a marathon.</li>
+                    <li><strong>Sunday recovery:</strong> Budget time for rest. Going hard all three days plus afterparties will break you.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Labor Day Monday means one more day in Chicago.</p>
+                <ul>
+                    <li><strong>Monday activities:</strong> Architecture tour, deep dish lunch, recover by the lake. Chicago has plenty to offer beyond the festival.</li>
+                    <li><strong>Flight timing:</strong> Don't book early Monday flights. Give yourself recovery time.</li>
+                    <li><strong>Local clubs:</strong> Some stay open Monday for the extended crowd. Check schedules.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

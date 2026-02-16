@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasquatch! — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: rgba(156, 163, 175, 0.15); border: 1px solid rgba(156, 163, 175, 0.4); padding: 16px 24px; }
+        .status-banner .container { display: flex; align-items: center; gap: 12px; }
+        .status-banner .status-icon { font-size: 1.5rem; }
+        .status-banner .status-text { color: #9ca3af; font-weight: 500; }
+        .status-banner .status-detail { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .legacy-box { background: rgba(156, 163, 175, 0.1); border: 1px solid rgba(156, 163, 175, 0.3); border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .legacy-box h4 { color: #9ca3af; margin-bottom: 8px; font-size: 1rem; }
+        .legacy-box p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <div class="status-banner">
+        <div class="container">
+            <span class="status-icon">🪦</span>
+            <div>
+                <div class="status-text">Legacy Entry — Festival Ended 2018</div>
+                <div class="status-detail">After 17 years, Sasquatch! was discontinued following the 2018 edition. This page preserves its history for the record.</div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 The Gorge Amphitheatre, WA</span>
+                <span>📅 Memorial Day Weekend</span>
+                <span>👥 20,000-25,000</span>
+                <span>💵 $300-400</span>
+            </div>
+            <h1>🦶 Sasquatch!</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">36</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Sasquatch! was a Pacific Northwest institution — indie rock heart with growing electronic presence, all set against The Gorge's jaw-dropping backdrop. The "El Chupacabra" tent brought EDM to the PNW faithful. Gone but not forgotten.</p>
+            </div>
+            
+            <div class="legacy-box">
+                <h4>📜 Historical Scores</h4>
+                <p>These scores reflect Sasquatch! as it existed in its final years (2016-2018). The festival evolved significantly over its 17-year run.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Indie rock was the DNA, but electronic presence grew steadily. The "El Chupacabra" tent (formerly "Banana Shack") featured electronic and comedy acts. Final years saw What So Not, Tokimonsta, Jai Wolf, Petit Biscuit. Not an EDM festival, but electronic fans had a dedicated space.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was indie-festival appropriate — clean stages, good sound, but nothing spectacular visually. The Gorge itself was the production. Five stages by the end: Main Stage, Bigfoot, El Chupacabra, Yeti, plus smaller stages. Functional over flashy.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Pacific Northwest energy — laid-back, music-focused, outdoorsy. The camping crowd created community. Less about scene-and-be-seen, more about discovery and music appreciation. The people who went were there because they genuinely loved the lineup.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Gorge is remote, which created unique challenges. Camping was essentially required — no reasonable way to commute. The venue itself flowed well, but getting there and leaving involved serious logistics. Plan accordingly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food — adequate but not exceptional. The remoteness meant limited vendor diversity. Campers often brought their own food. Prices were typical for captive festival audiences. Nothing memorable, nothing terrible.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This was Sasquatch!'s weakness. The Gorge is in George, Washington — 2.5 hours from Seattle, middle of nowhere. Fly into SEA-TAC, rent a car, drive into the desert. No public transit, no shuttles. Camping wasn't optional; it was survival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>3-4 days of quality music at The Gorge for $300-400 plus camping. The experience — camping community, stunning views, curated lineup — delivered good value for the committed. Less value for electronic fans specifically, but the full package was solid.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Comedy acts were integrated (El Chupacabra tent hosted both electronic music and comedy). Art installations were present but modest. The camping experience was the main "extra" — it became the community hub. Not art-festival level, but more than just stages.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Gorge is arguably the most beautiful outdoor venue in North America. The Columbia River Gorge as your backdrop? Unmatched. Sunsets over the canyon were legendary. This alone made the pilgrimage worthwhile. No festival setting comes close.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sasquatch! earned its reputation over 17 years. It delivered consistently for PNW music fans. The 2017 lineup controversy (Twenty One Pilots headlining alienated longtime fans) signaled trouble. The ending felt more like exhaustion than disappointment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>If camping was your favorite part of festivals, Sasquatch! was built for you. The campsite community was the heart of the experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌲</div>
+                    <div>
+                        <h3>PNW Faithful</h3>
+                        <p>Seattle's festival. Portland's festival. The Pacific Northwest had ownership of this event in a way few regions do.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌄</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>The Gorge setting elevated music with natural beauty. If scenic views matter to your festival experience, nothing compared.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Indie Explorers</h3>
+                        <p>The lineup curation rewarded discovery. Deep undercard, emerging artists, eclectic bookings — for music nerds who did their homework.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>The Archive</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Sasquatch! 2018: The Final Year — Documentary"</div>
+                    <div class="stats">456K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"The Gorge: Why Sasquatch! Had the Best Festival Views"</div>
+                    <div class="stats">312K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Missing Sasquatch vibes — that gorge sunset hits different"</div>
+                    <div class="stats">78K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Sasquatch! Story</h2>
+            <p class="intro">17 years of Pacific Northwest festival culture, 2002-2018.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Run</div><div class="value">2002-2018</div></div>
+                <div class="fact"><div class="label">Days</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~25,000</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Ended</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Required</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Birth and Evolution</h3>
+                <p>Adam Zacks founded Sasquatch! in 2002 on a hunch that the Pacific Northwest needed an indie festival. It started as a single-day event and grew into a Memorial Day weekend institution.</p>
+                
+                <blockquote class="quote">
+                    "Sasquatch was an idea born on a hunch that there was untapped demand for a certain kind of festival that catered to the eclectic tastes of music enthusiasts."
+                    <cite>— Adam Zacks, Founder</cite>
+                </blockquote>
+                
+                <p>The festival launched during the gap between Lollapalooza/Lilith Fair era and the modern festival boom. It helped establish the template that Coachella, Bonnaroo, and others would expand upon.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Electronic Evolution</h3>
+                <p>Sasquatch! wasn't born as an electronic festival, but EDM found a home there:</p>
+                <ul>
+                    <li><strong>Banana Shack / El Chupacabra:</strong> Started as comedy tent, evolved to include electronic music</li>
+                    <li><strong>Final years featured:</strong> What So Not, Tokimonsta, Jai Wolf, Petit Biscuit, Lemaitre, Snakehips</li>
+                    <li><strong>Earlier appearances:</strong> Justice, MGMT, Cut Copy, and various electronica acts</li>
+                </ul>
+                <p>The electronic programming grew as the genre mainstreamed, though it never became the festival's focus.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Decline</h3>
+                <p>Several factors contributed to Sasquatch!'s end:</p>
+                <ul>
+                    <li><strong>2014 two-weekend experiment:</strong> Failed to sell — fans preferred one concentrated experience</li>
+                    <li><strong>2017 lineup backlash:</strong> Twenty One Pilots headlining alienated core indie audience</li>
+                    <li><strong>Festival market saturation:</strong> More options meant more competition for the same fans</li>
+                    <li><strong>Rising costs:</strong> Artist fees and production costs outpaced ticket revenue</li>
+                </ul>
+                <p>On June 28, 2018, Zacks announced Sasquatch! would not return. "I will no longer be producing the Festival, nor will it take place in 2019."</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Gorge Lives On</h3>
+                <p>The venue itself continues to host major festivals:</p>
+                <ul>
+                    <li><strong>Paradiso Festival:</strong> USC Events' EDM-focused event (when active)</li>
+                    <li><strong>Watershed:</strong> Country music festival</li>
+                    <li><strong>Beyond Wonderland:</strong> Insomniac's PNW event (2023+)</li>
+                    <li><strong>Dave Matthews Band:</strong> Annual Labor Day pilgrimage</li>
+                </ul>
+                <p>If The Gorge calls to you, options still exist — just not under the Sasquatch! banner.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Legacy</h3>
+                <p>Sasquatch! proved a regional festival could become culturally essential. It launched careers, created memories, and gave the PNW its own musical identity. The "dancing guy" viral video (2009) remains one of the most-cited examples of how movements start.</p>
+                <p>For 17 years, Memorial Day meant something special for Pacific Northwest music fans. That won't be forgotten.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Preserving festival history for electronic music fans</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

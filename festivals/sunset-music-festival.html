@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunset Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Tampa, Florida</span>
+                <span>📅 Memorial Day Weekend (2 days)</span>
+                <span>👥 50,000+</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>🌅 Sunset Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">35</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Florida's biggest Memorial Day EDM party — mainstream lineup, stadium setting, and serious Florida heat. A solid regional festival for those who don't want to travel far.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mainstream EDM focus — Tiësto, Zedd, Marshmello, Illenium type bookings. Good production value but the lineup tends toward radio-friendly over cutting edge. Solid bass and house representation. If you want the hits, you'll get them. If you want underground, look elsewhere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Multiple stages with decent production — LED walls, lasers, pyro. It's professional but not EDC-level spectacular. The stadium parking lot setting limits creative possibilities. Costumed performers add color. Good for a regional festival, not a destination for production value alone.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Florida party energy — young, rowdy, and here to go hard. The 18+ crowd brings college-age enthusiasm (and chaos). Memorial Day weekend attracts people ready to let loose. It's fun but can feel more "party" than "community." PLUR exists but gets diluted at this scale.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Stadium parking lot = concrete and asphalt. Walking between stages is straightforward but there's limited shade. Water stations exist but lines get long in the Florida heat. 50,000 people means crowded pathways during headliners. VIP helps but isn't essential.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival fare — pizza, tacos, fried foods. Prices are typical ($12-15 meals). Quality is adequate but not a highlight. The stadium location means vendors are spread out but lines can stack up. Eat before the headliners hit.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Tampa International (TPA) is easy to fly into and close to the venue. Raymond James Stadium is a known location with established infrastructure. Hotels nearby, rideshare works well. Post-festival traffic can be rough but overall logistics are manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$150-300 for two days of mainstream headliners is competitive. Tampa hotels are reasonable. If you're already in Florida, the value proposition is strong. Compared to flying to Vegas for EDC, this delivers solid ROI for regional fans.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond the music, there's not much. No art installations, no wellness areas, no carnival rides. Some merchandise booths and sponsor activations. This is a straightforward music festival — which is fine, but don't expect Electric Forest-level extras.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>A stadium parking lot is a stadium parking lot. Concrete, asphalt, no natural beauty. Memorial Day in Tampa means 90°F+ heat and Florida humidity. Sunsets can be gorgeous, but the venue itself offers no scenic value. Bring sunscreen and hydration.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>SMF delivers what it promises — a big EDM festival in Florida. It's not trying to be EDC or Ultra. If you expect a solid regional festival with mainstream headliners, you'll be satisfied. Just don't expect a life-changing experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Mainstream EDM Fans</h3>
+                        <p>If you love the hits — Tiësto, Marshmello, Illenium — this lineup speaks your language. Radio-friendly EDM done right.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌴</div>
+                    <div>
+                        <h3>Florida Locals</h3>
+                        <p>No flights, no camping, just drive to Tampa and party. The ultimate regional festival for Southeast ravers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Memorial Day weekend makes it easy to coordinate. Hotels are plentiful, Tampa has nightlife, and two days is manageable.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Not too big, not too small. A good intro to festival culture without the intensity of EDC or the logistics of camping.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"SMF sunset hits different when the bass drops 🌅"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Memorial Day weekend vibes in Tampa 🎆"</div>
+                    <div class="stats">210K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Sunset Music Festival 2023 | Full Vlog + Survival Tips"</div>
+                    <div class="stats">340K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete SMF Experience</h2>
+            <p class="intro">Everything you need to survive Memorial Day weekend in Tampa.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Memorial Day</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">2 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">50,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>SMF is straightforward, but Florida in late May requires specific preparation.</p>
+                <ul>
+                    <li><strong>Book hotels early:</strong> Memorial Day weekend fills up Tampa hotels. Downtown or near the stadium is ideal.</li>
+                    <li><strong>Hydration pack:</strong> Bring a CamelBak or hydration pack. Florida heat is no joke — 90°F+ with high humidity.</li>
+                    <li><strong>Sunscreen:</strong> Seriously. The festival runs into the evening but you'll be in direct sun for hours.</li>
+                    <li><strong>Light clothing:</strong> This isn't the time for elaborate costumes. Breathable, minimal coverage works best.</li>
+                    <li><strong>Check the weather:</strong> Memorial Day can bring afternoon thunderstorms. Pack a lightweight rain jacket.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Raymond James Stadium is a known quantity — the infrastructure exists.</p>
+                <ul>
+                    <li><strong>Fly into TPA:</strong> Tampa International is 20 minutes from the venue. Easy flights from most US cities.</li>
+                    <li><strong>Driving:</strong> Stadium parking is available but fills up. Carpooling helps with cost and exit time.</li>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work well. Designate a pickup spot away from the main exit to avoid surge madness.</li>
+                    <li><strong>Entry lines:</strong> Can be long in the heat. Arrive early-ish to avoid peak wait times.</li>
+                    <li><strong>Will call:</strong> Get your tickets in advance if possible. Will call lines add to the heat exposure.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>It's a parking lot with stages. Know what you're walking into.</p>
+                <ul>
+                    <li><strong>Main stage:</strong> Where the headliners play. Biggest crowd, best production, most crowded.</li>
+                    <li><strong>Secondary stages:</strong> Smaller acts, shorter lines, more room to move. Often the better experience.</li>
+                    <li><strong>Shade is limited:</strong> Bring a fan, find the misting stations, and rotate between sun and covered areas.</li>
+                    <li><strong>Water refill:</strong> Free water stations exist but expect lines during peak hours.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "One of the best music festivals I've ever been to! At the same time they had tons of issues, with the VIP tent unsafe on Saturday..."
+                    <cite>— Yelp Review, 2023</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Surviving Florida heat is the real challenge here.</p>
+                <ul>
+                    <li><strong>Hydrate before you arrive:</strong> Start drinking water the day before. You need to be ahead of the dehydration curve.</li>
+                    <li><strong>Electrolytes:</strong> Pack powder packets or buy sports drinks inside. Water alone won't cut it.</li>
+                    <li><strong>Eat early:</strong> Get food before sunset when lines are shorter and your stomach is still happy.</li>
+                    <li><strong>Know the signs:</strong> Dizziness, nausea, headaches = find shade and medical staff immediately.</li>
+                    <li><strong>Buddy system:</strong> Keep an eye on your group. Heat exhaustion is real and can sneak up on people.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Memorial Day brings out the party crowd.</p>
+                <ul>
+                    <li><strong>Young and rowdy:</strong> 18+ means college-age dominates. Expect high energy and occasional chaos.</li>
+                    <li><strong>Florida party culture:</strong> This isn't a spiritual gathering — it's a party. Adjust expectations accordingly.</li>
+                    <li><strong>Mainstream fans:</strong> The lineup attracts casual EDM listeners as much as devoted heads.</li>
+                    <li><strong>PLUR exists:</strong> But it's diluted at this scale. Smaller stages tend to have better vibes.</li>
+                    <li><strong>Security presence:</strong> Visible and active. Fights get shut down quickly.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Tampa has solid nightlife to extend the weekend.</p>
+                <ul>
+                    <li><strong>Ybor City:</strong> Tampa's nightlife district. Clubs stay open late and attract festival spillover.</li>
+                    <li><strong>After-parties:</strong> Check local venues for official and unofficial after-parties.</li>
+                    <li><strong>Beach recovery:</strong> Clearwater and St. Pete beaches are 30-40 minutes away. Perfect for Sunday recovery.</li>
+                    <li><strong>Food recovery:</strong> Tampa has great Cuban food. Try a Cuban sandwich before you leave.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

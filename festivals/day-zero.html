@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Zero — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a3a1a 0%, #2d5a27 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .status-banner { background: linear-gradient(90deg, #2d5a27 0%, #1a3a1a 100%); padding: 12px 0; text-align: center; border-bottom: 1px solid var(--border); }
+        .status-banner p { font-size: 0.9rem; color: #90EE90; }
+        .status-banner strong { color: #00ff88; }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1518173946687-a4c036bc3a7e?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>🌴 <strong>Note:</strong> Day Zero is held in Tulum, Mexico — not a US festival. Many Americans travel to attend. Consider this a destination event for US-based festival-goers.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Tulum, Mexico (Jungle)</span>
+                <span>📅 January (Near Mayan New Year)</span>
+                <span>👥 5,000-8,000</span>
+                <span>💵 $200-500</span>
+            </div>
+            <h1>🌿 Day Zero</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Damian Lazarus's mystical jungle gathering. Day Zero transforms the Mayan jungle into a cathedral of house and techno, timed to the ancient Mayan calendar's symbolic rebirth. A pilgrimage for underground electronic devotees willing to travel to experience something transcendent.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>World-class underground curation by Damian Lazarus (Crosstown Rebels founder). Deep house, melodic techno, and organic electronic music. Past lineups: Seth Troxler, Black Coffee, Nicola Cruz, Vintage Culture, Acid Pauli, Dubfire. Three stages including El Teatro showcasing Mexican talent. Damian's legendary sunrise sets close each year.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The jungle IS the production. Ancient trees draped in lights, ceremonial fire, Mayan-inspired art installations, cenotes nearby. Minimal artificial production because nature provides the spectacle. Dawn ceremonies, fire dancers, shamanic elements blended with world-class sound systems. Nothing else looks or feels like this.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>International, sophisticated, spiritually-inclined. People travel from around the world for this experience. More "consciousness" than "raging." The sunrise ritual is sacred — the whole crowd watches the sun rise through the jungle canopy together. Intimate despite the capacity. Real connection happens.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>It's a jungle — expect uneven terrain, roots, and primitive paths. Not ADA-friendly. Multiple stages spread through the vegetation. Walking between them is part of the adventure. Facilities are basic but functional. Water stations available. Getting in/out requires shuttle or taxi coordination.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Onsite food vendors with local Mexican and international options. Quality is decent for jungle conditions. Bars serve drinks. Table service available for VIP. The real food experience is Tulum's restaurant scene before and after — some of the best in Mexico.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Fly into Cancun (CUN), then 90-minute drive to Tulum. Shuttles and taxis available but require planning. January weather is ideal (70s-80s°F). Many people extend to a week-long Tulum trip. Passport required for US citizens. International event logistics, but worth the journey.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Tickets $200-500, but Tulum trip costs add up — flights ($400-800 from US), hotels ($100-400/night), food, activities. Total experience can hit $2,000-3,000+. But you're getting both a world-class festival AND a vacation in one of Mexico's most beautiful destinations. Value depends on how you frame it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond the music: Mayan rituals, sunrise ceremonies, fire performances, art installations integrated with nature. The spiritual element is real — not performative. Pre and post events around Tulum throughout the week. Cenote swimming, Mayan ruins, beach clubs all nearby. It's an experience, not just a party.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>There is no more magical festival setting. The Mayan jungle at night, lit by torches and installations. Ancient trees creating natural cathedral ceilings. Dancing as the sun rises through the canopy. Stars visible through gaps in the foliage. Cenotes (natural swimming holes) nearby. Sacred, otherworldly, unforgettable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Exceeds expectations for those who seek what it offers. The mystical reputation is earned. Not for everyone — if you want EDM drops and lasers, look elsewhere. But for those seeking transcendence, connection to nature, and world-class underground music, Day Zero is a once-in-a-lifetime experience that lives up to the myth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌅</div>
+                    <div>
+                        <h3>Sunrise Chasers</h3>
+                        <p>Damian Lazarus's sunrise sets are legendary. Dancing through the night to greet the dawn through jungle canopy is the peak experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>Deep house, melodic techno, organic electronica. Crosstown Rebels quality curation. This is where the underground gathers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Wellness Seekers</h3>
+                        <p>The spiritual element is real — Mayan ceremony, natural setting, conscious community. Music as medicine, not just entertainment.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>The jungle setting is the production. Ancient trees, stars through the canopy, dancing on earth instead of concrete.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: Damian Lazarus sunrise set in the Mayan jungle 🌅🌿"</div>
+                    <div class="stats">3.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Day Zero is not a festival. It's a pilgrimage."</div>
+                    <div class="stats">456K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Damian Lazarus | Day Zero Tulum 2024 | 3-Hour Sunrise Set"</div>
+                    <div class="stats">1.8M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Day Zero Experience</h2>
+            <p class="intro">A mystical gathering in the Mayan jungle. Here's what the journey holds.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Location</div><div class="value">Tulum, Mexico</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">January 10, 2026</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">Dusk to Dawn</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3</div></div>
+                <div class="fact"><div class="label">Curator</div><div class="value">Damian Lazarus</div></div>
+                <div class="fact"><div class="label">Style</div><div class="value">Underground</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Is Day Zero?</h3>
+                <p>Day Zero is Damian Lazarus's vision of electronic music as ceremony. Founded in 2012, it's timed to the Mayan calendar's symbolic "rebirth" — a celebration of new cycles and transformation.</p>
+                <ul>
+                    <li><strong>Philosophy:</strong> Music, nature, spirituality, community intertwined</li>
+                    <li><strong>Curator:</strong> Damian Lazarus (Crosstown Rebels founder, underground legend)</li>
+                    <li><strong>Format:</strong> Single night, dusk until well past dawn</li>
+                    <li><strong>Climax:</strong> Damian's legendary sunrise set as light breaks through jungle canopy</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>For US Festival-Goers</h3>
+                <p>Day Zero is not in the US, but many Americans make the pilgrimage:</p>
+                <ul>
+                    <li><strong>Flights:</strong> Cancun (CUN) is the main hub. Direct flights from major US cities ($400-800 roundtrip).</li>
+                    <li><strong>Ground transport:</strong> 90-minute drive from Cancun to Tulum. Shuttles, private transfers, or rental cars.</li>
+                    <li><strong>Stay duration:</strong> Most people make it a week-long trip. Tulum has world-class beaches, restaurants, cenotes, Mayan ruins.</li>
+                    <li><strong>January timing:</strong> Perfect winter escape from US cold. Weather is ideal (75-85°F).</li>
+                    <li><strong>Passport:</strong> Required for Mexico entry.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Night Experience</h3>
+                <p>The jungle awakens at dusk:</p>
+                <ul>
+                    <li><strong>Arrival:</strong> Shuttles from Tulum town. Enter as sun sets.</li>
+                    <li><strong>Three stages:</strong> Main stage, secondary stage, El Teatro (Mexican artists)</li>
+                    <li><strong>Journey:</strong> Music builds through the night, energy shifting hour by hour</li>
+                    <li><strong>Climax (6-9am):</strong> Damian Lazarus takes the stage as dawn approaches</li>
+                    <li><strong>Sunrise:</strong> The whole crowd watches light filter through jungle canopy together</li>
+                    <li><strong>Departure:</strong> Late morning, transformed</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "We are thrilled to share with you an exclusive livestream of Damian Lazarus' unforgettable sunrise set at Day Zero Tulum 2024 — a full sensory odyssey in the Mayan jungle. These 3 hours could be one of the best sets I've played for some time."
+                    <cite>— Day Zero Official</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Related Events</h3>
+                <p>The Day Zero universe extends beyond the main event:</p>
+                <ul>
+                    <li><strong>Get Lost (Miami/NYC):</strong> Damian's warehouse party concept — US-accessible underground experience</li>
+                    <li><strong>Crosstown Rebels nights:</strong> Label events in major cities worldwide</li>
+                    <li><strong>Tulum season:</strong> January is peak season with multiple events (Zamna, etc.)</li>
+                    <li><strong>Day Zero international:</strong> Occasional editions in other locations globally</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Planning Your Pilgrimage</h3>
+                <ul>
+                    <li><strong>Book early:</strong> Tickets sell out. Tulum hotels book up for January season.</li>
+                    <li><strong>Budget for the trip:</strong> Flights + hotel + festival + food = $2,000-4,000+ for a week</li>
+                    <li><strong>Extend your stay:</strong> Don't fly out the next day. You'll need recovery time, and Tulum deserves exploration.</li>
+                    <li><strong>What to bring:</strong> Comfortable shoes for jungle terrain, layers for cool night/warm dawn, open mind</li>
+                    <li><strong>What to expect:</strong> Not EDC. Not Ultra. Something slower, deeper, more sacred.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Is It Worth the Trip?</h3>
+                <p>If you resonate with:</p>
+                <ul>
+                    <li>Underground house and techno (not mainstream EDM)</li>
+                    <li>Nature-integrated experiences</li>
+                    <li>Spiritual/conscious community</li>
+                    <li>Sunrise sets and dusk-to-dawn journeys</li>
+                    <li>Destination festival vacations</li>
+                </ul>
+                <p>Then Day Zero may be the most meaningful festival experience you'll ever have. For mainstream EDM fans, look elsewhere. For seekers, this is a pilgrimage worth making at least once.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

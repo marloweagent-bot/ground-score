@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joshua Tree Music Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Joshua Tree Lake, California</span>
+                <span>📅 May & October</span>
+                <span>👥 ~3,000</span>
+                <span>💵 $150-250</span>
+            </div>
+            <h1>🏜️ Joshua Tree Music Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The antidote to corporate mega-fests. JTMF is pure community magic — world music under desert stars, yoga at sunrise, and genuine human connection. Voted #1 Best Festival by USA Today 2024, this boutique gem proves bigger isn't always better.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This isn't your typical EDM festival — JTMF specializes in global music, world fusion, funk, and eclectic acts you won't find anywhere else. Think Afrobeat, cumbia, psychedelic desert rock. The curation is impeccable for those seeking musical discovery over mainstream drops.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is intentionally modest — no pyrotechnics or massive LED walls. The stages blend into the desert landscape. What you get instead is authentic art installations, handmade touches, and the raw beauty of the Mojave as the backdrop. It's rustic, not flashy.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where JTMF shines brightest. The community is unmatched — people actually talk to each other, share food, and form lasting connections. No VIP hierarchies, no influencer culture. Just humans being humans in the desert. Family-friendly means all ages actually coexist harmoniously.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Small footprint means everything is walkable. No mile-long treks between stages. Water stations are adequate, lines are short, and you can actually see the performers without being crushed. The intimate scale is a feature, not a bug.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Food vendors match the eclectic vibe — think global cuisine, vegetarian-friendly options, and local desert-area vendors. Prices are reasonable by festival standards. Quality over quantity approach means what's available is genuinely good.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Remote location is part of the appeal but requires planning. Palm Springs airport is ~50 minutes away; LA is 2+ hours. You'll need a car. Once there, parking and entry are painless. The remoteness filters for committed attendees.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>At $150-250 for a full weekend including camping, this is one of the best values in the festival world. No hidden fees, no $500 "VIP upgrades" required to have a good time. Four days of music, community, and desert magic at a fraction of corporate festival prices.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Yoga, meditation, workshops, movement classes, healing arts, kids' activities — the programming beyond music is substantial. "Random Acts of Mindfulness" throughout the grounds. It's part festival, part retreat, part community gathering.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The high desert is magical — sweeping views, otherworldly rock formations, brilliant stars at night, and sunrises that will make you question reality. Near Joshua Tree National Park. May can be warm; October is perfect weather. The setting alone is worth the trip.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>USA Today's #1 ranking brought new attention, but JTMF has been quietly excellent for 20+ years. The hype is deserved but targets a specific audience. If you want EDM bangers, look elsewhere. If you want genuine community and musical discovery, this delivers exactly what it promises.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Wellness Seekers</h3>
+                        <p>Yoga, meditation, workshops, healing arts — this festival treats the whole person, not just your eardrums. Perfect for those who want music AND mindfulness.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>The Mojave desert is the real headliner. Joshua trees, desert sunrises, star-filled skies — if you want to feel connected to the earth, this is it.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👨‍👩‍👧</div>
+                    <div>
+                        <h3>Festival Families</h3>
+                        <p>One of the few truly family-friendly festivals where kids aren't just tolerated — they're welcomed. Safe, substance-light, with dedicated kids' programming.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌍</div>
+                    <div>
+                        <h3>World Music Explorers</h3>
+                        <p>If Spotify algorithm music bores you and you crave global sounds, Afrobeat, cumbia, and artists you've never heard of, JTMF is your playground.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Why Joshua Tree Music Fest just won #1 in America 🏜️✨"</div>
+                    <div class="stats">847K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Desert sunrise yoga hits different at JTMF 🧘‍♀️🌅"</div>
+                    <div class="stats">124K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Joshua Tree Music Festival 2024 | The Anti-Coachella Experience"</div>
+                    <div class="stats">289K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete JTMF Experience</h2>
+            <p class="intro">Everything you need to know about the desert's best-kept secret (that's not so secret anymore).</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May & October</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~3,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Since</div><div class="value">2003</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>JTMF is not a "show up and rage" festival. It rewards preparation and the right mindset.</p>
+                <ul>
+                    <li><strong>Set expectations:</strong> This is not EDM. It's world music, global sounds, and eclectic acts. Come to discover, not to hear your Spotify playlist.</li>
+                    <li><strong>Pack for extremes:</strong> Desert days are hot (especially May), nights get cold. Layers are essential. Dust happens.</li>
+                    <li><strong>Book early:</strong> The festival sells out and capacity is limited. Loyalty tickets go fast.</li>
+                    <li><strong>Embrace the pace:</strong> This festival moves slower. That's intentional. Leave the FOMO at home.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>The venue (Joshua Tree Lake) is about 10 minutes from Joshua Tree village and an hour from Palm Springs.</p>
+                <ul>
+                    <li><strong>Fly into Palm Springs (PSP):</strong> Closest airport, ~50 minutes to venue. Rent a car.</li>
+                    <li><strong>LA airports:</strong> LAX/Burbank are 2-2.5 hours. Doable, but plan for traffic.</li>
+                    <li><strong>Car camping:</strong> Drive up to your spot. Easy in, easy out. No shuttle nightmares.</li>
+                    <li><strong>Entry:</strong> Relaxed vibe. No TSA-style gauntlet. Check-in is smooth.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Compact and walkable. Everything is designed for human-scale interaction, not crowd control.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Where headliners play. Still intimate by festival standards — you can actually see faces.</li>
+                    <li><strong>Secondary stages:</strong> Smaller, more experimental acts. Often where the real discoveries happen.</li>
+                    <li><strong>Workshop areas:</strong> Yoga, movement, talks, healing arts scattered throughout.</li>
+                    <li><strong>Community spaces:</strong> Art installations, shaded hangouts, places designed for conversation.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "I've been to festivals on four continents. JTMF is the only one where I've made friends I still talk to years later. The music is great, but the people are the real draw."
+                    <cite>— r/festivals, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>The desert is unforgiving. Respect it.</p>
+                <ul>
+                    <li><strong>Hydrate aggressively:</strong> You're sweating more than you realize. Start before you arrive.</li>
+                    <li><strong>Water stations:</strong> Available throughout. Bring a reusable bottle.</li>
+                    <li><strong>Food vendors:</strong> Eclectic mix matching the musical vibe. Vegetarian/vegan-friendly. Reasonable prices.</li>
+                    <li><strong>Bring snacks:</strong> Car camping means you can have your own cooler. Use it.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>This is what makes JTMF special. The community self-selects for good humans.</p>
+                <ul>
+                    <li><strong>Age range:</strong> Genuinely all ages — 20-somethings dancing next to families with kids.</li>
+                    <li><strong>Vibe:</strong> Relaxed, curious, open. People make eye contact and say hello.</li>
+                    <li><strong>Substances:</strong> Much lighter than typical festival scene. People come for the experience, not to get wrecked.</li>
+                    <li><strong>Return rate:</strong> Extremely high. Veterans call it "coming home."</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>You're in one of America's most beautiful regions. Extend the trip.</p>
+                <ul>
+                    <li><strong>Joshua Tree National Park:</strong> 10 minutes away. Hike, climb, stare at rocks. Essential.</li>
+                    <li><strong>Palm Springs:</strong> Pool, spa, mid-century modern architecture for recovery.</li>
+                    <li><strong>Integration:</strong> The festival is designed to be contemplative. Give yourself time to process.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freaky Deaky — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6600 0%, #8b00ff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Houston, TX</span>
+                <span>📅 Halloween Weekend</span>
+                <span>👥 25,000+</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>🎃 Freaky Deaky</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Texas's premier Halloween EDM festival combines spooky vibes with serious headliners. Disco Donnie's flagship event transforms the racetrack into a haunted circus of bass and beats. If you want to rage in costume with 40+ artists over Halloween weekend, Freaky Deaky delivers.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Strong headliner bookings—DJ Snake, Excision, Kaskade, Porter Robinson have all played. 40+ artists across multiple stages covering bass, house, and mainstage EDM. Disco Donnie knows how to book a lineup. Sound systems are solid, though the racetrack venue can feel open and dispersed.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Halloween theme is fully committed—haunted circus aesthetic, spooky decorations, costumed performers, themed stage designs. It's not just EDM with some orange paint; the entire festival leans into the Halloween spirit. Stage production is respectable for a regional fest.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween + EDM = everyone in costume losing their minds. The costume culture elevates the energy—creativity flows, inhibitions drop, and the Texas rave community brings chaotic joy. People go ALL OUT on costumes. The theme gives everyone permission to be weird and wonderful.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sam Houston Race Park provides ample space. Stages are walkable but spread out. Water stations are adequate. Entry can be slow with costume inspection adding time. The racetrack layout is functional but not inspiring—flat, open, and very Texas. Crowd flow between stages is fine.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food vendors—nothing exceptional but adequate options. Texas BBQ makes an appearance. Prices are typical festival markup. Lines can build during headliner changeovers. Water is available but always bring your own supplies.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Houston's two major airports (IAH, HOU) make flying in easy. Sam Houston Race Park is northwest of downtown—rideshare works, driving is easy with parking available. Hotels nearby and in Houston proper. Texas is spread out, but the infrastructure works.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$150-300 for 2-3 days of 40+ artists is competitive. Houston is a cheaper city than coastal metros—hotels, food, and rideshare are all reasonable. For a Halloween weekend with this caliber of lineup, the value proposition is solid. Total trip cost stays manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Halloween theme extends beyond music—roaming performers, haunted attractions, costume contests, themed photo ops. The commitment to the spooky aesthetic adds layers to the experience. It's an event where the theme is the extra, and it works.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Let's be real: a Houston racetrack isn't scenic. Flat, industrial Texas surroundings. But late October weather is usually pleasant (finally not 100°F), and after dark the Halloween production transforms the space. You're here for the vibes, not the views.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Freaky Deaky has earned its reputation as THE Halloween EDM event in Texas. It consistently delivers on its promise: great lineup, full Halloween commitment, and a crowd that goes hard. If you expect a spooky rave circus, you get exactly that. Hype justified.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Costume Enthusiasts</h3>
+                        <p>If you live for Halloween and spend weeks on your costume, this is your festival. The crowd goes ALL OUT—expect creativity, commitment, and costume envy.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Excision, heavy bass bookings, and a crowd that loves to headbang. The bass stages bring serious energy and the Texas dubstep community shows up.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>Halloween weekend + EDM festival = perfect group trip. Easy to coordinate, theme makes dressing up fun, and Houston is accessible from anywhere.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Night Owls</h3>
+                        <p>The festival runs late, the Halloween energy peaks after dark, and the best sets hit when the spooky atmosphere is fully alive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The costume game at Freaky Deaky is INSANE 💀🎃"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Excision dropped the spookiest set of the year 🔊👻"</div>
+                    <div class="stats">78K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Freaky Deaky 2024 Vlog | Best Halloween Festival?"</div>
+                    <div class="stats">234K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Freaky Deaky Experience</h2>
+            <p class="intro">Your guide to Texas's haunted EDM circus.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Halloween Weekend</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">2-3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">25,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Your costume is not optional—it's essential to the experience.</p>
+                <ul>
+                    <li><strong>Plan your costume:</strong> Go big or go home. Groups coordinate themes. Comfort matters—you'll be dancing for hours.</li>
+                    <li><strong>Book hotels early:</strong> Halloween weekend fills up. Downtown Houston or near the venue both work.</li>
+                    <li><strong>Check the weather:</strong> Late October Houston can still be warm. Plan for layers and breathable costume options.</li>
+                    <li><strong>Pre-game responsibly:</strong> It's Halloween weekend—pace yourself for multiple nights.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Sam Houston Race Park is northwest of downtown Houston.</p>
+                <ul>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work well. Surge pricing kicks in post-festival but isn't brutal.</li>
+                    <li><strong>Driving:</strong> Parking available on-site. Houston traffic is what it is—leave early.</li>
+                    <li><strong>Entry:</strong> Costume inspection can slow things down. Avoid props that look like weapons.</li>
+                    <li><strong>No camping:</strong> This is a hotel festival. Plan your transport for each night.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The racetrack transforms into a Halloween wonderland after dark.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Biggest headliners, full production, massive crowd energy.</li>
+                    <li><strong>Bass Stage:</strong> Where the heavy stuff lives. Excision fans, this is home.</li>
+                    <li><strong>House/Techno Stage:</strong> For when you need to groove instead of headbang.</li>
+                    <li><strong>Haunted areas:</strong> Roaming performers, themed installations, photo ops throughout.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Experience Texas's top haunted EDM festival for an extraordinary lineup, thrilling attractions, and immersive Halloween-themed activities!"
+                    <cite>— EDM Texas</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Standard festival logistics with Texas flair.</p>
+                <ul>
+                    <li><strong>Hydration:</strong> Late October is more forgiving than summer, but still Texas. Drink water.</li>
+                    <li><strong>Food options:</strong> Festival vendors plus Texas BBQ options. Prices are festival-typical.</li>
+                    <li><strong>Costume considerations:</strong> Heavy costumes get hot. Elaborate headpieces block views. Plan for comfort.</li>
+                    <li><strong>Secure your stuff:</strong> Small bag or fanny pack recommended. Don't lose costume pieces.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Texas ravers in full Halloween mode.</p>
+                <ul>
+                    <li><strong>Costume culture:</strong> People put serious effort in. Expect creative, elaborate, and sometimes barely-there costumes.</li>
+                    <li><strong>Texas energy:</strong> The Houston/Dallas/Austin rave community is friendly and enthusiastic.</li>
+                    <li><strong>Age range:</strong> Mostly 21-30, with strong 18-20 presence. It's a party crowd.</li>
+                    <li><strong>Group vibes:</strong> Lots of friend groups and crews. Solo attendees get absorbed into the Halloween chaos.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The Halloween weekend continues.</p>
+                <ul>
+                    <li><strong>Afterparties:</strong> Houston clubs capitalize on the weekend. Check local listings.</li>
+                    <li><strong>Late-night food:</strong> Houston has excellent late-night food options. Tacos are calling.</li>
+                    <li><strong>Recovery:</strong> Sunday/Monday you'll be exhausted and possibly still in costume pieces.</li>
+                    <li><strong>Return your rental:</strong> Check for glitter and costume debris before returning that car.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

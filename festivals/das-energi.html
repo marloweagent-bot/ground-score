@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Energi — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #00d4ff 0%, #7c4dff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Salt Lake City, Utah</span>
+                <span>📅 August (2 days)</span>
+                <span>👥 15,000+</span>
+                <span>💵 $100-200</span>
+            </div>
+            <h1>⚡ Das Energi</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Utah's hidden gem — a boutique EDM festival at one of America's most unique venues. The Great Saltair on the shores of the Great Salt Lake creates a surreal backdrop for dancing.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Diverse EDM lineup covering bass, house, trance, and melodic. V2 Presents books a mix of headliners and strong undercard — not Lost Lands scale but quality over quantity. Recent years have seen the booking improve significantly. Multiple stages cater to different tastes.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production has stepped up significantly in recent years. New main stage designs, quality LED walls and lighting, proper sound systems. It's boutique-scale but V2 Presents clearly invests in the visual experience. Not Insomniac-level but punches above its weight for the size.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The intimate scale creates tight community vibes. Utah ravers are passionate and invested in their local scene. 15,000 people means you'll see familiar faces. The crowd is welcoming to out-of-staters. PLUR is alive. It feels like a family reunion for the Mountain West rave community.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Saltair venue is compact — easy walking between stages. Water stations are adequate. 15,000 capacity means no crushing crowds. Entry/exit is straightforward. The main challenge is dust — the salt flats kick up in dry conditions. Bandana or mask recommended.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Decent vendor variety for the size. Prices are reasonable by festival standards. Quality is solid — local Utah vendors add character. The intimate scale means lines stay manageable. Nothing exceptional but gets the job done. Water stations keep you hydrated.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Salt Lake City airport (SLC) is a Delta hub with decent connections. The Saltair is 15 miles west of downtown — requires a car or rideshare. Not as easy as urban festivals but not remote either. Hotels in SLC are affordable. Parking at the venue works but fills up.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$100-200 for two days is extremely competitive. Salt Lake City hotels are affordable. The intimate experience and unique venue punch above the price point. For what you pay, you get solid production, good lineup, and an unforgettable setting. Exceptional value proposition.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Limited beyond the music — this is a music-focused festival, not an art experience. Some installations and local artist features. The venue and setting do the heavy lifting. If you want Electric Forest-level extras, look elsewhere. If you want focused musical experience, it delivers.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is Das Energi's superpower. The Great Saltair is a historic Moorish-revival building on the shores of the Great Salt Lake, framed by the Wasatch Mountains. Salt flats stretch to the horizon. Sunsets here are otherworldly. August weather is warm but dry. Nothing else looks like this.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Das Energi has grown from local secret to nationally recognized gem. It delivers what it promises — boutique festival with unique setting and tight community. Veterans return year after year. The hype is proportional and authentic. No overpromising, just consistent quality growth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🏔️</div>
+                    <div>
+                        <h3>Setting Seekers</h3>
+                        <p>If venue matters to you, The Saltair is unforgettable. Mountains, salt flats, historic architecture — nowhere else looks like this.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌄</div>
+                    <div>
+                        <h3>Mountain West Ravers</h3>
+                        <p>Colorado, Utah, Idaho, Nevada — the regional community's annual gathering. No cross-country travel needed.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💎</div>
+                    <div>
+                        <h3>Value Hunters</h3>
+                        <p>$100-200 for two days of quality production at a unique venue. Dollar-for-dollar, one of the best deals in festival world.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👥</div>
+                    <div>
+                        <h3>Intimate Vibes</h3>
+                        <p>15,000 people means real community, not anonymous crowds. See familiar faces, make lasting connections.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The Saltair sunset is unmatched 🏔️✨"</div>
+                    <div class="stats">1.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Utah's best kept secret festival 🤫"</div>
+                    <div class="stats">150K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Das Energi 2024 | Why This Festival is Special"</div>
+                    <div class="stats">280K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Das Energi Experience</h2>
+            <p class="intro">Everything you need to know about Utah's crown jewel festival at the legendary Saltair.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">August</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">2 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">15,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Das Energi is straightforward to plan — no camping logistics, unique but accessible venue.</p>
+                <ul>
+                    <li><strong>Book Salt Lake City hotels:</strong> Downtown SLC is 15 miles from the venue. Hotels are affordable and plentiful.</li>
+                    <li><strong>Altitude adjustment:</strong> Salt Lake City is at 4,200 feet. If you're from sea level, hydrate extra and take it easier than usual.</li>
+                    <li><strong>Dust protection:</strong> The salt flats can kick up in dry/windy conditions. Bring a bandana or mask.</li>
+                    <li><strong>Layers:</strong> August days are warm (80s-90s) but desert nights cool down. Bring a light layer.</li>
+                    <li><strong>Sunscreen:</strong> High altitude = stronger UV. Protect yourself even on cloudy days.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Salt Lake City is accessible, but the venue requires transport.</p>
+                <ul>
+                    <li><strong>Fly into SLC:</strong> Salt Lake City International is a Delta hub with good connections. 25-30 minutes to the venue.</li>
+                    <li><strong>Car rental or rideshare:</strong> The Saltair isn't near public transit. Plan your transport in advance.</li>
+                    <li><strong>Parking:</strong> On-site parking is available but fills up. Carpool to guarantee a spot.</li>
+                    <li><strong>Rideshare strategy:</strong> Uber/Lyft work but surge pricing after the fest can be brutal. Pre-plan your exit.</li>
+                    <li><strong>Entry is smooth:</strong> Boutique scale means no EDC-level lines. Plan 15-20 minutes.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Great Saltair is a one-of-a-kind venue that makes the festival special.</p>
+                <ul>
+                    <li><strong>The Saltair building:</strong> Historic Moorish-revival architecture from the early 1900s. Indoor and outdoor elements.</li>
+                    <li><strong>Main stage:</strong> New design in recent years with improved production. Faces the salt flats and mountains.</li>
+                    <li><strong>Galactic Flats:</strong> Secondary outdoor stage area with unique atmosphere.</li>
+                    <li><strong>Synergy Station:</strong> Indoor/covered stage option for shade and variety.</li>
+                    <li><strong>The setting:</strong> Salt flats stretching to the horizon, Great Salt Lake, Wasatch Mountains. Photos don't do it justice.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "This small EDM-centric Utah festival has stepped up to the next level in recent years, gaining national recognition for its production and lineup. Not many venues can match the atmosphere of The Great Saltair."
+                    <cite>— Music Festival Wizard, 2025</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>August Utah is hot and dry — desert survival basics apply.</p>
+                <ul>
+                    <li><strong>Hydrate constantly:</strong> Desert heat plus altitude means you'll dehydrate faster than you expect. Bring a CamelBak.</li>
+                    <li><strong>Water stations:</strong> Free water available throughout. Use them.</li>
+                    <li><strong>Food vendors:</strong> Good variety for the size. Utah local vendors add character. Prices are reasonable.</li>
+                    <li><strong>Shade:</strong> Limited outdoor shade. The indoor areas provide relief. Plan stage hopping around heat.</li>
+                    <li><strong>Sunsets:</strong> The payoff for the heat — sunsets at the Saltair are transcendent. Position yourself at the main stage for golden hour.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>The Utah rave scene has its own character — passionate and welcoming.</p>
+                <ul>
+                    <li><strong>Tight community:</strong> 15,000 people means real connections. You'll see familiar faces if you're from the region.</li>
+                    <li><strong>Welcoming to outsiders:</strong> Utah ravers are proud of their scene and happy to share it with visitors.</li>
+                    <li><strong>Multi-genre crowd:</strong> The lineup diversity brings house heads, bass fans, trance lovers together.</li>
+                    <li><strong>Utah culture:</strong> Less drinking culture than other festivals (Utah liquor laws + cultural factors). More dancing, less sloppy.</li>
+                    <li><strong>PLUR is real:</strong> The intimate scale fosters genuine community. People look out for each other.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Salt Lake City has more to offer than you might expect.</p>
+                <ul>
+                    <li><strong>Downtown SLC:</strong> Surprisingly vibrant downtown with good restaurants and bars.</li>
+                    <li><strong>Park City:</strong> 30 minutes away. Worth a day trip for mountain scenery and boutique vibes.</li>
+                    <li><strong>Great Salt Lake:</strong> You're right there — consider exploring the lake area during daylight.</li>
+                    <li><strong>Outdoor activities:</strong> Hiking, mountain biking, national parks all within reach. Utah is an outdoor paradise.</li>
+                    <li><strong>After-parties:</strong> Check local venues — V2 Presents often programs after-hours events in SLC.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbiosis Gathering — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(90deg, #e67e22 0%, #d35400 100%); padding: 12px 0; text-align: center; }
+        .status-banner p { font-size: 0.9rem; font-weight: 500; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <div class="container">
+            <p>⏸️ STATUS: On Hiatus — Last major gathering was Oregon Eclipse 2017. Future events unconfirmed.</p>
+        </div>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Various CA locations (Woodward Reservoir)</span>
+                <span>📅 September (4-5 days)</span>
+                <span>👥 15,000+</span>
+                <span>💵 $300-450</span>
+            </div>
+            <h1>🌊 Symbiosis Gathering</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The gold standard for transformational gatherings. Symbiosis pioneered the water-based festival experience with Swimbiosis, built international collaborations, and maintained zero corporate sponsors. Art boats, reservoir swimming, and genuine community made this legendary.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Eclectic global curation: downtempo, trance, world music, live electronic, and experimental sounds. International collaborations brought artists from Rainbow Serpent, Boom Festival, and Universo Paralello. The vibe was discovery over headliners — you'd find music you'd never hear elsewhere. The Swimbiosis stage pointing over the water created a unique sonic experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Unmatched production philosophy: no screens or projections, only lighting and structure. Art boats floating on the reservoir — DIY vessels with sound systems and dancers. Climbable installations you could touch and explore. Live painting integrated into stage design. The "five-nubbed" peninsula at Woodward Reservoir created natural zones. Production was participatory, not passive consumption.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Called an "adult Disneyland" and "Neverland" for good reason. Zero corporate sponsors meant the vibe stayed pure. International gathering rather than "festival" — the distinction mattered. Family-friendly with dedicated kids programming. Sustainability and conscious lifestyle weren't marketing — they were foundational. The community here was globally connected and deeply intentional.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The 2,900-acre Woodward Reservoir venue was massive but the peninsula layout created intuitive flow. Open swimming throughout the weekend — the reservoir WAS the venue. Art boats provided mobile stages. At 15,000 people, it felt full but not crushed. Infrastructure matched the scale reasonably well.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sustainable, community-focused food vendors. Quality over commercial variety. Many attendees brought their own food as part of the self-reliant culture. Not a culinary destination but adequate and aligned with the festival's values.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Woodward Reservoir (Oakdale, CA) is in California's Central Valley — accessible from SF Bay Area (~2 hours) but not near major airports. Remote enough to feel like an escape, accessible enough for NorCal residents. Car camping was standard. The 2017 Oregon Eclipse edition was more remote but also more epic.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For what you got — international curation, unique water venue, art boats, swimming, 40+ workshop areas, no corporate compromise — the value was exceptional. Multi-day immersive experiences and international artist exchanges delivered far more than ticket price suggested. This was a gathering you couldn't replicate anywhere else.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>40+ different workshop areas covering permaculture, sustainability, yoga, kirtan, indigenous wisdom, and visionary art. Multi-day immersives before the main event. No screens anywhere — the philosophy was participation over observation. Performance troupes like Lucent Dossier Experience, Vau de Vire Society. This was the prototype other transformational festivals studied.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Woodward Reservoir on a five-nubbed peninsula created a water-centric experience unlike any other festival. September California weather was warm but manageable. Swimming, floating stages, art boats — the water wasn't a feature, it was THE venue. The 2017 Oregon Eclipse location was stunning mountain terrain with total solar eclipse viewing.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Symbiosis delivered exactly what it promised: genuine transformation, international community, and experiences you couldn't find elsewhere. The Oregon Eclipse 2017 was called "the most transcendental event in the known universe" and largely lived up to it. The only hype issue is the extended hiatus — people keep waiting for a return that may not come.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌍</div>
+                    <div>
+                        <h3>Global Festival Citizens</h3>
+                        <p>If you've been to Rainbow Serpent, Boom, or Universo Paralello and want that community in North America, Symbiosis was the gathering place.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏊</div>
+                    <div>
+                        <h3>Water Lovers</h3>
+                        <p>Swimbiosis — a dancefloor extending into the reservoir with thousands on rafts and in the water. No other festival offers this.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Anti-Corporate Purists</h3>
+                        <p>Zero brand sponsors, ever. If you're allergic to branded activations and sponsored stages, Symbiosis kept it pure.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Permaculture Practitioners</h3>
+                        <p>Sustainability wasn't a buzzword here. Multi-day immersives, indigenous wisdom workshops, and ecological practice were central.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Oregon Eclipse 2017 was real??? This festival had ART BOATS and a water dancefloor 🤯"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Swimbiosis stage — thousands dancing in the water as the sun sets 🌊✨"</div>
+                    <div class="stats">78K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Symbiosis Gathering: 10 Year Re:Union Documentary"</div>
+                    <div class="stats">420K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Symbiosis Experience</h2>
+            <p class="intro">A historical look at California's most internationally-connected transformational gathering.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">September (4-5 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">24/7</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">15,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Current Status</h3>
+                <p>Symbiosis has been on hiatus since the Oregon Eclipse gathering in 2017. That event, aligned with the total solar eclipse, was intended as a landmark moment. Since then, there have been no confirmed future dates, though the community remains connected and hopeful.</p>
+                <p>The producers have always operated on an irregular schedule, appearing when conditions are right rather than annual obligation. This makes predicting a return difficult, but the legacy remains influential in the festival world.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The History</h3>
+                <p>Symbiosis grew from 800 people at Cutter Scout Camp in 2005 to over 15,000 at the 10-year anniversary in 2015:</p>
+                <ul>
+                    <li><strong>2005:</strong> First gathering near Santa Cruz, 800 attendees</li>
+                    <li><strong>2006-2007:</strong> Angels Camp, California</li>
+                    <li><strong>2009:</strong> Camp Mather near Yosemite</li>
+                    <li><strong>2012:</strong> Pyramid Lake, Nevada — during an annular solar eclipse</li>
+                    <li><strong>2013-2016:</strong> Woodward Reservoir, Oakdale CA — the defining era</li>
+                    <li><strong>2017:</strong> Oregon Eclipse — collaboration with 10 international festivals</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Special</h3>
+                <p>Symbiosis pioneered several innovations that influenced transformational festivals globally:</p>
+                <ul>
+                    <li><strong>Swimbiosis:</strong> Sound system pointed at the water, dancefloor extending to swimmers on rafts and boats</li>
+                    <li><strong>Art Boats:</strong> DIY floating vessels with sound systems, likely influenced by Burning Man's art cars</li>
+                    <li><strong>No Screens:</strong> Deliberate rejection of LED walls and projections — only lighting and structure</li>
+                    <li><strong>International Collaborations:</strong> Formal partnerships with Rainbow Serpent, Boom, Universo Paralello</li>
+                    <li><strong>Zero Corporate Sponsors:</strong> Never compromised on this principle</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Symbiosis is a collaborative experiment — an international gathering where the true value is people coming together. We call it a Gathering, not a festival, with intention."
+                    <cite>— Bosque Hrbek, Co-founder</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Venue (Woodward Reservoir)</h3>
+                <p>The 2,900-acre Woodward Reservoir became Symbiosis's defining home from 2013-2016:</p>
+                <ul>
+                    <li><strong>Five-nubbed peninsula:</strong> Natural zoning created distinct areas</li>
+                    <li><strong>Open swimming:</strong> The reservoir was accessible throughout the event</li>
+                    <li><strong>September weather:</strong> California warmth without extreme heat</li>
+                    <li><strong>Natural ambiance:</strong> Water, sky, and land rather than urban infrastructure</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Oregon Eclipse 2017</h3>
+                <p>The most ambitious Symbiosis event brought together 10 international festival producers for a gathering aligned with the total solar eclipse:</p>
+                <ul>
+                    <li><strong>Partners:</strong> Bass Coast, Beloved, Envision, Hadra, Noisily, Ometeotl, Origin, Rainbow Serpent, Re:Birth, Universo Paralello</li>
+                    <li><strong>Scale:</strong> 30,000+ attendees, 7 music stages, 40+ workshop areas</li>
+                    <li><strong>Innovation:</strong> Bitcoin ticket purchasing option</li>
+                    <li><strong>Legacy:</strong> Called "the most transcendental event in the known universe"</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Community</h3>
+                <p>Symbiosis attracted a global tribe of festival veterans, permaculture practitioners, visionary artists, and conscious community builders:</p>
+                <ul>
+                    <li><strong>Participatory culture:</strong> Bring your own art, join workshops, contribute</li>
+                    <li><strong>Family-friendly:</strong> Kids village with dedicated programming</li>
+                    <li><strong>Ecological ethos:</strong> Leave places better than you found them</li>
+                    <li><strong>International network:</strong> Connected to festivals worldwide</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

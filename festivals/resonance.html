@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resonance Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(135deg, rgba(255,107,53,0.2) 0%, rgba(255,193,7,0.2) 100%); border: 1px solid rgba(255,107,53,0.4); padding: 20px; text-align: center; }
+        .status-banner h3 { font-family: 'Space Grotesk', sans-serif; color: #ff6b35; margin-bottom: 8px; }
+        .status-banner p { color: var(--text-secondary); font-size: 0.9rem; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .legacy-section { padding: 40px 0; border-bottom: 1px solid var(--border); background: rgba(102, 126, 234, 0.05); }
+        .legacy-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .legacy-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .legacy-section ul { color: var(--text-secondary); margin-left: 20px; }
+        .legacy-section li { margin-bottom: 8px; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Legend Valley / Nelson Ledges, Ohio</span>
+                <span>📅 September (historically)</span>
+                <span>👥 ~8,000</span>
+                <span>💵 $200-300</span>
+            </div>
+            <h1>🎸🎛️ Resonance Festival</h1>
+        </div>
+    </section>
+    
+    <section class="status-banner">
+        <div class="container">
+            <h3>⚠️ Festival Ended — Historical Record</h3>
+            <p>Resonance held its final edition in July 2023 at Nelson Ledges Quarry Park after a 10-year run. This page exists as a historical record and to honor its legacy in the jam + bass crossover scene. Some organizers now work on related events like Secret Dreams at Legend Valley.</p>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Resonance was the rare festival that bridged jam and bass communities without compromising either. A decade of Tipper, Papadosio, and STS9 sets in the Ohio woods created something special that the Midwest still mourns.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Resonance nailed the jam-bass crossover like no one else. Headliners like Tipper, STS9, Papadosio, Goose, and Emancipator alongside bass acts like Daily Bread, Mindex, and Desert Dwellers. The booking philosophy was adventurous — you'd discover your new favorite artist in a genre you didn't know you liked. From a bass head perspective, the electronic curation was top-tier, especially for downtempo and experimental sounds.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production was solid but focused on the music rather than spectacle. Legend Valley (the longtime home) offered natural amphitheater vibes. The final edition at Nelson Ledges had a quarry swimming hole as centerpiece — watching Mindex and Desert Dwellers while barefoot on the beach was a unique experience. Art installations and visual production were present but secondary to the natural setting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>"Legit the best music festival I've ever been to" — Resonance veterans speak with near-religious reverence. The crowd was a perfect mix of wooks, bass heads, and people who just loved adventurous music. Small enough to feel intimate, big enough to have infrastructure. The crossover crowd meant no genre snobbery — everyone was there to discover something new together.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Legend Valley was a proven venue with good bones. Camping had plenty of space and trees for hammocks. Walking distances were reasonable. The final edition at Nelson Ledges added swimming in the quarry. "Not too big" was a consistent theme — you could catch who you wanted without marathon hikes or impossible crowds.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard festival food vendors — nothing exceptional but everything you need. Midwest prices were reasonable. The community aspect meant sharing food at campsites was common. Water and hydration handled adequately. Nothing to write home about, nothing to complain about.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Central Ohio location made it driveable for the entire Midwest and East Coast. Columbus (CMH) was the closest airport. Legend Valley is about an hour east of Columbus. Rural but not impossible. The Midwest festival circuit faithful made the pilgrimage annually.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$200-300 for a weekend of Tipper AND jam bands AND camping? Exceptional value for what you got. The lineup depth relative to ticket price was one of Resonance's strongest selling points. You'd see artists here you'd pay $50+ to see individually — and you got dozens of them.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, workshops, and the general festival community experience were solid. Nelson Ledges' final edition added the quarry swimming experience — dancing barefoot on the beach during sets was special. The focus was always on the music and community rather than carnival attractions.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Legend Valley is a classic Midwest festival venue — rolling hills, trees, natural amphitheater. September weather in Ohio is usually pleasant. Nelson Ledges added the quarry swimming hole for a unique twist in the final year. Not the most dramatic natural setting but comfortable and proven for camping festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Resonance built its reputation through consistency over a decade. Attendees became evangelists. The hype was earned — veterans still talk about legendary sets years later. The only complaints were around the messy final years (2022 cancellation, refund issues, venue changes). But the festival itself delivered on its promises when it happened.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Jam-Bass Hybrids</h3>
+                        <p>If you love both Tipper AND Goose, Resonance was the only festival that truly got you. The crossover was the whole point.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Midwest Festival Circuit</h3>
+                        <p>Driveable from Chicago, Detroit, Columbus, Pittsburgh, and beyond. A pilgrimage destination for the region.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔍</div>
+                    <div>
+                        <h3>Musical Explorers</h3>
+                        <p>People who wanted to discover new artists and genres, not just see the same headliners everywhere.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💰</div>
+                    <div>
+                        <h3>Value Seekers</h3>
+                        <p>Maximum musical diversity per dollar spent. The lineup depth relative to price was unmatched.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="legacy-section">
+        <div class="container">
+            <h2>Legacy & What's Next</h2>
+            <p>Resonance's 10-year run (2014-2023) left a lasting impact on the Midwest festival scene. While the festival itself has ended, its spirit continues:</p>
+            <ul>
+                <li><strong>Secret Dreams:</strong> Related event at Legend Valley carrying some of Resonance's DNA — electronic-focused with similar community vibes.</li>
+                <li><strong>Essential Productions:</strong> The team behind Resonance continues to throw events and influence Ohio's scene.</li>
+                <li><strong>The Crossover Lives:</strong> The jam-bass community Resonance cultivated continues at other festivals and shows.</li>
+                <li><strong>Memories:</strong> Ask anyone who attended about their favorite Resonance sets — you'll get passionate stories for hours.</li>
+            </ul>
+            <p style="margin-top: 20px;"><em>If you were lucky enough to attend Resonance, you understand why it still matters. If you missed it, check out Secret Dreams or similar crossover events that carry the torch.</em></p>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>Memories from Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 Reddit</div>
+                    <div class="title">"Resonance is legit the best music festival I've ever been to. Crowd not too big, vibes on point, venue is sick."</div>
+                    <div class="stats">r/festivals • <a href="https://reddit.com/r/festivals" target="_blank">View Discussion →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"That Tipper sunset set at Legend Valley changed my life. Miss you Resonance 💜"</div>
+                    <div class="stats">Archive post • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Resonance Festival Final Edition 2023 | A Decade of Magic"</div>
+                    <div class="stats">156K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Resonance Experience (Historical)</h2>
+            <p class="intro">A look back at what made this festival special for a decade.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Active</div><div class="value">2014-2023</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~8,000</div></div>
+                <div class="fact"><div class="label">Primary Venue</div><div class="value">Legend Valley</div></div>
+                <div class="fact"><div class="label">Final Venue</div><div class="value">Nelson Ledges</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made Resonance Special</h3>
+                <p>The magic was in the crossover.</p>
+                <ul>
+                    <li><strong>Genre bridge:</strong> Jam bands AND bass music on the same lineup, respected equally.</li>
+                    <li><strong>Discovery engine:</strong> People regularly left with 10+ new favorite artists.</li>
+                    <li><strong>Community:</strong> Small enough to feel intimate, big enough for real production.</li>
+                    <li><strong>Booking courage:</strong> Willing to take risks on underground acts alongside headliners.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Notable Acts Over the Years</h3>
+                <p>A legendary roster of performers:</p>
+                <ul>
+                    <li><strong>Electronic:</strong> Tipper (multiple years), Emancipator, Daily Bread, Tycho, Mindex, Desert Dwellers</li>
+                    <li><strong>Jam:</strong> Papadosio (residents), STS9, Goose (before they blew up), The Floozies, Keller Williams</li>
+                    <li><strong>Crossover:</strong> Lotus, Break Science, EOTO — artists who spoke both languages</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Great mix of the weird electronic music I love and the jam bands my friends really love. Everyone finds something at Resonance."
+                    <cite>— r/festivals community member</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Troubled End</h3>
+                <p>Resonance's final years weren't smooth.</p>
+                <ul>
+                    <li><strong>2022 Cancellation:</strong> Permitting issues forced a last-minute cancellation, upsetting ticket holders.</li>
+                    <li><strong>Refund drama:</strong> Some attendees struggled to get refunds, leading to chargebacks.</li>
+                    <li><strong>Venue shuffle:</strong> Moving from Legend Valley to Nelson Ledges for the final edition.</li>
+                    <li><strong>Announced as final:</strong> The 2023 edition was explicitly billed as the last.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>For Those Who Miss It</h3>
+                <p>Where to find similar vibes:</p>
+                <ul>
+                    <li><strong>Secret Dreams (Legend Valley):</strong> Electronic-focused successor with similar community.</li>
+                    <li><strong>Tipper events:</strong> Follow Dave Tipper's standalone events for that specific magic.</li>
+                    <li><strong>Papadosio events:</strong> The band's own events carry some Resonance DNA.</li>
+                    <li><strong>The crossover spirit:</strong> Look for festivals booking both jam and bass — they exist, they're just rare.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

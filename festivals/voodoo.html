@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voodoo Music + Arts Experience — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #4a1a6b 0%, #7c3aed 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 16px 24px; }
+        .status-banner .container { display: flex; align-items: center; gap: 12px; }
+        .status-banner .status-icon { font-size: 1.5rem; }
+        .status-banner .status-text { color: #ef4444; font-weight: 500; }
+        .status-banner .status-detail { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <div class="status-banner">
+        <div class="container">
+            <span class="status-icon">💀</span>
+            <div>
+                <div class="status-text">Festival Inactive — Last held 2019</div>
+                <div class="status-detail">COVID cancelled 2020-2021. 2022 was cancelled without explanation. No announcements for return. Rumors suggest possible 2025 return, unconfirmed.</div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 City Park, New Orleans LA</span>
+                <span>📅 Halloween Weekend</span>
+                <span>👥 180,000 (peak)</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🎃 Voodoo Music + Arts</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Voodoo was the Halloween festival — New Orleans magic meets serious electronic bookings. Calvin Harris, Deadmau5, Tiësto, Bassnectar graced these stages alongside rock legends. The NOLA setting + Halloween timing made it unforgettable. Desperately missed.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Strong electronic presence — this wasn't just token EDM. Headliners included Calvin Harris, Deadmau5, Tiësto, Bassnectar, Afrojack, Boys Noize, Big Gigantic. The 2013 15th anniversary featured Pearl Jam AND Nine Inch Nails AND Calvin Harris AND Bassnectar. True multi-genre with electronic muscle.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween theming elevated everything. Spooky art installations, costume culture, New Orleans gothic aesthetic. The "Le Carnival" area featured burlesque and circus acts. Production grew significantly under C3/Live Nation management. Not EDC-level but atmospheric and memorable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween + New Orleans = unbeatable vibe combination. Everyone in costume, NOLA's natural weirdness amplified, festival energy mixed with city energy. The French Quarter exists steps away. Late-night culture is built into the city's DNA. Voodoo captured NOLA's spirit perfectly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>City Park is large and beautiful but can get muddy (New Orleans weather is unpredictable). 180k attendance is massive. The 3-area structure (Le Ritual, Le Flambeau, Le Carnival) helped distribute crowds. Entry/exit worked, water stations adequate. Not perfect but manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>New Orleans food culture infiltrated the festival. Beignets, po'boys, gumbo — actual NOLA cuisine, not generic festival food. Plus the French Quarter is right there for post-festival dining. Hard to beat this city for eating, and Voodoo embraced it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>MSY airport is well-connected, and New Orleans hotels (while not cheap on Halloween weekend) are plentiful. City Park is accessible via rideshare, streetcar, or shuttle. No camping needed — this is a city festival. NOLA is already a tourist destination; Voodoo just added more reasons.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><div class="label">Value</div></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three days of major headliners across rock and electronic, plus access to New Orleans for Halloween weekend. The trip doubles as both festival and city vacation. Total cost depends on how you party in NOLA, but the festival itself delivered solid value for lineup quality.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations throughout, Halloween-themed activations, costume culture encouraged, Le Carnival's circus/burlesque elements. The city itself is the biggest "extra" — French Quarter, Bourbon Street, brass bands, beignets at Café Du Monde at 3am. The festival and city blur together.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>City Park is one of the largest urban parks in the country — Spanish moss, live oaks, bayous. The Halloween timing often meant pleasant fall weather (though rain is always possible). The setting enhanced the spooky atmosphere. Beautiful urban park that felt magical.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Over its 21-year run, Voodoo earned its reputation. Two-time Pollstar Festival of the Year nominee. The combination of Halloween timing, NOLA setting, and quality bookings was unique. The hype was deserved — nothing else quite replicated this combination.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Was Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Halloween Lovers</h3>
+                        <p>If Halloween is your holiday, Voodoo was your pilgrimage. Costumes everywhere, spooky vibes, full city celebration.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>City Explorers</h3>
+                        <p>NOLA is a destination. The festival was an excuse; the city was the experience. French Quarter, brass bands, beignets, afterparties.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Genre-Fluid Fans</h3>
+                        <p>Metallica one stage, Deadmau5 another, Trombone Shorty representing NOLA. If you like multiple genres, Voodoo delivered.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>New Orleans drinking culture + festival culture = legendary party. Not a family festival — this was adults having fun.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>The Archive</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"I miss Voodoo Fest so much — Halloween in NOLA hit different"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Throwback to Voodoo 2019 — the last good one 💀"</div>
+                    <div class="stats">156K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Voodoo Fest 2018: 180k People Celebrate Halloween in NOLA"</div>
+                    <div class="stats">678K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Voodoo Story</h2>
+            <p class="intro">21 years of Halloween magic in the Big Easy, 1999-2019.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Founded</div><div class="value">1999</div></div>
+                <div class="fact"><div class="label">Last Held</div><div class="value">2019</div></div>
+                <div class="fact"><div class="label">Days</div><div class="value">3</div></div>
+                <div class="fact"><div class="label">Peak Attendance</div><div class="value">180,000</div></div>
+                <div class="fact"><div class="label">Status</div><div class="value">Inactive</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Birth</h3>
+                <p>Stephen Rehage launched Voodoo on October 30, 1999 at Tad Gormley Stadium. The first lineup featured Wyclef Jean and Moby — prescient booking that signaled the festival's multi-genre DNA from day one.</p>
+                <p>The Halloween timing was intentional. New Orleans already had Mardi Gras and Jazz Fest; Voodoo gave the city a fall anchor event that played into its gothic, mysterious reputation.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Electronic Legacy</h3>
+                <p>Unlike many rock festivals that added EDM reluctantly, Voodoo embraced electronic music early:</p>
+                <ul>
+                    <li><strong>Tiësto:</strong> Multiple appearances, massive production</li>
+                    <li><strong>Deadmau5:</strong> Perfect fit for Halloween theming</li>
+                    <li><strong>Calvin Harris:</strong> 2013's 15th anniversary headliner</li>
+                    <li><strong>Bassnectar:</strong> Multiple years of heavy bass</li>
+                    <li><strong>Afrojack, Boys Noize, Big Gigantic:</strong> Deep electronic booking</li>
+                </ul>
+                <p>The "Le Ritual" area became the home for heavier rock while electronic acts often played the larger stages alongside rock headliners.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Post-Katrina Resilience</h3>
+                <p>When Hurricane Katrina devastated New Orleans in 2005, Voodoo relocated part of the festival to Memphis while still holding a tribute event in Audubon Park for relief workers. Nine Inch Nails and Queens of the Stone Age performed at the first major multi-artist event in the city post-Katrina.</p>
+                
+                <blockquote class="quote">
+                    "In 2005, Voodoo founder Stephen Rehage and his team were presented with a key to the city following the post-Katrina tribute event."
+                    <cite>— Voodoo Festival History</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The C3/Live Nation Era</h3>
+                <p>Live Nation acquired a majority stake in 2013; C3 Presents (Austin City Limits, Lollapalooza) took over production. The festival professionalized — bigger stages, more efficient operations, higher-profile bookings. Some felt it lost indie character; others appreciated the polish.</p>
+                <p>Peak attendance hit 180,000+ in 2018, making it one of the largest festivals in the country.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Mysterious End</h3>
+                <p>2019 was the last Voodoo. COVID cancelled 2020 and 2021. Then, in 2022, the festival was simply cancelled without explanation. No statement, no "pause," just silence.</p>
+                <p>Rumors suggest:</p>
+                <ul>
+                    <li>Legal disputes between founder Stephen Rehage and Live Nation</li>
+                    <li>Economics not working post-COVID</li>
+                    <li>Strategic shifts in Live Nation's festival portfolio</li>
+                </ul>
+                <p>As of early 2024, some sources suggest a possible 2025 return, but nothing is confirmed. The Voodoo subreddit watches and waits.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What Made It Irreplaceable</h3>
+                <p>No other festival combined these elements:</p>
+                <ul>
+                    <li><strong>Halloween timing:</strong> Built-in costume culture, spooky atmosphere</li>
+                    <li><strong>New Orleans setting:</strong> The city is the experience; French Quarter afterparties are unmatched</li>
+                    <li><strong>True multi-genre:</strong> Rock, electronic, hip-hop, and local NOLA acts all valued equally</li>
+                    <li><strong>21-year history:</strong> Institutional memory, returning fans, NOLA tradition</li>
+                </ul>
+                <p>If Voodoo returns, it'll be welcomed with open arms. Until then, Halloween in New Orleans continues without its anchor festival.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Preserving festival history for electronic music fans</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

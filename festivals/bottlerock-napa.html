@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BottleRock Napa Valley — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #722F37 0%, #C9B037 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        .tip-box { background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; padding: 16px; margin: 20px 0; }
+        .tip-box h4 { color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; }
+        .tip-box p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Napa Valley Expo, California</span>
+                <span>📅 May (3 days)</span>
+                <span>👥 120,000</span>
+                <span>💵 $250-700+</span>
+            </div>
+            <h1>🍷 BottleRock Napa Valley</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">35</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">BottleRock is a wine country festival that happens to have music. Electronic programming exists (Zedd in 2026) but it's not the focus. Come for the world-class food, wine, and California vibes — electronic fans should look elsewhere for the main event.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">2.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Electronic acts appear on the lineup but aren't the focus. 2026 features Zedd, which is a highlight, but most headliners are rock/pop (Foo Fighters, Lorde, Backstreet Boys). There's a silent disco for late-night dancing, but no dedicated electronic stage. Sound quality is good but constrained by 10PM curfew.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Five music stages plus the famous Culinary Stage where chefs cook while artists perform. Production is professional but understated — this isn't about LED screens and lasers. The vibe is elegant, not rave. Wine country aesthetics dominate.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Upscale and relaxed. This is a 30+ crowd sipping Napa cabs between sets. The energy is wine-buzz chill, not EDM intensity. Friendly and welcoming, but don't expect PLUR culture or kandi trading. Think boozy brunch energy extended over three days.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Napa Valley Expo is well-designed for crowds. Great sightlines throughout, manageable walking distances. VIP and Platinum tiers offer significant upgrades. The 10PM curfew means no late-night chaos — everyone clears out at the same time.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is where BottleRock destroys the competition. World-class Napa restaurants on-site. Master sommelier wine programs. Gourmet food that would be at home in Michelin restaurants. The Culinary Stage brings celebrity chefs. If you care about food, this is the best festival in America.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Fly into SFO or OAK (1-1.5 hours). Napa hotels are expensive and book fast — consider Sonoma or Vallejo. Driving is easiest but parking fills up. Shuttles available from SF. Wine country traffic adds time.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Expensive. $250-700+ for tickets, plus Napa hotel prices, plus premium food and wine. Total trip easily hits $2,000+. The value is in the culinary experience, not electronic music. For EDM fans, the ROI is low.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Culinary Stage is the star — watch celebrity chefs cook while artists perform. Wine cabanas from 40+ local wineries. Spa experiences. Silent disco for late-night. This festival has more non-music programming than most.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Napa Valley in late May is gorgeous. Rolling hills, perfect weather (usually), and wine country beauty surrounding the venue. The setting elevates everything. Memorial Day weekend typically delivers ideal conditions.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>BottleRock knows what it is — a premium wine country experience with music. It doesn't pretend to be Coachella or EDC. If you come expecting a foodie paradise with good vibes and occasional dancing, it delivers exactly that.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🍷</div>
+                    <div>
+                        <h3>Wine Enthusiasts</h3>
+                        <p>40+ Napa wineries on-site. Master sommelier programs. This is wine country's festival, and wine takes center stage alongside the music.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👨‍🍳</div>
+                    <div>
+                        <h3>Foodies</h3>
+                        <p>The Culinary Stage and gourmet food offerings make this the best-fed festival in America. Celebrity chefs, Michelin-quality bites, and real culinary experiences.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>The average age skews 30+. No rowdy teens. This is a mature crowd that wants good wine, good food, and good music — in that order.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💎</div>
+                    <div>
+                        <h3>VIP Seekers</h3>
+                        <p>Platinum and VIP tiers are genuinely premium — champagne on arrival, rare wine tastings, golf cart transport. If you want to ball out, BottleRock accommodates.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>🎧 Electronic Fan Tip</h4>
+                <p>If you're set on going for Zedd or other electronic acts, prioritize the silent disco for late-night dancing. Main stages end at 10PM due to Napa noise ordinances, but silent disco keeps going. Don't expect a rave — expect a wine-soaked dance party.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Wine tasting at BottleRock hits different 🍷"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Snoop Dogg cooking with Martha Stewart at the Culinary Stage 💀"</div>
+                    <div class="stats">1.2M likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"BottleRock Napa 2024 | Foodie's Guide to the Best Festival"</div>
+                    <div class="stats">340K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete BottleRock Experience</h2>
+            <p class="intro">Where wine country meets music festival — here's everything you need to know.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May (3 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">11:30AM - 10PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5 + Culinary</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~40K/day</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All Ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>BottleRock requires some planning, especially for accommodations.</p>
+                <ul>
+                    <li><strong>Book hotels NOW:</strong> Napa hotels sell out months ahead and prices spike. Consider Sonoma, Vallejo, or even SF.</li>
+                    <li><strong>Set food/wine priorities:</strong> Download the app and plan your culinary experiences. Popular wine cabanas require timing.</li>
+                    <li><strong>10PM curfew:</strong> Music ends at 10PM sharp. Plan afterparties separately — BottleRock AfterDark shows happen in downtown Napa.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be standing and walking on grass all day. Skip the heels.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Napa isn't the most accessible, but it's manageable.</p>
+                <ul>
+                    <li><strong>From SF:</strong> 1-1.5 hours depending on traffic. Shuttles available from the city.</li>
+                    <li><strong>Parking:</strong> On-site parking available but expensive. Off-site lots with shuttles are cheaper.</li>
+                    <li><strong>Rideshare:</strong> Works but surge pricing hits hard. Coordinate with groups.</li>
+                    <li><strong>VIP/Platinum:</strong> Get dedicated parking and golf cart transport — genuinely worth it at this festival.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Napa Valley Expo is compact and well-organized.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Headliners play here. Gets crowded but good sightlines throughout.</li>
+                    <li><strong>JaM Cellars Stage:</strong> Second stage with strong mid-tier bookings.</li>
+                    <li><strong>Verizon Stage:</strong> More emerging artists.</li>
+                    <li><strong>Culinary Stage:</strong> The unique star — celebrity chefs cook while artists perform. Don't miss it.</li>
+                    <li><strong>Wine Cabanas:</strong> 40+ local wineries set up shop. This is why you're really here.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "BottleRock is what happens when Napa wine culture throws a music festival. The food is legitimately world-class. The music is a nice bonus."
+                    <cite>— Ground Score Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>This is where BottleRock dominates every other festival.</p>
+                <ul>
+                    <li><strong>Food:</strong> Napa's best restaurants set up on-site. Quality is genuinely exceptional. Prices match ($20-40 entrees).</li>
+                    <li><strong>Wine:</strong> Master sommelier curated selections. Rare bottles available. This is Napa — the wine is serious.</li>
+                    <li><strong>Hydration:</strong> Water stations available. The wine makes it easy to forget to hydrate — don't.</li>
+                    <li><strong>Pro tip:</strong> Pace yourself. It's easy to get wine-drunk by 3PM and miss headliners.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>A distinctly different festival demographic.</p>
+                <ul>
+                    <li><strong>Age range:</strong> Skews 30-50. This is a grown-up festival.</li>
+                    <li><strong>Energy:</strong> Wine-buzz chill, not EDM intensity. Sing-alongs, not moshing.</li>
+                    <li><strong>Dress code:</strong> Wine country casual. Sundresses and button-downs, not rave gear.</li>
+                    <li><strong>Vibe:</strong> Friendly, relaxed, slightly bougie. Everyone's here for a good time, not to rage.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The 10PM curfew means the night doesn't end at the venue.</p>
+                <ul>
+                    <li><strong>BottleRock AfterDark:</strong> Official afterparties at downtown Napa venues. Smaller acts, late-night dancing.</li>
+                    <li><strong>Downtown Napa:</strong> Restaurants and bars stay open. Good options within walking distance.</li>
+                    <li><strong>Wine country recovery:</strong> Book a spa day for Monday. You'll need it.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

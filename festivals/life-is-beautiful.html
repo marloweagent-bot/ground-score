@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life is Beautiful — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .status-banner { background: linear-gradient(135deg, #ff6b35 0%, #f7c94b 100%); padding: 16px; text-align: center; }
+        .status-banner p { color: #000; font-weight: 600; font-size: 0.9rem; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="status-banner">
+        <p>⚠️ NOTE: LIB shifted to "Big Beautiful Block Party" format in 2024 (2 days, electronic-focused). Future uncertain — no 2025 edition confirmed. Scores reflect 2024 format.</p>
+    </section>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Downtown Las Vegas</span>
+                <span>📅 September (2 days)</span>
+                <span>👥 ~20,000</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🎨 Life is Beautiful</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The 2024 pivot to an electronic-focused block party was a smart move. Justice, LCD Soundsystem, Peggy Gou, Jamie xx — the lineup screams quality. Downtown Vegas streets as a venue is unique. The uncertainty about the festival's future is the main concern.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The 2024 block party lineup was legitimately excellent for electronic fans. Justice, LCD Soundsystem, Peggy Gou, Jamie xx, LP Giobbi, Empress Of — this is curated, quality electronic booking. Not as deep as a dedicated electronic fest, but the headliners are tier-one.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The block party format is more intimate than the old multi-stage festival. Downtown Vegas streets provide a unique urban backdrop — graffiti murals, neon signs, local art. Production is solid but not EDC-level. Think sophisticated club experience outdoors, not massive spectacle.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The new format attracted a more music-focused crowd. Less "Vegas party" energy, more people who actually know the artists. Smaller attendance means you can move, dance, and find your spot. The downtown setting adds a gritty, urban authenticity that the Strip lacks.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>2024's block party format had growing pains — parking was confusing ($50 valet pushed hard despite cheaper options nearby), layout was new. But smaller footprint means less walking. Entry was smooth. Water and facilities adequate for the crowd size.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Feedback on 2024's food was mixed — local DTLV restaurants weren't well-integrated. Generic festival vendors dominated. Drinks were standard Vegas prices (high). The Arts District has amazing restaurants literally a block away that weren't part of the experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Vegas is one of the easiest festival destinations. Cheap flights from everywhere, tons of hotels at all price points. Downtown is a quick ride from the Strip or airport. The Fremont East location is walkable from many DTLV hotels. This is a strong point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$200-350 for two days of Justice, LCD Soundsystem, Peggy Gou, Jamie xx is actually solid value. Smaller than the old 3-day fest but you're getting quality electronic acts. Vegas hotels can be cheap if you avoid weekends. Total trip cost very manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Downtown Vegas itself is the experience — street art, local bars, the Container Park. The Arts District has galleries and murals. Less curated "festival extras" than before, but the urban environment provides its own exploration. It's Vegas — afterparties exist.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Downtown Vegas is genuinely cool — old-school neon, street art, the Fremont East district has personality the Strip lacks. September weather is still warm but bearable (80s-90s°F in evening). Urban festival setting is unique. Not nature-beautiful but character-beautiful.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The 2024 block party format was a test run, and reception was positive for those who attended. But the festival's future is uncertain — Rolling Stone (owners) says they want to bring it back but haven't confirmed 2025. The hype is deserved if it continues; risky to plan around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>The new format books sophisticated electronic acts — Justice, Peggy Gou, Jamie xx. If you prefer Portola over EDC, this is your Vegas option.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Downtown Vegas has soul the Strip doesn't. Street art, dive bars, local character. This is a festival that lets you experience a neighborhood.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💎</div>
+                    <div>
+                        <h3>Quality Over Quantity</h3>
+                        <p>Smaller lineup, fewer stages, but every act is worth seeing. If you hate conflicts and want to catch everything, this format works.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>Vegas means accessible bars, afterparties, and an adult-friendly environment. No teenagers here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Justice in downtown Vegas hit different 🎸⚡"</div>
+                    <div class="stats">420K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The way DTLV transforms for @lifeisbeautiful 🌃✨"</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Life is Beautiful 2024: Block Party Format Review"</div>
+                    <div class="stats">56K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Life is Beautiful Experience</h2>
+            <p class="intro">A festival in transition — here's what electronic fans need to know about the new format.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">September (2 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">5PM - Late</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">1-2</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~20,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">None</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>The format changed significantly in 2024. Know what you're getting into.</p>
+                <ul>
+                    <li><strong>Check if it's happening:</strong> No 2025 edition confirmed as of late 2024. Rolling Stone says they want to continue but haven't announced dates. Follow official channels.</li>
+                    <li><strong>Downtown hotels:</strong> Skip the Strip — stay in DTLV for walkability. The D, Golden Nugget, or Fremont hotels put you close to the action.</li>
+                    <li><strong>September heat:</strong> Still hot but evenings cool down. Starts at 5PM so you avoid the worst of it.</li>
+                    <li><strong>It's 2 days now:</strong> Not the 3-day fest of old. Plan a shorter trip or add Vegas activities.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>Vegas logistics are easy — this festival adds no complexity.</p>
+                <ul>
+                    <li><strong>Fly into LAS:</strong> ~15 min to downtown. Cheap flights from everywhere.</li>
+                    <li><strong>Rideshare to downtown:</strong> $15-25 from airport. No surge issues getting there.</li>
+                    <li><strong>Parking 2024 issues:</strong> Organizers pushed $50 valet hard despite cheap city garages nearby. Do your research — cheaper options exist.</li>
+                    <li><strong>Walking distance:</strong> If you stay downtown, you can walk to/from the festival. No transport stress.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Streets become the venue. It's a unique format.</p>
+                <ul>
+                    <li><strong>Block party layout:</strong> City blocks closed off, stages set up in the street. Very different from traditional festival grounds.</li>
+                    <li><strong>Arts District location:</strong> The 2024 edition moved to the Arts District from old Fremont East footprint. More murals, galleries, local character.</li>
+                    <li><strong>Intimate scale:</strong> You can actually see the artists. No massive crowd surges or fights for position.</li>
+                    <li><strong>Urban backdrop:</strong> Graffiti, neon, Vegas grit. Not manicured but authentic.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "The block party format is what LIB should've been all along. Quality acts, smaller crowd, downtown Vegas vibes. Just hope they bring it back."
+                    <cite>— r/lifeisbeautifulLV, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>An area for improvement in the new format.</p>
+                <ul>
+                    <li><strong>Festival food was mid:</strong> 2024 feedback suggested better local restaurant integration needed. Generic vendors dominated.</li>
+                    <li><strong>DTLV restaurants:</strong> Amazing food exists blocks away — eat before/after. Esther's Kitchen, Carson Kitchen, Jammyland are close.</li>
+                    <li><strong>Bar scene:</strong> Vegas bars stay open late. Atomic Liquors, Velveteen Rabbit, Herbs & Rye are walkable.</li>
+                    <li><strong>Water:</strong> September Vegas is hot. Hydrate before and bring a bottle.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>The format shift attracted a different audience.</p>
+                <ul>
+                    <li><strong>Music-focused:</strong> People came for Justice and LCD Soundsystem, not for "Vegas party." More knowledgeable crowd.</li>
+                    <li><strong>21+ by default:</strong> It's Vegas. No teen energy.</li>
+                    <li><strong>Industry presence:</strong> Rolling Stone ownership means music industry folks attend. Networking happens.</li>
+                    <li><strong>Local support:</strong> DTLV community has mixed feelings about festival but generally welcoming.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>It's Vegas — the party doesn't stop.</p>
+                <ul>
+                    <li><strong>DTLV bars:</strong> Everything stays open. Walk off the grounds and into local bars.</li>
+                    <li><strong>Afterparties:</strong> Check local venues — when big acts are in town, aftershows happen.</li>
+                    <li><strong>Late-night food:</strong> Tacos El Gordo, Roberto's, or proper restaurants that stay open.</li>
+                    <li><strong>Next-day recovery:</strong> Vegas brunch culture is strong. Partake.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash House — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6ec4 0%, #7873f5 50%, #4adede 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Palm Springs, CA</span>
+                <span>📅 August (Two Weekends)</span>
+                <span>👥 8,000-10,000</span>
+                <span>💵 $220-400+</span>
+            </div>
+            <h1>🏊 Splash House</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Pool party meets music festival in the desert sun. Splash House turns Palm Springs hotel pools into house music stages for two August weekends. It's a vibe-first experience — the music is good, but the sun, water, and social scene are the real draws.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>House music focused — deep house, tech house, disco, some bass. Think Solardo, Will Clarke, Dr. Fresch, Chris Lorenzo. Not headliner-heavy but curated for poolside vibes. The Saguaro typically gets the best DJ bookings. Three hotels means three different sonic flavors happening simultaneously.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Production is minimal — this isn't about LED walls and lasers. It's pools, palm trees, and afternoon sun. Each hotel has its own aesthetic: Saguaro is the colorful iconic one, Renaissance is the oasis, Hilton (new for 2026) is central. After Hours at the Air Museum ups the production with proper staging under the stars.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Consistently great crowds. House music fans, social butterflies, and people who genuinely love pool parties. The OG fans have been coming since 2013. Saguaro has the best crowd energy — smaller, more dedicated. It's more "day club" than "rave" but that's the point. Good-looking, good-vibed crowd.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Three hotels means moving between venues via shuttles (included). Some people stay at one pool all day, others hop around. Shuttles run frequently but add transit time. Pool decks can get crowded during peak hours. The format rewards exploration but requires planning.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hotel poolside service — expect pool bar basics. Food is available but limited and pricey. Most people eat before/after or grab delivery to hotel rooms. Not a food destination. Hydration is crucial in August desert heat — water and electrolytes are more important than food.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Palm Springs Airport (PSP) is small and easy. LAX is 2 hours by car. Hotel packages bundle lodging + passes. Staying at a host hotel (Hilton, Renaissance, Saguaro) is ideal. Off-site hotels require shuttle coordination. The desert location adds travel time but the venues are compact once you're there.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Passes start at $220. Add hotel ($300-600/night at host hotels), After Hours ($100), and August Palm Springs prices. Total weekend can hit $800-1,500+. Vegas pool parties offer similar vibes for less. But for a full weekend immersion, it's competitive with other boutique festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The pools ARE the extra. Swimming, floating, lounging, people-watching. After Hours at the Palm Springs Air Museum is a unique bonus — dancing under vintage aircraft at night. The hotel resort experience (spa, restaurants, poolside service) adds dimension beyond typical festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Palm Springs mid-century modern architecture, palm trees, desert mountains in the distance. The aesthetic is iconic — especially at Saguaro with its rainbow-painted walls. August heat is intense (100°F+) but you're literally in a pool. Sunset views are gorgeous. The Air Museum tarmac with San Jacinto mountains is memorable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Delivers exactly what it promises — pool party + house music in the desert. Veterans return year after year (13 years running). Expectations are "fun in the sun with good music" not "festival of a lifetime." For that specific vibe, it consistently delivers. Some years the pools have been criticized for cleanliness, but recent editions improved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House Music Lovers</h3>
+                        <p>This is house music's natural habitat — poolside, daytime, groovy. If you love house, tech house, and disco, this is your scene.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">☀️</div>
+                    <div>
+                        <h3>Day Party People</h3>
+                        <p>Peak hours are noon to 6pm. If you're at your best with sun on your skin and a drink in the pool, this is your festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Friend Group Trips</h3>
+                        <p>Hotel pool parties are social by nature. Easy to bring the crew, share rooms, and make a weekend of it. No camping gear required.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🍺</div>
+                    <div>
+                        <h3>21+ Crowd</h3>
+                        <p>Mature, drinking-age crowd. Pool bars, cocktails, adult vacation energy. Less chaotic than all-ages events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: You're floating in a pool at Saguaro while house music plays 🌴"</div>
+                    <div class="stats">1.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Splash House sunset hits different when you've been in the pool since noon"</div>
+                    <div class="stats">89K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Splash House 2024 Review: Is the Hype Worth It?"</div>
+                    <div class="stats">245K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Splash House Experience</h2>
+            <p class="intro">Pool party festival in the Palm Springs desert. Here's what you're getting into.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Two August Weekends</div></div>
+                <div class="fact"><div class="label">2026 Dates</div><div class="value">Aug 7-9 & 14-16</div></div>
+                <div class="fact"><div class="label">Venues</div><div class="value">3 Hotel Pools</div></div>
+                <div class="fact"><div class="label">Passes</div><div class="value">From $220</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">21+</div></div>
+                <div class="fact"><div class="label">After Hours</div><div class="value">Air Museum</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Three Hotels</h3>
+                <p>Your pass gets you into all three pools. Each has its own character:</p>
+                <ul>
+                    <li><strong>Saguaro:</strong> The original, the iconic. Rainbow-painted walls, best crowd, typically better DJ bookings. The most "Splash House" of the three. Can get crowded but worth it.</li>
+                    <li><strong>Renaissance:</strong> The oasis. More resort-feeling, towers with balconies, pristine pools. Good for recovery between sets or when Saguaro is packed.</li>
+                    <li><strong>Hilton (NEW 2026):</strong> Replaces the Riviera. Central location between Renaissance and Saguaro. Unknown quantity but promising.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <ul>
+                    <li><strong>Hotel booking strategy:</strong> Host hotels (Saguaro, Renaissance, Hilton) eliminate shuttle needs but book fast and cost more. Off-site hotels are cheaper but require shuttle logistics.</li>
+                    <li><strong>Two weekends:</strong> August 7-9 and August 14-16 are separate events with different lineups. Pick one or go both (different passes).</li>
+                    <li><strong>After Hours tickets:</strong> Separate from pool passes. $100+ but worth it — the Air Museum tarmac is the highlight for many.</li>
+                    <li><strong>Heat prep:</strong> It's August in the desert. 100°F+ is standard. Sunscreen, hydration, and pool access are essential.</li>
+                    <li><strong>Alumni access:</strong> Returning attendees get early ticket access. Sign up for the email list.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <ul>
+                    <li><strong>Palm Springs Airport (PSP):</strong> Small, easy, 15 minutes from hotels. Limited flights but growing.</li>
+                    <li><strong>LAX/SNA:</strong> 2-hour drive through the desert. Scenic but plan for traffic.</li>
+                    <li><strong>Shuttles:</strong> Free shuttles between the three hotels run all day. Also to/from After Hours.</li>
+                    <li><strong>Parking:</strong> If driving, hotels have parking. Some charge fees during Splash House weekends.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Day Experience</h3>
+                <p>Typical Splash House day flow:</p>
+                <ul>
+                    <li><strong>Gates open ~noon:</strong> Pools start filling. Morning is recovery time.</li>
+                    <li><strong>Peak hours (2-6pm):</strong> Best music, biggest crowds, hottest weather. Claim your pool spot early.</li>
+                    <li><strong>Pool hopping:</strong> Shuttles between hotels take 10-20 minutes. You can see 2-3 pools in a day if ambitious.</li>
+                    <li><strong>Pools close ~6pm:</strong> Daytime portion ends. Time to eat, nap, prep for After Hours.</li>
+                    <li><strong>After Hours (10pm-2am):</strong> Separate venue at Palm Springs Air Museum. Dancing on tarmac under vintage aircraft.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "One of my favorite fests everrrrr. Only go if you like house music — that's pretty much all there is! There are lots of OGs that have been to every single one since its inception."
+                    <cite>— r/aves, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Hydrate aggressively:</strong> Desert heat + alcohol + dancing = dehydration. Water, electrolytes, shade breaks.</li>
+                    <li><strong>Sunscreen every 2 hours:</strong> You're in water, in the sun, all day. Reapply constantly.</li>
+                    <li><strong>Swim gear:</strong> Bring what you'd bring to a pool party. Floaties, sunglasses, waterproof phone case.</li>
+                    <li><strong>Lockers:</strong> Available at venues. Essential for storing valuables while you're in the pool.</li>
+                    <li><strong>Pace yourself:</strong> It's a 3-day event. Don't destroy yourself on Friday.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd</h3>
+                <p>Know who you're splashing with:</p>
+                <ul>
+                    <li><strong>Age:</strong> 21+ requirement means mature crowd (24-35 core demographic)</li>
+                    <li><strong>Vibe:</strong> Social, fun, attractive, house music fans</li>
+                    <li><strong>SoCal-heavy:</strong> Many LA and San Diego locals, plus tourists</li>
+                    <li><strong>Regulars:</strong> Strong repeat attendee culture — 13 years of devotees</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After Hours: The Air Museum</h3>
+                <p>The night portion that many consider the highlight:</p>
+                <ul>
+                    <li><strong>Location:</strong> Palm Springs Air Museum — a tarmac with vintage military aircraft</li>
+                    <li><strong>Hours:</strong> Friday & Saturday nights, 10pm-2am</li>
+                    <li><strong>Separate tickets:</strong> $100+ on top of pool passes</li>
+                    <li><strong>Vibe:</strong> More "real festival" energy — proper stage, cooler temperatures, dancing</li>
+                    <li><strong>Highlight:</strong> Dancing under the stars with San Jacinto mountains as backdrop</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
