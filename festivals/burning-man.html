@@ -15,42 +15,65 @@
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
-        .festival-hero { padding: 60px 0; background: var(--festival-gradient); position: relative; }
-        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.9) 100%); }
-        .festival-hero .container { position: relative; z-index: 1; }
-        .festival-meta { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
-        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 16px; }
-        .festival-tagline { font-size: 1.25rem; color: rgba(255,255,255,0.9); max-width: 600px; }
-        .score-overview { padding: 40px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
-        .score-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 24px; }
-        .total-score { text-align: center; }
-        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; color: var(--accent); line-height: 1; }
-        .total-score .label { font-size: 1rem; color: var(--text-secondary); margin-top: 8px; }
-        .quick-verdict { max-width: 400px; }
-        .quick-verdict h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; }
-        .quick-verdict p { color: var(--text-secondary); font-size: 0.95rem; }
-        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-        .score-item { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .score-item .icon-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .score-item .score-value { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
-        .score-item .score-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; }
-        .score-item .score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
-        .content-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-        .content-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
-        .content-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent); }
-        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
-        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 24px 0; font-style: italic; color: var(--text-secondary); }
-        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
-        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .fact .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
-        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 600; }
-        .tag-list { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
-        .tag { padding: 6px 14px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.875rem; color: var(--accent); }
-        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
-        footer a { color: var(--accent); text-decoration: none; }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
         .warning-box { background: rgba(255, 68, 0, 0.1); border: 1px solid #ff4400; border-radius: 12px; padding: 20px; margin: 24px 0; }
         .warning-box h4 { color: #ff4400; margin-bottom: 8px; }
+        .warning-box p { color: var(--text-secondary); font-size: 0.9rem; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -59,89 +82,160 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Black Rock City, NV</span>
-                <span>📅 Late Aug - Early Sept (8 days)</span>
-                <span>👥 ~80,000</span>
+                <span>📍 Black Rock City, Nevada</span>
+                <span>📅 Late Aug - Early Sept (8+ days)</span>
+                <span>👥 80,000</span>
+                <span>💵 $575 + $2-8K prep</span>
             </div>
             <h1>🔥 Burning Man</h1>
-            <p class="festival-tagline">Not a festival — a temporary city built on radical self-reliance, gifting, and creative expression in the Nevada desert.</p>
         </div>
     </section>
     
     <section class="score-overview">
         <div class="container">
             <div class="score-header">
-                <div class="total-score">
-                    <div class="number">45</div>
-                    <div class="label">Ground Score / 50</div>
-                </div>
-                <div class="quick-verdict">
-                    <h3>The Verdict</h3>
-                    <p>Burning Man is in a category of its own. The art, the community, the surreal landscape — nothing comes close. But it demands everything: preparation, self-reliance, and physical endurance. Not for casual festivalgoers. For those who commit fully, it's transformative.</p>
-                </div>
+                <div class="total-score"><span class="number">45</span><span class="max">/ 50</span></div>
+                <p class="verdict-text">Burning Man is in a category of its own. The art is beyond anything else on Earth. The community is transformative. But it demands everything — preparation, self-reliance, physical endurance. Not for casual festivalgoers. For those who commit fully, it's life-changing.</p>
             </div>
             
             <div class="score-grid">
-                <div class="score-item"><div class="icon-label"><span class="icon">🎵</span><span class="label">Sound</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎪</span><span class="label">Scene</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✨</span><span class="label">Vibe</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🚿</span><span class="label">Flow</span></div><div class="score-value">2.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 40%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🍕</span><span class="label">Fuel</span></div><div class="score-value">3.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 60%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✈️</span><span class="label">Access</span></div><div class="score-value">1.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 30%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">💰</span><span class="label">Value</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎨</span><span class="label">Extra</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🏔️</span><span class="label">Setting</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎯</span><span class="label">Hype Check</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Burning Man isn't a "music festival" but there's incredible music everywhere. Art cars like Mayan Warrior (153K watts) and Robot Heart are legendary. Theme camps host DJ sets around the clock. You'll discover sounds you never knew existed — but you have to seek them out. No lineup to follow.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>The art at Burning Man is beyond anything else on Earth. Massive sculptures, art cars that defy physics, the Temple, and of course the Man itself. At night, the playa transforms into a neon wonderland. Every direction you look, there's something impossible happening.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Radical self-reliance meets radical inclusion. The gifting economy creates genuine human connection. No commerce, no branding, no VIP. The community is unlike anywhere else. Some tension with "tech bro" presence in recent years, but the core culture remains strong.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div><span class="value">2.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>This is where Burning Man is brutal. Alkaline dust gets in everything. Porta potties "get STANKY" by week's end. You're biking miles in harsh conditions. No running water. No showers unless you bring your own setup. This is survival, not convenience.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div><span class="value">3.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>BYO everything. No vendors. No commerce. You bring all your food and water for the week. But random gifts appear — theme camps offer tacos, pizza, coffee. The gifting economy means you might stumble into a gourmet meal. Ice is available for purchase (the only exception to no commerce).</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div><span class="value">1.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Burning Man's biggest weakness. Nearest airport is Reno, 2+ hours away. Driving in takes hours. Exodus (leaving) can take 8-10+ hours — 2024 had people waiting over 10 hours. You need to bring everything with you and pack it all out. It's a logistical marathon.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>$575 ticket plus $2,000-8,000+ in prep, gear, and supplies. Total investment is significant. But for those who get it, no amount of money could buy what Burning Man offers. It's not transactional — you're participating in something, not consuming it.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Infinite theme camps, workshops, experiences. Fire dancers, sunrise yoga, Foam Dome, talks, art projects you can join. The entire city is "extra" — there's no "main event" to attend. You create your own experience from infinite possibilities.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>The Black Rock Desert playa is a surreal, alien landscape. Flat, cracked earth stretching to distant mountains. Sunrises and sunsets are otherworldly. Dust storms create dramatic, apocalyptic scenes. It's beautiful and punishing in equal measure.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>"You get the burn you deserve." If you participate fully, it delivers beyond any hype. If you go as a spectator expecting to be entertained, you'll have the worst week of your life. The experience is directly proportional to what you put in.</p></div>
+                </div>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
+    <section class="made-for">
         <div class="container">
-            <h2>Quick Facts</h2>
-            <div class="quick-facts">
-                <div class="fact"><div class="label">Ticket Price</div><div class="value">$575 + prep costs</div></div>
-                <div class="fact"><div class="label">Best For</div><div class="value">Radical self-reliers</div></div>
-                <div class="fact"><div class="label">Camping?</div><div class="value">BYO everything</div></div>
-                <div class="fact"><div class="label">First Timer?</div><div class="value">Research heavily</div></div>
-                <div class="fact"><div class="label">Duration</div><div class="value">8+ days</div></div>
-                <div class="fact"><div class="label">Commerce</div><div class="value">None (gifting only)</div></div>
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item"><div class="icon">🎨</div><div><h3>Art Obsessives</h3><p>If you want to see (and meet) the artists behind the world's most spectacular large-scale art, Burning Man is the source.</p></div></div>
+                <div class="made-for-item"><div class="icon">🔥</div><div><h3>Transformation Seekers</h3><p>If you're looking for a week that fundamentally shifts your perspective on life, community, and what's possible — this is it.</p></div></div>
+                <div class="made-for-item"><div class="icon">🏕️</div><div><h3>Self-Reliance Enthusiasts</h3><p>If you enjoy planning, preparing, and surviving in harsh conditions — and find satisfaction in radical self-reliance — you'll thrive.</p></div></div>
+                <div class="made-for-item"><div class="icon">🤝</div><div><h3>Community Builders</h3><p>If you want to participate in creating something rather than consuming it — join a theme camp, bring a project, contribute.</p></div></div>
             </div>
-            <div class="tag-list">
-                <span class="tag">🎨 Art</span>
-                <span class="tag">🏜️ Extreme</span>
-                <span class="tag">🔥 Transformational</span>
-                <span class="tag">💫 Surreal</span>
-                <span class="tag">🚫 No Spectators</span>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed"><div class="platform">📱 TikTok</div><div class="title">"Sunrise at Robot Heart art car 🌅"</div><div class="stats">5.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div></div>
+                <div class="social-embed"><div class="platform">📷 Instagram</div><div class="title">"The Temple at dawn. No words needed."</div><div class="stats">780K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div></div>
+                <div class="social-embed"><div class="platform">🎬 YouTube</div><div class="title">"My First Burning Man — Honest Review"</div><div class="stats">3.8M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Burning Man Experience</h2>
+            <p class="intro">Everything you need to know before you commit to the playa.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Late Aug - Sept</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">8+ days</div></div>
+                <div class="fact"><div class="label">Population</div><div class="value">80,000</div></div>
+                <div class="fact"><div class="label">Commerce</div><div class="value">None (ice only)</div></div>
+                <div class="fact"><div class="label">Experience</div><div class="value">Extreme</div></div>
+                <div class="fact"><div class="label">Prep Time</div><div class="value">Months</div></div>
             </div>
             
             <div class="warning-box">
-                <h4>⚠️ Not For Everyone</h4>
-                <p>Burning Man requires weeks of preparation. Bring ALL your own food, water, shelter. No vendors. Extreme temperatures (hot days, cold nights). Dust storms. Miles of biking. Exodus can take 8+ hours. This is not a festival — it's a survival experience with art.</p>
+                <h4>⚠️ This Is Not a Festival</h4>
+                <p>Burning Man is not something you attend — it's something you participate in. There are no spectators. You bring ALL your own supplies (food, water, shelter, tools). There are no vendors except ice. Conditions are extreme (100°F+ days, 40°F nights, dust storms). If this sounds exhausting, it's not for you. If this sounds exciting, read on.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Months Before: Preparation</h3>
+                <p>Burning Man requires serious preparation. This is not a "buy a ticket and show up" event.</p>
+                <ul>
+                    <li><strong>Tickets:</strong> Sell out immediately via lottery. Plan a year ahead.</li>
+                    <li><strong>Camp or solo:</strong> Join a theme camp (easier, more community) or go solo (harder, more freedom).</li>
+                    <li><strong>Gear:</strong> Tent, shade structure, coolers, food for a week, 1.5 gallons of water per day, bike, lights, costumes, tools.</li>
+                    <li><strong>Vehicle:</strong> You need something to haul gear. RVs are popular but require generator fuel.</li>
+                    <li><strong>Budget:</strong> $2,000-8,000+ on top of the $575 ticket. First-timers often underestimate.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Experience</h3>
+                <p>Once you're on the playa, Burning Man is unlike anything else.</p>
+                <blockquote class="quote">"I said 'Wow, look at that!' at least 3000 times during the week. The art, the people, the surreal landscape — it rewires your sense of what's possible."<cite>— First-time burner, 2024</cite></blockquote>
+                <ul>
+                    <li><strong>The art:</strong> Massive sculptures, kinetic installations, the Temple, the Man. Walk or bike the playa at night when everything glows.</li>
+                    <li><strong>Art cars:</strong> Mobile sound stages like Mayan Warrior, Robot Heart, and hundreds more. Follow the music.</li>
+                    <li><strong>Theme camps:</strong> Each camp offers something — food, drinks, experiences, workshops. All gifted, nothing sold.</li>
+                    <li><strong>The burns:</strong> The Man burns Saturday. The Temple burns Sunday. Both are profound communal experiences.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Challenges</h3>
+                <p>Be honest with yourself about whether you can handle:</p>
+                <ul>
+                    <li><strong>Dust:</strong> Fine alkaline playa dust gets everywhere. Your lungs, your gear, your soul. Bring dust masks.</li>
+                    <li><strong>Heat:</strong> 100°F+ during the day. You'll hide in shade until evening.</li>
+                    <li><strong>Cold:</strong> 40°F at night. Bring real sleeping gear.</li>
+                    <li><strong>Dust storms:</strong> Whiteout conditions. Can last hours. Terrifying and beautiful.</li>
+                    <li><strong>Exodus:</strong> Leaving can take 8-10+ hours. Pack patience and snacks.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Is It Worth It?</h3>
+                <p>For the right person, Burning Man is worth every ounce of effort.</p>
+                <blockquote class="quote">"If the apocalypse comes, I'm with the Burners. These are the people who know how to build, survive, and create community from nothing."<cite>— Veteran burner</cite></blockquote>
+                <ul>
+                    <li><strong>Yes if:</strong> You want transformation, not entertainment. You're willing to prepare. You want to participate.</li>
+                    <li><strong>No if:</strong> You want to be served. You hate dust/heat/cold. You're looking for a typical festival.</li>
+                    <li><strong>The truth:</strong> "You get the burn you deserve." Your experience directly reflects what you put in.</li>
+                </ul>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
-        <div class="container">
-            <h2>The Full Breakdown</h2>
-            
-            <h3>🎪 Scene (5/5)</h3>
-            <p>The art at Burning Man is beyond anything else on Earth. Massive sculptures, art cars that defy physics, the Temple, and of course the Man itself. At night, the playa transforms into a neon wonderland. Every direction you look, there's something impossible happening.</p>
-            
-            <h3>✨ Vibe (5/5)</h3>
-            <p>Radical self-reliance meets radical inclusion. The gifting economy creates genuine human connection. No commerce, no branding, no VIP — just 80,000 people building a temporary utopia. The community is unlike anywhere else.</p>
-            
-            <blockquote class="quote">"Burning Man isn't something you go to — it's something you do. Everyone participates. There are no spectators."<cite>— Burning Man Principles</cite></blockquote>
-            
-            <h3>🎵 Sound (4/5)</h3>
-            <p>Not a "music festival" but there's incredible music everywhere — art cars with world-class sound systems, theme camps hosting DJ sets, sunrise sessions on the playa. You'll discover sounds you never knew existed. But you have to seek it out.</p>
-            
-            <h3>✈️ Access (1.5/5)</h3>
-            <p>This is where Burning Man punishes you. Driving in takes hours. Exodus (leaving) can take 8+ hours. The nearest airport is Reno, 2+ hours away. You need to bring everything with you — and pack it all out. It's a logistical marathon.</p>
-        </div>
-    </section>
+    <footer><div class="container"><p>Ground Score — Find your perfect festival</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
     
-    <footer><div class="container"><p>Ground Score — The insider's guide to music festivals</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
 </body>
 </html>

@@ -6,16 +6,7 @@
     <title>Coachella — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --accent: #00ff88;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --border: #2a2a3a;
-            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
-            --festival-gradient: linear-gradient(135deg, #ff8800 0%, #ff0088 100%);
-        }
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff8800 0%, #ff0088 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
@@ -24,143 +15,226 @@
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
-        .back-link:hover { color: var(--accent); }
-        .festival-hero { padding: 60px 0; background: var(--festival-gradient); position: relative; overflow: hidden; }
-        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.9) 100%); }
-        .festival-hero .container { position: relative; z-index: 1; }
-        .festival-meta { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
-        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 16px; }
-        .festival-tagline { font-size: 1.25rem; color: rgba(255,255,255,0.9); max-width: 600px; }
-        .score-overview { padding: 40px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
-        .score-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 24px; }
-        .total-score { text-align: center; }
-        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; color: var(--accent); line-height: 1; }
-        .total-score .label { font-size: 1rem; color: var(--text-secondary); margin-top: 8px; }
-        .quick-verdict { max-width: 400px; }
-        .quick-verdict h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; }
-        .quick-verdict p { color: var(--text-secondary); font-size: 0.95rem; }
-        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-        .score-item { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .score-item .icon-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .score-item .icon { font-size: 1.25rem; }
-        .score-item .label { font-size: 0.875rem; color: var(--text-secondary); }
-        .score-item .score-value { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
-        .score-item .score-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .score-item .score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
-        .content-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-        .content-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
-        .content-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent); }
-        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
-        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 24px 0; font-style: italic; color: var(--text-secondary); }
-        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.875rem; color: var(--accent); }
-        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
-        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .fact .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 600; }
-        .tag-list { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
-        .tag { padding: 6px 14px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.875rem; color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .warning-box { background: rgba(255, 136, 0, 0.1); border: 1px solid #ff8800; border-radius: 12px; padding: 20px; margin: 24px 0; }
+        .warning-box h4 { color: #ff8800; margin-bottom: 8px; }
+        .warning-box p { color: var(--text-secondary); font-size: 0.9rem; }
         footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
         footer a { color: var(--accent); text-decoration: none; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-inner">
-            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
-            <a href="../index.html" class="back-link">← All Festivals</a>
-        </div>
-    </header>
+    <header><div class="container header-inner"><a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a><a href="../index.html" class="back-link">← All Festivals</a></div></header>
     
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Empire Polo Club, Indio, CA</span>
+                <span>📍 Indio, California</span>
                 <span>📅 April (2 weekends)</span>
-                <span>👥 ~125,000 per weekend</span>
+                <span>👥 125,000/weekend</span>
+                <span>💵 $500-1,000+</span>
             </div>
             <h1>🌴 Coachella</h1>
-            <p class="festival-tagline">The cultural phenomenon where music, art, and fashion collide in the California desert.</p>
         </div>
     </section>
     
     <section class="score-overview">
         <div class="container">
             <div class="score-header">
-                <div class="total-score">
-                    <div class="number">35</div>
-                    <div class="label">Ground Score / 50</div>
-                </div>
-                <div class="quick-verdict">
-                    <h3>The Verdict</h3>
-                    <p>Coachella delivers world-class art installations and eclectic lineups but suffers from hype inflation. The experience often depends more on who you're with than what you see. Best for cultural cachet and Instagram moments — less about pure music immersion.</p>
-                </div>
+                <div class="total-score"><span class="number">35</span><span class="max">/ 50</span></div>
+                <p class="verdict-text">Coachella is a cultural institution — but the hype often exceeds the reality. World-class art and eclectic lineups are undercut by logistics nightmares, premium prices, and a crowd more focused on being seen than experiencing music. Worth doing once.</p>
             </div>
             
             <div class="score-grid">
-                <div class="score-item"><div class="icon-label"><span class="icon">🎵</span><span class="label">Sound</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎪</span><span class="label">Scene</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✨</span><span class="label">Vibe</span></div><div class="score-value">3.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 60%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🚿</span><span class="label">Flow</span></div><div class="score-value">3.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🍕</span><span class="label">Fuel</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">✈️</span><span class="label">Access</span></div><div class="score-value">3.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">💰</span><span class="label">Value</span></div><div class="score-value">2.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 50%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎨</span><span class="label">Extra</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🏔️</span><span class="label">Setting</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
-                <div class="score-item"><div class="icon-label"><span class="icon">🎯</span><span class="label">Hype Check</span></div><div class="score-value">2.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 40%;"></div></div></div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Eclectic lineup spanning genres from EDM to K-pop to indie rock. Known for securing exclusive performances and reunions. Strong undercard with breakout artists. However, persistent sound/mic issues plague the main stage year after year — it's become a meme at this point.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Do LaB delivers spectacular stage designs. The SPECTRA installation is iconic. Sahara Tent for EDM and Yuma for underground house/techno are highlights. Art installations are world-class. Main stage visibility is poor though, and production doesn't match EDC or Tomorrowland.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div><span class="value">3.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>The "small tent magic" at Mojave and Gobi creates intimate crowd energy, but Coachella's mainstream appeal brings a heavily Instagram-focused crowd. Main stage crowds are often described as "dead." Energy is inconsistent — amazing in EDM tents, performative elsewhere.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>2025 saw 12-hour car camping entry lines on opening day. Shuttle waits of 2+ hours are common. Once inside, the grounds flow reasonably well. Bathrooms are adequate. Security entry is hit or miss depending on which gate you choose.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Good food variety with trendy LA vendors. Quality is solid. But prices are absurd — $15 beers, $45 for hot dogs and fries. If you're watching your budget, this will hurt. VIP food is marginally better but even more expensive.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>Palm Springs or LA airports, then a 2+ hour drive (or longer with traffic). No good public transit. Shuttles from LA are long and expensive. Once you're in Indio, getting around is fine. Getting TO Coachella is the challenge.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div><span class="value">2.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>This is where Coachella struggles. All-in costs of $2,000-4,000+ per person. For that money, you could do multiple other festivals. Veterans increasingly question whether it's worth it. First-timers often say "once was enough."</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>This is Coachella's genuine strength. Art installations are museum-quality. The polo fields create a unique environment. Fashion is a spectacle in itself. If you're into the cultural moment beyond music, Coachella delivers.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>The California desert setting is beautiful. Mountains in the distance, palm trees, endless blue sky. Sunsets are spectacular. The polo grounds have a unique aesthetic. Heat can be brutal though — 100°F+ days are common.</p></div>
+                </div>
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header"><div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div><span class="value">2.0</span><span class="expand-icon">▼</span></div>
+                    <div class="score-card-detail"><p>This is Coachella's biggest weakness. The cultural hype creates expectations that reality often doesn't meet. Recurring sentiment: "Something to do once and then never again." Veterans feel the magic has faded. First-timers are split.</p></div>
+                </div>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
+    <section class="made-for">
         <div class="container">
-            <h2>Quick Facts</h2>
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item"><div class="icon">📸</div><div><h3>Content Creators</h3><p>If your Instagram aesthetic matters and you want that iconic Coachella shot with the ferris wheel, this is your playground.</p></div></div>
+                <div class="made-for-item"><div class="icon">🎨</div><div><h3>Art & Culture Seekers</h3><p>If you care as much about installations, fashion, and the cultural moment as the music — Coachella delivers on that front.</p></div></div>
+                <div class="made-for-item"><div class="icon">✅</div><div><h3>Bucket List Checkers</h3><p>If you want to say you've done Coachella, do it once. Experience the phenomenon, then decide if it's for you.</p></div></div>
+                <div class="made-for-item"><div class="icon">🎧</div><div><h3>Genre Explorers</h3><p>If you want to discover new music across genres — from K-pop to indie to house — the eclectic lineup rewards explorers.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed"><div class="platform">📱 TikTok</div><div class="title">"Coachella fit check 🌴 day 1 look"</div><div class="stats">4.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div></div>
+                <div class="social-embed"><div class="platform">📷 Instagram</div><div class="title">"SPECTRA at golden hour hits different"</div><div class="stats">1.2M likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div></div>
+                <div class="social-embed"><div class="platform">🎬 YouTube</div><div class="title">"Is Coachella Worth It? Honest Review After 5 Years"</div><div class="stats">2.1M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Coachella Experience</h2>
+            <p class="intro">The honest guide to the world's most famous festival.</p>
+            
             <div class="quick-facts">
-                <div class="fact"><div class="label">Ticket Price</div><div class="value">$500-$1000+</div></div>
-                <div class="fact"><div class="label">Best For</div><div class="value">Culture seekers</div></div>
-                <div class="fact"><div class="label">Camping?</div><div class="value">Yes (car/tent)</div></div>
-                <div class="fact"><div class="label">First Timer?</div><div class="value">Bucket list item</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">April (2 weekends)</div></div>
                 <div class="fact"><div class="label">Hours</div><div class="value">12pm - 1am</div></div>
-                <div class="fact"><div class="label">Stages</div><div class="value">8+ stages</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">8+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">125K/weekend</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Optional</div></div>
             </div>
-            <div class="tag-list">
-                <span class="tag">📸 Iconic</span>
-                <span class="tag">🎨 Art Forward</span>
-                <span class="tag">🌴 Desert</span>
-                <span class="tag">👗 Fashion</span>
-                <span class="tag">💰 Premium</span>
+            
+            <div class="warning-box">
+                <h4>⚠️ Set Realistic Expectations</h4>
+                <p>Coachella's cultural status creates hype that reality often can't match. If you go expecting the best festival of your life, you may be disappointed. If you go expecting a unique cultural experience with great art and eclectic music, you'll likely enjoy it.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Coachella requires significant planning and budget allocation.</p>
+                <ul>
+                    <li><strong>Weekend 1 vs Weekend 2:</strong> Weekend 1 has more hype and surprise guests. Weekend 2 is slightly more chill and sometimes cheaper.</li>
+                    <li><strong>Budget reality:</strong> All-in costs are $2,000-4,000+ per person. Tickets, lodging, food, drinks, transport — it adds up fast.</li>
+                    <li><strong>Camping vs hotels:</strong> Camping is cheaper but hot and dusty. Hotels in Indio/Palm Springs are pricey and require transport. Airbnbs get price-gouged.</li>
+                    <li><strong>Heat prep:</strong> April desert heat is real. Sunscreen, hats, hydration packs are essential.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Empire Polo Club is a massive, flat expanse with distinct areas:</p>
+                <ul>
+                    <li><strong>Main Stage (Coachella Stage):</strong> Where headliners play. Visibility is poor unless you're close. Sound issues are common.</li>
+                    <li><strong>Sahara Tent:</strong> EDM and electronic acts. Gets packed and hot but energy is high.</li>
+                    <li><strong>Yuma Tent:</strong> Underground house and techno. Air-conditioned, intimate, purist vibes.</li>
+                    <li><strong>Mojave/Gobi:</strong> Mid-size tents with diverse bookings. Often where the best crowd energy lives.</li>
+                    <li><strong>Do LaB:</strong> Smaller electronic stage with creative production. Hidden gem energy.</li>
+                </ul>
+                <blockquote class="quote">"All of Coachella's heavy hitters perform on the main stage, which sucks because it offers the worst experience for fans. Other festivals have hidden activations, secret stages, more art exhibits."<cite>— Reddit r/Coachella, 2024</cite></blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd Reality</h3>
+                <p>Coachella's mainstream appeal creates a mixed crowd experience.</p>
+                <ul>
+                    <li><strong>Main stage crowds:</strong> Often described as "dead" — people watching phones instead of dancing.</li>
+                    <li><strong>Tent crowds:</strong> Much better energy. Sahara, Yuma, and Do LaB have people who came to actually party.</li>
+                    <li><strong>Instagram factor:</strong> Lots of people are there for content, not music. If that bothers you, stick to the tents.</li>
+                    <li><strong>Fashion scene:</strong> Coachella is as much about outfits as music. Embrace it or ignore it.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Is It Worth It?</h3>
+                <p>Honest assessment based on research:</p>
+                <ul>
+                    <li><strong>Do it once:</strong> Coachella is a cultural touchstone. Experiencing it is valuable even if you don't return.</li>
+                    <li><strong>Manage expectations:</strong> It's not the "best festival ever." It's a unique experience with real tradeoffs.</li>
+                    <li><strong>Compare alternatives:</strong> For the same money, you could do Electric Forest + another festival. Worth considering.</li>
+                    <li><strong>Go for the art:</strong> If music is your only priority, other festivals deliver more. If you want the full cultural package, Coachella has that.</li>
+                </ul>
             </div>
         </div>
     </section>
     
-    <section class="content-section">
-        <div class="container">
-            <h2>The Full Breakdown</h2>
-            
-            <h3>🎵 Sound (4/5)</h3>
-            <p>Coachella's eclectic lineup spans genres from EDM to K-pop to indie rock. Known for securing exclusive performances and reunions, plus surprise guests. However, persistent sound issues plague the main stage — microphones cutting out has become an annual complaint.</p>
-            
-            <blockquote class="quote">
-                "The festival plagued with technical difficulties... Bad Bunny bore the brunt... their duet was ruined by audio malfunctions."
-                <cite>— Business Insider, 2023</cite>
-            </blockquote>
-            
-            <h3>🎪 Scene (4/5)</h3>
-            <p>Do LaB consistently delivers visually spectacular stage designs. The SPECTRA installation is iconic, and the Sahara Tent for EDM is a highlight. Art installations are world-class and architectural in ambition. Main stage visibility is poor though, and some installations feel underwhelming up close.</p>
-            
-            <h3>✨ Vibe (3/5)</h3>
-            <p>The "small tent magic" at Mojave and Gobi creates intimate crowd energy, but Coachella's mainstream appeal brings a heavily Instagram-focused crowd. Energy inconsistent — amazing in the EDM tents, performative at the main stage.</p>
-            
-            <h3>🎯 Hype Check (2/5)</h3>
-            <p>Coachella's cultural relevance creates expectations that the reality doesn't always deliver. For the price point and effort, many feel other festivals deliver more actual music experience per dollar. Great for the 'gram, not always great for the soul.</p>
-        </div>
-    </section>
+    <footer><div class="container"><p>Ground Score — Find your perfect festival</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
     
-    <footer>
-        <div class="container">
-            <p>Ground Score — The insider's guide to music festivals</p>
-            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
-        </div>
-    </footer>
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
 </body>
 </html>
