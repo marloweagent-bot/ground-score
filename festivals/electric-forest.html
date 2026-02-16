@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Forest — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #00ff00 0%, #004400 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .festival-hero { padding: 60px 0; background: var(--festival-gradient); position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.9) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 16px; }
+        .festival-tagline { font-size: 1.25rem; color: rgba(255,255,255,0.9); max-width: 600px; }
+        .score-overview { padding: 40px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 24px; }
+        .total-score { text-align: center; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .label { font-size: 1rem; color: var(--text-secondary); margin-top: 8px; }
+        .quick-verdict { max-width: 400px; }
+        .quick-verdict h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; }
+        .quick-verdict p { color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .score-item { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .score-item .icon-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .score-item .score-value { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
+        .score-item .score-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; }
+        .score-item .score-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+        .content-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .content-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 24px; }
+        .content-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 24px 0; font-style: italic; color: var(--text-secondary); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .fact .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 600; }
+        .tag-list { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
+        .tag { padding: 6px 14px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.875rem; color: var(--accent); }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header><div class="container header-inner"><a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a><a href="../index.html" class="back-link">← All Festivals</a></div></header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Rothbury, MI</span>
+                <span>📅 June (4 days)</span>
+                <span>👥 ~45,000</span>
+            </div>
+            <h1>🌲 Electric Forest</h1>
+            <p class="festival-tagline">A magical, transformative camping festival where Sherwood Forest comes alive with illuminated art and the best community in festivals.</p>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <div class="number">46</div>
+                    <div class="label">Ground Score / 50</div>
+                </div>
+                <div class="quick-verdict">
+                    <h3>The Verdict</h3>
+                    <p>Electric Forest is the gold standard for transformative festival experiences. The illuminated forest is unlike anything else in the world. Community vibes are unmatched — this is where festival families are made. Voted DJ Mag's best festival multiple times for good reason.</p>
+                </div>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-item"><div class="icon-label"><span class="icon">🎵</span><span class="label">Sound</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🎪</span><span class="label">Scene</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">✨</span><span class="label">Vibe</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🚿</span><span class="label">Flow</span></div><div class="score-value">4.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🍕</span><span class="label">Fuel</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">✈️</span><span class="label">Access</span></div><div class="score-value">3.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 70%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">💰</span><span class="label">Value</span></div><div class="score-value">4.5</div><div class="score-bar"><div class="score-bar-fill" style="width: 90%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🎨</span><span class="label">Extra</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🏔️</span><span class="label">Setting</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+                <div class="score-item"><div class="icon-label"><span class="icon">🎯</span><span class="label">Hype Check</span></div><div class="score-value">5.0</div><div class="score-bar"><div class="score-bar-fill" style="width: 100%;"></div></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="content-section">
+        <div class="container">
+            <h2>Quick Facts</h2>
+            <div class="quick-facts">
+                <div class="fact"><div class="label">Ticket Price</div><div class="value">$350-$500</div></div>
+                <div class="fact"><div class="label">Best For</div><div class="value">Transformational seekers</div></div>
+                <div class="fact"><div class="label">Camping?</div><div class="value">Yes (required)</div></div>
+                <div class="fact"><div class="label">First Timer?</div><div class="value">Life-changing</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">4 days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7+ stages</div></div>
+            </div>
+            <div class="tag-list">
+                <span class="tag">🌲 Scenic</span>
+                <span class="tag">✨ Magical</span>
+                <span class="tag">🏕️ Camping</span>
+                <span class="tag">🎨 Art</span>
+                <span class="tag">💚 Community</span>
+                <span class="tag">👶 First-Timer Friendly</span>
+            </div>
+        </div>
+    </section>
+    
+    <section class="content-section">
+        <div class="container">
+            <h2>The Full Breakdown</h2>
+            
+            <h3>🌲 Setting (5/5)</h3>
+            <p>Sherwood Forest is the crown jewel — a real forest transformed into an illuminated wonderland. Walking through the trees at night with thousands of lights, art installations, and hidden stages is genuinely otherworldly. Nothing else compares.</p>
+            
+            <h3>✨ Vibe (5/5)</h3>
+            <p>EF has the strongest community feel of any major festival. Deep bonds form over the 4 days. PLUR is actually lived here, not just talked about. The "Forest Family" is real — people return year after year to reunite with their crew.</p>
+            
+            <blockquote class="quote">"Electric Forest isn't a festival you attend — it's a community you join. You'll leave with friends for life."<cite>— DJ Mag</cite></blockquote>
+            
+            <h3>🎵 Sound (4.5/5)</h3>
+            <p>Eclectic lineup blending electronic, jam bands, and everything in between. The curated stages in the forest create intimate moments. String Cheese Incident holds it down as resident headliner. Sound quality in the forest stages is surprisingly excellent.</p>
+            
+            <h3>🎨 Extra (5/5)</h3>
+            <p>Beyond the music: yoga, workshops, secret sets, interactive art, the Hangar (indoor stage/art gallery), silent disco in the forest, and countless hidden experiences. You could skip every main stage set and still have a life-changing weekend.</p>
+        </div>
+    </section>
+    
+    <footer><div class="container"><p>Ground Score — The insider's guide to music festivals</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
+</body>
+</html>
