@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ground Score — Find Your Festival</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: #2a2a3a;
+            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-2: linear-gradient(135deg, #ff0088 0%, #ff8800 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero .tagline {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 24px;
+            font-size: 0.875rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+        
+        /* Score System Explainer */
+        .score-system {
+            padding: 60px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .score-system h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .criteria-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        
+        .criteria-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .criteria-card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        
+        .criteria-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+        
+        .criteria-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Filter Section */
+        .filters {
+            padding: 40px 0;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+        }
+        
+        /* Festival Cards */
+        .festivals-section {
+            padding: 60px 0;
+        }
+        
+        .festivals-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 32px;
+        }
+        
+        .festival-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        
+        .festival-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .festival-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        
+        .festival-card .image {
+            height: 180px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .festival-card .content {
+            padding: 24px;
+        }
+        
+        .festival-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .festival-card .location {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+        
+        .festival-card .score-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ground-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ground-score .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .ground-score .max {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .tags {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .tag {
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Mini Score Bars */
+        .mini-scores {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .mini-score {
+            text-align: center;
+        }
+        
+        .mini-score .label {
+            font-size: 0.625rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .mini-score .bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .mini-score .bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .festival-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-icon">⚡</span>
+                Ground Score
+            </a>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <span class="tagline">The Michelin Guide for Music Festivals</span>
+            <h1>Find Your Perfect Festival</h1>
+            <p class="subtitle">
+                Ground Score rates festivals across 10 key dimensions so you can discover events that match your vibe, budget, and experience level.
+            </p>
+        </div>
+    </section>
+    
+    <section class="score-system">
+        <div class="container">
+            <h2>The Ground Score System</h2>
+            <div class="criteria-grid">
+                <div class="criteria-card">
+                    <div class="icon">🎵</div>
+                    <h3>Sound</h3>
+                    <p>Music quality, lineup curation, artist diversity and booking</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🎪</div>
+                    <h3>Scene</h3>
+                    <p>Stage design, production value, visual experience</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">✨</div>
+                    <h3>Vibe</h3>
+                    <p>Crowd energy, community feel, overall atmosphere</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🚿</div>
+                    <h3>Flow</h3>
+                    <p>In-event logistics: water, bathrooms, entry lines</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🍕</div>
+                    <h3>Fuel</h3>
+                    <p>Food and drink quality, accessibility, pricing</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">✈️</div>
+                    <h3>Access</h3>
+                    <p>Travel ease, airport proximity, parking situation</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">💰</div>
+                    <h3>Value</h3>
+                    <p>Bang for your buck — ticket price vs total experience</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🎨</div>
+                    <h3>Extra</h3>
+                    <p>Art installations, workshops, experiences beyond music</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🏔️</div>
+                    <h3>Setting</h3>
+                    <p>Natural beauty, venue uniqueness, scenic factor</p>
+                </div>
+                <div class="criteria-card">
+                    <div class="icon">🎯</div>
+                    <h3>Hype Check</h3>
+                    <p>Reality vs expectations — overhyped or underrated?</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="filters">
+        <div class="container">
+            <div class="filter-bar">
+                <button class="filter-btn active">All Festivals</button>
+                <button class="filter-btn">🏕️ Camping</button>
+                <button class="filter-btn">🌆 Urban</button>
+                <button class="filter-btn">💰 Budget-Friendly</button>
+                <button class="filter-btn">🌲 Scenic</button>
+                <button class="filter-btn">🎉 Wild</button>
+                <button class="filter-btn">👶 First-Timer Friendly</button>
+                <button class="filter-btn">🔥 Top Rated</button>
+            </div>
+        </div>
+    </section>
+    
+    <section class="festivals-section">
+        <div class="container">
+            <h2>Top Rated Festivals</h2>
+            <div class="festival-grid">
+                <!-- EDC Las Vegas -->
+                <a href="festivals/edc-las-vegas.html" class="festival-card">
+                    <div class="image" style="background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);">🎡</div>
+                    <div class="content">
+                        <h3>EDC Las Vegas</h3>
+                        <p class="location">📍 Las Vegas, NV • May</p>
+                        <div class="score-row">
+                            <div class="ground-score">
+                                <span class="number">44</span>
+                                <span class="max">/ 50</span>
+                            </div>
+                            <div class="tags">
+                                <span class="tag">🎉 Wild</span>
+                                <span class="tag">🎪 Epic Production</span>
+                            </div>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score">
+                                <div class="label">Sound</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Scene</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Vibe</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Flow</div>
+                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Value</div>
+                                <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Electric Forest -->
+                <a href="festivals/electric-forest.html" class="festival-card">
+                    <div class="image" style="background: linear-gradient(135deg, #00ff00 0%, #004400 100%);">🌲</div>
+                    <div class="content">
+                        <h3>Electric Forest</h3>
+                        <p class="location">📍 Rothbury, MI • June</p>
+                        <div class="score-row">
+                            <div class="ground-score">
+                                <span class="number">46</span>
+                                <span class="max">/ 50</span>
+                            </div>
+                            <div class="tags">
+                                <span class="tag">🌲 Scenic</span>
+                                <span class="tag">✨ Magical</span>
+                            </div>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score">
+                                <div class="label">Sound</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Scene</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Vibe</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Flow</div>
+                                <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Setting</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Coachella -->
+                <a href="festivals/coachella.html" class="festival-card">
+                    <div class="image" style="background: linear-gradient(135deg, #ff8800 0%, #ff0088 100%);">🌴</div>
+                    <div class="content">
+                        <h3>Coachella</h3>
+                        <p class="location">📍 Indio, CA • April</p>
+                        <div class="score-row">
+                            <div class="ground-score">
+                                <span class="number">41</span>
+                                <span class="max">/ 50</span>
+                            </div>
+                            <div class="tags">
+                                <span class="tag">📸 Iconic</span>
+                                <span class="tag">🎨 Art</span>
+                            </div>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score">
+                                <div class="label">Sound</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Scene</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Vibe</div>
+                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Value</div>
+                                <div class="bar"><div class="bar-fill" style="width: 50%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Hype</div>
+                                <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Ultra Miami -->
+                <a href="festivals/ultra-miami.html" class="festival-card">
+                    <div class="image" style="background: linear-gradient(135deg, #00ccff 0%, #0066ff 100%);">🌊</div>
+                    <div class="content">
+                        <h3>Ultra Miami</h3>
+                        <p class="location">📍 Miami, FL • March</p>
+                        <div class="score-row">
+                            <div class="ground-score">
+                                <span class="number">40</span>
+                                <span class="max">/ 50</span>
+                            </div>
+                            <div class="tags">
+                                <span class="tag">🌆 Urban</span>
+                                <span class="tag">🔊 Bass</span>
+                            </div>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score">
+                                <div class="label">Sound</div>
+                                <div class="bar"><div class="bar-fill" style="width: 95%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Scene</div>
+                                <div class="bar"><div class="bar-fill" style="width: 85%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Access</div>
+                                <div class="bar"><div class="bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Flow</div>
+                                <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Value</div>
+                                <div class="bar"><div class="bar-fill" style="width: 70%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Burning Man -->
+                <a href="festivals/burning-man.html" class="festival-card">
+                    <div class="image" style="background: linear-gradient(135deg, #ff4400 0%, #ffaa00 100%);">🔥</div>
+                    <div class="content">
+                        <h3>Burning Man</h3>
+                        <p class="location">📍 Black Rock City, NV • Aug-Sept</p>
+                        <div class="score-row">
+                            <div class="ground-score">
+                                <span class="number">45</span>
+                                <span class="max">/ 50</span>
+                            </div>
+                            <div class="tags">
+                                <span class="tag">🎨 Art</span>
+                                <span class="tag">🏜️ Extreme</span>
+                            </div>
+                        </div>
+                        <div class="mini-scores">
+                            <div class="mini-score">
+                                <div class="label">Scene</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Vibe</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Extra</div>
+                                <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Flow</div>
+                                <div class="bar"><div class="bar-fill" style="width: 40%;"></div></div>
+                            </div>
+                            <div class="mini-score">
+                                <div class="label">Access</div>
+                                <div class="bar"><div class="bar-fill" style="width: 30%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — The insider's guide to music festivals</p>
+            <p style="margin-top: 8px;">Built by festival people, for festival people. <a href="#">Learn more</a></p>
+        </div>
+    </footer>
+</body>
+</html>
