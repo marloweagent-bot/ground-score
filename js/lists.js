@@ -150,20 +150,33 @@
             showToast(added ? '❤️ Added to Wishlist' : 'Removed from Wishlist');
         };
         
-        const beenBtn = document.createElement('button');
-        beenBtn.className = 'gs-btn gs-btn-been';
-        beenBtn.setAttribute('aria-label', 'Mark as attended');
-        beenBtn.setAttribute('title', "I've Been");
-        beenBtn.innerHTML = '<span class="gs-btn-icon">○</span>';
-        beenBtn.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const added = toggleBeen(slug);
-            showToast(added ? '✅ Marked as Attended' : 'Removed from Attended');
-        };
+        // Map button (only on detail pages, not cards)
+        let mapBtn = null;
+        if (context === 'detail') {
+            mapBtn = document.createElement('button');
+            mapBtn.className = 'gs-btn gs-btn-map';
+            mapBtn.setAttribute('aria-label', 'Add to my map');
+            mapBtn.setAttribute('title', 'Add to My Map');
+            mapBtn.innerHTML = '<span class="gs-btn-icon">📍</span><span class="gs-btn-text">Add to Map</span>';
+            mapBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof GroundScoreMap !== 'undefined') {
+                    GroundScoreMap.showYearPicker(slug, mapBtn);
+                } else {
+                    showToast('Map feature loading...');
+                }
+            };
+            // Update button state if already on map
+            setTimeout(() => {
+                if (typeof GroundScoreMap !== 'undefined') {
+                    GroundScoreMap.updateMapButton(slug, mapBtn);
+                }
+            }, 100);
+        }
         
         wrapper.appendChild(wishBtn);
-        wrapper.appendChild(beenBtn);
+        if (mapBtn) wrapper.appendChild(mapBtn);
         
         return wrapper;
     }
@@ -474,12 +487,29 @@
                 display: flex;
                 gap: 12px;
                 margin-top: 16px;
+                flex-wrap: wrap;
             }
             
             .gs-detail-buttons .gs-btn {
                 width: 48px;
                 height: 48px;
                 border-radius: 12px;
+            }
+            
+            .gs-detail-buttons .gs-btn-map {
+                width: auto;
+                padding: 0 16px;
+                gap: 8px;
+            }
+            
+            .gs-detail-buttons .gs-btn-map .gs-btn-text {
+                font-size: 14px;
+                font-weight: 500;
+            }
+            
+            .gs-detail-buttons .gs-btn-map.active {
+                background: rgba(0, 255, 136, 0.15);
+                border-color: var(--accent);
             }
             
             .gs-detail-buttons .gs-btn-icon {
