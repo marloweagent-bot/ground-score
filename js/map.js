@@ -342,6 +342,14 @@
         return `${window.location.origin}/ground-score/my-map.html?map=${encodeURIComponent(encoded)}`;
     }
     
+    function generateCompareUrl() {
+        const data = getMapData();
+        if (data.length === 0) return null;
+        
+        const encoded = data.map(d => `${d.slug}:${d.year}`).join(',');
+        return `${window.location.origin}/ground-score/my-map.html?compare=${encodeURIComponent(encoded)}`;
+    }
+    
     function restoreFromUrl() {
         const params = new URLSearchParams(window.location.search);
         const mapParam = params.get('map');
@@ -363,6 +371,330 @@
             console.error('Failed to restore map data:', e);
         }
         return false;
+    }
+    
+    // ==================== COMPARE FEATURE ====================
+    
+    let compareData = null;
+    let isCompareMode = false;
+    
+    function checkCompareMode() {
+        const params = new URLSearchParams(window.location.search);
+        const compareParam = params.get('compare');
+        if (!compareParam) return false;
+        
+        try {
+            compareData = compareParam.split(',').map(e => {
+                const [slug, year] = e.split(':');
+                return { slug, year: parseInt(year), type: 'festival' };
+            }).filter(e => e.slug && !isNaN(e.year));
+            
+            if (compareData.length > 0) {
+                isCompareMode = true;
+                return true;
+            }
+        } catch (e) {
+            console.error('Failed to parse compare data:', e);
+        }
+        return false;
+    }
+    
+    function getCompareResults() {
+        if (!compareData) return null;
+        
+        const myData = getMapData();
+        
+        // Find overlaps
+        const sameYearOverlaps = []; // They were there TOGETHER
+        const sameFestivalDiffYear = []; // Both went, different years
+        const onlyMe = [];
+        const onlyThem = [];
+        
+        // Create lookup maps
+        const myLookup = {};
+        myData.forEach(d => {
+            if (!myLookup[d.slug]) myLookup[d.slug] = [];
+            myLookup[d.slug].push(d.year);
+        });
+        
+        const theirLookup = {};
+        compareData.forEach(d => {
+            if (!theirLookup[d.slug]) theirLookup[d.slug] = [];
+            theirLookup[d.slug].push(d.year);
+        });
+        
+        // Find same year overlaps
+        Object.keys(myLookup).forEach(slug => {
+            const myYears = myLookup[slug];
+            const theirYears = theirLookup[slug] || [];
+            
+            myYears.forEach(year => {
+                if (theirYears.includes(year)) {
+                    sameYearOverlaps.push({ slug, year });
+                }
+            });
+        });
+        
+        // Find same festival, different years
+        Object.keys(myLookup).forEach(slug => {
+            if (theirLookup[slug]) {
+                const myYears = myLookup[slug];
+                const theirYears = theirLookup[slug];
+                const hasOverlap = myYears.some(y => theirYears.includes(y));
+                if (!hasOverlap) {
+                    sameFestivalDiffYear.push({ 
+                        slug, 
+                        myYears, 
+                        theirYears 
+                    });
+                }
+            }
+        });
+        
+        // Only me
+        Object.keys(myLookup).forEach(slug => {
+            if (!theirLookup[slug]) {
+                onlyMe.push({ slug, years: myLookup[slug] });
+            }
+        });
+        
+        // Only them
+        Object.keys(theirLookup).forEach(slug => {
+            if (!myLookup[slug]) {
+                onlyThem.push({ slug, years: theirLookup[slug] });
+            }
+        });
+        
+        return {
+            sameYearOverlaps,
+            sameFestivalDiffYear,
+            onlyMe,
+            onlyThem,
+            myTotal: myData.length,
+            theirTotal: compareData.length
+        };
+    }
+    
+    function renderCompareMode() {
+        if (!isCompareMode) return;
+        
+        const results = getCompareResults();
+        if (!results) return;
+        
+        // Update page title
+        const heroTitle = document.querySelector('.page-hero h1');
+        if (heroTitle) {
+            heroTitle.textContent = '🤝 Festival Map Comparison';
+        }
+        
+        const heroSubtitle = document.querySelector('.page-hero .subtitle');
+        if (heroSubtitle) {
+            heroSubtitle.textContent = 'See where your festival journeys overlap!';
+        }
+        
+        // Show compare results panel
+        showCompareResultsPanel(results);
+        
+        // Render map with comparison markers
+        renderCompareMarkers(results);
+    }
+    
+    function showCompareResultsPanel(results) {
+        const statsEl = document.getElementById('map-stats');
+        if (!statsEl) return;
+        
+        const sameYearCount = results.sameYearOverlaps.length;
+        const sameFestCount = results.sameFestivalDiffYear.length + sameYearCount;
+        
+        // Replace stats with compare results
+        statsEl.innerHTML = `
+            <div class="gs-compare-results">
+                <div class="gs-compare-highlight">
+                    <span class="gs-compare-big">${sameYearCount}</span>
+                    <span class="gs-compare-label">🎉 Same Festival, Same Year!</span>
+                </div>
+                <div class="gs-compare-stat">
+                    <span class="gs-stat-num">${sameFestCount}</span>
+                    <span class="gs-stat-label">Festivals in Common</span>
+                </div>
+                <div class="gs-compare-stat">
+                    <span class="gs-stat-num">${results.myTotal}</span>
+                    <span class="gs-stat-label">Your Visits</span>
+                </div>
+                <div class="gs-compare-stat">
+                    <span class="gs-stat-num">${results.theirTotal}</span>
+                    <span class="gs-stat-label">Their Visits</span>
+                </div>
+            </div>
+            ${sameYearCount > 0 ? `
+                <div class="gs-overlap-list">
+                    <div class="gs-overlap-title">🎪 You were both at:</div>
+                    <div class="gs-overlap-items">
+                        ${results.sameYearOverlaps.map(o => {
+                            const coords = FESTIVAL_COORDS[o.slug];
+                            const name = coords?.name || o.slug;
+                            return `<span class="gs-overlap-item">${name} ${o.year}</span>`;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            <div class="gs-compare-actions">
+                <button class="gs-compare-btn" onclick="GroundScoreMap.copyCompareLink()">🔗 Share Comparison</button>
+                <a href="my-map.html" class="gs-compare-btn secondary">← Back to My Map</a>
+            </div>
+        `;
+        
+        statsEl.style.cssText = 'padding: 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);';
+    }
+    
+    function renderCompareMarkers(results) {
+        if (!map) return;
+        
+        // Clear existing markers
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+        
+        // Create markers for each category
+        const allFestivals = new Set();
+        
+        // Same year overlaps - GOLD/highlight
+        results.sameYearOverlaps.forEach(o => {
+            allFestivals.add(o.slug);
+            const coords = FESTIVAL_COORDS[o.slug];
+            if (!coords) return;
+            
+            const icon = L.divIcon({
+                className: 'gs-map-marker',
+                html: `<div class="gs-marker-pin gs-marker-overlap">
+                    <span class="gs-marker-icon">🤝</span>
+                </div>`,
+                iconSize: [40, 52],
+                iconAnchor: [20, 52],
+                popupAnchor: [0, -52]
+            });
+            
+            const marker = L.marker([coords.lat, coords.lng], { icon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="gs-popup gs-popup-overlap">
+                        <strong>🎉 ${coords.name}</strong><br>
+                        <span class="gs-popup-match">You were both here in ${o.year}!</span>
+                    </div>
+                `);
+            
+            markers.push(marker);
+        });
+        
+        // Same festival different years - BLUE
+        results.sameFestivalDiffYear.forEach(o => {
+            allFestivals.add(o.slug);
+            const coords = FESTIVAL_COORDS[o.slug];
+            if (!coords) return;
+            
+            const icon = L.divIcon({
+                className: 'gs-map-marker',
+                html: `<div class="gs-marker-pin gs-marker-both">
+                    <span class="gs-marker-icon">🎪</span>
+                </div>`,
+                iconSize: [30, 42],
+                iconAnchor: [15, 42],
+                popupAnchor: [0, -42]
+            });
+            
+            const marker = L.marker([coords.lat, coords.lng], { icon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="gs-popup">
+                        <strong>${coords.name}</strong><br>
+                        <span>You: ${o.myYears.join(', ')}</span><br>
+                        <span>Them: ${o.theirYears.join(', ')}</span>
+                    </div>
+                `);
+            
+            markers.push(marker);
+        });
+        
+        // Only me - GREEN
+        results.onlyMe.forEach(o => {
+            const coords = FESTIVAL_COORDS[o.slug];
+            if (!coords) return;
+            
+            const icon = L.divIcon({
+                className: 'gs-map-marker',
+                html: `<div class="gs-marker-pin gs-marker-me">
+                    <span class="gs-marker-icon">👤</span>
+                </div>`,
+                iconSize: [24, 34],
+                iconAnchor: [12, 34],
+                popupAnchor: [0, -34]
+            });
+            
+            const marker = L.marker([coords.lat, coords.lng], { icon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="gs-popup">
+                        <strong>${coords.name}</strong><br>
+                        <span>Only you: ${o.years.join(', ')}</span>
+                    </div>
+                `);
+            
+            markers.push(marker);
+        });
+        
+        // Only them - PURPLE
+        results.onlyThem.forEach(o => {
+            const coords = FESTIVAL_COORDS[o.slug];
+            if (!coords) return;
+            
+            const icon = L.divIcon({
+                className: 'gs-map-marker',
+                html: `<div class="gs-marker-pin gs-marker-them">
+                    <span class="gs-marker-icon">👥</span>
+                </div>`,
+                iconSize: [24, 34],
+                iconAnchor: [12, 34],
+                popupAnchor: [0, -34]
+            });
+            
+            const marker = L.marker([coords.lat, coords.lng], { icon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="gs-popup">
+                        <strong>${coords.name}</strong><br>
+                        <span>Only them: ${o.years.join(', ')}</span>
+                    </div>
+                `);
+            
+            markers.push(marker);
+        });
+        
+        // Fit bounds
+        if (markers.length > 0) {
+            const group = L.featureGroup(markers);
+            map.fitBounds(group.getBounds().pad(0.1));
+        }
+    }
+    
+    function copyCompareLink() {
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl).then(() => {
+            showToast('📋 Comparison link copied!');
+        }).catch(() => {
+            showToast('📋 Link copied!');
+        });
+    }
+    
+    function startCompare() {
+        const myData = getMapData();
+        if (myData.length === 0) {
+            showToast('Add some festivals to your map first!');
+            return;
+        }
+        
+        const url = generateCompareUrl();
+        navigator.clipboard.writeText(url).then(() => {
+            showToast('📋 Compare link copied! Send to a friend.');
+        });
     }
     
     function copyShareLink() {
@@ -403,11 +735,17 @@
         injectStyles();
         migrateFromBeen();
         
-        // If on map page, restore from URL and init map
+        // If on map page
         const mapContainer = document.getElementById('festival-map');
         if (mapContainer) {
-            restoreFromUrl();
-            initMap('festival-map');
+            // Check if compare mode
+            if (checkCompareMode()) {
+                initMap('festival-map');
+                renderCompareMode();
+            } else {
+                restoreFromUrl();
+                initMap('festival-map');
+            }
         }
     }
     
@@ -607,6 +945,139 @@
                 transform: translateX(-50%) translateY(0);
                 opacity: 1;
             }
+            
+            /* Compare Mode Styles */
+            .gs-compare-results {
+                display: flex;
+                gap: 32px;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+            }
+            
+            .gs-compare-highlight {
+                text-align: center;
+                padding: 16px 24px;
+                background: linear-gradient(135deg, rgba(255,215,0,0.2) 0%, rgba(255,140,0,0.2) 100%);
+                border: 2px solid #ffd700;
+                border-radius: 16px;
+            }
+            
+            .gs-compare-big {
+                display: block;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 3.5rem;
+                font-weight: 700;
+                color: #ffd700;
+                line-height: 1;
+            }
+            
+            .gs-compare-label {
+                font-size: 0.9rem;
+                color: #ffd700;
+                margin-top: 4px;
+            }
+            
+            .gs-compare-stat {
+                text-align: center;
+            }
+            
+            .gs-overlap-list {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .gs-overlap-title {
+                font-size: 1rem;
+                color: #a0a0b0;
+                margin-bottom: 10px;
+            }
+            
+            .gs-overlap-items {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+            }
+            
+            .gs-overlap-item {
+                padding: 6px 14px;
+                background: rgba(255,215,0,0.15);
+                border: 1px solid #ffd700;
+                border-radius: 20px;
+                color: #ffd700;
+                font-size: 0.85rem;
+            }
+            
+            .gs-compare-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                margin-top: 16px;
+            }
+            
+            .gs-compare-btn {
+                padding: 10px 24px;
+                background: #00ff88;
+                border: none;
+                border-radius: 8px;
+                color: #000;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+                transition: all 0.2s;
+            }
+            
+            .gs-compare-btn:hover {
+                transform: translateY(-2px);
+            }
+            
+            .gs-compare-btn.secondary {
+                background: transparent;
+                border: 1px solid #2a2a3a;
+                color: #fff;
+            }
+            
+            /* Compare marker styles */
+            .gs-marker-overlap {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%) !important;
+                animation: pulse 2s infinite;
+            }
+            
+            .gs-marker-both {
+                background: #54a0ff !important;
+            }
+            
+            .gs-marker-me {
+                background: #00ff88 !important;
+            }
+            
+            .gs-marker-them {
+                background: #a855f7 !important;
+            }
+            
+            .gs-marker-icon {
+                transform: rotate(45deg);
+                font-size: 16px;
+            }
+            
+            .gs-popup-match {
+                color: #ffd700;
+                font-weight: 600;
+            }
+            
+            .gs-popup-overlap {
+                background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,140,0,0.1) 100%);
+            }
+            
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
+                70% { box-shadow: 0 0 0 15px rgba(255,215,0,0); }
+                100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+            }
         `;
         document.head.appendChild(style);
     }
@@ -625,6 +1096,10 @@
         renderMarkers,
         copyShareLink,
         generateShareUrl,
+        startCompare,
+        copyCompareLink,
+        isCompareMode: () => isCompareMode,
+        getCompareResults,
         FESTIVAL_COORDS
     };
     
