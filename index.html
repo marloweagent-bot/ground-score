@@ -109,7 +109,10 @@
     <header>
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="/" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
-            <a href="my-map.html" style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;">📍 My Map</a>
+            <div style="display: flex; gap: 12px;">
+                <a href="my-map.html" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500;">📍 Map</a>
+                <a href="my-recap.html" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500;">📊 Recap</a>
+            </div>
         </div>
     </header>
     
@@ -119,9 +122,9 @@
             <div class="gs-section-header">
                 <h2 class="gs-section-title">🎪 My Festivals</h2>
                 <div class="gs-section-actions">
-                    <a href="my-map.html" class="gs-action-btn" style="text-decoration: none;">📍 View Map</a>
-                    <button class="gs-action-btn" onclick="GroundScoreLists.copyShareLink()">📋 Copy Link</button>
-                    <button class="gs-action-btn" onclick="GroundScoreLists.saveMyList()">📧 Email My List</button>
+                    <a href="my-map.html" class="gs-action-btn" style="text-decoration: none;">📍 Map</a>
+                    <a href="my-recap.html" class="gs-action-btn" style="text-decoration: none;">📊 Recap</a>
+                    <button class="gs-action-btn" onclick="GroundScoreLists.copyShareLink()">📋 Share</button>
                 </div>
             </div>
             

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Festival Recap — Ground Score</title>
+    <meta name="description" content="Your personal festival journey, wrapped.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="My Festival Recap — Ground Score">
+    <meta property="og:description" content="Check out my festival journey!">
+    <meta property="og:type" content="website">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent: #00ff88;
+            --accent-secondary: #00ccff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: #2a2a3a;
+            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-2: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            --gradient-3: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg-dark); 
+            color: var(--text-primary); 
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Header */
+        header { 
+            padding: 16px 0; 
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+        .header-inner { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--accent); 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .logo-icon { 
+            width: 32px; 
+            height: 32px; 
+            background: var(--gradient-1); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 18px; 
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .header-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .header-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            padding: 80px 24px;
+            text-align: center;
+        }
+        
+        .empty-state h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        .empty-state .cta {
+            display: inline-block;
+            padding: 14px 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            color: var(--bg-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        /* Recap Card - The shareable part */
+        #recap-card {
+            background: var(--bg-dark);
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 540px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+        }
+        
+        .recap-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .recap-header .brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .recap-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .recap-header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        
+        /* Big Stats */
+        .big-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .big-stat {
+            text-align: center;
+            padding: 20px 12px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        
+        .big-stat .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .big-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        
+        /* Sections */
+        .recap-section {
+            margin-bottom: 28px;
+        }
+        
+        .recap-section h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        /* Top Festivals */
+        .top-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .top-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .top-item .rank {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            width: 32px;
+        }
+        
+        .top-item .name {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .top-item .count {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Style Breakdown */
+        .style-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .style-card {
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .style-card.camping {
+            background: linear-gradient(135deg, rgba(34,197,94,0.2) 0%, rgba(22,163,74,0.1) 100%);
+            border: 1px solid rgba(34,197,94,0.3);
+        }
+        
+        .style-card.urban {
+            background: linear-gradient(135deg, rgba(168,85,247,0.2) 0%, rgba(139,92,246,0.1) 100%);
+            border: 1px solid rgba(168,85,247,0.3);
+        }
+        
+        .style-card .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .style-card .percent {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .style-card .label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Geographic */
+        .geo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .geo-tag {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .geo-tag .count {
+            color: var(--accent);
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        /* Years Active */
+        .years-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .year-badge {
+            padding: 8px 14px;
+            background: rgba(0,255,136,0.1);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        /* Footer */
+        .recap-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .recap-footer .url {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .recap-footer .url span {
+            color: var(--accent);
+        }
+        
+        /* Download button area */
+        .download-area {
+            text-align: center;
+            padding: 24px;
+            margin-top: 20px;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .download-options {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        
+        .download-option {
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .download-option:hover {
+            border-color: var(--accent);
+        }
+        
+        /* Mobile */
+        @media (max-width: 600px) {
+            #recap-card {
+                padding: 24px;
+                margin: 20px;
+            }
+            
+            .big-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .big-stat {
+                padding: 16px 8px;
+            }
+            
+            .big-stat .number {
+                font-size: 1.75rem;
+            }
+            
+            .style-breakdown {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <div class="header-actions">
+                <a href="my-map.html" class="header-btn">📍 My Map</a>
+                <a href="index.html" class="header-btn">Browse Festivals</a>
+            </div>
+        </div>
+    </header>
+    
+    <main id="main-content">
+        <!-- Content injected by JS -->
+    </main>
+    
+    <script src="js/map.js"></script>
+    <script>
+        // Festival metadata for categorization
+        const FESTIVAL_META = {
+            // Camping festivals
+            'coachella': { type: 'camping', region: 'West' },
+            'bonnaroo': { type: 'camping', region: 'South' },
+            'electric-forest': { type: 'camping', region: 'Midwest' },
+            'burning-man': { type: 'camping', region: 'West' },
+            'lightning-in-a-bottle': { type: 'camping', region: 'West' },
+            'shambhala': { type: 'camping', region: 'Canada' },
+            'bass-canyon': { type: 'camping', region: 'West' },
+            'lost-lands': { type: 'camping', region: 'Midwest' },
+            'sonic-bloom': { type: 'camping', region: 'West' },
+            'desert-hearts': { type: 'camping', region: 'West' },
+            'dirtybird-campout': { type: 'camping', region: 'West' },
+            'okeechobee': { type: 'camping', region: 'South' },
+            'hulaween': { type: 'camping', region: 'South' },
+            'firefly': { type: 'camping', region: 'East' },
+            'hangout': { type: 'camping', region: 'South' },
+            'elements-lakewood': { type: 'camping', region: 'East' },
+            'arise': { type: 'camping', region: 'West' },
+            'symbiosis': { type: 'camping', region: 'West' },
+            'nocturnal-wonderland': { type: 'camping', region: 'West' },
+            'beyond-wonderland-socal': { type: 'camping', region: 'West' },
+            'gem-and-jam': { type: 'camping', region: 'West' },
+            
+            // Urban festivals
+            'edc-las-vegas': { type: 'urban', region: 'West' },
+            'ultra-miami': { type: 'urban', region: 'South' },
+            'lollapalooza': { type: 'urban', region: 'Midwest' },
+            'austin-city-limits': { type: 'urban', region: 'South' },
+            'outside-lands': { type: 'urban', region: 'West' },
+            'movement': { type: 'urban', region: 'Midwest' },
+            'edc-orlando': { type: 'urban', region: 'South' },
+            'arc-music-festival': { type: 'urban', region: 'Midwest' },
+            'hard-summer': { type: 'urban', region: 'West' },
+            'escape': { type: 'urban', region: 'West' },
+            'countdown': { type: 'urban', region: 'West' },
+            'governors-ball': { type: 'urban', region: 'East' },
+            'tomorrowland': { type: 'urban', region: 'Europe' },
+            'ultra-europe': { type: 'urban', region: 'Europe' },
+            'creamfields': { type: 'urban', region: 'Europe' },
+            'imagine': { type: 'urban', region: 'South' },
+            'sxsw': { type: 'urban', region: 'South' },
+            'iii-points': { type: 'urban', region: 'South' },
+            'decadence-colorado': { type: 'urban', region: 'West' },
+            'decadence-arizona': { type: 'urban', region: 'West' }
+        };
+        
+        function generateRecap() {
+            const data = GroundScoreMap.getMapData();
+            const coords = GroundScoreMap.FESTIVAL_COORDS;
+            
+            if (data.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            // Calculate stats
+            const festivals = {};
+            const years = new Set();
+            const regions = {};
+            let campingCount = 0;
+            let urbanCount = 0;
+            
+            data.forEach(d => {
+                // Count festival visits
+                if (!festivals[d.slug]) {
+                    festivals[d.slug] = { count: 0, years: [] };
+                }
+                festivals[d.slug].count++;
+                festivals[d.slug].years.push(d.year);
+                
+                years.add(d.year);
+                
+                // Get region from coords
+                const festCoords = coords[d.slug];
+                if (festCoords) {
+                    const location = festCoords.location || '';
+                    const region = location.split(', ').pop() || 'Unknown';
+                    regions[region] = (regions[region] || 0) + 1;
+                }
+                
+                // Festival type
+                const meta = FESTIVAL_META[d.slug];
+                if (meta) {
+                    if (meta.type === 'camping') campingCount++;
+                    else if (meta.type === 'urban') urbanCount++;
+                } else {
+                    // Default guess based on name
+                    urbanCount++;
+                }
+            });
+            
+            // Sort festivals by count
+            const topFestivals = Object.entries(festivals)
+                .map(([slug, info]) => ({
+                    slug,
+                    name: coords[slug]?.name || slug,
+                    count: info.count,
+                    years: info.years.sort()
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+            
+            // Sort regions by count
+            const topRegions = Object.entries(regions)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+            
+            // Calculate percentages
+            const total = campingCount + urbanCount;
+            const campingPct = total > 0 ? Math.round((campingCount / total) * 100) : 50;
+            const urbanPct = 100 - campingPct;
+            
+            // Years sorted
+            const yearsArray = Array.from(years).sort();
+            
+            renderRecap({
+                totalVisits: data.length,
+                uniqueFestivals: Object.keys(festivals).length,
+                yearsActive: years.size,
+                topFestivals,
+                topRegions,
+                campingPct,
+                urbanPct,
+                years: yearsArray
+            });
+        }
+        
+        function showEmptyState() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="empty-state">
+                    <h2>📊 No Festival Data Yet</h2>
+                    <p>Add some festivals to your map first, then come back for your personalized recap!</p>
+                    <a href="index.html" class="cta">Browse Festivals</a>
+                </div>
+            `;
+        }
+        
+        function renderRecap(stats) {
+            document.getElementById('main-content').innerHTML = `
+                <div id="recap-card">
+                    <div class="recap-header">
+                        <div class="brand">⚡ Ground Score</div>
+                        <h1>My Festival Recap</h1>
+                        <div class="subtitle">Your journey in festivals</div>
+                    </div>
+                    
+                    <div class="big-stats">
+                        <div class="big-stat">
+                            <div class="number">${stats.totalVisits}</div>
+                            <div class="label">Total Visits</div>
+                        </div>
+                        <div class="big-stat">
+                            <div class="number">${stats.uniqueFestivals}</div>
+                            <div class="label">Festivals</div>
+                        </div>
+                        <div class="big-stat">
+                            <div class="number">${stats.yearsActive}</div>
+                            <div class="label">Years</div>
+                        </div>
+                    </div>
+                    
+                    <div class="recap-section">
+                        <h3>🏆 Top Festivals</h3>
+                        <div class="top-list">
+                            ${stats.topFestivals.map((f, i) => `
+                                <div class="top-item">
+                                    <span class="rank">#${i + 1}</span>
+                                    <span class="name">${f.name}</span>
+                                    <span class="count">${f.count}x</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="recap-section">
+                        <h3>🎪 Festival Style</h3>
+                        <div class="style-breakdown">
+                            <div class="style-card camping">
+                                <div class="icon">🏕️</div>
+                                <div class="percent">${stats.campingPct}%</div>
+                                <div class="label">Camping</div>
+                            </div>
+                            <div class="style-card urban">
+                                <div class="icon">🌆</div>
+                                <div class="percent">${stats.urbanPct}%</div>
+                                <div class="label">Urban</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${stats.topRegions.length > 0 ? `
+                        <div class="recap-section">
+                            <h3>📍 Where You've Been</h3>
+                            <div class="geo-tags">
+                                ${stats.topRegions.map(([region, count]) => `
+                                    <span class="geo-tag">${region}<span class="count">${count}</span></span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="recap-section">
+                        <h3>📅 Active Years</h3>
+                        <div class="years-row">
+                            ${stats.years.map(y => `<span class="year-badge">${y}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="recap-footer">
+                        <div class="url">Create yours at <span>groundscore.co</span></div>
+                    </div>
+                </div>
+                
+                <div class="download-area">
+                    <button class="download-btn" onclick="downloadRecap()">
+                        📸 Download for Instagram
+                    </button>
+                    <div class="download-options">
+                        <button class="download-option" onclick="downloadRecap('story')">Story (9:16)</button>
+                        <button class="download-option" onclick="downloadRecap('square')">Square (1:1)</button>
+                        <button class="download-option" onclick="copyRecapLink()">🔗 Copy Link</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function downloadRecap(format = 'square') {
+            const card = document.getElementById('recap-card');
+            if (!card) return;
+            
+            // Store original styles
+            const originalStyles = card.style.cssText;
+            
+            // Adjust for format
+            if (format === 'story') {
+                card.style.maxWidth = '400px';
+                card.style.minHeight = '700px';
+            } else {
+                card.style.maxWidth = '540px';
+            }
+            
+            try {
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#0a0a0f',
+                    scale: 2,
+                    logging: false
+                });
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = `ground-score-recap-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showToast('📸 Downloaded!');
+            } catch (e) {
+                console.error('Download failed:', e);
+                showToast('Download failed — try screenshot');
+            }
+            
+            // Restore styles
+            card.style.cssText = originalStyles;
+        }
+        
+        function copyRecapLink() {
+            const data = GroundScoreMap.getMapData();
+            const encoded = data.map(d => `${d.slug}:${d.year}`).join(',');
+            const url = `${window.location.origin}/ground-score/my-recap.html?data=${encodeURIComponent(encoded)}`;
+            
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('📋 Link copied!');
+            });
+        }
+        
+        function showToast(message) {
+            const existing = document.querySelector('.gs-toast');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'gs-toast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #12121a;
+                border: 1px solid #00ff88;
+                color: #fff;
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-size: 0.9rem;
+                z-index: 10000;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        // Check for shared data in URL
+        function checkUrlData() {
+            const params = new URLSearchParams(window.location.search);
+            const dataParam = params.get('data');
+            if (!dataParam) return false;
+            
+            try {
+                const entries = dataParam.split(',').map(e => {
+                    const [slug, year] = e.split(':');
+                    return { slug, year: parseInt(year), type: 'festival' };
+                }).filter(e => e.slug && !isNaN(e.year));
+                
+                if (entries.length > 0) {
+                    // Temporarily use this data for display
+                    window._tempRecapData = entries;
+                    return true;
+                }
+            } catch (e) {
+                console.error('Failed to parse URL data:', e);
+            }
+            return false;
+        }
+        
+        // Override getMapData if we have URL data
+        const hasUrlData = checkUrlData();
+        if (hasUrlData) {
+            const originalGetMapData = GroundScoreMap.getMapData;
+            GroundScoreMap.getMapData = () => window._tempRecapData || originalGetMapData();
+        }
+        
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            generateRecap();
+        });
+    </script>
+</body>
+</html>
