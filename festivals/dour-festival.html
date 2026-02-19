@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dour Festival — FestPass</title>
+    <title>Dour Festival — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; }
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
         header { padding: 24px 0; border-bottom: 1px solid var(--border); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
-        .festival-hero { height: 300px; background: linear-gradient(135deg, #dc2626 0%, #f97316 100%); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
         .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
         .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
         .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -48,6 +48,14 @@
         .made-for-item .icon { font-size: 2rem; }
         .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
         .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
         .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
         .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
         .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
@@ -56,6 +64,8 @@
         .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
         .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
         .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
         .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
         .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
         .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
@@ -68,7 +78,7 @@
 <body>
     <header>
         <div class="container header-inner">
-            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
             <a href="../index.html" class="back-link">← All Festivals</a>
         </div>
     </header>
@@ -77,11 +87,11 @@
         <div class="container">
             <div class="festival-meta">
                 <span>📍 Dour, Belgium</span>
-                <span>📅 July (5 days)</span>
-                <span>👥 240,000</span>
-                <span>💵 €140-190</span>
+                <span>📅 July 16-20 (5 days)</span>
+                <span>👥 225,000</span>
+                <span>💵 €140-200</span>
             </div>
-            <h1>🇧🇪 Dour Festival</h1>
+            <h1>🎸 Dour Festival</h1>
         </div>
     </section>
     
@@ -89,10 +99,10 @@
         <div class="container">
             <div class="score-header">
                 <div class="total-score">
-                    <span class="number">41</span>
+                    <span class="number">43</span>
                     <span class="max">/ 50</span>
                 </div>
-                <p class="verdict-text">Belgium's most eclectic festival — 17 hours of music daily across every genre from industrial techno to ska-punk. Dour is the anti-corporate antidote: chaotic, diverse, and genuinely alternative. If you like surprises, this is your festival.</p>
+                <p class="verdict-text">Belgium's wildest five-day marathon. Since 1988, Dour has been the festival for people who want to get lost in music. Seven stages, 280+ artists, all genres from punk to techno. Legendary for its energy, affordability, and complete lack of pretension.</p>
             </div>
             
             <div class="score-grid">
@@ -103,29 +113,29 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Insanely eclectic booking. Charlotte de Witte and Nico Moreno alongside Skream b2b Benga, Pendulum, FKA twigs. Electronic is strong with De Balzaal stage dedicated to techno, but you'll also find metal, hip-hop, punk, reggae. 17 hours of music daily.</p>
+                        <p>Everything. Literally. Hip-hop, metal, techno, indie, reggae, punk, electronic — 280+ artists across every genre. La Petite Maison du Peuple hosts serious techno. The Dance Hall brings urban sounds. No one leaves unsatisfied.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
-                        <span class="value">3.5</span>
+                        <span class="value">4.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Not about spectacle — Dour is raw and DIY. The Last Arena for headliners, De Balzaal for neon-drenched techno. Multiple stages spread across fields. Functional rather than flashy, but the energy compensates. Alternative aesthetic over polished production.</p>
+                        <p>Industrial heritage setting — Dour is a former coal mining town. Rough around the edges, authentically alternative. Not polished like corporate festivals. The raw aesthetic fits the rebellious spirit.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Proudly alternative and slightly chaotic. The crowd is diverse, open-minded, and ready for anything. Belgian festival culture is famously friendly. Cross-genre exploration encouraged — you'll discover music you never knew you liked.</p>
+                        <p>Beautifully unhinged. Five days of camping creates a society without rules. French-speaking Belgium's biggest party. Young crowd (18-25 heavy), high energy, and a "we're in this together" camaraderie.</p>
                     </div>
                 </div>
                 
@@ -136,7 +146,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>240,000 people over 5 days can get muddy and crowded. Belgian weather is unpredictable — rain is possible. Facilities are basic. Layout works but expect walking. Not the most comfortable festival, but the chaos is part of the charm.</p>
+                        <p>Functional chaos. It's big, it's muddy (often), facilities are basic. Part of the experience. Not for those who need comfort. But 225,000 people make it work, so can you.</p>
                     </div>
                 </div>
                 
@@ -147,7 +157,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Belgian festival food is solid — frites, waffles, and beer are cultural obligations. Good variety of vendors. Prices reasonable for a major festival. Belgian beer selection is excellent. Vegetarian options available.</p>
+                        <p>Affordable Belgian festival food. Frites are mandatory. Variety has improved over the years. Not gourmet but filling and fairly priced. Bring supplies for camping breakfast.</p>
                     </div>
                 </div>
                 
@@ -158,29 +168,29 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Dour is a small village in Wallonia. Charleroi airport is closest (budget airlines). Brussels is 1.5 hours. Shuttle buses from train stations. Not the easiest access, but Belgium's small size helps. Plan transport in advance.</p>
+                        <p>Remote location in Wallonia. Train to Mons or Charleroi, then shuttle. Car parking available. Not the easiest to reach, but that's part of the adventure. Brussels is 1.5 hours away.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>€140-190 for 5 days of massive lineup diversity is excellent value. Belgium is affordable for Western Europe. Total trip costs manageable. Amount of music per euro is hard to beat anywhere.</p>
+                        <p>Insane value. Five days, 280+ artists, camping included, €140-200. Compare that to any festival of similar scale. This is where budget-conscious music lovers thrive.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
-                        <span class="value">3.5</span>
+                        <span class="value">4.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Focus is on music over extras. Some art and activities but not elaborate. The genre-hopping discovery IS the extra — you might walk from techno to reggae to metal in an hour. That cross-pollination is unique.</p>
+                        <p>Focus is on music, not frills. Some art and activities but not elaborate. The entertainment is the people, the music, the experience. Sometimes that's enough.</p>
                     </div>
                 </div>
                 
@@ -191,18 +201,18 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Rolling Belgian countryside, green fields. Pleasant when sunny, muddy when not. July weather is variable — bring boots and rain gear. Not spectacular scenery but functional and green.</p>
+                        <p>Post-industrial Belgian countryside. Not scenic but atmospheric. The plains and hills work for the massive site. Weather can be brutal — mud or dust, rarely in-between.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
-                        <span class="value">4.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Dour has cult status among alternative festival fans. Not hyped to mainstream audiences but beloved by those who know. Reputation for musical discovery is earned. Less Instagram, more real experience.</p>
+                        <p>Legendary in Belgium and France. 35+ years of history. The "alternative" reputation is deserved. Not mainstream hype but deep cultural significance. Ask any Belgian who's been.</p>
                     </div>
                 </div>
             </div>
@@ -214,32 +224,55 @@
             <h2>Made For...</h2>
             <div class="made-for-grid">
                 <div class="made-for-item">
-                    <div class="icon">🎸</div>
+                    <div class="icon">🤘</div>
                     <div>
-                        <h3>Genre Explorers</h3>
-                        <p>If you want to discover new music, Dour's eclectic programming guarantees surprises. Walk from techno to punk to reggae in minutes.</p>
-                    </div>
-                </div>
-                <div class="made-for-item">
-                    <div class="icon">🎹</div>
-                    <div>
-                        <h3>Techno Heads</h3>
-                        <p>De Balzaal is a dedicated electronic wonderland. Industrial techno, dubstep legends, and underground selectors all night.</p>
-                    </div>
-                </div>
-                <div class="made-for-item">
-                    <div class="icon">🌧️</div>
-                    <div>
-                        <h3>Festival Veterans</h3>
-                        <p>If you've done the polished festivals and want something raw, Dour delivers authentic chaos and community.</p>
+                        <h3>Alternative Souls</h3>
+                        <p>This isn't a corporate festival. Punk spirit lives here. Come as you are.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
                     <div class="icon">💰</div>
                     <div>
-                        <h3>Budget Conscious</h3>
-                        <p>Incredible value for 5 days of diverse programming. Belgium's affordability keeps total trip costs reasonable.</p>
+                        <h3>Budget Warriors</h3>
+                        <p>Five days for under €200. Bring your tent, bring your crew, stretch your euros.</p>
                     </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Genre Agnostics</h3>
+                        <p>Can't choose between techno and metal? Don't. Dour has both and everything between.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">⛺</div>
+                    <div>
+                        <h3>Festival Veterans</h3>
+                        <p>This isn't for beginners. Five days of camping chaos rewards experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Day 5 at Dour and we haven't slept once 💀🎶"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The mud, the music, the madness. Dour forever 🖤"</div>
+                    <div class="stats">67K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Dour Festival 2024 | 5 Days of Beautiful Chaos"</div>
+                    <div class="stats">890K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
                 </div>
             </div>
         </div>
@@ -248,46 +281,57 @@
     <section class="full-breakdown">
         <div class="container">
             <h2>The Complete Dour Experience</h2>
-            <p class="intro">Five days of controlled chaos in the Belgian countryside.</p>
+            <p class="intro">Five days of musical democracy where all genres are equal.</p>
             
             <div class="quick-facts">
-                <div class="fact"><div class="label">When</div><div class="value">July (5 days)</div></div>
-                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 5AM</div></div>
-                <div class="fact"><div class="label">Stages</div><div class="value">8+</div></div>
-                <div class="fact"><div class="label">Attendance</div><div class="value">240,000</div></div>
-                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
-                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">Mid-July</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">14:00 - 06:00</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">7+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">225,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">16+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">6 Sites</div></div>
             </div>
             
             <div class="breakdown-section">
-                <h3>Before You Go</h3>
+                <h3>The Stages</h3>
+                <p>Genre-specific programming across seven areas.</p>
                 <ul>
-                    <li><strong>Flights:</strong> Brussels or Charleroi airports. Charleroi has budget carriers.</li>
-                    <li><strong>Weather:</strong> Belgian July is unpredictable. Bring rain gear AND sunscreen.</li>
-                    <li><strong>Camping:</strong> Basic included, upgrades available. Bring proper gear.</li>
-                    <li><strong>Discover:</strong> Study the lineup — the best sets are often ones you didn't plan to see.</li>
+                    <li><strong>Main Stage:</strong> Headliners across genres. The big names.</li>
+                    <li><strong>La Petite Maison du Peuple:</strong> Serious electronic music. Techno, house, bass.</li>
+                    <li><strong>The Last Arena:</strong> Metal and heavier sounds.</li>
+                    <li><strong>Dance Hall:</strong> Hip-hop, R&B, urban music.</li>
+                    <li><strong>Boombox:</strong> Alternative and indie.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
-                <h3>The Festival Grounds</h3>
+                <h3>Survival Guide</h3>
+                <p>Five days requires preparation.</p>
                 <ul>
-                    <li><strong>The Last Arena:</strong> Main stage with headliners across genres.</li>
-                    <li><strong>De Balzaal:</strong> Electronic music haven — neon lights, Funktion-One, all-night techno.</li>
-                    <li><strong>Multiple genre stages:</strong> Hip-hop, metal, reggae, indie all have dedicated homes.</li>
-                    <li><strong>17-hour days:</strong> Music from noon until 5AM means pace yourself.</li>
+                    <li><strong>Waterproof everything:</strong> Belgian summer rain is real.</li>
+                    <li><strong>Rubber boots:</strong> The mud is legendary.</li>
+                    <li><strong>Pace yourself:</strong> It's a marathon, not a sprint.</li>
+                    <li><strong>Camping supplies:</strong> Basic breakfast supplies save money.</li>
+                    <li><strong>Sleep strategy:</strong> You won't sleep much. Accept it.</li>
                 </ul>
+                
+                <blockquote class="quote">
+                    "Dour is the festival your parents warn you about. Five days of chaos, community, and music without boundaries. It's exhausting and exhilarating in equal measure."
+                    <cite>— Ground Score Research, 2024</cite>
+                </blockquote>
             </div>
         </div>
     </section>
     
     <footer>
         <div class="container">
-            <p>FestPass — Find your perfect festival</p>
+            <p>Ground Score — Find your perfect festival</p>
             <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
         </div>
     </footer>
     
-    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
 </body>
 </html>

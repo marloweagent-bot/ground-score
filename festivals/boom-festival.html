@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reworks Festival — Ground Score</title>
+    <title>Boom Festival — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
@@ -16,7 +16,7 @@
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
-        .festival-hero { height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); background-image: url('https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
         .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
         .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
         .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -69,12 +69,12 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Thessaloniki, Greece</span>
-                <span>📅 September 24-28, 2025</span>
-                <span>👥 25,000</span>
-                <span>💵 €60-120</span>
+                <span>📍 Idanha-a-Nova, Portugal</span>
+                <span>📅 July 17-24, 2025</span>
+                <span>👥 50,000</span>
+                <span>💵 €280-350</span>
             </div>
-            <h1>🏛️ Reworks Festival</h1>
+            <h1>🌀 Boom Festival</h1>
         </div>
     </section>
     
@@ -82,76 +82,76 @@
         <div class="container">
             <div class="score-header">
                 <div class="total-score">
-                    <span class="number">43</span>
+                    <span class="number">48</span>
                     <span class="max">/ 50</span>
                 </div>
-                <p class="verdict-text">Greece's leading electronic music festival brings world-class techno and house to Thessaloniki. For 21 years, Reworks has championed cutting-edge electronic music, combining open-air stages with historic venues. Adriatique, Black Coffee, and more grace the 2025 edition.</p>
+                <p class="verdict-text">The world's premier transformational psytrance festival. Boom is not just a music festival — it's a biennial gathering celebrating art, sustainability, consciousness, and psychedelic culture. Seven days of otherworldly experience beside a Portuguese lake.</p>
             </div>
             
             <div class="score-grid">
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Excellent curation spanning melodic techno, deep house, and underground sounds. 2025 features Adriatique, Black Coffee, and rising talent. Greek scene well-represented alongside international headliners.</p>
+                        <p>The absolute pinnacle of psytrance curation. From morning progressive to night-time darkpsy, every subgenre represented by the best artists. The Alchemy Circle ambient stage is legendary. Multiple stages with world-class sound systems.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Multiple venues across Thessaloniki including open-air stages and indoor club settings. The mix of historic buildings and purpose-built stages creates variety. Production quality is high for festival scale.</p>
+                        <p>Mind-bending art installations, UV-reactive decorations, and the famous main stage design. Everything is handcrafted, intentional, and aligned with sustainability principles. No corporate sponsors, no advertising — pure artistic vision.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Greek warmth meets electronic music passion. Local scene mingles with international visitors. Less touristy than Ibiza or Mykonos — authentic festival experience. The crowd knows their music.</p>
+                        <p>Global psychedelic tribe gathering. 50,000 people from around the world united by consciousness exploration, art, and music. Respectful, open, curious. This is what festival utopia looks like.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
-                        <span class="value">4.0</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Thessaloniki is Greece's second city — historic, vibrant, and on the Aegean. September weather is perfect. The city itself is part of the experience with ancient walls and Byzantine churches as backdrop.</p>
+                        <p>Idanha-a-Nova lake in Portugal's rural interior. Swimming in the lake between sets. Rolling hills, ancient cork forests. The landscape IS the decoration. Magical Portuguese summer.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Boom is 50% non-music programming. Liminal Village hosts workshops, talks, healing spaces. Organic market, permaculture demonstrations, film screenings. A complete holistic experience.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>5 days of programming for €120 max. Greece is affordable. Accommodation, food, drinks all reasonable. This is exceptional value for the quality of music and experience.</p>
-                    </div>
-                </div>
-                
-                <div class="score-card" onclick="toggleCard(this)">
-                    <div class="score-card-header">
-                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
-                        <span class="value">4.0</span>
-                        <span class="expand-icon">▼</span>
-                    </div>
-                    <div class="score-card-detail">
-                        <p>Thessaloniki Airport (SKG) has good European connections. City is compact and walkable. Festival venues accessible by foot or cheap taxis. Not as connected as Athens but manageable.</p>
+                        <p>7 days for €280-350. When you calculate cost per day including camping and the depth of programming, it's exceptional value. Plus it only happens every 2 years.</p>
                     </div>
                 </div>
             </div>
@@ -160,45 +160,45 @@
     
     <section class="full-breakdown">
         <div class="container">
-            <h2>The Complete Reworks Experience</h2>
-            <p class="intro">Greece's underground electronic champion celebrates 21 years.</p>
+            <h2>The Complete Boom Experience</h2>
+            <p class="intro">A biennial pilgrimage for the global psychedelic tribe.</p>
             
             <div class="quick-facts">
-                <div class="fact"><div class="label">When</div><div class="value">Sep 24-28</div></div>
-                <div class="fact"><div class="label">Duration</div><div class="value">5 Days</div></div>
-                <div class="fact"><div class="label">Venues</div><div class="value">Multiple</div></div>
-                <div class="fact"><div class="label">Attendance</div><div class="value">25,000</div></div>
-                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
-                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">July 17-24</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">7 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">50,000</div></div>
+                <div class="fact"><div class="label">Frequency</div><div class="value">Biennial</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes (included)</div></div>
             </div>
             
             <div class="breakdown-section">
-                <h3>Multi-Venue Format</h3>
-                <p>Reworks spreads across Thessaloniki's venues.</p>
+                <h3>The Areas</h3>
                 <ul>
-                    <li><strong>Open-air main stage:</strong> Outdoor setting for headline sets.</li>
-                    <li><strong>Club venues:</strong> Indoor spaces for late-night programming.</li>
-                    <li><strong>Historic sites:</strong> Some events in cultural landmarks.</li>
-                    <li><strong>City integration:</strong> The festival uses the city as its campus.</li>
+                    <li><strong>Dance Temple:</strong> Main psytrance stage. 24-hour music. The heart of Boom.</li>
+                    <li><strong>Alchemy Circle:</strong> Legendary ambient/chill stage. Sunrise sets here are transcendent.</li>
+                    <li><strong>Sacred Fire:</strong> World music, live bands, more eclectic programming.</li>
+                    <li><strong>Liminal Village:</strong> Workshops, talks, healing, yoga, permaculture.</li>
+                    <li><strong>The Lake:</strong> Natural swimming area. Essential for afternoon cool-down.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
-                <h3>Thessaloniki Experience</h3>
+                <h3>Preparation Essentials</h3>
                 <ul>
-                    <li><strong>Food scene:</strong> Greece's culinary capital. Amazing mezze and seafood.</li>
-                    <li><strong>History:</strong> Byzantine walls, White Tower, ancient artifacts.</li>
-                    <li><strong>Waterfront:</strong> The promenade is perfect for daytime recovery.</li>
-                    <li><strong>Nightlife:</strong> Beyond the festival, the city has its own club scene.</li>
+                    <li><strong>Book early:</strong> Tickets sell out. Years in advance for some tiers.</li>
+                    <li><strong>Sun protection:</strong> Portuguese summer heat is intense. Shade essential.</li>
+                    <li><strong>Bring everything:</strong> Limited supplies on site. Food available but bring basics.</li>
+                    <li><strong>Open mind:</strong> This is a transformational experience. Come ready for it.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
                 <h3>Getting There</h3>
                 <ul>
-                    <li><strong>Fly:</strong> Thessaloniki Airport (SKG) — budget carriers from across Europe.</li>
-                    <li><strong>Ferry:</strong> Connections from Greek islands if combining trips.</li>
-                    <li><strong>Stay central:</strong> City center puts you walking distance from everything.</li>
+                    <li><strong>Nearest airports:</strong> Lisbon (3 hours) or Madrid (4 hours).</li>
+                    <li><strong>Shuttles:</strong> Official buses from Lisbon available.</li>
+                    <li><strong>Car:</strong> Recommended for flexibility and supply transport.</li>
                 </ul>
             </div>
         </div>

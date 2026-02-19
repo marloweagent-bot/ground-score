@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reworks Festival — Ground Score</title>
+    <title>Nameless Festival — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
@@ -16,7 +16,7 @@
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
-        .festival-hero { height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); background-image: url('https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
         .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
         .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
         .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -69,12 +69,12 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Thessaloniki, Greece</span>
-                <span>📅 September 24-28, 2025</span>
-                <span>👥 25,000</span>
-                <span>💵 €60-120</span>
+                <span>📍 Lake Como, Italy</span>
+                <span>📅 May 31 - June 2, 2025</span>
+                <span>👥 40,000</span>
+                <span>💵 €80-150</span>
             </div>
-            <h1>🏛️ Reworks Festival</h1>
+            <h1>🎪 Nameless Festival</h1>
         </div>
     </section>
     
@@ -82,65 +82,65 @@
         <div class="container">
             <div class="score-header">
                 <div class="total-score">
-                    <span class="number">43</span>
+                    <span class="number">42</span>
                     <span class="max">/ 50</span>
                 </div>
-                <p class="verdict-text">Greece's leading electronic music festival brings world-class techno and house to Thessaloniki. For 21 years, Reworks has championed cutting-edge electronic music, combining open-air stages with historic venues. Adriatique, Black Coffee, and more grace the 2025 edition.</p>
+                <p class="verdict-text">Italy's premier EDM festival brings international headliners to the stunning Lake Como region. Armin van Buuren, Gorgon City, and Oliver Heldens headline 2025. Three days of house, trance, and electronic in a picturesque lakeside setting.</p>
             </div>
             
             <div class="score-grid">
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">4.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Excellent curation spanning melodic techno, deep house, and underground sounds. 2025 features Adriatique, Black Coffee, and rising talent. Greek scene well-represented alongside international headliners.</p>
+                        <p>Big-room EDM headliners plus house and trance. Armin van Buuren brings trance royalty, Gorgon City delivers UK house. Italian DJ talent well-represented. Commercial but quality bookings.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">4.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Multiple venues across Thessaloniki including open-air stages and indoor club settings. The mix of historic buildings and purpose-built stages creates variety. Production quality is high for festival scale.</p>
+                        <p>Multiple stages across 400,000m² polo grounds surrounded by nature. Production values are solid with LED walls and pyro. The natural setting elevates the visual experience.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
-                        <span class="value">4.5</span>
+                        <span class="value">4.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Greek warmth meets electronic music passion. Local scene mingles with international visitors. Less touristy than Ibiza or Mykonos — authentic festival experience. The crowd knows their music.</p>
+                        <p>Young Italian crowd with international visitors. Party-focused energy. Less underground than Kappa Futur but enthusiastic. Italian festival spirit — passionate and social.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
-                        <span class="value">4.0</span>
+                        <span class="value">5.0</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Thessaloniki is Greece's second city — historic, vibrant, and on the Aegean. September weather is perfect. The city itself is part of the experience with ancient walls and Byzantine churches as backdrop.</p>
+                        <p>Lake Como region is stunning — Italian Alps backdrop, pristine lakes, rolling hills. The venue at Annone di Brianza/La Nuova Poncia offers breathtaking natural beauty. Italy at its finest.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>5 days of programming for €120 max. Greece is affordable. Accommodation, food, drinks all reasonable. This is exceptional value for the quality of music and experience.</p>
+                        <p>3 days for €150 max with strong lineup. Italy is reasonable. Lake Como accommodation varies but options exist. Good value for the experience and setting.</p>
                     </div>
                 </div>
                 
@@ -151,7 +151,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Thessaloniki Airport (SKG) has good European connections. City is compact and walkable. Festival venues accessible by foot or cheap taxis. Not as connected as Athens but manageable.</p>
+                        <p>Milan airports (Malpensa, Linate, Bergamo) are closest — 45-60 minutes. Train to Lecco then shuttle. Car recommended for flexibility. The location is rural but accessible.</p>
                     </div>
                 </div>
             </div>
@@ -160,45 +160,45 @@
     
     <section class="full-breakdown">
         <div class="container">
-            <h2>The Complete Reworks Experience</h2>
-            <p class="intro">Greece's underground electronic champion celebrates 21 years.</p>
+            <h2>The Complete Nameless Experience</h2>
+            <p class="intro">EDM grandeur meets Italian lakeside beauty.</p>
             
             <div class="quick-facts">
-                <div class="fact"><div class="label">When</div><div class="value">Sep 24-28</div></div>
-                <div class="fact"><div class="label">Duration</div><div class="value">5 Days</div></div>
-                <div class="fact"><div class="label">Venues</div><div class="value">Multiple</div></div>
-                <div class="fact"><div class="label">Attendance</div><div class="value">25,000</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">May 31 - Jun 2</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">2PM - 2AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">40,000</div></div>
                 <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
-                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
             </div>
             
             <div class="breakdown-section">
-                <h3>Multi-Venue Format</h3>
-                <p>Reworks spreads across Thessaloniki's venues.</p>
+                <h3>The Setting</h3>
+                <p>La Nuova Poncia is a 400,000m² polo field in the Lake Como region.</p>
                 <ul>
-                    <li><strong>Open-air main stage:</strong> Outdoor setting for headline sets.</li>
-                    <li><strong>Club venues:</strong> Indoor spaces for late-night programming.</li>
-                    <li><strong>Historic sites:</strong> Some events in cultural landmarks.</li>
-                    <li><strong>City integration:</strong> The festival uses the city as its campus.</li>
+                    <li><strong>Natural amphitheater:</strong> Rolling terrain creates natural viewing areas.</li>
+                    <li><strong>Lake views:</strong> Glimpses of Italian lakes between stages.</li>
+                    <li><strong>Alpine backdrop:</strong> Snow-capped peaks visible on clear days.</li>
+                    <li><strong>Green spaces:</strong> Room to spread out and relax.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
-                <h3>Thessaloniki Experience</h3>
+                <h3>Camping</h3>
                 <ul>
-                    <li><strong>Food scene:</strong> Greece's culinary capital. Amazing mezze and seafood.</li>
-                    <li><strong>History:</strong> Byzantine walls, White Tower, ancient artifacts.</li>
-                    <li><strong>Waterfront:</strong> The promenade is perfect for daytime recovery.</li>
-                    <li><strong>Nightlife:</strong> Beyond the festival, the city has its own club scene.</li>
+                    <li><strong>Standard camping:</strong> Bring your own tent, basic facilities.</li>
+                    <li><strong>Premium options:</strong> Pre-pitched tents and glamping available.</li>
+                    <li><strong>Location:</strong> Adjacent to festival grounds.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
                 <h3>Getting There</h3>
                 <ul>
-                    <li><strong>Fly:</strong> Thessaloniki Airport (SKG) — budget carriers from across Europe.</li>
-                    <li><strong>Ferry:</strong> Connections from Greek islands if combining trips.</li>
-                    <li><strong>Stay central:</strong> City center puts you walking distance from everything.</li>
+                    <li><strong>Milan Malpensa:</strong> Largest nearby airport, 50 min drive.</li>
+                    <li><strong>Bergamo (BGY):</strong> Budget carrier hub, 45 min drive.</li>
+                    <li><strong>Shuttles:</strong> From Milan and Lecco available.</li>
+                    <li><strong>Combine with:</strong> Lake Como visit, Milan exploration.</li>
                 </ul>
             </div>
         </div>

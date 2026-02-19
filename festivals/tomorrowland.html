@@ -3,35 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tomorrowland — FestPass</title>
+    <title>Tomorrowland Belgium — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%); }
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-        
         header { padding: 24px 0; border-bottom: 1px solid var(--border); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
-        
-        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
         .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
         .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
         .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
         .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
         .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
-        
         .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
         .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
         .total-score { display: flex; align-items: baseline; gap: 8px; }
         .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
         .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
         .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
-        
         .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
         .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
         .score-card:hover { border-color: var(--accent); }
@@ -45,7 +41,6 @@
         .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
         .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
         .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
-        
         .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
         .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
         .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
@@ -53,7 +48,6 @@
         .made-for-item .icon { font-size: 2rem; }
         .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
         .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
-        
         .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
         .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
         .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
@@ -62,7 +56,6 @@
         .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
         .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
         .social-embed a { color: var(--accent); text-decoration: none; }
-        
         .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
         .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
         .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
@@ -71,28 +64,21 @@
         .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
         .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
         .breakdown-section li { margin-bottom: 6px; }
-        
         .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
         .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
-        
         .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
         .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
         .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
         .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
-        
         footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
         footer a { color: var(--accent); text-decoration: none; }
-        
-        @media (max-width: 768px) {
-            .festival-hero h1 { font-size: 2rem; }
-            .score-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
     <header>
         <div class="container header-inner">
-            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
             <a href="../index.html" class="back-link">← All Festivals</a>
         </div>
     </header>
@@ -101,11 +87,11 @@
         <div class="container">
             <div class="festival-meta">
                 <span>📍 Boom, Belgium</span>
-                <span>📅 July (2 weekends)</span>
+                <span>📅 July 18-20 & 25-27 (2 weekends)</span>
                 <span>👥 400,000</span>
-                <span>💵 €350-500</span>
+                <span>💵 €275-500</span>
             </div>
-            <h1>🏰 Tomorrowland</h1>
+            <h1>🏰 Tomorrowland Belgium</h1>
         </div>
     </section>
     
@@ -116,18 +102,18 @@
                     <span class="number">46</span>
                     <span class="max">/ 50</span>
                 </div>
-                <p class="verdict-text">The Disneyland of EDM festivals. Tomorrowland's theatrical production, legendary lineups, and fairy-tale atmosphere make it a bucket-list destination. Getting tickets is the hardest part — once you're in, prepare for sensory overload.</p>
+                <p class="verdict-text">The biggest, most elaborate EDM festival on Earth. Tomorrowland isn't just a festival — it's a theme park, a fantasy world, and a pilgrimage for electronic music fans from 200+ countries. Production that defies belief. Love it or find it too corporate, you can't deny the scale.</p>
             </div>
             
             <div class="score-grid">
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>The most stacked lineup in electronic music. 1,000+ artists across every EDM subgenre. From Martin Garrix to Charlotte de Witte, from Tiësto to Amelie Lens. Multiple stages dedicated to house, techno, hardstyle, trance, and everything in between. Sound systems are world-class.</p>
+                        <p>Every big name in EDM. David Guetta, Martin Garrix, Tiësto, Dimitri Vegas & Like Mike, Charlotte de Witte, Amelie Lens. 16 stages covering everything from mainstream EDM to underground techno. Whatever your flavor, it's here.</p>
                     </div>
                 </div>
                 
@@ -138,7 +124,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>No festival on Earth matches Tomorrowland's production. The main stage is rebuilt from scratch each year with animatronic elements, fire, water, and pyrotechnics. Every stage tells a story. The "Book of Wisdom" theme creates a fantasy world. It's theatre meets rave.</p>
+                        <p>Unrivaled. The main stage is a work of architectural insanity — each year a new theme brought to life at impossible scale. Dragons, books, gardens, forests. Every stage is a destination. This is where festival production reached its peak.</p>
                     </div>
                 </div>
                 
@@ -149,18 +135,18 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>200+ nationalities united by music. The international crowd is part of the magic — you'll meet people from every corner of the globe. The community is friendly, though it's more mainstream EDM crowd than underground rave culture. PLUR energy is high.</p>
+                        <p>"People of Tomorrow" from 200+ countries. Genuinely international, genuinely happy. Yes, it's commercialized. Yes, people come for the Instagram. But the joy is real. Shared wonder at the spectacle creates community.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
-                        <span class="value">4.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Excellent organization for a festival of this size. Entry is smooth with the cashless bracelet system. Grounds are well-laid-out but expect crowds at main stage. Water stations are plentiful. Belgian efficiency shows in logistics.</p>
+                        <p>Masterful logistics for the scale. 400,000 people across two weekends is no joke. Well-marked paths, multiple entry points, excellent facilities. DreamVille camping is a city. Belgian organization at its finest.</p>
                     </div>
                 </div>
                 
@@ -171,7 +157,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Belgian food culture meets festival dining. Quality is above average with local specialties, international cuisines, and vegetarian/vegan options. DreamVille (camping) has its own restaurants. Prices are festival-level but portions are generous.</p>
+                        <p>Gourmet options alongside festival food. Belgian waffles and fries done right. Themed restaurants and food experiences. Yes, prices are premium, but quality matches. Hydration stations throughout.</p>
                     </div>
                 </div>
                 
@@ -182,7 +168,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Brussels Airport is well-connected globally. Shuttles run from major Belgian cities. The Global Journey packages include flights, accommodation, and transport — expensive but seamless. Boom is 30 min from Antwerp, 45 min from Brussels.</p>
+                        <p>Brussels airport nearby. Global Journey packages include flights and transfers. Train to Boom station. The organization moves hundreds of thousands — they've figured it out. Shuttle buses run constantly.</p>
                     </div>
                 </div>
                 
@@ -193,7 +179,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Expensive but you get what you pay for. Full Madness Pass plus Global Journey can exceed €1,500-2,500. However, the production value, lineup depth, and overall experience justify the premium. It's a once-in-a-lifetime bucket list festival for many.</p>
+                        <p>Not cheap. Full Madness Pass €275-350, DreamVille adds €100+, Global Journey packages €1000+. But the production value is unmatched. You're paying for Disneyland-level experience. Decide if that's what you want.</p>
                     </div>
                 </div>
                 
@@ -204,7 +190,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>DreamVille is a festival within a festival. Themed camping areas, pool parties, wellness zones, secret stages, and surprise performances. The attention to detail extends everywhere — even bathrooms are decorated. Interactive experiences and art installations abound.</p>
+                        <p>Everything is extra. Hidden stages, theatrical performances, treasure hunts, themed areas. The Treasury for official merchandise. The Gathering pre-party. This is maximalism as philosophy.</p>
                     </div>
                 </div>
                 
@@ -215,7 +201,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>De Schorre provincial park provides a beautiful natural backdrop — rolling hills, lakes, and forests transformed into a fantasy kingdom. Belgian summer weather is mild (70s-80s°F). Occasional rain but usually pleasant.</p>
+                        <p>De Schorre provincial recreation area. Rolling hills, woods, lakes — natural beauty enhanced by construction. Belgian July weather usually cooperates. The setting disappears behind the production, which is the point.</p>
                     </div>
                 </div>
                 
@@ -226,7 +212,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Lives up to every expectation. Tomorrowland is hyped globally and delivers globally. The only people disappointed are those who dislike mainstream EDM culture. For its target audience, it's perfection. The hype is deserved.</p>
+                        <p>Maximum hype. Sells out in minutes despite massive capacity. Global brand recognition. The aftermovies define festival marketing. If one festival represents "EDM" to the world, it's Tomorrowland.</p>
                     </div>
                 </div>
             </div>
@@ -238,31 +224,31 @@
             <h2>Made For...</h2>
             <div class="made-for-grid">
                 <div class="made-for-item">
-                    <div class="icon">🎆</div>
-                    <div>
-                        <h3>Spectacle Seekers</h3>
-                        <p>If you want the most visually overwhelming festival experience on Earth, Tomorrowland's production is unmatched. Pure theatrical magic.</p>
-                    </div>
-                </div>
-                <div class="made-for-item">
                     <div class="icon">🌍</div>
                     <div>
-                        <h3>International Travelers</h3>
-                        <p>200+ countries represented. The Global Journey packages make it easy. Meet people from everywhere and share the universal language of dance.</p>
+                        <h3>Global Citizens</h3>
+                        <p>200+ countries represented. Make friends from every continent. This is the UN of raving.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
-                    <div class="icon">🎧</div>
+                    <div class="icon">🎢</div>
                     <div>
-                        <h3>EDM Purists</h3>
-                        <p>Every major and mid-tier EDM artist plays Tomorrowland. If you want to see your favorite DJs in one place, this is the festival.</p>
+                        <h3>Experience Seekers</h3>
+                        <p>If you want the BIGGEST, MOST IMPRESSIVE festival experience available, this is it.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
-                    <div class="icon">👯</div>
+                    <div class="icon">📸</div>
                     <div>
-                        <h3>Group Trip Planners</h3>
-                        <p>DreamVille camping makes group trips seamless. Themed areas, communal activities, and premium packages for crews who want to do it right.</p>
+                        <h3>Content Creators</h3>
+                        <p>Every angle is photogenic. Built for the gram. Professional-level backdrop included.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎵</div>
+                    <div>
+                        <h3>EDM Fans</h3>
+                        <p>Every genre of electronic, but heavy on main stage EDM. If you love the drops, you're home.</p>
                     </div>
                 </div>
             </div>
@@ -275,18 +261,18 @@
             <div class="social-grid">
                 <div class="social-embed">
                     <div class="platform">📱 TikTok</div>
-                    <div class="title">"The main stage reveal at Tomorrowland 2024 had me crying"</div>
-                    <div class="stats">5.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                    <div class="title">"When the main stage reveals at Tomorrowland 🏰🔥"</div>
+                    <div class="stats">45M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
                 </div>
                 <div class="social-embed">
                     <div class="platform">📷 Instagram</div>
-                    <div class="title">"200 countries, one tribe. This is what Tomorrowland feels like."</div>
-                    <div class="stats">1.2M likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                    <div class="title">"Live Today, Love Tomorrow, Unite Forever 🌍"</div>
+                    <div class="stats">2.4M likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
                 </div>
                 <div class="social-embed">
                     <div class="platform">🎬 YouTube</div>
-                    <div class="title">"Tomorrowland 2024 | Complete Survival Guide & Vlog"</div>
-                    <div class="stats">2.8M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                    <div class="title">"Tomorrowland 2024 | Official Aftermovie"</div>
+                    <div class="stats">89M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
                 </div>
             </div>
         </div>
@@ -295,10 +281,10 @@
     <section class="full-breakdown">
         <div class="container">
             <h2>The Complete Tomorrowland Experience</h2>
-            <p class="intro">Everything you need to know about the world's most famous electronic music festival.</p>
+            <p class="intro">The world's largest electronic music festival, where fantasy becomes reality.</p>
             
             <div class="quick-facts">
-                <div class="fact"><div class="label">When</div><div class="value">July (2 weekends)</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">Two July Weekends</div></div>
                 <div class="fact"><div class="label">Hours</div><div class="value">12PM - 1AM</div></div>
                 <div class="fact"><div class="label">Stages</div><div class="value">16+</div></div>
                 <div class="fact"><div class="label">Attendance</div><div class="value">400,000</div></div>
@@ -307,72 +293,42 @@
             </div>
             
             <div class="breakdown-section">
-                <h3>Before You Go</h3>
-                <p>Getting tickets is the first challenge. Tomorrowland sells out in minutes during the worldwide sale. Your options:</p>
+                <h3>The Stages</h3>
+                <p>Each stage is a destination.</p>
                 <ul>
-                    <li><strong>Worldwide Sale:</strong> Happens in late January. Register early, join the queue, pray.</li>
-                    <li><strong>Belgian Pre-Sale:</strong> Reserved for Belgian residents.</li>
-                    <li><strong>Global Journey:</strong> Travel packages with guaranteed tickets (flights + accommodation). Expensive but reliable.</li>
-                    <li><strong>Waiting List:</strong> Register and hope for cancellations.</li>
+                    <li><strong>Main Stage:</strong> The centerpiece. New theme each year built at impossible scale.</li>
+                    <li><strong>Freedom Stage:</strong> Second largest. Often hosts techno and harder styles.</li>
+                    <li><strong>Atmosphere:</strong> Trance home stage.</li>
+                    <li><strong>Core:</strong> Charlotte de Witte's techno sanctuary.</li>
+                    <li><strong>Rose Garden:</strong> Deep house and melodic sounds.</li>
+                    <li><strong>Library:</strong> Underground and experimental.</li>
                 </ul>
             </div>
             
             <div class="breakdown-section">
-                <h3>Getting There & Getting In</h3>
-                <p>Belgium is incredibly accessible from anywhere in Europe.</p>
+                <h3>DreamVille Camping</h3>
+                <p>A city within the festival.</p>
                 <ul>
-                    <li><strong>Fly into Brussels (BRU):</strong> Major hub with connections worldwide. Shuttles to festival.</li>
-                    <li><strong>Antwerp:</strong> Closer option, 30 min to Boom.</li>
-                    <li><strong>Train:</strong> Boom has a train station with festival shuttles.</li>
-                    <li><strong>Global Journey:</strong> Includes all transport — airport pickup to festival entry.</li>
-                </ul>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>The Festival Grounds</h3>
-                <p>16+ stages spanning every electronic genre. The main stage is the centerpiece, rebuilt each year around the annual theme.</p>
-                <ul>
-                    <li><strong>Main Stage:</strong> Where headliners play. Massive, theatrical, unmissable.</li>
-                    <li><strong>Freedom Stage:</strong> Second biggest. Great for avoiding main stage crowds.</li>
-                    <li><strong>CORE:</strong> Underground techno and house in an intimate setting.</li>
-                    <li><strong>Atmosphere:</strong> Trance paradise.</li>
-                    <li><strong>The Rave Cave:</strong> Hardstyle and harder styles.</li>
+                    <li><strong>Magnificent Greens:</strong> Basic camping. Bring your tent.</li>
+                    <li><strong>Easy Tents:</strong> Pre-pitched and ready.</li>
+                    <li><strong>Montagoe:</strong> Luxury glamping with private facilities.</li>
+                    <li><strong>The Gathering:</strong> Thursday pre-party for DreamVille guests.</li>
                 </ul>
                 
                 <blockquote class="quote">
-                    "Tomorrowland is not just a festival — it's a parallel universe. The production, the people, the energy. Nothing compares."
-                    <cite>— FestPass Research, 2024</cite>
+                    "Tomorrowland is what happens when a festival has unlimited imagination and unlimited budget. You can be cynical about the commercialism, but standing in front of that main stage, you forget all that."
+                    <cite>— Ground Score Research, 2024</cite>
                 </blockquote>
             </div>
             
             <div class="breakdown-section">
-                <h3>Food, Water & Survival</h3>
+                <h3>Getting Tickets</h3>
+                <p>The hardest part of Tomorrowland is getting in.</p>
                 <ul>
-                    <li><strong>Cashless:</strong> Everything runs on the festival bracelet. Load money before you go.</li>
-                    <li><strong>Water:</strong> Free water refill points throughout. Bring an empty bottle.</li>
-                    <li><strong>Food:</strong> Quality is excellent for a festival. Belgian waffles, frites, international options.</li>
-                    <li><strong>Weather:</strong> July in Belgium is mild but pack layers and rain gear just in case.</li>
-                </ul>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>DreamVille (Camping)</h3>
-                <p>DreamVille is legendary and highly recommended. It's a festival within a festival.</p>
-                <ul>
-                    <li><strong>Magnificent Greens:</strong> Standard camping with your own tent.</li>
-                    <li><strong>Easy Tents:</strong> Pre-pitched tents for convenience.</li>
-                    <li><strong>Cabana/Relax Rooms:</strong> Boutique camping with real beds.</li>
-                    <li><strong>The Gathering:</strong> Pre-party the night before the festival starts.</li>
-                </ul>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>After the Festival</h3>
-                <p>Post-Tomorrowland recovery is real. Budget a rest day before flying home.</p>
-                <ul>
-                    <li><strong>Brussels:</strong> Explore the city, eat Belgian chocolate, recover.</li>
-                    <li><strong>Antwerp/Bruges:</strong> Beautiful Belgian cities worth visiting.</li>
-                    <li><strong>Extended trip:</strong> Many combine Tomorrowland with Amsterdam or Paris.</li>
+                    <li><strong>Pre-registration:</strong> Required before main sale. Opens December.</li>
+                    <li><strong>Main sale:</strong> January/February. Sells out in minutes.</li>
+                    <li><strong>Global Journey:</strong> Travel packages with guaranteed tickets. More expensive but more reliable.</li>
+                    <li><strong>Waiting list:</strong> Official resale platform. Check regularly.</li>
                 </ul>
             </div>
         </div>
@@ -380,15 +336,13 @@
     
     <footer>
         <div class="container">
-            <p>FestPass — Find your perfect festival</p>
+            <p>Ground Score — Find your perfect festival</p>
             <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
         </div>
     </footer>
     
     <script>
-        function toggleCard(card) {
-            card.classList.toggle('expanded');
-        }
+        function toggleCard(card) { card.classList.toggle('expanded'); }
     </script>
 </body>
 </html>

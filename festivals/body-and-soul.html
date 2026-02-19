@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fusion Festival — Ground Score</title>
+    <title>Body & Soul — Ground Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
@@ -16,7 +16,7 @@
         .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
         .back-link:hover { color: var(--accent); }
-        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%); position: relative; }
         .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
         .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
         .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -38,7 +38,7 @@
         .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
         .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
         .score-card.expanded .expand-icon { transform: rotate(180deg); }
-        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
         .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
         .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
         .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
@@ -48,14 +48,6 @@
         .made-for-item .icon { font-size: 2rem; }
         .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
         .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
-        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
-        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
-        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
-        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
-        .social-embed a { color: var(--accent); text-decoration: none; }
         .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
         .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
         .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
@@ -64,8 +56,6 @@
         .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
         .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
         .breakdown-section li { margin-bottom: 6px; }
-        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
-        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
         .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
         .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
         .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
@@ -86,12 +76,12 @@
     <section class="festival-hero">
         <div class="container">
             <div class="festival-meta">
-                <span>📍 Lärz, Germany</span>
-                <span>📅 June 25-29, 2025</span>
-                <span>👥 70,000</span>
-                <span>💵 Lottery Only</span>
+                <span>📍 Westmeath, Ireland</span>
+                <span>📅 June 20-22, 2025</span>
+                <span>👥 12,000</span>
+                <span>💵 €200-250</span>
             </div>
-            <h1>🌀 Fusion Festival</h1>
+            <h1>🏰 Body & Soul</h1>
         </div>
     </section>
     
@@ -99,21 +89,21 @@
         <div class="container">
             <div class="score-header">
                 <div class="total-score">
-                    <span class="number">48</span>
+                    <span class="number">46</span>
                     <span class="max">/ 50</span>
                 </div>
-                <p class="verdict-text">The legendary non-commercial "anti-festival" on a former Soviet airfield. Ticket lottery only. No sponsors, no VIP, no corporate presence. Art, music, and radical self-expression at its purest. If you get a ticket, you've won life's lottery.</p>
+                <p class="verdict-text">Ireland's most enchanting boutique festival. Set in the grounds of a medieval castle, Body & Soul combines world-class electronic acts with art, wellness, and Irish magic. An intimate gathering that feeds the spirit as much as the ears.</p>
             </div>
             
             <div class="score-grid">
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Unannounced lineups — discovery is the point. 30+ stages covering every imaginable genre. Underground techno, experimental, world music, punk, ambient. The anti-lineup lineup. Curated by passion, not trends.</p>
+                        <p>Eclectic curation spanning electronic, folk, world music, and alternative. Past headliners include Jon Hopkins, Bonobo, Four Tet, and Róisín Murphy. Irish acts featured prominently. Quality over commercial appeal.</p>
                     </div>
                 </div>
                 
@@ -124,7 +114,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Former Soviet military airfield. Hangars, runways, forests, lakes. Stages built into crashed planes, abandoned buildings, custom art installations. Years of accumulated creativity. Mind-blowing at every turn.</p>
+                        <p>Breathtaking production in fairytale surroundings. Stages emerge from the castle grounds, ancient woodland, and lakeside. Art installations and hidden experiences throughout. Every detail crafted with care.</p>
                     </div>
                 </div>
                 
@@ -135,18 +125,18 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Radical inclusion and creativity. No money inside (drinks/food free or donation-based). Everyone contributes. Post-capitalist experiment meets art commune. Transformative for most who attend.</p>
+                        <p>The warmest, most welcoming crowd in Ireland. Genuine community spirit. Dancing under stars by castle walls. Hot tub conversations at 3am. The Irish craic is real. People return year after year for the feeling.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
-                        <span class="value">4.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Massive site — bring a bike or prepare to walk. Getting lost is part of it. Intentionally disorienting. Infrastructure basic but functional. Composting toilets, outdoor showers.</p>
+                        <p>Intimate capacity means space to breathe. The castle grounds provide natural flow between areas. Good facilities for a boutique festival. Real hot tubs. Proper showers. The logistics serve the experience.</p>
                     </div>
                 </div>
                 
@@ -157,7 +147,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Volunteer-run kitchens with donation-based meals. Bring food to share. Quality varies but community spirit is consistent. No corporate vendors. Some free food finds you.</p>
+                        <p>Food is taken seriously. Forest feasts, breakfast in bed deliveries, and curated food traders. Irish produce featured. The Midnight Kitchen serves late-night sustenance. Quality throughout.</p>
                     </div>
                 </div>
                 
@@ -168,18 +158,18 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Remote Mecklenburg countryside. 2+ hours from Berlin. No shuttles. Carpooling culture strong. The journey is an initiation. Getting there requires commitment.</p>
+                        <p>Ballinlough Castle is in rural Westmeath, about 90 minutes from Dublin. Shuttle buses from Dublin available. Most people drive. The remoteness is part of the magic but requires planning.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Ticket ~€150 for 5 days if you win the lottery. Non-profit pricing. No money spent inside. Possibly the best value in festival culture if you're lucky enough to attend.</p>
+                        <p>€200-250 for three days of boutique festival experience. Given the production, setting, and lineup quality, this is excellent value. Sells out every year. Book early.</p>
                     </div>
                 </div>
                 
@@ -190,7 +180,7 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Theater, circus, cinema, workshops, art everywhere. Swimming lakes. Saunas. The "extra" IS the festival. Music is almost secondary to the overall art experience.</p>
+                        <p>Wellness is core to the experience. Yoga, meditation, healing areas, hot tubs, wild swimming. Theatre and performance throughout. Art installations and interactive experiences. Body & Soul lives up to its name.</p>
                     </div>
                 </div>
                 
@@ -201,18 +191,18 @@
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Former Soviet airbase — runways, hangars, bunkers. Lakes and forests surround. Raw, surreal, otherworldly. Like nowhere else on earth. The setting defines the experience.</p>
+                        <p>Ballinlough Castle estate is genuinely magical. Medieval castle, ancient woodland, wild lakes, and rolling Irish countryside. June midsummer light creates ethereal atmosphere. One of the most beautiful festival sites in Europe.</p>
                     </div>
                 </div>
                 
                 <div class="score-card" onclick="toggleCard(this)">
                     <div class="score-card-header">
                         <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
-                        <span class="value">5.0</span>
+                        <span class="value">4.5</span>
                         <span class="expand-icon">▼</span>
                     </div>
                     <div class="score-card-detail">
-                        <p>Legendary status is deserved. The hype understates it. People cry when they finally get tickets. Life-changing is not an exaggeration for many. The gold standard for alternative festivals.</p>
+                        <p>Consistently delivers one of Ireland's best festival experiences. The loyal community returns because nothing else compares. Not overhyped — quietly beloved by those who know. If the concept appeals, you'll love it.</p>
                     </div>
                 </div>
             </div>
@@ -224,55 +214,32 @@
             <h2>Made For...</h2>
             <div class="made-for-grid">
                 <div class="made-for-item">
-                    <div class="icon">🎭</div>
+                    <div class="icon">🧘</div>
                     <div>
-                        <h3>Artists & Creators</h3>
-                        <p>This is a canvas, not a consumer event. Come ready to participate, not just observe.</p>
+                        <h3>Wellness Seekers</h3>
+                        <p>If you want to dance AND reset your soul, Body & Soul integrates wellness without being preachy. Yoga at dawn, rave at night.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
-                    <div class="icon">✊</div>
+                    <div class="icon">🏰</div>
                     <div>
-                        <h3>Anti-Capitalists</h3>
-                        <p>No brands, no sponsors, no VIP. A functioning alternative to commercial festivals.</p>
+                        <h3>Romance Seekers</h3>
+                        <p>Castle grounds, midsummer nights, hot tubs under stars. Body & Soul is genuinely romantic. Perfect for couples.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
-                    <div class="icon">🔮</div>
+                    <div class="icon">🇮🇪</div>
                     <div>
-                        <h3>Seekers</h3>
-                        <p>If you're looking for something beyond normal festival experience, this is it.</p>
+                        <h3>Irish Culture Lovers</h3>
+                        <p>Celebrates Irish music, food, and hospitality alongside international acts. This is Ireland at its welcoming, creative best.</p>
                     </div>
                 </div>
                 <div class="made-for-item">
-                    <div class="icon">🏕️</div>
+                    <div class="icon">🌙</div>
                     <div>
-                        <h3>Self-Sufficient Adventurers</h3>
-                        <p>Bring everything you need. Comfort isn't guaranteed. Experience is.</p>
+                        <h3>Boutique Festival Fans</h3>
+                        <p>If you prefer intimate over massive, curated over commercial, and experience over spectacle, Body & Soul is your festival.</p>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="social-section">
-        <div class="container">
-            <h2>As Seen on Social</h2>
-            <div class="social-grid">
-                <div class="social-embed">
-                    <div class="platform">📱 TikTok</div>
-                    <div class="title">"I won the Fusion lottery after 8 years. I'm literally crying. 😭🎫"</div>
-                    <div class="stats">4.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
-                </div>
-                <div class="social-embed">
-                    <div class="platform">📷 Instagram</div>
-                    <div class="title">"Fusion isn't a festival. It's a temporary autonomous zone. Life-changing."</div>
-                    <div class="stats">420K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
-                </div>
-                <div class="social-embed">
-                    <div class="platform">🎬 YouTube</div>
-                    <div class="title">"Fusion Festival Documentary — The Anti-Festival"</div>
-                    <div class="stats">2.8M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
                 </div>
             </div>
         </div>
@@ -280,64 +247,57 @@
     
     <section class="full-breakdown">
         <div class="container">
-            <h2>The Complete Fusion Experience</h2>
-            <p class="intro">Everything you need to know about the world's most legendary alternative festival.</p>
+            <h2>The Complete Body & Soul Experience</h2>
+            <p class="intro">Everything you need to know about Ireland's most magical gathering.</p>
             
             <div class="quick-facts">
-                <div class="fact"><div class="label">When</div><div class="value">Late June</div></div>
-                <div class="fact"><div class="label">Hours</div><div class="value">Non-Stop</div></div>
-                <div class="fact"><div class="label">Stages</div><div class="value">30+</div></div>
-                <div class="fact"><div class="label">Attendance</div><div class="value">70,000</div></div>
+                <div class="fact"><div class="label">When</div><div class="value">June 20-22</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">24/7</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">15+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">12,000</div></div>
                 <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
-                <div class="fact"><div class="label">Camping</div><div class="value">Yes (Only)</div></div>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>Getting Tickets</h3>
-                <p>This is the hardest part. There is no way to buy tickets normally.</p>
-                <ul>
-                    <li><strong>Lottery system:</strong> Register on fusion-festival.de when applications open (usually January).</li>
-                    <li><strong>Invite codes:</strong> Previous attendees can invite friends. Network matters.</li>
-                    <li><strong>Volunteer:</strong> Work crews can earn access. Commitment required.</li>
-                    <li><strong>No resale:</strong> Tickets are personalized. Scalping doesn't work.</li>
-                    <li><strong>Patience:</strong> Some people try for 10+ years before getting in.</li>
-                </ul>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>What to Expect</h3>
-                <ul>
-                    <li><strong>No lineup:</strong> Artists aren't announced. Discover by wandering.</li>
-                    <li><strong>No cash:</strong> Most things are free or donation-based inside.</li>
-                    <li><strong>Participation:</strong> Everyone contributes. Bring something to share.</li>
-                    <li><strong>Art everywhere:</strong> Stages are art installations. The whole site is the exhibit.</li>
-                    <li><strong>Lakes:</strong> Multiple swimming spots. Bring swimwear.</li>
-                </ul>
-                
-                <blockquote class="quote">
-                    "Fusion broke my brain in the best way. I thought I understood festivals. I didn't. This is what happens when 70,000 creative people build a temporary city together. Nothing prepares you."
-                    <cite>— Ground Score Research, 2024</cite>
-                </blockquote>
-            </div>
-            
-            <div class="breakdown-section">
-                <h3>What to Bring</h3>
-                <ul>
-                    <li><strong>Bicycle:</strong> Essential. The site is huge. Bring lights.</li>
-                    <li><strong>Quality tent:</strong> Rain happens. Good gear matters.</li>
-                    <li><strong>Food to share:</strong> Cook for neighbors. Community is everything.</li>
-                    <li><strong>Costumes/art supplies:</strong> Express yourself. Contribute.</li>
-                    <li><strong>Open mind:</strong> The most important thing to pack.</li>
-                </ul>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
             </div>
             
             <div class="breakdown-section">
                 <h3>Getting There</h3>
                 <ul>
-                    <li><strong>From Berlin:</strong> 2-3 hours by car. No direct transit.</li>
-                    <li><strong>Carpooling:</strong> Fusion forums organize rides. This is the way.</li>
-                    <li><strong>Arrive early:</strong> Lines on opening day are legendary.</li>
-                    <li><strong>Leave late:</strong> The exodus is also chaos. Plan accordingly.</li>
+                    <li><strong>Location:</strong> Ballinlough Castle Estate, County Westmeath.</li>
+                    <li><strong>From Dublin:</strong> About 90 minutes drive. Shuttle buses available.</li>
+                    <li><strong>Driving:</strong> Most people drive. Parking included in ticket.</li>
+                    <li><strong>Flying:</strong> Dublin Airport, then shuttle or rental car.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Experience</h3>
+                <ul>
+                    <li><strong>The Woodlands:</strong> Secret stages and immersive experiences in the forest.</li>
+                    <li><strong>The Midnight Garden:</strong> Electronic music in a walled garden setting.</li>
+                    <li><strong>The Castle:</strong> The medieval backdrop for special performances.</li>
+                    <li><strong>The Lakes:</strong> Wild swimming and lakeside stages.</li>
+                    <li><strong>Healing Gardens:</strong> Wellness, yoga, and restoration spaces.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Camping & Accommodation</h3>
+                <ul>
+                    <li><strong>General Camping:</strong> Included in ticket. Bring your own tent.</li>
+                    <li><strong>Boutique Camping:</strong> Bell tents, tipis, and glamping options.</li>
+                    <li><strong>Campervan:</strong> Dedicated areas for vehicles.</li>
+                    <li><strong>Hot Tubs:</strong> Yes, there are communal hot tubs. Yes, they're amazing.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Book early:</strong> Body & Soul sells out. Don't wait.</li>
+                    <li><strong>Pack wellies:</strong> Irish weather. Be prepared for mud.</li>
+                    <li><strong>Embrace wellness:</strong> Try a yoga class or healing session — it's part of the experience.</li>
+                    <li><strong>Explore:</strong> The hidden stages and secret spots reward wandering.</li>
+                    <li><strong>Late nights:</strong> Music continues into the small hours. Pace yourself.</li>
                 </ul>
             </div>
         </div>
