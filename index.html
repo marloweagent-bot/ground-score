@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FestPass — Your Festival Passport</title>
+    <title>MyFestMap — Your Festival Map</title>
     <meta name="description" content="Discover festivals, map your journey, share with friends. Your personal festival passport.">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="FestPass — Your Festival Passport">
+    <meta property="og:title" content="MyFestMap — Your Festival Map">
     <meta property="og:description" content="Discover festivals, map your journey, share with friends.">
     <meta property="og:type" content="website">
     
@@ -570,8 +570,8 @@
     <header>
         <div class="container header-inner">
             <a href="/" class="logo">
-                <span class="logo-icon">🎫</span>
-                FestPass
+                <span class="logo-icon">🗺️</span>
+                MyFestMap
             </a>
             <nav class="nav-links">
                 <a href="#browse" class="nav-link">Browse Festivals</a>
@@ -585,7 +585,7 @@
     <section class="hero">
         <div class="container hero-content">
             <div class="hero-badge">🎪 Your Festival Journey Starts Here</div>
-            <h1>Your Festival Passport</h1>
+            <h1>Your Festival Map</h1>
             <p class="tagline">
                 <strong>Discover</strong> your next adventure. <strong>Map</strong> where you've been. 
                 <strong>Share</strong> your journey with friends.
@@ -618,7 +618,7 @@
     <section class="pillars">
         <div class="container">
             <div class="pillars-header">
-                <h2>Three Ways to Use FestPass</h2>
+                <h2>Three Ways to Use MyFestMap</h2>
                 <p>More than just a list — it's your festival companion</p>
             </div>
             <div class="pillars-grid">
@@ -723,7 +723,7 @@
             <p>Be the first to know when new festivals are added and get exclusive pre-sale access from our partners.</p>
             <form class="email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleEmailSubmit(event)">
                 <input type="email" name="email" placeholder="your@email.com" required>
-                <input type="hidden" name="_subject" value="FestPass Newsletter Signup">
+                <input type="hidden" name="_subject" value="MyFestMap Newsletter Signup">
                 <button type="submit">Subscribe</button>
             </form>
             <p class="email-note">No spam, unsubscribe anytime. We may share relevant festival offers.</p>
@@ -732,7 +732,7 @@
     
     <footer>
         <div class="container">
-            <p>FestPass — Built for festival lovers, by festival lovers.</p>
+            <p>MyFestMap — Built for festival lovers, by festival lovers.</p>
             <p style="margin-top: 8px; font-size: 0.8rem;">
                 <a href="#">About</a> · <a href="#">Contact</a> · <a href="#">Privacy</a>
             </p>
@@ -835,7 +835,7 @@
             // If Formspree isn't configured, just show success
             if (form.action.includes('YOUR_FORM_ID')) {
                 e.preventDefault();
-                localStorage.setItem('festpass_email', email);
+                localStorage.setItem('myfestmap_email', email);
                 alert('Thanks for subscribing! 🎉');
                 form.reset();
                 return;
@@ -844,7 +844,7 @@
         }
     </script>
     
-    <!-- FestPass Auth Module -->
+    <!-- MyFestMap Auth Module -->
     <script src="js/auth.js"></script>
 </body>
 </html>

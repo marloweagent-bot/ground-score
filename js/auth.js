@@ -1,5 +1,5 @@
 /**
- * FestPass Authentication Module
+ * MyFestMap Authentication Module
  * Uses Clerk for user authentication
  * 
  * SETUP: Replace CLERK_PUBLISHABLE_KEY with your key from https://dashboard.clerk.com
@@ -7,7 +7,7 @@
 
 const CLERK_PUBLISHABLE_KEY = 'pk_test_YOUR_KEY_HERE'; // TODO: Replace with real key
 
-class FestPassAuth {
+class MyFestMapAuth {
     constructor() {
         this.clerk = null;
         this.user = null;
@@ -45,7 +45,7 @@ class FestPassAuth {
                 this.syncUserData();
             }
             
-            console.log('FestPass Auth initialized', this.user ? `(${this.user.primaryEmailAddress?.emailAddress})` : '(not signed in)');
+            console.log('MyFestMap Auth initialized', this.user ? `(${this.user.primaryEmailAddress?.emailAddress})` : '(not signed in)');
         } catch (err) {
             console.error('Failed to initialize Clerk:', err);
         }
@@ -101,9 +101,9 @@ class FestPassAuth {
         
         try {
             const localData = {
-                beenTo: JSON.parse(localStorage.getItem('festpass_been') || '[]'),
-                wishlist: JSON.parse(localStorage.getItem('festpass_wishlist') || '[]'),
-                years: JSON.parse(localStorage.getItem('festpass_years') || '{}'),
+                beenTo: JSON.parse(localStorage.getItem('myfestmap_been') || '[]'),
+                wishlist: JSON.parse(localStorage.getItem('myfestmap_wishlist') || '[]'),
+                years: JSON.parse(localStorage.getItem('myfestmap_years') || '{}'),
                 lastSync: new Date().toISOString()
             };
             
@@ -117,10 +117,10 @@ class FestPassAuth {
 }
 
 // Festival data manager (works with or without auth)
-class FestPassData {
+class MyFestMapData {
     constructor(auth) {
         this.auth = auth;
-        this.storagePrefix = 'festpass_';
+        this.storagePrefix = 'myfestmap_';
     }
 
     getKey(key) {
@@ -255,9 +255,9 @@ class FestPassData {
 }
 
 // Initialize global instances
-const festpassAuth = new FestPassAuth();
-const festpassData = new FestPassData(festpassAuth);
+const myfestmapAuth = new MyFestMapAuth();
+const myfestmapData = new MyFestMapData(myfestmapAuth);
 
 // Export for use
-window.FestPassAuth = festpassAuth;
-window.FestPassData = festpassData;
+window.MyFestMapAuth = myfestmapAuth;
+window.MyFestMapData = myfestmapData;
