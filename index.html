@@ -3,18 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ground Score — Find Your Perfect Festival</title>
+    <title>FestPass — Your Festival Passport</title>
+    <meta name="description" content="Discover festivals, map your journey, share with friends. Your personal festival passport.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="FestPass — Your Festival Passport">
+    <meta property="og:description" content="Discover festivals, map your journey, share with friends.">
+    <meta property="og:type" content="website">
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0a0a0f;
             --bg-card: #12121a;
+            --bg-card-hover: #1a1a24;
             --accent: #00ff88;
             --accent-dim: #00cc6a;
+            --accent-secondary: #00ccff;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b0;
             --border: #2a2a3a;
             --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-discovery: linear-gradient(135deg, #00ccff 0%, #0099ff 100%);
+            --gradient-mapping: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            --gradient-sharing: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,1633 +34,756 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         
         /* Header */
-        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
-        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        header { 
+            padding: 20px 0; 
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--accent); 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .logo-icon { 
+            width: 36px; 
+            height: 36px; 
+            background: var(--gradient-1); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 20px; 
+        }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link { 
+            padding: 10px 16px; 
+            background: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            color: var(--text-primary); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-link:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+        .nav-link.primary { 
+            background: var(--accent); 
+            border-color: var(--accent); 
+            color: var(--bg-dark); 
+        }
+        .nav-link.primary:hover { opacity: 0.9; }
         
         /* Hero */
-        .hero { padding: 60px 0 40px; text-align: center; }
-        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; margin-bottom: 20px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 16px; }
-        .hero .emphasis { color: var(--text-primary); font-weight: 500; }
-        .hero .festival-count { font-size: 0.95rem; color: var(--accent); margin-top: 20px; font-weight: 500; }
+        .hero { 
+            padding: 80px 0 60px; 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+        .hero h1 { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 3.5rem; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            background: var(--gradient-1); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .hero .tagline { 
+            font-size: 1.35rem; 
+            color: var(--text-secondary); 
+            max-width: 600px; 
+            margin: 0 auto 32px;
+            line-height: 1.5;
+        }
+        .hero .tagline strong { color: var(--text-primary); font-weight: 600; }
+        .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .hero-btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-btn.primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+        .hero-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3); }
+        .hero-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .hero-btn.secondary:hover { border-color: var(--accent); }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .hero-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
         
-        /* Priority Picker */
-        .priority-picker { padding: 40px 0; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .priority-picker h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; text-align: center; margin-bottom: 8px; }
-        .priority-picker .subtitle { text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px; }
+        /* Three Pillars */
+        .pillars {
+            padding: 80px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .pillars-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .pillars-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .pillars-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .pillar {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .pillar:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        .pillar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        .pillar.discovery::before { background: var(--gradient-discovery); }
+        .pillar.mapping::before { background: var(--gradient-mapping); }
+        .pillar.sharing::before { background: var(--gradient-sharing); }
         
-        .priority-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 900px; margin: 0 auto 24px; }
+        .pillar-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+        .pillar.discovery .pillar-icon { background: rgba(0, 204, 255, 0.15); }
+        .pillar.mapping .pillar-icon { background: rgba(0, 255, 136, 0.15); }
+        .pillar.sharing .pillar-icon { background: rgba(255, 107, 107, 0.15); }
         
-        .priority-btn { background: var(--bg-dark); border: 2px solid var(--border); border-radius: 12px; padding: 16px 12px; cursor: pointer; transition: all 0.2s; text-align: center; }
-        .priority-btn:hover { border-color: var(--accent); }
-        .priority-btn.selected { border-color: var(--accent); background: rgba(0, 255, 136, 0.1); }
-        .priority-btn .icon { font-size: 1.5rem; margin-bottom: 6px; }
-        .priority-btn .name { font-weight: 600; font-size: 0.875rem; color: var(--text-primary); margin-bottom: 2px; }
-        .priority-btn .desc { font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3; }
+        .pillar h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+        .pillar.discovery h3 { color: #00ccff; }
+        .pillar.mapping h3 { color: #00ff88; }
+        .pillar.sharing h3 { color: #ff6b6b; }
         
-        .selected-count { text-align: center; margin-bottom: 16px; font-size: 0.875rem; color: var(--text-secondary); }
-        .selected-count strong { color: var(--accent); }
+        .pillar p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .pillar-features {
+            text-align: left;
+        }
+        .pillar-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .pillar-feature .check {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .pillar-cta {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .pillar.discovery .pillar-cta { background: rgba(0, 204, 255, 0.15); color: #00ccff; }
+        .pillar.mapping .pillar-cta { background: rgba(0, 255, 136, 0.15); color: #00ff88; }
+        .pillar.sharing .pillar-cta { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; }
+        .pillar-cta:hover { transform: translateY(-2px); }
         
-        .find-btn { display: block; margin: 0 auto; padding: 14px 32px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg-dark); font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.2s, opacity 0.2s; }
-        .find-btn:hover { transform: translateY(-2px); }
-        .find-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 0;
+        }
+        .how-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .how-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .how-header p {
+            color: var(--text-secondary);
+        }
+        .how-steps {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .how-step {
+            text-align: center;
+            max-width: 200px;
+        }
+        .how-step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin: 0 auto 16px;
+        }
+        .how-step h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .how-step p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Festival Browser Section */
+        .browse-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+        .browse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .browse-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+        }
+        .browse-header .count {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
         
         /* Quick Filters */
-        .quick-filters { padding: 24px 0; text-align: center; }
-        .quick-filters .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .filter-btn { padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-primary); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
-        .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-dark); }
+        .filter-bar { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap;
+        }
+        .filter-btn { 
+            padding: 8px 16px; 
+            background: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            color: var(--text-primary); 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+        .filter-btn:hover, .filter-btn.active { 
+            background: var(--accent); 
+            border-color: var(--accent); 
+            color: var(--bg-dark); 
+        }
         
-        /* Score System (Compact) */
-        .score-system { padding: 32px 0; border-bottom: 1px solid var(--border); }
-        .score-system h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; text-align: center; margin-bottom: 16px; color: var(--text-secondary); }
-        .criteria-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 1000px; margin: 0 auto; }
-        .criteria-tag { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; }
-        .criteria-tag .icon { font-size: 0.875rem; }
-        .criteria-tag .text { color: var(--text-secondary); }
+        /* Festival Grid */
+        .festival-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 16px; 
+        }
+        .festival-card { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 20px; 
+            transition: transform 0.2s, border-color 0.2s; 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+        }
+        .festival-card:hover { 
+            transform: translateY(-3px); 
+            border-color: var(--accent); 
+        }
+        .festival-card .card-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 8px; 
+        }
+        .festival-card h3 { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 1.1rem; 
+            line-height: 1.3; 
+        }
+        .festival-card .score-badge { 
+            background: rgba(0, 255, 136, 0.15); 
+            padding: 4px 10px; 
+            border-radius: 12px; 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-weight: 700; 
+            color: var(--accent); 
+            font-size: 0.85rem; 
+            white-space: nowrap; 
+        }
+        .festival-card .location { 
+            color: var(--text-secondary); 
+            font-size: 0.8rem; 
+            margin-bottom: 12px; 
+        }
+        .festival-card .highlights { 
+            display: flex; 
+            gap: 6px; 
+            flex-wrap: wrap; 
+        }
+        .festival-card .highlight { 
+            padding: 3px 8px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 10px; 
+            font-size: 0.65rem; 
+            color: var(--text-secondary); 
+        }
+        .festival-card .highlight.strong { 
+            background: rgba(0, 255, 136, 0.1); 
+            color: var(--accent); 
+        }
         
-        /* Festival Sections */
-        .festivals-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-        .festivals-section:last-of-type { border-bottom: none; }
-        .festivals-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
-        .festivals-section .section-subtitle { color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem; }
+        /* View All Link */
+        .view-all {
+            text-align: center;
+            margin-top: 32px;
+        }
+        .view-all a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .view-all a:hover {
+            text-decoration: underline;
+        }
         
-        .festival-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        
-        .festival-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: transform 0.2s, border-color 0.2s; text-decoration: none; color: inherit; display: block; }
-        .festival-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-        .festival-card.legacy { opacity: 0.7; }
-        .festival-card.legacy:hover { opacity: 1; }
-        
-        .festival-card .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .festival-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; line-height: 1.3; }
-        .festival-card .score-badge { background: rgba(0, 255, 136, 0.15); padding: 4px 10px; border-radius: 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); font-size: 0.85rem; white-space: nowrap; }
-        .festival-card .score-badge.high { background: rgba(0, 255, 136, 0.25); }
-        .festival-card .score-badge.legacy { background: rgba(255, 107, 107, 0.15); color: #ff6b6b; }
-        
-        .festival-card .location { color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 12px; }
-        
-        .festival-card .highlights { display: flex; gap: 6px; flex-wrap: wrap; }
-        .festival-card .highlight { padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 10px; font-size: 0.65rem; color: var(--text-secondary); }
-        .festival-card .highlight.strong { background: rgba(0, 255, 136, 0.1); color: var(--accent); }
+        /* Email Capture */
+        .email-capture {
+            padding: 60px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        .email-capture h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+        }
+        .email-capture p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .email-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .email-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 14px 20px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .email-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .email-form button {
+            padding: 14px 28px;
+            background: var(--accent);
+            border: none;
+            border-radius: 10px;
+            color: var(--bg-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .email-form button:hover {
+            transform: translateY(-2px);
+        }
+        .email-note {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
         
         /* Footer */
-        footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer { 
+            padding: 40px 0; 
+            border-top: 1px solid var(--border); 
+            text-align: center; 
+            color: var(--text-secondary); 
+            font-size: 0.875rem; 
+        }
         footer a { color: var(--accent); text-decoration: none; }
         
+        /* Responsive */
+        @media (max-width: 900px) {
+            .pillars-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.25rem; }
-            .priority-grid { grid-template-columns: repeat(2, 1fr); }
-            .festival-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero .tagline { font-size: 1.1rem; }
+            .hero-stats { flex-direction: column; gap: 20px; }
+            .nav-links { display: none; }
+            .how-steps { flex-direction: column; align-items: center; }
+            .browse-header { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="/" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
-            <div style="display: flex; gap: 12px;">
-                <a href="my-map.html" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500;">📍 Map</a>
-                <a href="my-recap.html" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: rgba(0,255,136,0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 500;">📊 Recap</a>
-            </div>
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🎫</span>
+                FestPass
+            </a>
+            <nav class="nav-links">
+                <a href="#browse" class="nav-link">Browse Festivals</a>
+                <a href="my-map.html" class="nav-link">📍 My Map</a>
+                <a href="my-recap.html" class="nav-link">📊 My Recap</a>
+                <a href="#" class="nav-link primary">Sign In</a>
+            </nav>
         </div>
     </header>
     
-    <!-- My Festivals Section -->
-    <section id="my-festivals-section">
-        <div class="container">
-            <div class="gs-section-header">
-                <h2 class="gs-section-title">🎪 My Festivals</h2>
-                <div class="gs-section-actions">
-                    <a href="my-map.html" class="gs-action-btn" style="text-decoration: none;">📍 Map</a>
-                    <a href="my-recap.html" class="gs-action-btn" style="text-decoration: none;">📊 Recap</a>
-                    <button class="gs-action-btn" onclick="GroundScoreLists.copyShareLink()">📋 Share</button>
-                </div>
-            </div>
-            
-            <div class="gs-panels">
-                <div class="gs-panel-wrapper">
-                    <button class="gs-panel-toggle" onclick="GroundScoreLists.toggleMyFestivalsPanel('wishlist-panel')" aria-expanded="false" aria-controls="wishlist-panel">
-                        <span>❤️ Wishlist (<span id="wishlist-count">0</span>)</span>
-                        <span class="gs-arrow">▼</span>
-                    </button>
-                    <div id="wishlist-panel" class="gs-panel">
-                        <div class="gs-panel-content" id="wishlist-content">
-                            <p class="gs-empty">No festivals in your wishlist yet</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="gs-panel-wrapper">
-                    <button class="gs-panel-toggle" onclick="GroundScoreLists.toggleMyFestivalsPanel('been-panel')" aria-expanded="false" aria-controls="been-panel">
-                        <span>✅ Been There (<span id="been-count">0</span>)</span>
-                        <span class="gs-arrow">▼</span>
-                    </button>
-                    <div id="been-panel" class="gs-panel">
-                        <div class="gs-panel-content" id="been-content">
-                            <p class="gs-empty">No festivals attended yet</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="gs-stats" id="my-festivals-stats"></div>
-        </div>
-    </section>
-    
     <section class="hero">
-        <div class="container">
-            <h1>Find Your Perfect Festival</h1>
-            <p class="subtitle">
-                The best festival isn't the biggest or most hyped — <span class="emphasis">it's the one that fits YOU.</span>
+        <div class="container hero-content">
+            <div class="hero-badge">🎪 Your Festival Journey Starts Here</div>
+            <h1>Your Festival Passport</h1>
+            <p class="tagline">
+                <strong>Discover</strong> your next adventure. <strong>Map</strong> where you've been. 
+                <strong>Share</strong> your journey with friends.
             </p>
-            <p class="subtitle">
-                Some people want to camp under the stars and get sweaty. Others want world-class stage design. Some just want easy logistics and good vibes. Ground Score helps you and your crew find the experience you're actually looking for.
-            </p>
-            <p class="festival-count">94 festivals • Honest reviews</p>
+            <div class="hero-cta">
+                <a href="#browse" class="hero-btn primary">
+                    🔍 Explore Festivals
+                </a>
+                <a href="my-map.html" class="hero-btn secondary">
+                    📍 Start Your Map
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="number">94</div>
+                    <div class="label">Festivals</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">10</div>
+                    <div class="label">Rating Criteria</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">∞</div>
+                    <div class="label">Memories to Make</div>
+                </div>
+            </div>
         </div>
     </section>
     
-    <section class="priority-picker">
+    <section class="pillars">
         <div class="container">
-            <h2>What matters most to you?</h2>
-            <p class="subtitle">Select up to 3 priorities and we'll show you the best matches.</p>
-            
-            <div class="priority-grid">
-                <button class="priority-btn" data-category="sound" onclick="togglePriority(this)">
-                    <div class="icon">🎵</div>
-                    <div class="name">Music & Lineup</div>
-                    <div class="desc">Quality artists, diverse genres, great bookings</div>
-                </button>
-                <button class="priority-btn" data-category="scene" onclick="togglePriority(this)">
-                    <div class="icon">🎪</div>
-                    <div class="name">Production & Stages</div>
-                    <div class="desc">Mind-blowing visuals, LED walls, lasers</div>
-                </button>
-                <button class="priority-btn" data-category="vibe" onclick="togglePriority(this)">
-                    <div class="icon">✨</div>
-                    <div class="name">Crowd & Community</div>
-                    <div class="desc">Good energy, friendly people, real connections</div>
-                </button>
-                <button class="priority-btn" data-category="flow" onclick="togglePriority(this)">
-                    <div class="icon">🚿</div>
-                    <div class="name">Easy Logistics</div>
-                    <div class="desc">Short lines, clean bathrooms, smooth entry</div>
-                </button>
-                <button class="priority-btn" data-category="fuel" onclick="togglePriority(this)">
-                    <div class="icon">🍕</div>
-                    <div class="name">Food & Drinks</div>
-                    <div class="desc">Quality vendors, reasonable prices, variety</div>
-                </button>
-                <button class="priority-btn" data-category="access" onclick="togglePriority(this)">
-                    <div class="icon">✈️</div>
-                    <div class="name">Travel & Access</div>
-                    <div class="desc">Easy to get to, good transit, parking</div>
-                </button>
-                <button class="priority-btn" data-category="value" onclick="togglePriority(this)">
-                    <div class="icon">💰</div>
-                    <div class="name">Value for Money</div>
-                    <div class="desc">Worth the price, budget-friendly options</div>
-                </button>
-                <button class="priority-btn" data-category="extra" onclick="togglePriority(this)">
-                    <div class="icon">🎨</div>
-                    <div class="name">Beyond the Music</div>
-                    <div class="desc">Art, workshops, unique experiences</div>
-                </button>
-                <button class="priority-btn" data-category="setting" onclick="togglePriority(this)">
-                    <div class="icon">🏔️</div>
-                    <div class="name">Beautiful Setting</div>
-                    <div class="desc">Scenic venue, natural beauty, unique location</div>
-                </button>
-                <button class="priority-btn" data-category="hype" onclick="togglePriority(this)">
-                    <div class="icon">🎯</div>
-                    <div class="name">Lives Up to Hype</div>
-                    <div class="desc">Reality matches expectations, no letdowns</div>
-                </button>
+            <div class="pillars-header">
+                <h2>Three Ways to Use FestPass</h2>
+                <p>More than just a list — it's your festival companion</p>
+            </div>
+            <div class="pillars-grid">
+                <div class="pillar discovery">
+                    <div class="pillar-icon">🔍</div>
+                    <h3>Discovery</h3>
+                    <p>Find festivals that match your vibe. Filter by what matters to you — sound, scene, safety, or pure chaos.</p>
+                    <div class="pillar-features">
+                        <div class="pillar-feature"><span class="check">✓</span> 94 US festivals rated</div>
+                        <div class="pillar-feature"><span class="check">✓</span> 10-point scoring system</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Filter by your priorities</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Real reviews, not ads</div>
+                    </div>
+                    <a href="#browse" class="pillar-cta">Browse Festivals →</a>
+                </div>
+                
+                <div class="pillar mapping">
+                    <div class="pillar-icon">📍</div>
+                    <h3>Mapping</h3>
+                    <p>Pin every festival you've attended. Watch your map fill up over the years. Build your festival passport.</p>
+                    <div class="pillar-features">
+                        <div class="pillar-feature"><span class="check">✓</span> Interactive US map</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Track festivals by year</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Wishlist future events</div>
+                        <div class="pillar-feature"><span class="check">✓</span> See your journey grow</div>
+                    </div>
+                    <a href="my-map.html" class="pillar-cta">Open My Map →</a>
+                </div>
+                
+                <div class="pillar sharing">
+                    <div class="pillar-icon">🔗</div>
+                    <h3>Sharing</h3>
+                    <p>Compare your festival passport with friends. See who's been where. Plan your next adventure together.</p>
+                    <div class="pillar-features">
+                        <div class="pillar-feature"><span class="check">✓</span> Shareable profile links</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Compare with friends</div>
+                        <div class="pillar-feature"><span class="check">✓</span> End-of-season Wrapped</div>
+                        <div class="pillar-feature"><span class="check">✓</span> Social-ready graphics</div>
+                    </div>
+                    <a href="my-recap.html" class="pillar-cta">View My Recap →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="how-it-works">
+        <div class="container">
+            <div class="how-header">
+                <h2>How It Works</h2>
+                <p>Get started in 30 seconds</p>
+            </div>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-step-number">1</div>
+                    <h4>Browse</h4>
+                    <p>Explore our database of 94 rated festivals</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">2</div>
+                    <h4>Pin</h4>
+                    <p>Mark festivals you've attended or want to go</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-number">3</div>
+                    <h4>Share</h4>
+                    <p>Compare your map with friends and flex your passport</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="browse-section" id="browse">
+        <div class="container">
+            <div class="browse-header">
+                <div>
+                    <h2>Browse Festivals</h2>
+                    <span class="count">94 festivals in our database</span>
+                </div>
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="edm">EDM</button>
+                    <button class="filter-btn" data-filter="rock">Rock</button>
+                    <button class="filter-btn" data-filter="jam">Jam</button>
+                    <button class="filter-btn" data-filter="camping">Camping</button>
+                    <button class="filter-btn" data-filter="urban">Urban</button>
+                </div>
             </div>
             
-            <div class="selected-count">Selected: <strong id="priority-count">0</strong> / 3</div>
-            <button class="find-btn" id="find-btn" disabled onclick="findFestivals()">Find My Festivals</button>
-        </div>
-    </section>
-    
-    <section class="quick-filters">
-        <div class="container">
-            <div class="label">Or browse by vibe</div>
-            <div class="filter-bar">
-                <button class="filter-btn active" onclick="applyFilter('all')">All Festivals</button>
-                <button class="filter-btn" onclick="applyFilter('toprated')">🔥 Top Rated</button>
-                <button class="filter-btn" onclick="applyFilter('camping')">🏕️ Camping</button>
-                <button class="filter-btn" onclick="applyFilter('urban')">🌆 Urban</button>
-                <button class="filter-btn" onclick="applyFilter('bass')">🔊 Bass</button>
-                <button class="filter-btn" onclick="applyFilter('house')">🎹 House/Techno</button>
-                <button class="filter-btn" onclick="applyFilter('transform')">🌀 Transformational</button>
-                <button class="filter-btn" onclick="applyFilter('destination')">✈️ Destination</button>
+            <div class="festival-grid" id="festival-grid">
+                <!-- Populated by JavaScript -->
             </div>
-        </div>
-    </section>
-    
-    <section class="score-system">
-        <div class="container">
-            <h3>Every festival rated across 10 dimensions</h3>
-            <div class="criteria-row">
-                <span class="criteria-tag"><span class="icon">🎵</span><span class="text">Music Quality</span></span>
-                <span class="criteria-tag"><span class="icon">🎪</span><span class="text">Stage Production</span></span>
-                <span class="criteria-tag"><span class="icon">✨</span><span class="text">Crowd Vibe</span></span>
-                <span class="criteria-tag"><span class="icon">🚿</span><span class="text">Logistics</span></span>
-                <span class="criteria-tag"><span class="icon">🍕</span><span class="text">Food & Drink</span></span>
-                <span class="criteria-tag"><span class="icon">✈️</span><span class="text">Accessibility</span></span>
-                <span class="criteria-tag"><span class="icon">💰</span><span class="text">Value</span></span>
-                <span class="criteria-tag"><span class="icon">🎨</span><span class="text">Extras</span></span>
-                <span class="criteria-tag"><span class="icon">🏔️</span><span class="text">Setting</span></span>
-                <span class="criteria-tag"><span class="icon">🎯</span><span class="text">Hype Check</span></span>
-            </div>
-        </div>
-    </section>
-    
-    <!-- TOP RATED (45+) -->
-    <section class="festivals-section" data-category="toprated">
-        <div class="container">
-            <h2>🏆 Top Rated (45+)</h2>
-            <p class="section-subtitle">The cream of the crop. These festivals consistently deliver exceptional experiences.</p>
             
-            <div class="festival-grid">
-                <a href="festivals/electric-forest.html" class="festival-card" data-tags="toprated,camping,transform">
-                    <div class="card-header">
-                        <h3>Electric Forest</h3>
-                        <span class="score-badge high">46/50</span>
-                    </div>
-                    <p class="location">📍 Rothbury, Michigan</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Setting</span>
-                        <span class="highlight strong">Best Community</span>
-                        <span class="highlight">4-Day Camping</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/infrasound.html" class="festival-card" data-tags="toprated,camping,bass">
-                    <div class="card-header">
-                        <h3>Infrasound</h3>
-                        <span class="score-badge high">46/50</span>
-                    </div>
-                    <p class="location">📍 Harmony Park, Minnesota</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Sound Systems</span>
-                        <span class="highlight strong">Underground Dubstep</span>
-                        <span class="highlight">Incredible Value</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/burning-man.html" class="festival-card" data-tags="toprated,camping,transform">
-                    <div class="card-header">
-                        <h3>Burning Man</h3>
-                        <span class="score-badge high">45/50</span>
-                    </div>
-                    <p class="location">📍 Black Rock City, Nevada</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Unmatched Art</span>
-                        <span class="highlight">Extreme Experience</span>
-                        <span class="highlight">8 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/desert-hearts.html" class="festival-card" data-tags="toprated,camping,house">
-                    <div class="card-header">
-                        <h3>Desert Hearts</h3>
-                        <span class="score-badge high">45/50</span>
-                    </div>
-                    <p class="location">📍 Flagstaff, Arizona</p>
-                    <div class="highlights">
-                        <span class="highlight strong">House/Techno/Love</span>
-                        <span class="highlight strong">72hr Nonstop</span>
-                        <span class="highlight">One Stage</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/groove-cruise.html" class="festival-card" data-tags="toprated,destination">
-                    <div class="card-header">
-                        <h3>Groove Cruise</h3>
-                        <span class="score-badge high">45/50</span>
-                    </div>
-                    <p class="location">📍 Cruise Ship (Various)</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Community</span>
-                        <span class="highlight strong">All-Inclusive</span>
-                        <span class="highlight">5+ Days</span>
-                    </div>
-                </a>
+            <div class="view-all">
+                <a href="festivals/">View all 94 festivals →</a>
             </div>
         </div>
     </section>
     
-    <!-- MAJOR ELECTRONIC -->
-    <section class="festivals-section" data-category="major">
+    <section class="email-capture">
         <div class="container">
-            <h2>⚡ Major Electronic</h2>
-            <p class="section-subtitle">The flagship events from the biggest promoters. Massive production, massive lineups.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/edc-las-vegas.html" class="festival-card" data-tags="toprated,urban">
-                    <div class="card-header">
-                        <h3>EDC Las Vegas</h3>
-                        <span class="score-badge high">44/50</span>
-                    </div>
-                    <p class="location">📍 Las Vegas, Nevada</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Production</span>
-                        <span class="highlight">3 Nights</span>
-                        <span class="highlight">170K People</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/lightning-in-a-bottle.html" class="festival-card" data-tags="toprated,camping,transform">
-                    <div class="card-header">
-                        <h3>Lightning in a Bottle</h3>
-                        <span class="score-badge high">44/50</span>
-                    </div>
-                    <p class="location">📍 Bakersfield, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Transformational</span>
-                        <span class="highlight">Workshops</span>
-                        <span class="highlight">Lake Setting</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/seismic-dance-event.html" class="festival-card" data-tags="toprated,house,urban">
-                    <div class="card-header">
-                        <h3>Seismic Dance Event</h3>
-                        <span class="score-badge high">44/50</span>
-                    </div>
-                    <p class="location">📍 Austin, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Elite Techno</span>
-                        <span class="highlight strong">Best Sound</span>
-                        <span class="highlight">Urban</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/the-untz-festival.html" class="festival-card" data-tags="toprated,camping,bass">
-                    <div class="card-header">
-                        <h3>The Untz Festival</h3>
-                        <span class="score-badge high">44/50</span>
-                    </div>
-                    <p class="location">📍 Browns Valley, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Underground Bass</span>
-                        <span class="highlight">Intimate</span>
-                        <span class="highlight">Great Value</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/bass-canyon.html" class="festival-card" data-tags="bass,camping">
-                    <div class="card-header">
-                        <h3>Bass Canyon</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 The Gorge, Washington</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Venue</span>
-                        <span class="highlight">Heavy Bass</span>
-                        <span class="highlight">Excision Curated</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/edc-orlando.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>EDC Orlando</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Orlando, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">East Coast EDC</span>
-                        <span class="highlight">3 Days</span>
-                        <span class="highlight">Great Production</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/beyond-wonderland-socal.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Beyond Wonderland</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 San Bernardino, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Insomniac Quality</span>
-                        <span class="highlight">Alice Theme</span>
-                        <span class="highlight">2 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/nocturnal-wonderland.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Nocturnal Wonderland</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 San Bernardino, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Oldest US Rave</span>
-                        <span class="highlight">Camping Available</span>
-                        <span class="highlight">September</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/escape-halloween.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Escape Halloween</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 San Bernardino, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Halloween</span>
-                        <span class="highlight">Horror Theme</span>
-                        <span class="highlight">2 Nights</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/ultra-miami.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Ultra Miami</h3>
-                        <span class="score-badge">37/50</span>
-                    </div>
-                    <p class="location">📍 Miami, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">Elite Lineups</span>
-                        <span class="highlight">Miami Week</span>
-                        <span class="highlight">Global Brand</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/hard-summer.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>HARD Summer</h3>
-                        <span class="score-badge">37/50</span>
-                    </div>
-                    <p class="location">📍 Los Angeles, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Hip-Hop Crossover</span>
-                        <span class="highlight">Bass Heavy</span>
-                        <span class="highlight">2 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/electric-zoo.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Electric Zoo</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 New York City</p>
-                    <div class="highlights">
-                        <span class="highlight">NYC's Flagship</span>
-                        <span class="highlight">Labor Day</span>
-                        <span class="highlight">Island Venue</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- HOUSE/TECHNO -->
-    <section class="festivals-section" data-category="house">
-        <div class="container">
-            <h2>🎹 House & Techno</h2>
-            <p class="section-subtitle">For the four-on-the-floor faithful. Underground sounds and proper club culture.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/dirtybird-campout.html" class="festival-card" data-tags="house,camping">
-                    <div class="card-header">
-                        <h3>Dirtybird Campout</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 Northern California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Summer Camp Vibes</span>
-                        <span class="highlight">Games & Activities</span>
-                        <span class="highlight">Weird & Fun</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/iii-points.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>III Points</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 Miami, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Cutting Edge</span>
-                        <span class="highlight">Art + Music</span>
-                        <span class="highlight">Wynwood</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/day-zero.html" class="festival-card" data-tags="house,destination">
-                    <div class="card-header">
-                        <h3>Day Zero</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 Tulum, Mexico</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Jungle Setting</span>
-                        <span class="highlight">NYE</span>
-                        <span class="highlight">Damian Lazarus</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/arc-music-festival.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>ARC Music Festival</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Chicago, Illinois</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Chicago Techno</span>
-                        <span class="highlight">Union Park</span>
-                        <span class="highlight">Labor Day</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/dreamstate-socal.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Dreamstate SoCal</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Long Beach, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Trance Only</span>
-                        <span class="highlight">Dedicated Fans</span>
-                        <span class="highlight">Great Sound</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/day-mvs.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Day MVS</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 San Diego, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Waterfront</span>
-                        <span class="highlight">House Focus</span>
-                        <span class="highlight">Great Weather</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/rakastella.html" class="festival-card" data-tags="house,destination">
-                    <div class="card-header">
-                        <h3>Rakastella</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Miami, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Beach Setting</span>
-                        <span class="highlight">Art Basel</span>
-                        <span class="highlight">Techno</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/north-coast.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>North Coast</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Chicago Area</p>
-                    <div class="highlights">
-                        <span class="highlight">Multi-Genre</span>
-                        <span class="highlight">Labor Day</span>
-                        <span class="highlight">Good Value</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/crssd-festival.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>CRSSD Festival</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 San Diego, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Waterfront Views</span>
-                        <span class="highlight">21+</span>
-                        <span class="highlight">Perfect Weather</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/movement-detroit.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Movement Detroit</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Detroit, Michigan</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Techno Birthplace</span>
-                        <span class="highlight">Historic</span>
-                        <span class="highlight">Memorial Day</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/minimal-effort.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Minimal Effort</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Los Angeles, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Underground</span>
-                        <span class="highlight">Warehouse Vibes</span>
-                        <span class="highlight">Quality Curation</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/day-trip-la.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Day Trip LA</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Long Beach, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Waterfront</span>
-                        <span class="highlight">House & Techno</span>
-                        <span class="highlight">Single Day</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/anjunadeep-open-air.html" class="festival-card" data-tags="house,urban">
-                    <div class="card-header">
-                        <h3>Anjunadeep Open Air</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Various (Touring)</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Anjuna Family</span>
-                        <span class="highlight">Progressive House</span>
-                        <span class="highlight">Touring</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- BASS/DUBSTEP -->
-    <section class="festivals-section" data-category="bass">
-        <div class="container">
-            <h2>🔊 Bass & Dubstep</h2>
-            <p class="section-subtitle">Headbangers unite. Heavy bass, aggressive drops, and mosh pits with heart.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/wakaan-festival.html" class="festival-card" data-tags="bass,camping">
-                    <div class="card-header">
-                        <h3>Wakaan Festival</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 Ozark, Arkansas</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Liquid Stranger's Vision</span>
-                        <span class="highlight">Experimental Bass</span>
-                        <span class="highlight">Beautiful Venue</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/lost-lands.html" class="festival-card" data-tags="bass,camping">
-                    <div class="card-header">
-                        <h3>Lost Lands</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Legend Valley, Ohio</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Dubstep Mecca</span>
-                        <span class="highlight">Dinosaurs</span>
-                        <span class="highlight">1M+ Watts</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/dancefestopia.html" class="festival-card" data-tags="bass,camping">
-                    <div class="card-header">
-                        <h3>DanceFestopia</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Kansas City, Kansas</p>
-                    <div class="highlights">
-                        <span class="highlight">Bass Heavy</span>
-                        <span class="highlight">Camping</span>
-                        <span class="highlight">Great Value</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/camp-bisco.html" class="festival-card" data-tags="bass,camping">
-                    <div class="card-header">
-                        <h3>Camp Bisco</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Pennsylvania</p>
-                    <div class="highlights">
-                        <span class="highlight">Disco Biscuits Host</span>
-                        <span class="highlight">Jam + Bass</span>
-                        <span class="highlight">Water Park</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/freaky-deaky.html" class="festival-card" data-tags="bass,urban">
-                    <div class="card-header">
-                        <h3>Freaky Deaky</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Houston, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Halloween</span>
-                        <span class="highlight">Bass + House</span>
-                        <span class="highlight">Texas Energy</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/forbidden-kingdom.html" class="festival-card" data-tags="bass,urban">
-                    <div class="card-header">
-                        <h3>Forbidden Kingdom</h3>
-                        <span class="score-badge">36/50</span>
-                    </div>
-                    <p class="location">📍 Orlando, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">Bass Only</span>
-                        <span class="highlight">Heavy Lineup</span>
-                        <span class="highlight">2 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/ubbi-dubbi.html" class="festival-card" data-tags="bass,urban">
-                    <div class="card-header">
-                        <h3>Ubbi Dubbi</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Fort Worth, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Disco Donnie</span>
-                        <span class="highlight">Texas Rave</span>
-                        <span class="highlight">Diverse Lineup</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- TRANSFORMATIONAL -->
-    <section class="festivals-section" data-category="transform">
-        <div class="container">
-            <h2>🌀 Transformational</h2>
-            <p class="section-subtitle">More than music — art, workshops, community, and personal growth.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/symbiosis-gathering.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Symbiosis Gathering</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 California (Various)</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Art + Music</span>
-                        <span class="highlight">Lakeside</span>
-                        <span class="highlight">Community</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/suwannee-hulaween.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Suwannee Hulaween</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Live Oak, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Spanish Moss</span>
-                        <span class="highlight">Halloween</span>
-                        <span class="highlight">String Cheese</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/joshua-tree-music-festival.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Joshua Tree Music Festival</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Joshua Tree, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Desert Beauty</span>
-                        <span class="highlight">Intimate</span>
-                        <span class="highlight">World Music</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/resonance.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Resonance</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Ohio</p>
-                    <div class="highlights">
-                        <span class="highlight">Jam + Electronic</span>
-                        <span class="highlight">Intimate</span>
-                        <span class="highlight">Community</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/sonic-bloom.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Sonic Bloom</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Colorado</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Mountain Setting</span>
-                        <span class="highlight">Workshops</span>
-                        <span class="highlight">Bass + Jam</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/okeechobee.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Okeechobee</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">Multi-Genre</span>
-                        <span class="highlight">PoWoW!</span>
-                        <span class="highlight">March</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/beloved.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Beloved</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Oregon Coast</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Sacred Space</span>
-                        <span class="highlight">Intentional</span>
-                        <span class="highlight">Small</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/secret-dreams.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Secret Dreams</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Legend Valley, Ohio</p>
-                    <div class="highlights">
-                        <span class="highlight">Jam + Electronic</span>
-                        <span class="highlight">Same Venue as LL</span>
-                        <span class="highlight">Intimate</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/lucidity.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Lucidity</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Santa Barbara, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Transformational</span>
-                        <span class="highlight">Workshops</span>
-                        <span class="highlight">Community</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/elements-festival.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Elements Festival</h3>
-                        <span class="score-badge">37/50</span>
-                    </div>
-                    <p class="location">📍 Pennsylvania</p>
-                    <div class="highlights">
-                        <span class="highlight">Lakeside</span>
-                        <span class="highlight">House Focus</span>
-                        <span class="highlight">NYC Accessible</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/arise.html" class="festival-card" data-tags="transform,camping">
-                    <div class="card-header">
-                        <h3>Arise</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Colorado</p>
-                    <div class="highlights">
-                        <span class="highlight">Yoga + Music</span>
-                        <span class="highlight">Mountain Views</span>
-                        <span class="highlight">Wellness</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- MULTI-GENRE -->
-    <section class="festivals-section" data-category="multigenre">
-        <div class="container">
-            <h2>🎸 Multi-Genre</h2>
-            <p class="section-subtitle">Rock, indie, hip-hop, electronic, and everything in between.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/bonnaroo.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Bonnaroo</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Manchester, Tennessee</p>
-                    <div class="highlights">
-                        <span class="highlight strong">The Farm</span>
-                        <span class="highlight">All Genres</span>
-                        <span class="highlight">100K People</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/voodoo.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Voodoo Fest</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 New Orleans, Louisiana</p>
-                    <div class="highlights">
-                        <span class="highlight strong">NOLA Vibes</span>
-                        <span class="highlight">Halloween</span>
-                        <span class="highlight">City Park</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/lollapalooza.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Lollapalooza</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Chicago, Illinois</p>
-                    <div class="highlights">
-                        <span class="highlight">Grant Park</span>
-                        <span class="highlight">4 Days</span>
-                        <span class="highlight">100K Daily</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/life-is-beautiful.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Life is Beautiful</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Las Vegas, Nevada</p>
-                    <div class="highlights">
-                        <span class="highlight">Downtown Vegas</span>
-                        <span class="highlight">Art + Music</span>
-                        <span class="highlight">Food</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/backwoods.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Backwoods</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Mulberry Mountain, Arkansas</p>
-                    <div class="highlights">
-                        <span class="highlight">Mountain Venue</span>
-                        <span class="highlight">Electronic + Jam</span>
-                        <span class="highlight">Intimate</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/gem-and-jam.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Gem & Jam</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Tucson, Arizona</p>
-                    <div class="highlights">
-                        <span class="highlight">Gem Show Tie-In</span>
-                        <span class="highlight">Jam + Bass</span>
-                        <span class="highlight">Desert</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/hangout-music-fest.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Hangout Fest</h3>
-                        <span class="score-badge">36/50</span>
-                    </div>
-                    <p class="location">📍 Gulf Shores, Alabama</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Beach Festival</span>
-                        <span class="highlight">May</span>
-                        <span class="highlight">All Genres</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/outside-lands.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Outside Lands</h3>
-                        <span class="score-badge">36/50</span>
-                    </div>
-                    <p class="location">📍 San Francisco, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Golden Gate Park</span>
-                        <span class="highlight">Food & Wine</span>
-                        <span class="highlight">Bay Area</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/florida-groves.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Florida Groves</h3>
-                        <span class="score-badge">36/50</span>
-                    </div>
-                    <p class="location">📍 Orlando, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">Jam + Electronic</span>
-                        <span class="highlight">New Festival</span>
-                        <span class="highlight">Camping</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/spring-awakening.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Spring Awakening</h3>
-                        <span class="score-badge">36/50</span>
-                    </div>
-                    <p class="location">📍 Chicago, Illinois</p>
-                    <div class="highlights">
-                        <span class="highlight">Chicago Summer</span>
-                        <span class="highlight">Electronic</span>
-                        <span class="highlight">Affordable</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/coachella.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Coachella</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Indio, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Cultural Icon</span>
-                        <span class="highlight">Art Forward</span>
-                        <span class="highlight">2 Weekends</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/austin-city-limits.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Austin City Limits</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Austin, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Zilker Park</span>
-                        <span class="highlight">2 Weekends</span>
-                        <span class="highlight">All Genres</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/bottlerock-napa.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>BottleRock Napa</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Napa Valley, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best Food/Wine</span>
-                        <span class="highlight">Wine Country</span>
-                        <span class="highlight">Culinary</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/breakaway.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Breakaway</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Multi-City (10+ Cities)</p>
-                    <div class="highlights">
-                        <span class="highlight">Touring Festival</span>
-                        <span class="highlight">Accessible</span>
-                        <span class="highlight">1-2 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/forecastle.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Forecastle</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Louisville, Kentucky</p>
-                    <div class="highlights">
-                        <span class="highlight">Waterfront</span>
-                        <span class="highlight">Bourbon</span>
-                        <span class="highlight">Indie Focus</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/sunset-music-festival.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Sunset Music Festival</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Tampa, Florida</p>
-                    <div class="highlights">
-                        <span class="highlight">Memorial Day</span>
-                        <span class="highlight">Electronic</span>
-                        <span class="highlight">Florida Vibes</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/phoenix-lights.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Phoenix Lights</h3>
-                        <span class="score-badge">35/50</span>
-                    </div>
-                    <p class="location">📍 Phoenix, Arizona</p>
-                    <div class="highlights">
-                        <span class="highlight">Arizona EDM</span>
-                        <span class="highlight">April</span>
-                        <span class="highlight">Relentless Beats</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/summerfest.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Summerfest</h3>
-                        <span class="score-badge">34/50</span>
-                    </div>
-                    <p class="location">📍 Milwaukee, Wisconsin</p>
-                    <div class="highlights">
-                        <span class="highlight">World's Largest</span>
-                        <span class="highlight">11 Days</span>
-                        <span class="highlight">800K+ Attend</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/governors-ball.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Governors Ball</h3>
-                        <span class="score-badge">34/50</span>
-                    </div>
-                    <p class="location">📍 New York City</p>
-                    <div class="highlights">
-                        <span class="highlight">NYC Festival</span>
-                        <span class="highlight">Multi-Genre</span>
-                        <span class="highlight">Queens</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/bumbershoot.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Bumbershoot</h3>
-                        <span class="score-badge">33/50</span>
-                    </div>
-                    <p class="location">📍 Seattle, Washington</p>
-                    <div class="highlights">
-                        <span class="highlight">Seattle Center</span>
-                        <span class="highlight">Labor Day</span>
-                        <span class="highlight">Arts Focus</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/something-wonderful.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Something Wonderful</h3>
-                        <span class="score-badge">32/50</span>
-                    </div>
-                    <p class="location">📍 Dallas, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Texas EDM</span>
-                        <span class="highlight">Disco Donnie</span>
-                        <span class="highlight">April</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/firefly-festival.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Firefly</h3>
-                        <span class="score-badge">32/50</span>
-                    </div>
-                    <p class="location">📍 Dover, Delaware</p>
-                    <div class="highlights">
-                        <span class="highlight">East Coast Camping</span>
-                        <span class="highlight">Woodlands</span>
-                        <span class="highlight">June</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/levitation.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Levitation</h3>
-                        <span class="score-badge">32/50</span>
-                    </div>
-                    <p class="location">📍 Austin, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Psychedelic Rock</span>
-                        <span class="highlight">Niche</span>
-                        <span class="highlight">Multi-Venue</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/boston-calling.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Boston Calling</h3>
-                        <span class="score-badge">31/50</span>
-                    </div>
-                    <p class="location">📍 Boston, Massachusetts</p>
-                    <div class="highlights">
-                        <span class="highlight">Harvard Campus</span>
-                        <span class="highlight">Memorial Day</span>
-                        <span class="highlight">All Genres</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/mo-pop.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Mo Pop</h3>
-                        <span class="score-badge">30/50</span>
-                    </div>
-                    <p class="location">📍 Detroit, Michigan</p>
-                    <div class="highlights">
-                        <span class="highlight">Detroit Pride</span>
-                        <span class="highlight">Indie Focus</span>
-                        <span class="highlight">Riverfront</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/pitchfork-music-festival.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Pitchfork Music Festival</h3>
-                        <span class="score-badge">28/50</span>
-                    </div>
-                    <p class="location">📍 Chicago, Illinois</p>
-                    <div class="highlights">
-                        <span class="highlight">Indie Curation</span>
-                        <span class="highlight">Hip Crowd</span>
-                        <span class="highlight">July</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/shaky-knees.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Shaky Knees</h3>
-                        <span class="score-badge">28/50</span>
-                    </div>
-                    <p class="location">📍 Atlanta, Georgia</p>
-                    <div class="highlights">
-                        <span class="highlight">Rock Focus</span>
-                        <span class="highlight">Indie</span>
-                        <span class="highlight">May</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/riot-fest.html" class="festival-card" data-tags="urban">
-                    <div class="card-header">
-                        <h3>Riot Fest</h3>
-                        <span class="score-badge">19/50</span>
-                    </div>
-                    <p class="location">📍 Chicago, Illinois</p>
-                    <div class="highlights">
-                        <span class="highlight">Punk/Rock</span>
-                        <span class="highlight">Nostalgia Acts</span>
-                        <span class="highlight">September</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- NYE/DESTINATION -->
-    <section class="festivals-section" data-category="destination">
-        <div class="container">
-            <h2>✈️ NYE & Destination</h2>
-            <p class="section-subtitle">Holiday events and destination festivals worth the trip.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/holy-ship-wrecked.html" class="festival-card" data-tags="destination">
-                    <div class="card-header">
-                        <h3>Holy Ship! Wrecked</h3>
-                        <span class="score-badge">43/50</span>
-                    </div>
-                    <p class="location">📍 Riviera Maya, Mexico</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Resort Festival</span>
-                        <span class="highlight">All-Inclusive</span>
-                        <span class="highlight">Beach + Pool</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/decadence-colorado.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Decadence Colorado</h3>
-                        <span class="score-badge">42/50</span>
-                    </div>
-                    <p class="location">📍 Denver, Colorado</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Best NYE Indoor</span>
-                        <span class="highlight">2 Nights</span>
-                        <span class="highlight">Convention Center</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/ember-shores.html" class="festival-card" data-tags="destination">
-                    <div class="card-header">
-                        <h3>Ember Shores</h3>
-                        <span class="score-badge">41/50</span>
-                    </div>
-                    <p class="location">📍 Riviera Maya, Mexico</p>
-                    <div class="highlights">
-                        <span class="highlight">Resort Festival</span>
-                        <span class="highlight">Anjuna Curation</span>
-                        <span class="highlight">Beach Vibes</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/countdown-nye.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Countdown NYE</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Los Angeles, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Insomniac NYE</span>
-                        <span class="highlight">LA Convention</span>
-                        <span class="highlight">Indoor</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/goldrush.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Goldrush</h3>
-                        <span class="score-badge">40/50</span>
-                    </div>
-                    <p class="location">📍 Phoenix, Arizona</p>
-                    <div class="highlights">
-                        <span class="highlight">Western Theme</span>
-                        <span class="highlight">September</span>
-                        <span class="highlight">Good Weather</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/global-dance-festival.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Global Dance Festival</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Denver, Colorado</p>
-                    <div class="highlights">
-                        <span class="highlight">Mile High</span>
-                        <span class="highlight">July</span>
-                        <span class="highlight">2 Days</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/das-energi.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Das Energi</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Salt Lake City, Utah</p>
-                    <div class="highlights">
-                        <span class="highlight">Utah Scene</span>
-                        <span class="highlight">August</span>
-                        <span class="highlight">V2 Presents</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/decadence-arizona.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Decadence Arizona</h3>
-                        <span class="score-badge">39/50</span>
-                    </div>
-                    <p class="location">📍 Phoenix, Arizona</p>
-                    <div class="highlights">
-                        <span class="highlight">NYE Option</span>
-                        <span class="highlight">Warm Weather</span>
-                        <span class="highlight">2 Nights</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/splash-house.html" class="festival-card" data-tags="destination">
-                    <div class="card-header">
-                        <h3>Splash House</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Palm Springs, California</p>
-                    <div class="highlights">
-                        <span class="highlight strong">Pool Party</span>
-                        <span class="highlight">3 Hotels</span>
-                        <span class="highlight">House Music</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/project-glow.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Project Glow</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Washington DC</p>
-                    <div class="highlights">
-                        <span class="highlight">Insomniac DC</span>
-                        <span class="highlight">RFK Grounds</span>
-                        <span class="highlight">April</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/lights-all-night.html" class="festival-card" data-tags="destination,urban">
-                    <div class="card-header">
-                        <h3>Lights All Night</h3>
-                        <span class="score-badge">38/50</span>
-                    </div>
-                    <p class="location">📍 Dallas, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">NYE Texas</span>
-                        <span class="highlight">2 Nights</span>
-                        <span class="highlight">Indoor</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/imagine-music-festival.html" class="festival-card" data-tags="camping">
-                    <div class="card-header">
-                        <h3>Imagine Music Festival</h3>
-                        <span class="score-badge">37/50</span>
-                    </div>
-                    <p class="location">📍 Georgia</p>
-                    <div class="highlights">
-                        <span class="highlight">Atlanta Area</span>
-                        <span class="highlight">Camping</span>
-                        <span class="highlight">Water Theme</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- LEGACY/ENDED -->
-    <section class="festivals-section" data-category="legacy">
-        <div class="container">
-            <h2>⚰️ Legacy (Ended/Hiatus)</h2>
-            <p class="section-subtitle">Gone but not forgotten. These festivals shaped the scene but are no longer active.</p>
-            
-            <div class="festival-grid">
-                <a href="festivals/what-the-festival.html" class="festival-card legacy" data-tags="legacy,camping,transform">
-                    <div class="card-header">
-                        <h3>⚰️ What The Festival</h3>
-                        <span class="score-badge legacy">43/50</span>
-                    </div>
-                    <p class="location">📍 Wolf Run Ranch, Oregon</p>
-                    <div class="highlights">
-                        <span class="highlight">Transformational</span>
-                        <span class="highlight">Ended 2019</span>
-                        <span class="highlight">Oregon Gem</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/paradiso.html" class="festival-card legacy" data-tags="legacy,camping">
-                    <div class="card-header">
-                        <h3>⚰️ Paradiso</h3>
-                        <span class="score-badge legacy">42/50</span>
-                    </div>
-                    <p class="location">📍 The Gorge, Washington</p>
-                    <div class="highlights">
-                        <span class="highlight">Gorge Views</span>
-                        <span class="highlight">Ended 2019</span>
-                        <span class="highlight">USC Events</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/mysteryland-usa.html" class="festival-card legacy" data-tags="legacy,camping">
-                    <div class="card-header">
-                        <h3>⚰️ Mysteryland USA</h3>
-                        <span class="score-badge legacy">39/50</span>
-                    </div>
-                    <p class="location">📍 Bethel Woods, New York</p>
-                    <div class="highlights">
-                        <span class="highlight">Woodstock Site</span>
-                        <span class="highlight">Ended 2016</span>
-                        <span class="highlight">Dutch Import</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/sasquatch.html" class="festival-card legacy" data-tags="legacy,camping">
-                    <div class="card-header">
-                        <h3>⚰️ Sasquatch!</h3>
-                        <span class="score-badge legacy">36/50</span>
-                    </div>
-                    <p class="location">📍 The Gorge, Washington</p>
-                    <div class="highlights">
-                        <span class="highlight">Indie Legend</span>
-                        <span class="highlight">Ended 2018</span>
-                        <span class="highlight">Memorial Day</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/air-style.html" class="festival-card legacy" data-tags="legacy,urban">
-                    <div class="card-header">
-                        <h3>⚰️ Air + Style</h3>
-                        <span class="score-badge legacy">N/A</span>
-                    </div>
-                    <p class="location">📍 Los Angeles, California</p>
-                    <div class="highlights">
-                        <span class="highlight">Shaun White's</span>
-                        <span class="highlight">Ended 2019</span>
-                        <span class="highlight">Snowboard+Music</span>
-                    </div>
-                </a>
-                
-                <a href="festivals/sun-city-music-festival.html" class="festival-card legacy" data-tags="legacy,urban">
-                    <div class="card-header">
-                        <h3>⚰️ Sun City Music Festival</h3>
-                        <span class="score-badge legacy">N/A</span>
-                    </div>
-                    <p class="location">📍 El Paso, Texas</p>
-                    <div class="highlights">
-                        <span class="highlight">Texas/Mexico Border</span>
-                        <span class="highlight">Ended 2017</span>
-                        <span class="highlight">Labor Day</span>
-                    </div>
-                </a>
-            </div>
+            <h2>Get Festival Updates</h2>
+            <p>Be the first to know when new festivals are added and get exclusive pre-sale access from our partners.</p>
+            <form class="email-form" onsubmit="handleEmailSubmit(event)">
+                <input type="email" placeholder="your@email.com" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p class="email-note">No spam, unsubscribe anytime. We may share relevant festival offers.</p>
         </div>
     </section>
     
     <footer>
         <div class="container">
-            <p>Ground Score — Find your perfect festival experience</p>
-            <p style="margin-top: 8px;">Built by festival people, for festival people.</p>
-            <p style="margin-top: 16px; font-size: 0.8rem;">94 festivals • Honest reviews • No sponsored content</p>
+            <p>FestPass — Built for festival lovers, by festival lovers.</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">
+                <a href="#">About</a> · <a href="#">Contact</a> · <a href="#">Privacy</a>
+            </p>
         </div>
     </footer>
     
-    <script src="js/lists.js"></script>
-    <script src="js/map.js"></script>
     <script>
-        let selectedPriorities = [];
+        // Sample festival data - in production this would load from festivals/*.html
+        const festivals = [
+            { name: "EDC Las Vegas", location: "Las Vegas, NV", score: 47, genre: "edm", highlights: ["Sound", "Production", "Scale"] },
+            { name: "Electric Forest", location: "Rothbury, MI", score: 46, genre: "edm", highlights: ["Scene", "Vibes", "Art"] },
+            { name: "Coachella", location: "Indio, CA", score: 44, genre: "multi", highlights: ["Lineup", "Production", "Scene"] },
+            { name: "Bonnaroo", location: "Manchester, TN", score: 43, genre: "multi", highlights: ["Camping", "Community", "Vibes"] },
+            { name: "Burning Man", location: "Black Rock City, NV", score: 45, genre: "experience", highlights: ["Art", "Community", "Radical"] },
+            { name: "Ultra Miami", location: "Miami, FL", score: 42, genre: "edm", highlights: ["Sound", "Production", "Energy"] },
+            { name: "Lollapalooza", location: "Chicago, IL", score: 41, genre: "rock", highlights: ["Lineup", "Urban", "Variety"] },
+            { name: "Outside Lands", location: "San Francisco, CA", score: 42, genre: "multi", highlights: ["Food", "Wine", "Vibes"] },
+            { name: "Austin City Limits", location: "Austin, TX", score: 41, genre: "multi", highlights: ["Lineup", "Urban", "Food"] },
+            { name: "Governors Ball", location: "New York, NY", score: 39, genre: "rock", highlights: ["Urban", "Lineup", "Access"] },
+            { name: "Shambhala", location: "British Columbia", score: 46, genre: "edm", highlights: ["Sound", "Community", "Art"] },
+            { name: "Lightning in a Bottle", location: "Bakersfield, CA", score: 44, genre: "edm", highlights: ["Wellness", "Art", "Community"] },
+        ];
         
-        function togglePriority(btn) {
-            const category = btn.dataset.category;
+        function renderFestivals(filter = 'all') {
+            const grid = document.getElementById('festival-grid');
+            const filtered = filter === 'all' ? festivals : festivals.filter(f => f.genre === filter);
             
-            if (btn.classList.contains('selected')) {
-                btn.classList.remove('selected');
-                selectedPriorities = selectedPriorities.filter(p => p !== category);
-            } else if (selectedPriorities.length < 3) {
-                btn.classList.add('selected');
-                selectedPriorities.push(category);
-            }
-            
-            document.getElementById('priority-count').textContent = selectedPriorities.length;
-            document.getElementById('find-btn').disabled = selectedPriorities.length === 0;
+            grid.innerHTML = filtered.map(f => `
+                <a href="festivals/${f.name.toLowerCase().replace(/\s+/g, '-')}.html" class="festival-card">
+                    <div class="card-header">
+                        <h3>${f.name}</h3>
+                        <span class="score-badge">${f.score}/50</span>
+                    </div>
+                    <div class="location">📍 ${f.location}</div>
+                    <div class="highlights">
+                        ${f.highlights.map(h => `<span class="highlight strong">${h}</span>`).join('')}
+                    </div>
+                </a>
+            `).join('');
         }
         
-        function findFestivals() {
-            if (selectedPriorities.length === 0) return;
-            // For now, scroll to festivals - could add sorting/filtering logic
-            document.querySelector('.festivals-section').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function applyFilter(filter) {
-            const cards = document.querySelectorAll('.festival-card');
-            const sections = document.querySelectorAll('.festivals-section');
-            
-            // Reset all filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (filter === 'all') {
-                cards.forEach(card => card.style.display = 'block');
-                sections.forEach(section => section.style.display = 'block');
-                return;
-            }
-            
-            // Map filter names to data-tags
-            const filterMap = {
-                'toprated': 'toprated',
-                'camping': 'camping',
-                'urban': 'urban',
-                'bass': 'bass',
-                'house': 'house',
-                'transform': 'transform',
-                'destination': 'destination'
-            };
-            
-            const tag = filterMap[filter] || filter;
-            
-            cards.forEach(card => {
-                const tags = card.dataset.tags || '';
-                card.style.display = tags.includes(tag) ? 'block' : 'none';
+        // Filter click handlers
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderFestivals(btn.dataset.filter);
             });
-            
-            // Hide empty sections
-            sections.forEach(section => {
-                const visibleCards = section.querySelectorAll('.festival-card[style="display: block"], .festival-card:not([style*="display"])');
-                let hasVisible = false;
-                visibleCards.forEach(card => {
-                    if (card.style.display !== 'none') hasVisible = true;
-                });
-                
-                const grid = section.querySelector('.festival-grid');
-                const visibleInGrid = Array.from(grid.children).filter(c => c.style.display !== 'none');
-                section.style.display = visibleInGrid.length > 0 ? 'block' : 'none';
-            });
+        });
+        
+        // Email form handler
+        function handleEmailSubmit(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            // In production, this would submit to a backend
+            alert('Thanks! You\'ll hear from us soon.');
+            e.target.reset();
         }
+        
+        // Initial render
+        renderFestivals();
     </script>
 </body>
 </html>
