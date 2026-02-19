@@ -1,0 +1,4099 @@
+[
+  {
+    "slug": "a-summer-story",
+    "name": "A Summer Story",
+    "location": "Madrid, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 45000,
+    "size": "Large",
+    "date": "June 20-21, 2025",
+    "month": "June",
+    "price": "\u20ac60-95",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/a-summer-story.html"
+  },
+  {
+    "slug": "air-style",
+    "name": "Air + Style",
+    "location": "Los Angeles, CA (Expo Park)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "February (2015-2019)",
+    "month": "February",
+    "price": "$75-150",
+    "genres": [
+      "Indie/Alt"
+    ],
+    "score": null,
+    "url": "festivals/air-style.html"
+  },
+  {
+    "slug": "airbeat-one",
+    "name": "Airbeat One",
+    "location": "Neustadt-Glewe, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 65000,
+    "size": "Large",
+    "date": "July 9-13, 2025",
+    "month": "July",
+    "price": "\u20ac170-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/airbeat-one.html"
+  },
+  {
+    "slug": "all-points-east",
+    "name": "All Points East",
+    "location": "Victoria Park, London",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "August 15-24, 2025",
+    "month": "August",
+    "price": "\u00a375-95",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/all-points-east.html"
+  },
+  {
+    "slug": "all-together-now",
+    "name": "All Together Now",
+    "location": "Waterford, Ireland",
+    "country": "Ireland",
+    "continent": "Europe",
+    "capacity": 22000,
+    "size": "Medium",
+    "date": "July 31 - Aug 3, 2025",
+    "month": "July",
+    "price": "\u20ac230-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/all-together-now.html"
+  },
+  {
+    "slug": "amsterdam-dance-event",
+    "name": "Amsterdam Dance Event",
+    "location": "Amsterdam, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 450000,
+    "size": "Massive",
+    "date": "October 22-26",
+    "month": "October",
+    "price": "Varies",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/amsterdam-dance-event.html"
+  },
+  {
+    "slug": "anjunadeep-open-air",
+    "name": "Anjunadeep Open Air",
+    "location": "Touring (Red Rocks, Brooklyn, DC, LA)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 2000,
+    "size": "Boutique",
+    "date": "Various (Spring-Fall)",
+    "month": "",
+    "price": "$50-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/anjunadeep-open-air.html"
+  },
+  {
+    "slug": "arc-music-festival",
+    "name": "ARC Music Festival",
+    "location": "Union Park, Chicago",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "Labor Day Weekend (3 days)",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/arc-music-festival.html"
+  },
+  {
+    "slug": "arise",
+    "name": "ARISE Music Festival",
+    "location": "Sunrise Ranch / The Cradle, Colorado",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/arise.html"
+  },
+  {
+    "slug": "audioriver",
+    "name": "Audioriver",
+    "location": "\u0141\u00f3d\u017a, Poland",
+    "country": "Poland",
+    "continent": "Europe",
+    "capacity": 35000,
+    "size": "Large",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "\u20ac50-90",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/audioriver.html"
+  },
+  {
+    "slug": "audiotistic",
+    "name": "Audiotistic Bay Area",
+    "location": "Mountain View, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "July (2 days)",
+    "month": "July",
+    "price": "$100-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/audiotistic.html"
+  },
+  {
+    "slug": "audiotistic-bay-area",
+    "name": "Audiotistic Bay Area",
+    "location": "Shoreline Amphitheater, Mountain View",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 22000,
+    "size": "Medium",
+    "date": "July (1 day)",
+    "month": "July",
+    "price": "$100-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/audiotistic-bay-area.html"
+  },
+  {
+    "slug": "austin-city-limits",
+    "name": "Austin City Limits",
+    "location": "Zilker Park, Austin, TX",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 75000,
+    "size": "Large",
+    "date": "October (2 weekends, 3 days each)",
+    "month": "October",
+    "price": "$300-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/austin-city-limits.html"
+  },
+  {
+    "slug": "ava-festival",
+    "name": "AVA Festival",
+    "location": "Belfast, Northern Ireland",
+    "country": "Ireland",
+    "continent": "Europe",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "May 30-31, 2025",
+    "month": "May",
+    "price": "\u00a380-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/ava-festival.html"
+  },
+  {
+    "slug": "awakenings",
+    "name": "Awakenings Festival",
+    "location": "Spaarnwoude, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 80000,
+    "size": "Large",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "\u20ac90-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/awakenings.html"
+  },
+  {
+    "slug": "backwoods",
+    "name": "Backwoods",
+    "location": "Mulberry Mountain, Arkansas",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "Labor Day Weekend",
+    "month": "",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/backwoods.html"
+  },
+  {
+    "slug": "balaton-sound",
+    "name": "Balaton Sound",
+    "location": "Zam\u00e1rdi, Hungary",
+    "country": "Hungary",
+    "continent": "Europe",
+    "capacity": 150000,
+    "size": "Massive",
+    "date": "July 2-6, 2025",
+    "month": "July",
+    "price": "\u20ac130-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/balaton-sound.html"
+  },
+  {
+    "slug": "bass-canyon",
+    "name": "Bass Canyon",
+    "location": "The Gorge, Washington",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$289-439",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/bass-canyon.html"
+  },
+  {
+    "slug": "beloved",
+    "name": "Beloved Festival",
+    "location": "Tidewater, Oregon Coast Range",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "August (4 days)",
+    "month": "August",
+    "price": "$250-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/beloved.html"
+  },
+  {
+    "slug": "beyond-wonderland-socal",
+    "name": "Beyond Wonderland SoCal",
+    "location": "NOS Events Center, San Bernardino",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 65000,
+    "size": "Large",
+    "date": "March (2 days)",
+    "month": "March",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/beyond-wonderland-socal.html"
+  },
+  {
+    "slug": "big-dub-festival",
+    "name": "Big Dub Festival",
+    "location": "Artemas, PA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "July (5 days)",
+    "month": "July",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/big-dub-festival.html"
+  },
+  {
+    "slug": "big-dub",
+    "name": "Big Dub Festival",
+    "location": "Four Quarters Farm, Pennsylvania",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 2500,
+    "size": "Boutique",
+    "date": "August (4 days)",
+    "month": "August",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/big-dub.html"
+  },
+  {
+    "slug": "body-and-soul",
+    "name": "Body & Soul",
+    "location": "Westmeath, Ireland",
+    "country": "Ireland",
+    "continent": "Europe",
+    "capacity": 12000,
+    "size": "Medium",
+    "date": "June 20-22, 2025",
+    "month": "June",
+    "price": "\u20ac200-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/body-and-soul.html"
+  },
+  {
+    "slug": "bonnaroo",
+    "name": "Bonnaroo",
+    "location": "Manchester, Tennessee (The Farm)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 65000,
+    "size": "Large",
+    "date": "June (4 days)",
+    "month": "June",
+    "price": "$350-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/bonnaroo.html"
+  },
+  {
+    "slug": "boo-seattle",
+    "name": "BOO Seattle",
+    "location": "Seattle, WA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 12000,
+    "size": "Medium",
+    "date": "October/November (2 days)",
+    "month": "October",
+    "price": "$100-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/boo-seattle.html"
+  },
+  {
+    "slug": "boom-festival",
+    "name": "Boom Festival",
+    "location": "Idanha-a-Nova, Portugal",
+    "country": "Portugal",
+    "continent": "Europe",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "July 17-24, 2025",
+    "month": "July",
+    "price": "\u20ac280-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 48.0,
+    "url": "festivals/boom-festival.html"
+  },
+  {
+    "slug": "boomtown-fair",
+    "name": "Boomtown Fair",
+    "location": "Hampshire, England",
+    "country": "England",
+    "continent": "Europe",
+    "capacity": 66000,
+    "size": "Large",
+    "date": "August 6-10, 2025",
+    "month": "August",
+    "price": "\u00a3300-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/boomtown-fair.html"
+  },
+  {
+    "slug": "boston-calling",
+    "name": "Boston Calling",
+    "location": "Harvard Athletic Complex, Boston",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 45000,
+    "size": "Large",
+    "date": "May (3 days)",
+    "month": "May",
+    "price": "$200-550",
+    "genres": [
+      "EDM"
+    ],
+    "score": 31.0,
+    "url": "festivals/boston-calling.html"
+  },
+  {
+    "slug": "bottlerock-napa",
+    "name": "BottleRock Napa Valley",
+    "location": "Napa Valley Expo, California",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 120000,
+    "size": "Massive",
+    "date": "May (3 days)",
+    "month": "May",
+    "price": "$250-700+",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/bottlerock-napa.html"
+  },
+  {
+    "slug": "breakaway",
+    "name": "Breakaway Music Festival",
+    "location": "Multi-City (10+ US Cities)",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "Year-Round (City-Specific)",
+    "month": "",
+    "price": "$100-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/breakaway.html"
+  },
+  {
+    "slug": "brunch-electronik",
+    "name": "Brunch Electronik Festival",
+    "location": "Barcelona, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "August 7-10, 2025",
+    "month": "August",
+    "price": "\u20ac40-90",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/brunch-electronik.html"
+  },
+  {
+    "slug": "buku",
+    "name": "BUKU Music + Art Project",
+    "location": "Mardi Gras World, New Orleans",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "March (2 days)",
+    "month": "March",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/buku.html"
+  },
+  {
+    "slug": "buku-music-project",
+    "name": "BUKU Music + Art Project",
+    "location": "New Orleans, LA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "March (2 days)",
+    "month": "March",
+    "price": "$125-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/buku-music-project.html"
+  },
+  {
+    "slug": "bumbershoot",
+    "name": "Bumbershoot",
+    "location": "Seattle Center, Washington",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "Labor Day (2 days)",
+    "month": "",
+    "price": "$70-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 33.0,
+    "url": "festivals/bumbershoot.html"
+  },
+  {
+    "slug": "burning-man",
+    "name": "Burning Man",
+    "location": "Black Rock City, Nevada",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 80000,
+    "size": "Large",
+    "date": "Late Aug - Early Sept (8+ days)",
+    "month": "",
+    "price": "$575 + $2-8K prep",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/burning-man.html"
+  },
+  {
+    "slug": "camp-bisco",
+    "name": "Camp Bisco",
+    "location": "Montage Mountain, Pennsylvania",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/camp-bisco.html"
+  },
+  {
+    "slug": "caprices-festival",
+    "name": "Caprices Festival",
+    "location": "Crans-Montana, Swiss Alps",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 35000,
+    "size": "Large",
+    "date": "March (2 weekends)",
+    "month": "March",
+    "price": "\u20ac150-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/caprices-festival.html"
+  },
+  {
+    "slug": "cascade-equinox",
+    "name": "Cascade Equinox",
+    "location": "Redmond, Oregon",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/cascade-equinox.html"
+  },
+  {
+    "slug": "catskill-chill",
+    "name": "Catskill Chill",
+    "location": "Hancock, NY",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$150-225",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/catskill-chill.html"
+  },
+  {
+    "slug": "club-to-club",
+    "name": "Club to Club (C2C) Festival",
+    "location": "Turin, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "October 30 - November 2, 2025",
+    "month": "October",
+    "price": "\u20ac50-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/club-to-club.html"
+  },
+  {
+    "slug": "coachella",
+    "name": "Coachella",
+    "location": "Indio, California",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 125000,
+    "size": "Massive",
+    "date": "April (2 weekends)",
+    "month": "April",
+    "price": "$500-1,000+",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/coachella.html"
+  },
+  {
+    "slug": "colours-of-ostrava",
+    "name": "Colours of Ostrava",
+    "location": "Ostrava, Czech Republic",
+    "country": "Czech",
+    "continent": "Europe",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "July 16-19, 2025",
+    "month": "July",
+    "price": "\u20ac100-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/colours-of-ostrava.html"
+  },
+  {
+    "slug": "countdown-nye",
+    "name": "Countdown NYE",
+    "location": "LA Convention Center (2025+)",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 70000,
+    "size": "Large",
+    "date": "December 31 (1 night)",
+    "month": "December",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/countdown-nye.html"
+  },
+  {
+    "slug": "creamfields",
+    "name": "Creamfields",
+    "location": "Daresbury, Cheshire, UK",
+    "country": "UK",
+    "continent": "Europe",
+    "capacity": 70000,
+    "size": "Large",
+    "date": "August Bank Holiday",
+    "month": "August",
+    "price": "\u00a3200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/creamfields.html"
+  },
+  {
+    "slug": "crssd-festival",
+    "name": "CRSSD Festival",
+    "location": "San Diego, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "March & September (2 days each)",
+    "month": "March",
+    "price": "$200-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/crssd-festival.html"
+  },
+  {
+    "slug": "dancefestopia",
+    "name": "Dancefestopia",
+    "location": "La Cygne, KS (near Kansas City)",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "September (7 days)",
+    "month": "September",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/dancefestopia.html"
+  },
+  {
+    "slug": "das-energi",
+    "name": "Das Energi",
+    "location": "Salt Lake City, Utah",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "August (2 days)",
+    "month": "August",
+    "price": "$100-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/das-energi.html"
+  },
+  {
+    "slug": "day-trip-la",
+    "name": "Day Trip Festival",
+    "location": "Queen Mary Waterfront, Long Beach",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (2 days)",
+    "month": "June",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/day-trip-la.html"
+  },
+  {
+    "slug": "day-zero",
+    "name": "Day Zero",
+    "location": "Tulum, Mexico (Jungle)",
+    "country": "Mexico",
+    "continent": "North America",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "January (Near Mayan New Year)",
+    "month": "January",
+    "price": "$200-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/day-zero.html"
+  },
+  {
+    "slug": "day-mvs",
+    "name": "DAY.MVS",
+    "location": "San Diego Waterfront",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "Summer/Year-round",
+    "month": "",
+    "price": "$80-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/day-mvs.html"
+  },
+  {
+    "slug": "dead-rocks",
+    "name": "Dead Rocks",
+    "location": "Morrison, CO",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "July (2-3 nights)",
+    "month": "July",
+    "price": "$80-150/night",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/dead-rocks.html"
+  },
+  {
+    "slug": "decadence-arizona",
+    "name": "Decadence Arizona",
+    "location": "Phoenix Raceway, Avondale AZ",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "Dec 30-31 (NYE)",
+    "month": "",
+    "price": "$150-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/decadence-arizona.html"
+  },
+  {
+    "slug": "decadence-colorado",
+    "name": "Decadence Colorado",
+    "location": "Colorado Convention Center, Denver",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "Dec 30-31 (NYE)",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/decadence-colorado.html"
+  },
+  {
+    "slug": "decibel-open-air",
+    "name": "Decibel Open Air",
+    "location": "Florence, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "September 6-7, 2025",
+    "month": "September",
+    "price": "\u20ac60-100",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/decibel-open-air.html"
+  },
+  {
+    "slug": "deep-tropics",
+    "name": "Deep Tropics",
+    "location": "Bicentennial Mall, Nashville",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/deep-tropics.html"
+  },
+  {
+    "slug": "defected-croatia",
+    "name": "Defected Croatia",
+    "location": "Tisno, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "August 7-12, 2025",
+    "month": "August",
+    "price": "\u20ac200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/defected-croatia.html"
+  },
+  {
+    "slug": "defqon-1",
+    "name": "Defqon.1",
+    "location": "Biddinghuizen, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 250000,
+    "size": "Massive",
+    "date": "June 26-29",
+    "month": "June",
+    "price": "\u20ac180-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/defqon-1.html"
+  },
+  {
+    "slug": "dekmantel",
+    "name": "Dekmantel Festival",
+    "location": "Amsterdamse Bos, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "July 30 - Aug 3 (5 days)",
+    "month": "July",
+    "price": "\u20ac80-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/dekmantel.html"
+  },
+  {
+    "slug": "dekmantel-festival",
+    "name": "Dekmantel Festival",
+    "location": "Amsterdamse Bos, Amsterdam",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 45000,
+    "size": "Large",
+    "date": "Late July-August (5 days)",
+    "month": "July",
+    "price": "\u20ac200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/dekmantel-festival.html"
+  },
+  {
+    "slug": "desert-hearts",
+    "name": "Desert Hearts Festival",
+    "location": "Playa Ponderosa, Flagstaff AZ",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (4-5 days)",
+    "month": "July",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/desert-hearts.html"
+  },
+  {
+    "slug": "dgtl-amsterdam",
+    "name": "DGTL Amsterdam",
+    "location": "NDSM Docklands, Amsterdam",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "April 18-20 (3 days)",
+    "month": "April",
+    "price": "\u20ac70-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/dgtl-amsterdam.html"
+  },
+  {
+    "slug": "dgtl-barcelona",
+    "name": "DGTL Barcelona",
+    "location": "Barcelona, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 35000,
+    "size": "Large",
+    "date": "August 8-10, 2025",
+    "month": "August",
+    "price": "\u20ac85-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/dgtl-barcelona.html"
+  },
+  {
+    "slug": "dimensions-festival",
+    "name": "Dimensions Festival",
+    "location": "Tisno, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 6000,
+    "size": "Boutique",
+    "date": "August 28 - September 1, 2025",
+    "month": "August",
+    "price": "\u20ac200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/dimensions-festival.html"
+  },
+  {
+    "slug": "dirtybird-campout",
+    "name": "Dirtybird Campout",
+    "location": "Cook's Valley, Northern CA",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$300-450",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/dirtybird-campout.html"
+  },
+  {
+    "slug": "disc-jam",
+    "name": "Disc Jam Music Festival",
+    "location": "Stephentown, NY",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (4 days)",
+    "month": "June",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/disc-jam.html"
+  },
+  {
+    "slug": "dour-festival",
+    "name": "Dour Festival",
+    "location": "Dour, Belgium",
+    "country": "Belgium",
+    "continent": "Europe",
+    "capacity": 225000,
+    "size": "Massive",
+    "date": "July 16-20 (5 days)",
+    "month": "July",
+    "price": "\u20ac140-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/dour-festival.html"
+  },
+  {
+    "slug": "down-the-rabbit-hole",
+    "name": "Down The Rabbit Hole",
+    "location": "Beuningen, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "July 4-6 (3 days)",
+    "month": "July",
+    "price": "\u20ac170-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/down-the-rabbit-hole.html"
+  },
+  {
+    "slug": "dreambeach-festival",
+    "name": "Dreambeach Festival",
+    "location": "Almer\u00eda, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 60000,
+    "size": "Large",
+    "date": "August 7-10, 2025",
+    "month": "August",
+    "price": "\u20ac90-160",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/dreambeach-festival.html"
+  },
+  {
+    "slug": "dreamstate-sf",
+    "name": "Dreamstate SF",
+    "location": "San Francisco, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "April (2 days)",
+    "month": "April",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/dreamstate-sf.html"
+  },
+  {
+    "slug": "dreamstate-socal",
+    "name": "Dreamstate SoCal",
+    "location": "Queen Mary Waterfront, Long Beach",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "November (2 nights)",
+    "month": "November",
+    "price": "$180-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/dreamstate-socal.html"
+  },
+  {
+    "slug": "edc-las-vegas",
+    "name": "EDC Las Vegas",
+    "location": "Las Vegas Motor Speedway",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 170000,
+    "size": "Massive",
+    "date": "May (3 nights)",
+    "month": "May",
+    "price": "$400-600",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/edc-las-vegas.html"
+  },
+  {
+    "slug": "edc-orlando",
+    "name": "EDC Orlando",
+    "location": "Tinker Field, Orlando",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 80000,
+    "size": "Large",
+    "date": "November (3 days)",
+    "month": "November",
+    "price": "$300-450",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/edc-orlando.html"
+  },
+  {
+    "slug": "electric-castle",
+    "name": "Electric Castle",
+    "location": "B\u00e1nffy Castle, Cluj, Romania",
+    "country": "Romania",
+    "continent": "Europe",
+    "capacity": 230000,
+    "size": "Massive",
+    "date": "July (4 days)",
+    "month": "July",
+    "price": "\u20ac180-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/electric-castle.html"
+  },
+  {
+    "slug": "electric-forest",
+    "name": "Electric Forest",
+    "location": "Rothbury, Michigan",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 45000,
+    "size": "Large",
+    "date": "June (4 days)",
+    "month": "June",
+    "price": "$350-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/electric-forest.html"
+  },
+  {
+    "slug": "electric-picnic",
+    "name": "Electric Picnic",
+    "location": "Stradbally, Ireland",
+    "country": "Ireland",
+    "continent": "Europe",
+    "capacity": 75000,
+    "size": "Large",
+    "date": "August 29-31, 2025",
+    "month": "August",
+    "price": "\u20ac280-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/electric-picnic.html"
+  },
+  {
+    "slug": "electric-zoo",
+    "name": "Electric Zoo",
+    "location": "Randall's Island, NYC",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 85000,
+    "size": "Large",
+    "date": "Labor Day Weekend (3 days)",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/electric-zoo.html"
+  },
+  {
+    "slug": "elements-festival",
+    "name": "Elements Festival",
+    "location": "Long Pond, Pennsylvania",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$300-450",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/elements-festival.html"
+  },
+  {
+    "slug": "elrow-town-madrid",
+    "name": "Elrow Town Madrid",
+    "location": "Madrid, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 35000,
+    "size": "Large",
+    "date": "May 1, 2025",
+    "month": "May",
+    "price": "\u20ac65-95",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/elrow-town-madrid.html"
+  },
+  {
+    "slug": "ember-shores",
+    "name": "Ember Shores",
+    "location": "Riviera Maya, Mexico",
+    "country": "Mexico",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "December (3 days)",
+    "month": "December",
+    "price": "$1,500+",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/ember-shores.html"
+  },
+  {
+    "slug": "emissions-festival",
+    "name": "Emissions Festival",
+    "location": "Bostwick, GA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "October (3 days)",
+    "month": "October",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/emissions-festival.html"
+  },
+  {
+    "slug": "escape-halloween",
+    "name": "Escape Halloween",
+    "location": "NOS Events Center, San Bernardino",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "Halloween Weekend (2 nights)",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/escape-halloween.html"
+  },
+  {
+    "slug": "exit-festival",
+    "name": "EXIT Festival",
+    "location": "Novi Sad, Serbia",
+    "country": "Serbia",
+    "continent": "Europe",
+    "capacity": 200000,
+    "size": "Massive",
+    "date": "July (4 days)",
+    "month": "July",
+    "price": "\u20ac100-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/exit-festival.html"
+  },
+  {
+    "slug": "field-day",
+    "name": "Field Day",
+    "location": "Brockwell Park, London",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "May 24, 2025",
+    "month": "May",
+    "price": "\u00a370-90",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/field-day.html"
+  },
+  {
+    "slug": "firefly-festival",
+    "name": "Firefly Festival",
+    "location": "Dover, Delaware",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (4 days)",
+    "month": "September",
+    "price": "$300-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 32.0,
+    "url": "festivals/firefly-festival.html"
+  },
+  {
+    "slug": "florida-groves",
+    "name": "Florida Groves Music Festival",
+    "location": "Central Florida Fairgrounds, Orlando",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "April 11-12 (2 days)",
+    "month": "April",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/florida-groves.html"
+  },
+  {
+    "slug": "flow-festival",
+    "name": "Flow Festival",
+    "location": "Helsinki, Finland",
+    "country": "Finland",
+    "continent": "Europe",
+    "capacity": 90000,
+    "size": "Large",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "\u20ac180-240",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/flow-festival.html"
+  },
+  {
+    "slug": "forbidden-kingdom",
+    "name": "Forbidden Kingdom",
+    "location": "Orlando, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "Late April / Early May (2 days)",
+    "month": "April",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/forbidden-kingdom.html"
+  },
+  {
+    "slug": "forecastle",
+    "name": "Forecastle",
+    "location": "Waterfront Park, Louisville KY",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 75000,
+    "size": "Large",
+    "date": "May/July (3 days)",
+    "month": "May",
+    "price": "$175-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/forecastle.html"
+  },
+  {
+    "slug": "form-arcosanti",
+    "name": "FORM Arcosanti",
+    "location": "Arcosanti, Arizona",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 2500,
+    "size": "Boutique",
+    "date": "October (3 days)",
+    "month": "October",
+    "price": "$350-600",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/form-arcosanti.html"
+  },
+  {
+    "slug": "freaknight",
+    "name": "Freaknight",
+    "location": "WaMu Theater, Seattle",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "October (1 night)",
+    "month": "October",
+    "price": "$80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/freaknight.html"
+  },
+  {
+    "slug": "freaky-deaky",
+    "name": "Freaky Deaky",
+    "location": "Houston, TX",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "Halloween Weekend",
+    "month": "",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/freaky-deaky.html"
+  },
+  {
+    "slug": "fusion-festival",
+    "name": "Fusion Festival",
+    "location": "L\u00e4rz, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 70000,
+    "size": "Large",
+    "date": "June 25-29, 2025",
+    "month": "June",
+    "price": "Lottery Only",
+    "genres": [
+      "EDM"
+    ],
+    "score": 48.0,
+    "url": "festivals/fusion-festival.html"
+  },
+  {
+    "slug": "garbicz-festival",
+    "name": "Garbicz Festival",
+    "location": "Lake Wielicko, Poland",
+    "country": "Poland",
+    "continent": "Europe",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "July-August (5 days)",
+    "month": "July",
+    "price": "\u20ac180-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/garbicz-festival.html"
+  },
+  {
+    "slug": "gem-and-jam",
+    "name": "Gem & Jam Festival",
+    "location": "Pima County Fairgrounds, Tucson AZ",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "February (3 days)",
+    "month": "February",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/gem-and-jam.html"
+  },
+  {
+    "slug": "get-freaky",
+    "name": "Get Freaky",
+    "location": "Salt Lake City, UT",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "October (3 days)",
+    "month": "October",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/get-freaky.html"
+  },
+  {
+    "slug": "global-dance-festival",
+    "name": "Global Dance Festival",
+    "location": "Denver, Colorado",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "July (2 days)",
+    "month": "July",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/global-dance-festival.html"
+  },
+  {
+    "slug": "goldrush",
+    "name": "Goldrush Music Festival",
+    "location": "Phoenix, Arizona",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "September (2 days)",
+    "month": "September",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/goldrush.html"
+  },
+  {
+    "slug": "governors-ball",
+    "name": "Governors Ball",
+    "location": "Flushing Meadows, Queens, NYC",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "June (3 days)",
+    "month": "June",
+    "price": "$350-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 34.0,
+    "url": "festivals/governors-ball.html"
+  },
+  {
+    "slug": "groove-cruise",
+    "name": "Groove Cruise Miami",
+    "location": "Royal Caribbean Cruise Ship",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 4000,
+    "size": "Boutique",
+    "date": "January (4-5 days)",
+    "month": "January",
+    "price": "$1,200-4,000+",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/groove-cruise.html"
+  },
+  {
+    "slug": "hangout-music-fest",
+    "name": "Hangout Music Fest",
+    "location": "Gulf Shores, Alabama",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "May (3 days)",
+    "month": "May",
+    "price": "$300-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/hangout-music-fest.html"
+  },
+  {
+    "slug": "hard-summer",
+    "name": "HARD Summer",
+    "location": "Hollywood Park, Los Angeles",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 80000,
+    "size": "Large",
+    "date": "August (2 days)",
+    "month": "August",
+    "price": "$200-435",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/hard-summer.html"
+  },
+  {
+    "slug": "heatwave",
+    "name": "Heatwave Music Festival",
+    "location": "Chicago, IL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "June (2 days)",
+    "month": "June",
+    "price": "$150-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/heatwave.html"
+  },
+  {
+    "slug": "hideout",
+    "name": "Hideout Festival",
+    "location": "Zrce Beach, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "June 22-26",
+    "month": "June",
+    "price": "\u20ac200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/hideout.html"
+  },
+  {
+    "slug": "hijinx-festival",
+    "name": "HiJinx Festival",
+    "location": "Philadelphia, PA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "December 27-28",
+    "month": "December",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/hijinx-festival.html"
+  },
+  {
+    "slug": "hijinx",
+    "name": "Hijinx Festival",
+    "location": "Philadelphia, PA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "December (2 days)",
+    "month": "December",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/hijinx.html"
+  },
+  {
+    "slug": "holy-ship-wrecked",
+    "name": "Holy Ship! Wrecked",
+    "location": "Hard Rock Riviera Maya, Mexico",
+    "country": "Mexico",
+    "continent": "North America",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "December (4 nights)",
+    "month": "December",
+    "price": "$1,700-3,700",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/holy-ship-wrecked.html"
+  },
+  {
+    "slug": "houghton-festival",
+    "name": "Houghton Festival",
+    "location": "Norfolk, England",
+    "country": "England",
+    "continent": "Europe",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "August 7-10, 2025",
+    "month": "August",
+    "price": "\u00a3235-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 48.0,
+    "url": "festivals/houghton-festival.html"
+  },
+  {
+    "slug": "hyperion-festival",
+    "name": "Hyperion Festival",
+    "location": "Spencer, VT",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$125-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/hyperion-festival.html"
+  },
+  {
+    "slug": "iii-points",
+    "name": "III Points",
+    "location": "Mana Wynwood, Miami",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "October 16-17, 2026",
+    "month": "October",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/iii-points.html"
+  },
+  {
+    "slug": "illfest",
+    "name": "ILLfest",
+    "location": "Austin, TX",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "May/June (3 days)",
+    "month": "May",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/illfest.html"
+  },
+  {
+    "slug": "imagine-music-festival",
+    "name": "Imagine Music Festival",
+    "location": "Kingston Downs, Georgia",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/imagine-music-festival.html"
+  },
+  {
+    "slug": "infrasound",
+    "name": "Infrasound",
+    "location": "Harmony Park, Minnesota",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "May (4 days)",
+    "month": "May",
+    "price": "$240",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/infrasound.html"
+  },
+  {
+    "slug": "inmusic-festival",
+    "name": "INmusic Festival",
+    "location": "Zagreb, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 60000,
+    "size": "Large",
+    "date": "June 23-25, 2025",
+    "month": "June",
+    "price": "\u20ac60-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/inmusic-festival.html"
+  },
+  {
+    "slug": "joshua-tree-music-festival",
+    "name": "Joshua Tree Music Festival",
+    "location": "Joshua Tree Lake, California",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "May & October",
+    "month": "May",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/joshua-tree-music-festival.html"
+  },
+  {
+    "slug": "junction-2",
+    "name": "Junction 2",
+    "location": "London, UK",
+    "country": "UK",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "July 25-27",
+    "month": "July",
+    "price": "\u00a370-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/junction-2.html"
+  },
+  {
+    "slug": "kappa-futur",
+    "name": "Kappa FuturFestival",
+    "location": "Turin, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "\u20ac80-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/kappa-futur.html"
+  },
+  {
+    "slug": "kappa-futurfestival",
+    "name": "Kappa FuturFestival",
+    "location": "Turin, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 100000,
+    "size": "Massive",
+    "date": "July 4-6, 2025",
+    "month": "July",
+    "price": "\u20ac90-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/kappa-futurfestival.html"
+  },
+  {
+    "slug": "let-it-roll",
+    "name": "Let It Roll",
+    "location": "Lake Most, Czech Republic",
+    "country": "Czech",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "Late July (3 days)",
+    "month": "July",
+    "price": "\u20ac80-140",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/let-it-roll.html"
+  },
+  {
+    "slug": "levitation",
+    "name": "Levitation / Austin Psych Fest",
+    "location": "Austin, Texas",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "Spring (APF) / Fall (Levitation)",
+    "month": "",
+    "price": "$100-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 32.0,
+    "url": "festivals/levitation.html"
+  },
+  {
+    "slug": "life-is-beautiful",
+    "name": "Life is Beautiful",
+    "location": "Downtown Las Vegas",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (2 days)",
+    "month": "September",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/life-is-beautiful.html"
+  },
+  {
+    "slug": "lightning-in-a-bottle",
+    "name": "Lightning in a Bottle",
+    "location": "Buena Vista Lake, Bakersfield",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "May (5 days)",
+    "month": "May",
+    "price": "$400-600",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/lightning-in-a-bottle.html"
+  },
+  {
+    "slug": "lights-all-night",
+    "name": "Lights All Night",
+    "location": "Dallas Market Hall, Dallas TX",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "Dec 30-31 (NYE)",
+    "month": "",
+    "price": "$150-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/lights-all-night.html"
+  },
+  {
+    "slug": "lollapalooza",
+    "name": "Lollapalooza",
+    "location": "Grant Park, Chicago",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 100000,
+    "size": "Massive",
+    "date": "Late July / Early August (4 days)",
+    "month": "July",
+    "price": "$350-600",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/lollapalooza.html"
+  },
+  {
+    "slug": "lost-in-dreams",
+    "name": "Lost in Dreams",
+    "location": "Las Vegas, NV",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (2 days)",
+    "month": "September",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/lost-in-dreams.html"
+  },
+  {
+    "slug": "lost-lands",
+    "name": "Lost Lands",
+    "location": "Legend Valley, Ohio",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$315-650",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/lost-lands.html"
+  },
+  {
+    "slug": "lost-village",
+    "name": "Lost Village",
+    "location": "Lincolnshire, England",
+    "country": "England",
+    "continent": "Europe",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "August 21-24, 2025",
+    "month": "August",
+    "price": "\u00a3230-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/lost-village.html"
+  },
+  {
+    "slug": "love-international",
+    "name": "Love International",
+    "location": "Tisno, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "July 2-8, 2025",
+    "month": "July",
+    "price": "\u20ac250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/love-international.html"
+  },
+  {
+    "slug": "love-saves-the-day",
+    "name": "Love Saves The Day",
+    "location": "Bristol, England",
+    "country": "England",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "May 24-25, 2025",
+    "month": "May",
+    "price": "\u00a365-85",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/love-saves-the-day.html"
+  },
+  {
+    "slug": "lowlands",
+    "name": "Lowlands Festival",
+    "location": "Biddinghuizen, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 55000,
+    "size": "Large",
+    "date": "August 15-17 (3 days)",
+    "month": "August",
+    "price": "\u20ac230-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/lowlands.html"
+  },
+  {
+    "slug": "lucidity",
+    "name": "Lucidity Festival",
+    "location": "Live Oak Campground, Santa Barbara CA",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "April (3 days)",
+    "month": "April",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/lucidity.html"
+  },
+  {
+    "slug": "mad-tea-party-jam",
+    "name": "Mad Tea Party Jam",
+    "location": "Artemas, PA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$100-175",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/mad-tea-party-jam.html"
+  },
+  {
+    "slug": "medusa-festival",
+    "name": "Medusa Festival",
+    "location": "Cullera, Valencia, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 180000,
+    "size": "Massive",
+    "date": "August 7-11, 2025",
+    "month": "August",
+    "price": "\u20ac120-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/medusa-festival.html"
+  },
+  {
+    "slug": "melt-festival",
+    "name": "Melt Festival",
+    "location": "Ferropolis, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "July 17-19, 2025",
+    "month": "July",
+    "price": "\u20ac150-220",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/melt-festival.html"
+  },
+  {
+    "slug": "minimal-effort",
+    "name": "Minimal Effort",
+    "location": "Downtown Los Angeles",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "Halloween & NYE",
+    "month": "",
+    "price": "$60-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/minimal-effort.html"
+  },
+  {
+    "slug": "mo-pop",
+    "name": "Mo Pop",
+    "location": "West Riverfront Park, Detroit MI",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "July (2 days)",
+    "month": "July",
+    "price": "$100-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 30.0,
+    "url": "festivals/mo-pop.html"
+  },
+  {
+    "slug": "monegros-desert",
+    "name": "Monegros Desert Festival",
+    "location": "Monegros Desert, Aragon, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "July 26, 2025",
+    "month": "July",
+    "price": "\u20ac70-100",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/monegros-desert.html"
+  },
+  {
+    "slug": "moonrise-festival",
+    "name": "Moonrise Festival",
+    "location": "Baltimore, MD",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "August (2 days)",
+    "month": "August",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/moonrise-festival.html"
+  },
+  {
+    "slug": "moonrise",
+    "name": "Moonrise Festival",
+    "location": "Pimlico Race Course, Baltimore",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "August (2 days)",
+    "month": "August",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/moonrise.html"
+  },
+  {
+    "slug": "movement-detroit",
+    "name": "Movement Detroit",
+    "location": "Hart Plaza, Detroit",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 100000,
+    "size": "Massive",
+    "date": "Memorial Day Weekend",
+    "month": "",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/movement-detroit.html"
+  },
+  {
+    "slug": "movement-torino",
+    "name": "Movement Torino",
+    "location": "Turin, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "November 16, 2025",
+    "month": "November",
+    "price": "\u20ac40-60",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/movement-torino.html"
+  },
+  {
+    "slug": "mysteryland",
+    "name": "Mysteryland",
+    "location": "Haarlemmermeer, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 60000,
+    "size": "Large",
+    "date": "August 22-24 (3 days)",
+    "month": "August",
+    "price": "\u20ac140-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/mysteryland.html"
+  },
+  {
+    "slug": "mysteryland-usa",
+    "name": "Mysteryland USA",
+    "location": "Bethel Woods, New York",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "Memorial Day Weekend",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/mysteryland-usa.html"
+  },
+  {
+    "slug": "nameless-festival",
+    "name": "Nameless Festival",
+    "location": "Lake Como, Italy",
+    "country": "Italy",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "May 31 - June 2, 2025",
+    "month": "May",
+    "price": "\u20ac80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/nameless-festival.html"
+  },
+  {
+    "slug": "nature-one",
+    "name": "Nature One",
+    "location": "Kastellaun, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 55000,
+    "size": "Large",
+    "date": "August 1-3, 2025",
+    "month": "August",
+    "price": "\u20ac130-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/nature-one.html"
+  },
+  {
+    "slug": "neopop-festival",
+    "name": "Neopop Festival",
+    "location": "Viana do Castelo, Portugal",
+    "country": "Portugal",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "August 7-9, 2025",
+    "month": "August",
+    "price": "\u20ac85-140",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/neopop-festival.html"
+  },
+  {
+    "slug": "neversea",
+    "name": "Neversea",
+    "location": "Constan\u021ba, Romania",
+    "country": "Romania",
+    "continent": "Europe",
+    "capacity": 70000,
+    "size": "Large",
+    "date": "July 10-13, 2025",
+    "month": "July",
+    "price": "\u20ac100-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/neversea.html"
+  },
+  {
+    "slug": "night-lights-festival",
+    "name": "Night Lights Music Festival",
+    "location": "Sherman, NY",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$125-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/night-lights-festival.html"
+  },
+  {
+    "slug": "nocturnal-wonderland",
+    "name": "Nocturnal Wonderland",
+    "location": "Glen Helen Regional Park, San Bernardino",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "September (2 nights)",
+    "month": "September",
+    "price": "$180-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/nocturnal-wonderland.html"
+  },
+  {
+    "slug": "north-coast",
+    "name": "North Coast Music Festival",
+    "location": "Bridgeview, IL (Chicago)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 90000,
+    "size": "Large",
+    "date": "Labor Day Weekend",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/north-coast.html"
+  },
+  {
+    "slug": "northern-nights",
+    "name": "Northern Nights",
+    "location": "Mendocino County, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/northern-nights.html"
+  },
+  {
+    "slug": "nos-alive",
+    "name": "NOS Alive",
+    "location": "Alg\u00e9s, Lisbon, Portugal",
+    "country": "Portugal",
+    "continent": "Europe",
+    "capacity": 60000,
+    "size": "Large",
+    "date": "July 10-12, 2025",
+    "month": "July",
+    "price": "\u20ac79-189",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/nos-alive.html"
+  },
+  {
+    "slug": "nuits-sonores",
+    "name": "Nuits Sonores",
+    "location": "Lyon, France",
+    "country": "France",
+    "continent": "Europe",
+    "capacity": 140000,
+    "size": "Massive",
+    "date": "May 28 - June 1 (5 days)",
+    "month": "May",
+    "price": "\u20ac35-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/nuits-sonores.html"
+  },
+  {
+    "slug": "off-festival",
+    "name": "OFF Festival",
+    "location": "Katowice, Poland",
+    "country": "Poland",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "August 1-3, 2025",
+    "month": "August",
+    "price": "\u20ac70-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/off-festival.html"
+  },
+  {
+    "slug": "off-sonar",
+    "name": "Off S\u00f3nar / OffWeek",
+    "location": "Barcelona, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "June 10-15, 2025",
+    "month": "June",
+    "price": "\u20ac30-80/event",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/off-sonar.html"
+  },
+  {
+    "slug": "okeechobee",
+    "name": "Okeechobee Music & Arts Festival",
+    "location": "Sunshine Grove, FL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "March 19-22 (4 days)",
+    "month": "March",
+    "price": "$300-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/okeechobee.html"
+  },
+  {
+    "slug": "opener-festival",
+    "name": "Open'er Festival",
+    "location": "Gdynia, Poland",
+    "country": "Poland",
+    "continent": "Europe",
+    "capacity": 130000,
+    "size": "Massive",
+    "date": "July 2-5, 2025",
+    "month": "July",
+    "price": "\u20ac150-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/opener-festival.html"
+  },
+  {
+    "slug": "outlook-festival",
+    "name": "Outlook Festival",
+    "location": "Tisno, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "September (5 days)",
+    "month": "September",
+    "price": "\u00a3200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/outlook-festival.html"
+  },
+  {
+    "slug": "outside-lands",
+    "name": "Outside Lands",
+    "location": "Golden Gate Park, SF",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 225000,
+    "size": "Massive",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$425-530",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/outside-lands.html"
+  },
+  {
+    "slug": "ozora-festival",
+    "name": "Ozora Festival",
+    "location": "D\u00e1dpuszta, Hungary",
+    "country": "Hungary",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "July 29 - August 3, 2025",
+    "month": "July",
+    "price": "\u20ac180-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/ozora-festival.html"
+  },
+  {
+    "slug": "paradise-city",
+    "name": "Paradise City",
+    "location": "Perk (near Brussels), Belgium",
+    "country": "Belgium",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "June 27-29 (3 days)",
+    "month": "June",
+    "price": "\u20ac85-195",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/paradise-city.html"
+  },
+  {
+    "slug": "paradiso",
+    "name": "Paradiso",
+    "location": "The Gorge Amphitheatre, WA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "June (2 days)",
+    "month": "June",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/paradiso.html"
+  },
+  {
+    "slug": "parklife",
+    "name": "Parklife Festival",
+    "location": "Manchester, UK",
+    "country": "UK",
+    "continent": "Europe",
+    "capacity": 80000,
+    "size": "Large",
+    "date": "June 14-15",
+    "month": "June",
+    "price": "\u00a3120-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/parklife.html"
+  },
+  {
+    "slug": "parookaville",
+    "name": "Parookaville",
+    "location": "Weeze, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 85000,
+    "size": "Large",
+    "date": "July 18-20, 2025",
+    "month": "July",
+    "price": "\u20ac180-280",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/parookaville.html"
+  },
+  {
+    "slug": "phoenix-lights",
+    "name": "Phoenix Lights",
+    "location": "Rawhide Event Center, Phoenix AZ",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "April (2 days)",
+    "month": "April",
+    "price": "$100-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/phoenix-lights.html"
+  },
+  {
+    "slug": "pitchfork-music-festival",
+    "name": "Pitchfork Music Festival",
+    "location": "Union Park, Chicago",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$239",
+    "genres": [
+      "EDM"
+    ],
+    "score": 28.0,
+    "url": "festivals/pitchfork-music-festival.html"
+  },
+  {
+    "slug": "portola-festival",
+    "name": "Portola Festival",
+    "location": "Pier 80, San Francisco",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "September (2 days)",
+    "month": "September",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/portola-festival.html"
+  },
+  {
+    "slug": "portola",
+    "name": "Portola Music Festival",
+    "location": "Pier 80, San Francisco",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "September (2 days)",
+    "month": "September",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/portola.html"
+  },
+  {
+    "slug": "primavera-sound-barcelona",
+    "name": "Primavera Sound Barcelona",
+    "location": "Barcelona, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 200000,
+    "size": "Massive",
+    "date": "June 5-7, 2025",
+    "month": "June",
+    "price": "\u20ac275-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/primavera-sound-barcelona.html"
+  },
+  {
+    "slug": "project-glow",
+    "name": "Project Glow",
+    "location": "RFK Festival Grounds, Washington DC",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "April/May (2 days)",
+    "month": "April",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/project-glow.html"
+  },
+  {
+    "slug": "project-z",
+    "name": "Project Z",
+    "location": "NOS Events Center, San Bernardino",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "July (1 day)",
+    "month": "July",
+    "price": "$80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/project-z.html"
+  },
+  {
+    "slug": "pukkelpop",
+    "name": "Pukkelpop",
+    "location": "Hasselt, Belgium",
+    "country": "Belgium",
+    "continent": "Europe",
+    "capacity": 180000,
+    "size": "Massive",
+    "date": "August 14-17 (4 days)",
+    "month": "August",
+    "price": "\u20ac195-260",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/pukkelpop.html"
+  },
+  {
+    "slug": "purple-hatters-ball",
+    "name": "Purple Hatter's Ball",
+    "location": "Live Oak, FL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (2 days)",
+    "month": "June",
+    "price": "$80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/purple-hatters-ball.html"
+  },
+  {
+    "slug": "rakastella",
+    "name": "Rakastella",
+    "location": "Virginia Key Beach, Miami",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "Art Basel Weekend (December)",
+    "month": "December",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/rakastella.html"
+  },
+  {
+    "slug": "rampage",
+    "name": "Rampage",
+    "location": "Antwerp, Belgium",
+    "country": "Belgium",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "February 21-22 + July 4-6",
+    "month": "February",
+    "price": "\u20ac60-160",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/rampage.html"
+  },
+  {
+    "slug": "rapture",
+    "name": "Rapture Festival",
+    "location": "Miami Beach, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "March (Miami Music Week)",
+    "month": "March",
+    "price": "$150-300",
+    "genres": [
+      "Techno"
+    ],
+    "score": 40.0,
+    "url": "festivals/rapture.html"
+  },
+  {
+    "slug": "resolution",
+    "name": "Resolution",
+    "location": "WaMu Theater, Seattle",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "December 29-30",
+    "month": "December",
+    "price": "$100-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/resolution.html"
+  },
+  {
+    "slug": "resonance",
+    "name": "Resonance Festival",
+    "location": "Legend Valley / Nelson Ledges, Ohio",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (historically)",
+    "month": "September",
+    "price": "$200-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/resonance.html"
+  },
+  {
+    "slug": "resonate-suwannee",
+    "name": "Resonate Suwannee",
+    "location": "Spirit of Suwannee, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 6000,
+    "size": "Boutique",
+    "date": "April (3 days)",
+    "month": "April",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/resonate-suwannee.html"
+  },
+  {
+    "slug": "reworks-festival",
+    "name": "Reworks Festival",
+    "location": "Thessaloniki, Greece",
+    "country": "Greece",
+    "continent": "Europe",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "September 24-28, 2025",
+    "month": "September",
+    "price": "\u20ac60-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/reworks-festival.html"
+  },
+  {
+    "slug": "riot-fest",
+    "name": "Riot Fest",
+    "location": "Douglass Park, Chicago",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$250-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 19.0,
+    "url": "festivals/riot-fest.html"
+  },
+  {
+    "slug": "roskilde-festival",
+    "name": "Roskilde Festival",
+    "location": "Roskilde, Denmark",
+    "country": "Denmark",
+    "continent": "Europe",
+    "capacity": 130000,
+    "size": "Massive",
+    "date": "June 28 - July 5, 2025",
+    "month": "June",
+    "price": "DKK 2,400 (~\u20ac320)",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/roskilde-festival.html"
+  },
+  {
+    "slug": "same-same-but-different",
+    "name": "Same Same But Different",
+    "location": "Lake Perris, California",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/same-same-but-different.html"
+  },
+  {
+    "slug": "sasquatch",
+    "name": "Sasquatch!",
+    "location": "The Gorge Amphitheatre, WA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "Memorial Day Weekend",
+    "month": "",
+    "price": "$300-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/sasquatch.html"
+  },
+  {
+    "slug": "sea-you",
+    "name": "Sea You Festival",
+    "location": "Freiburg, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "July 12-13, 2025",
+    "month": "July",
+    "price": "\u20ac80-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/sea-you.html"
+  },
+  {
+    "slug": "second-sky",
+    "name": "Second Sky",
+    "location": "Shoreline Amphitheatre, Oakland Area",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "June (2 days)",
+    "month": "June",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/second-sky.html"
+  },
+  {
+    "slug": "secret-dreams",
+    "name": "Secret Dreams",
+    "location": "Legend Valley, Ohio",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "July (3 days)",
+    "month": "July",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/secret-dreams.html"
+  },
+  {
+    "slug": "seismic-dance-event",
+    "name": "Seismic Dance Event",
+    "location": "The Concourse Project, Austin TX",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "November (3 days)",
+    "month": "November",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/seismic-dance-event.html"
+  },
+  {
+    "slug": "shaky-knees",
+    "name": "Shaky Knees",
+    "location": "Piedmont Park, Atlanta GA",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$150-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 28.0,
+    "url": "festivals/shaky-knees.html"
+  },
+  {
+    "slug": "skyline-la",
+    "name": "Skyline LA",
+    "location": "Los Angeles, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "February (2 days)",
+    "month": "February",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/skyline-la.html"
+  },
+  {
+    "slug": "snowglobe",
+    "name": "SnowGlobe",
+    "location": "South Lake Tahoe, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "Dec 29-31 (3 days)",
+    "month": "",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/snowglobe.html"
+  },
+  {
+    "slug": "soenda",
+    "name": "Soenda Festival",
+    "location": "Utrecht, Netherlands",
+    "country": "Netherlands",
+    "continent": "Europe",
+    "capacity": 12000,
+    "size": "Medium",
+    "date": "May 31 (1 day)",
+    "month": "May",
+    "price": "\u20ac55-65",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/soenda.html"
+  },
+  {
+    "slug": "sol-fest",
+    "name": "Sol Fest",
+    "location": "New Brockton, AL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "May (3 days)",
+    "month": "May",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/sol-fest.html"
+  },
+  {
+    "slug": "something-wonderful",
+    "name": "Something Wonderful",
+    "location": "Dallas, TX (Various Venues)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 16000,
+    "size": "Medium",
+    "date": "April (1-2 days)",
+    "month": "April",
+    "price": "$80-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 32.0,
+    "url": "festivals/something-wonderful.html"
+  },
+  {
+    "slug": "sonic-bloom",
+    "name": "Sonic Bloom",
+    "location": "Hummingbird Ranch, Rye CO",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (4 days)",
+    "month": "June",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/sonic-bloom.html"
+  },
+  {
+    "slug": "sonnemondsterne",
+    "name": "SonneMondSterne",
+    "location": "Saalburg, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "August 8-10, 2025",
+    "month": "August",
+    "price": "\u20ac140-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/sonnemondsterne.html"
+  },
+  {
+    "slug": "sonus-festival",
+    "name": "Sonus Festival",
+    "location": "Zr\u0107e Beach, Pag Island, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "August (5 days)",
+    "month": "August",
+    "price": "\u20ac180-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/sonus-festival.html"
+  },
+  {
+    "slug": "sound-haven",
+    "name": "Sound Haven",
+    "location": "Manchester, TN",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (4 days)",
+    "month": "June",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/sound-haven.html"
+  },
+  {
+    "slug": "splash-house",
+    "name": "Splash House",
+    "location": "Palm Springs, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "August (Two Weekends)",
+    "month": "August",
+    "price": "$220-400+",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/splash-house.html"
+  },
+  {
+    "slug": "spring-awakening",
+    "name": "Spring Awakening",
+    "location": "Chicago, IL (Various Venues)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "June (3 days)",
+    "month": "June",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 36.0,
+    "url": "festivals/spring-awakening.html"
+  },
+  {
+    "slug": "starbase-festival",
+    "name": "Starbase Festival",
+    "location": "Lake Perris, CA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "April (2 days)",
+    "month": "April",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/starbase-festival.html"
+  },
+  {
+    "slug": "strand-festival",
+    "name": "Strand Festival",
+    "location": "Zam\u00e1rdi, Hungary",
+    "country": "Hungary",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "August 20-24, 2025",
+    "month": "August",
+    "price": "\u20ac80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/strand-festival.html"
+  },
+  {
+    "slug": "submersion",
+    "name": "Submersion Festival",
+    "location": "Hammonton, NJ",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "September (3 days)",
+    "month": "September",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/submersion.html"
+  },
+  {
+    "slug": "summer-camp",
+    "name": "Summer Camp Music Festival",
+    "location": "Three Sisters Park, Illinois",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "May (Memorial Day)",
+    "month": "May",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/summer-camp.html"
+  },
+  {
+    "slug": "summer-camp-music-festival",
+    "name": "Summer Camp Music Festival",
+    "location": "Chillicothe, IL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "Memorial Day Weekend",
+    "month": "",
+    "price": "$200-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/summer-camp-music-festival.html"
+  },
+  {
+    "slug": "summerfest",
+    "name": "Summerfest",
+    "location": "Milwaukee, Wisconsin",
+    "country": "UK",
+    "continent": "Europe",
+    "capacity": 600000,
+    "size": "Massive",
+    "date": "June-July (9 days, 3 weekends)",
+    "month": "June",
+    "price": "$25-30 daily",
+    "genres": [
+      "EDM"
+    ],
+    "score": 34.0,
+    "url": "festivals/summerfest.html"
+  },
+  {
+    "slug": "sun-city-music-festival",
+    "name": "Sun City Music Festival",
+    "location": "El Paso, TX (Ascarate Park)",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "Labor Day Weekend (2011-2017)",
+    "month": "",
+    "price": "$100-200",
+    "genres": [
+      "Indie/Alt"
+    ],
+    "score": null,
+    "url": "festivals/sun-city-music-festival.html"
+  },
+  {
+    "slug": "suncebeat",
+    "name": "Sunc\u00e9Beat",
+    "location": "Tisno, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 3500,
+    "size": "Boutique",
+    "date": "July 23-30, 2025",
+    "month": "July",
+    "price": "\u20ac250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/suncebeat.html"
+  },
+  {
+    "slug": "sunset-music-festival",
+    "name": "Sunset Music Festival",
+    "location": "Tampa, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "Memorial Day Weekend (2 days)",
+    "month": "",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/sunset-music-festival.html"
+  },
+  {
+    "slug": "sunwaves-festival",
+    "name": "Sunwaves Festival",
+    "location": "Mamaia, Black Sea Coast, Romania",
+    "country": "Romania",
+    "continent": "Europe",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "May & August (5-6 days)",
+    "month": "May",
+    "price": "\u20ac60-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/sunwaves-festival.html"
+  },
+  {
+    "slug": "super-bock-super-rock",
+    "name": "Super Bock Super Rock",
+    "location": "Meco Beach, Sesimbra, Portugal",
+    "country": "Portugal",
+    "continent": "Europe",
+    "capacity": 40000,
+    "size": "Large",
+    "date": "July 17-19, 2025",
+    "month": "July",
+    "price": "\u20ac65-130",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/super-bock-super-rock.html"
+  },
+  {
+    "slug": "suwannee-hulaween",
+    "name": "Suwannee Hulaween",
+    "location": "Live Oak, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "Halloween Weekend (4 days)",
+    "month": "",
+    "price": "$400-520",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/suwannee-hulaween.html"
+  },
+  {
+    "slug": "sw4-festival",
+    "name": "SW4 Festival",
+    "location": "Clapham Common, London",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "August Bank Holiday",
+    "month": "August",
+    "price": "\u00a375-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/sw4-festival.html"
+  },
+  {
+    "slug": "symbiosis-gathering",
+    "name": "Symbiosis Gathering",
+    "location": "Various CA locations (Woodward Reservoir)",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "September (4-5 days)",
+    "month": "September",
+    "price": "$300-450",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/symbiosis-gathering.html"
+  },
+  {
+    "slug": "sziget-festival",
+    "name": "Sziget Festival",
+    "location": "\u00d3buda Island, Budapest, Hungary",
+    "country": "Hungary",
+    "continent": "Europe",
+    "capacity": 500000,
+    "size": "Massive",
+    "date": "August (6 days)",
+    "month": "August",
+    "price": "\u20ac280-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/sziget-festival.html"
+  },
+  {
+    "slug": "sziget",
+    "name": "Sziget Festival",
+    "location": "Budapest, Hungary",
+    "country": "Hungary",
+    "continent": "Europe",
+    "capacity": 500000,
+    "size": "Massive",
+    "date": "August 6-11",
+    "month": "August",
+    "price": "\u20ac350-450",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/sziget.html"
+  },
+  {
+    "slug": "sonar-barcelona",
+    "name": "S\u00f3nar Barcelona",
+    "location": "Barcelona, Spain",
+    "country": "Spain",
+    "continent": "Europe",
+    "capacity": 130000,
+    "size": "Massive",
+    "date": "June 12-14, 2025",
+    "month": "June",
+    "price": "\u20ac165-275",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/sonar-barcelona.html"
+  },
+  {
+    "slug": "sonar-lisboa",
+    "name": "S\u00f3nar Lisboa",
+    "location": "Lisbon, Portugal",
+    "country": "Portugal",
+    "continent": "Europe",
+    "capacity": 15000,
+    "size": "Medium",
+    "date": "April 11-13, 2025",
+    "month": "April",
+    "price": "\u20ac70-120",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/sonar-lisboa.html"
+  },
+  {
+    "slug": "thunderdome",
+    "name": "The Thunderdome",
+    "location": "Tacoma, WA",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "February (3 days)",
+    "month": "February",
+    "price": "$150-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/thunderdome.html"
+  },
+  {
+    "slug": "the-untz-festival",
+    "name": "The Untz Festival",
+    "location": "Sycamore Ranch, Browns Valley CA",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "May (3 days)",
+    "month": "May",
+    "price": "$275-325",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/the-untz-festival.html"
+  },
+  {
+    "slug": "time-warp",
+    "name": "Time Warp",
+    "location": "Mannheim, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "April & November",
+    "month": "April",
+    "price": "\u20ac75-100",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/time-warp.html"
+  },
+  {
+    "slug": "tipper-and-friends",
+    "name": "Tipper & Friends",
+    "location": "Suwannee, FL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "April (3 days)",
+    "month": "April",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 47.0,
+    "url": "festivals/tipper-and-friends.html"
+  },
+  {
+    "slug": "tipper-friends",
+    "name": "Tipper & Friends",
+    "location": "Spirit of Suwannee, Florida",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "Various (Weekend)",
+    "month": "",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/tipper-friends.html"
+  },
+  {
+    "slug": "tomorrowland",
+    "name": "Tomorrowland Belgium",
+    "location": "Boom, Belgium",
+    "country": "Belgium",
+    "continent": "Europe",
+    "capacity": 400000,
+    "size": "Massive",
+    "date": "July 18-20 & 25-27 (2 weekends)",
+    "month": "July",
+    "price": "\u20ac275-500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 46.0,
+    "url": "festivals/tomorrowland.html"
+  },
+  {
+    "slug": "tomorrowland-winter",
+    "name": "Tomorrowland Winter",
+    "location": "Alpe d'Huez, France",
+    "country": "France",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "March (7 days)",
+    "month": "March",
+    "price": "\u20ac400-1500",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/tomorrowland-winter.html"
+  },
+  {
+    "slug": "ubbi-dubbi",
+    "name": "Ubbi Dubbi",
+    "location": "Panther Island Pavilion, Fort Worth TX",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 25000,
+    "size": "Medium",
+    "date": "Memorial Day Weekend (2 days)",
+    "month": "",
+    "price": "$150-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 35.0,
+    "url": "festivals/ubbi-dubbi.html"
+  },
+  {
+    "slug": "ultra-europe",
+    "name": "Ultra Europe",
+    "location": "Split, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 150000,
+    "size": "Massive",
+    "date": "July 11-13",
+    "month": "July",
+    "price": "\u20ac200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 42.0,
+    "url": "festivals/ultra-europe.html"
+  },
+  {
+    "slug": "ultra-miami",
+    "name": "Ultra Miami",
+    "location": "Bayfront Park, Miami",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 55000,
+    "size": "Large",
+    "date": "March (3 days)",
+    "month": "March",
+    "price": "$400-600",
+    "genres": [
+      "EDM"
+    ],
+    "score": 37.0,
+    "url": "festivals/ultra-miami.html"
+  },
+  {
+    "slug": "unknown-festival",
+    "name": "Unknown Festival",
+    "location": "Rovinj, Croatia",
+    "country": "Croatia",
+    "continent": "Europe",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "September 8-12, 2025",
+    "month": "September",
+    "price": "\u20ac180-300",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/unknown-festival.html"
+  },
+  {
+    "slug": "untold-festival",
+    "name": "Untold Festival",
+    "location": "Cluj-Napoca, Romania",
+    "country": "Romania",
+    "continent": "Europe",
+    "capacity": 350000,
+    "size": "Massive",
+    "date": "August (4 days)",
+    "month": "August",
+    "price": "\u20ac120-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/untold-festival.html"
+  },
+  {
+    "slug": "up-to-date-festival",
+    "name": "Up To Date Festival",
+    "location": "Bia\u0142ystok, Poland",
+    "country": "Poland",
+    "continent": "Europe",
+    "capacity": 20000,
+    "size": "Medium",
+    "date": "September 5-7, 2025",
+    "month": "September",
+    "price": "\u20ac50-100",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/up-to-date-festival.html"
+  },
+  {
+    "slug": "voodoo",
+    "name": "Voodoo Music + Arts",
+    "location": "City Park, New Orleans LA",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 180000,
+    "size": "Massive",
+    "date": "Halloween Weekend",
+    "month": "",
+    "price": "$200-350",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/voodoo.html"
+  },
+  {
+    "slug": "wakaan-festival",
+    "name": "Wakaan Festival",
+    "location": "Mulberry Mountain, Ozark AR",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "October (3 nights)",
+    "month": "October",
+    "price": "$199-349",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/wakaan-festival.html"
+  },
+  {
+    "slug": "way-out-west",
+    "name": "Way Out West",
+    "location": "Gothenburg, Sweden",
+    "country": "Sweden",
+    "continent": "Europe",
+    "capacity": 30000,
+    "size": "Large",
+    "date": "August 7-9, 2025",
+    "month": "August",
+    "price": "SEK 2,500 (~\u20ac220)",
+    "genres": [
+      "EDM"
+    ],
+    "score": 45.0,
+    "url": "festivals/way-out-west.html"
+  },
+  {
+    "slug": "we-belong-here",
+    "name": "We Belong Here",
+    "location": "Miami, FL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 8000,
+    "size": "Boutique",
+    "date": "March (2 days)",
+    "month": "March",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/we-belong-here.html"
+  },
+  {
+    "slug": "werk-out",
+    "name": "Werk Out Festival",
+    "location": "ACE Adventure Resort, West Virginia",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 5000,
+    "size": "Boutique",
+    "date": "August (3 days)",
+    "month": "August",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/werk-out.html"
+  },
+  {
+    "slug": "what-the-festival",
+    "name": "What the Festival (WTF)",
+    "location": "Wolf Run Ranch, Oregon",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": null,
+    "size": "Unknown",
+    "date": "June (Summer Solstice)",
+    "month": "June",
+    "price": "$250-400",
+    "genres": [
+      "EDM"
+    ],
+    "score": 43.0,
+    "url": "festivals/what-the-festival.html"
+  },
+  {
+    "slug": "wireless-festival",
+    "name": "Wireless Festival",
+    "location": "Finsbury Park, London",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 50000,
+    "size": "Large",
+    "date": "July 11-13, 2025",
+    "month": "July",
+    "price": "\u00a385-180",
+    "genres": [
+      "EDM"
+    ],
+    "score": 40.0,
+    "url": "festivals/wireless-festival.html"
+  },
+  {
+    "slug": "wobbleland",
+    "name": "Wobbleland",
+    "location": "San Francisco Bay Area",
+    "country": "",
+    "continent": "Unknown",
+    "capacity": 10000,
+    "size": "Medium",
+    "date": "January/February",
+    "month": "January",
+    "price": "$80-150",
+    "genres": [
+      "EDM"
+    ],
+    "score": 39.0,
+    "url": "festivals/wobbleland.html"
+  },
+  {
+    "slug": "world-club-dome",
+    "name": "World Club Dome",
+    "location": "Frankfurt, Germany",
+    "country": "Germany",
+    "continent": "Europe",
+    "capacity": 70000,
+    "size": "Large",
+    "date": "June 6-8, 2025",
+    "month": "June",
+    "price": "\u20ac120-200",
+    "genres": [
+      "EDM"
+    ],
+    "score": 41.0,
+    "url": "festivals/world-club-dome.html"
+  },
+  {
+    "slug": "zen-awakening",
+    "name": "Zen Awakening",
+    "location": "Fruitland Park, FL",
+    "country": "USA",
+    "continent": "North America",
+    "capacity": 3000,
+    "size": "Boutique",
+    "date": "November (4 days)",
+    "month": "November",
+    "price": "$150-250",
+    "genres": [
+      "EDM"
+    ],
+    "score": 38.0,
+    "url": "festivals/zen-awakening.html"
+  },
+  {
+    "slug": "oya-festival",
+    "name": "\u00d8ya Festival",
+    "location": "Oslo, Norway",
+    "country": "Norway",
+    "continent": "Europe",
+    "capacity": 60000,
+    "size": "Large",
+    "date": "August 6-9, 2025",
+    "month": "August",
+    "price": "NOK 3,200 (~\u20ac280)",
+    "genres": [
+      "EDM"
+    ],
+    "score": 44.0,
+    "url": "festivals/oya-festival.html"
+  }
+]
