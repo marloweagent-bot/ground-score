@@ -351,6 +351,231 @@
     <script src="js/map.js"></script>
     <script src="js/lists.js"></script>
     <script>
+        // Festival coordinates database
+        const FESTIVAL_COORDS = {
+            'coachella': { lat: 33.6803, lng: -116.2389 },
+            'edc-las-vegas': { lat: 36.27, lng: -115.0095 },
+            'electric-forest': { lat: 43.6508, lng: -85.9781 },
+            'bonnaroo': { lat: 35.4753, lng: -86.0559 },
+            'lollapalooza': { lat: 41.8758, lng: -87.6189 },
+            'ultra-miami': { lat: 25.7826, lng: -80.1868 },
+            'burning-man': { lat: 40.7864, lng: -119.2065 },
+            'tomorrowland': { lat: 51.0909, lng: 4.3641 },
+            'glastonbury': { lat: 51.1503, lng: -2.5853 },
+            'movement': { lat: 42.3293, lng: -83.0458 },
+            'outside-lands': { lat: 37.7694, lng: -122.4862 },
+            'austin-city-limits': { lat: 30.2653, lng: -97.749 },
+            'lost-lands': { lat: 39.8953, lng: -82.8833 },
+            'electric-zoo': { lat: 40.7935, lng: -73.9316 },
+            'hard-summer': { lat: 34.0689, lng: -117.648 },
+            'escape': { lat: 34.0689, lng: -117.648 },
+            'beyond-wonderland-socal': { lat: 34.0689, lng: -117.648 },
+            'hulaween': { lat: 30.2394, lng: -83.0099 },
+            'okeechobee': { lat: 27.2439, lng: -80.8295 },
+            'shambhala': { lat: 49.3194, lng: -117.6437 },
+            'lightning-in-a-bottle': { lat: 35.6772, lng: -120.1625 },
+            'bass-canyon': { lat: 47.1007, lng: -119.994 },
+            'sonic-bloom': { lat: 38.8859, lng: -106.9808 },
+            'desert-hearts': { lat: 33.705, lng: -116.395 },
+            'dirtybird-campout': { lat: 35.6772, lng: -120.1625 },
+            'iii-points': { lat: 25.786, lng: -80.1918 },
+            'crssd-festival': { lat: 32.7118, lng: -117.1579 },
+            'portola': { lat: 37.7749, lng: -122.3917 },
+            'second-sky': { lat: 37.7507, lng: -122.2006 },
+            'imagine': { lat: 33.6409, lng: -84.4479 },
+            'firefly': { lat: 39.1882, lng: -75.5249 },
+            'governors-ball': { lat: 40.7935, lng: -73.9316 },
+            'hangout': { lat: 30.2803, lng: -87.5697 },
+            'amsterdam-dance-event': { lat: 52.3676, lng: 4.9041 },
+            'awakenings': { lat: 52.3909, lng: 4.939 },
+            'defqon-1': { lat: 52.181, lng: 5.72 },
+            'mysteryland': { lat: 52.431, lng: 5.0676 },
+            'sziget': { lat: 47.5438, lng: 19.0529 },
+            'exit-festival': { lat: 45.2561, lng: 19.8457 },
+            'sonar-barcelona': { lat: 41.3819, lng: 2.177 },
+            'primavera-sound-barcelona': { lat: 41.3873, lng: 2.192 },
+            'melt-festival': { lat: 51.57, lng: 12.297 },
+            'time-warp': { lat: 49.4896, lng: 8.4718 },
+            'fusion-festival': { lat: 53.35, lng: 12.75 },
+            'hideout': { lat: 44.5333, lng: 14.9 },
+            'outlook-festival': { lat: 44.8666, lng: 13.85 },
+            'boom-festival': { lat: 39.8167, lng: -7.75 },
+            'arc-music-festival': { lat: 41.8758, lng: -87.627 },
+            'spring-awakening': { lat: 41.882, lng: -87.619 },
+            'north-coast': { lat: 41.882, lng: -87.619 }
+        };
+        
+        let map = null;
+        let markers = [];
+        let festivalsData = [];
+        
+        // Initialize map
+        async function initMap() {
+            // Load festival data
+            try {
+                const resp = await fetch('js/festivals.json');
+                festivalsData = await resp.json();
+            } catch (e) {
+                console.error('Failed to load festivals:', e);
+            }
+            
+            // Check for share link
+            const shareData = GroundScoreMap.loadFromShare();
+            if (shareData) {
+                renderSharedMap(shareData);
+                return;
+            }
+            
+            // Create map centered on US
+            map = L.map('festival-map').setView([39.8283, -98.5795], 4);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap © CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Render user's festivals
+            renderUserMap();
+        }
+        
+        function renderUserMap() {
+            // Clear existing markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+            
+            const been = GroundScoreMap.getBeen();
+            const years = GroundScoreMap.getYears();
+            const stats = GroundScoreMap.getStats();
+            
+            // Update stats display
+            document.querySelectorAll('.gs-stat-num')[0].textContent = stats.totalVisits;
+            document.querySelectorAll('.gs-stat-num')[1].textContent = stats.festivals;
+            document.querySelectorAll('.gs-stat-num')[2].textContent = stats.years;
+            
+            // Count unique states/countries
+            const regions = new Set();
+            been.forEach(slug => {
+                const fest = festivalsData.find(f => f.slug === slug);
+                if (fest && fest.location) {
+                    const parts = fest.location.split(',');
+                    if (parts.length > 1) regions.add(parts[parts.length - 1].trim());
+                }
+            });
+            document.querySelectorAll('.gs-stat-num')[3].textContent = regions.size;
+            
+            // Add markers
+            been.forEach(slug => {
+                const coords = FESTIVAL_COORDS[slug];
+                const fest = festivalsData.find(f => f.slug === slug);
+                if (!coords || !fest) return;
+                
+                const festYears = years[slug] || [];
+                const latestYear = festYears.length > 0 ? Math.max(...festYears) : 2024;
+                const color = GroundScoreMap.YEAR_COLORS[latestYear] || '#00ff88';
+                
+                const marker = L.circleMarker([coords.lat, coords.lng], {
+                    radius: 10,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+                
+                const yearText = festYears.length > 0 ? festYears.join(', ') : 'Added';
+                marker.bindPopup(`
+                    <div style="text-align:center;">
+                        <strong style="font-size:1.1rem;">${fest.name}</strong><br>
+                        <span style="color:#a0a0b0;">${fest.location}</span><br>
+                        <span style="color:${color};font-weight:600;">${yearText}</span>
+                    </div>
+                `);
+                
+                markers.push(marker);
+            });
+            
+            // Fit bounds if we have markers
+            if (markers.length > 0) {
+                const group = L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+        
+        function renderSharedMap(data) {
+            // Show shared view mode
+            document.querySelector('.page-hero h1').textContent = '📍 Shared Festival Map';
+            document.querySelector('.page-hero .subtitle').textContent = 'Check out this festival journey!';
+            
+            // Create map
+            map = L.map('festival-map').setView([39.8283, -98.5795], 4);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap © CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+            
+            const been = data.been || [];
+            const years = data.years || {};
+            
+            // Update stats
+            let totalVisits = 0;
+            const uniqueYears = new Set();
+            Object.values(years).forEach(fy => {
+                fy.forEach(y => {
+                    totalVisits++;
+                    uniqueYears.add(y);
+                });
+            });
+            
+            document.querySelectorAll('.gs-stat-num')[0].textContent = totalVisits || been.length;
+            document.querySelectorAll('.gs-stat-num')[1].textContent = been.length;
+            document.querySelectorAll('.gs-stat-num')[2].textContent = uniqueYears.size;
+            
+            // Add markers
+            been.forEach(slug => {
+                const coords = FESTIVAL_COORDS[slug];
+                const fest = festivalsData.find(f => f.slug === slug);
+                if (!coords) return;
+                
+                const festYears = years[slug] || [];
+                const latestYear = festYears.length > 0 ? Math.max(...festYears) : 2024;
+                const color = GroundScoreMap.YEAR_COLORS[latestYear] || '#00ff88';
+                
+                const marker = L.circleMarker([coords.lat, coords.lng], {
+                    radius: 10,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+                
+                const name = fest ? fest.name : slug;
+                const location = fest ? fest.location : '';
+                const yearText = festYears.length > 0 ? festYears.join(', ') : 'Attended';
+                
+                marker.bindPopup(`
+                    <div style="text-align:center;">
+                        <strong style="font-size:1.1rem;">${name}</strong><br>
+                        <span style="color:#a0a0b0;">${location}</span><br>
+                        <span style="color:${color};font-weight:600;">${yearText}</span>
+                    </div>
+                `);
+                
+                markers.push(marker);
+            });
+            
+            if (markers.length > 0) {
+                const group = L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initMap);
+        
         // Initialize Clerk auth
         window.addEventListener('load', async () => {
             if (typeof Clerk !== 'undefined') {
@@ -360,11 +585,9 @@
                     const userBtn = document.getElementById('user-button');
                     
                     if (Clerk.user) {
-                        // User is signed in - show user button
                         Clerk.mountUserButton(userBtn);
                         authBtn.style.display = 'none';
                     } else {
-                        // User is not signed in - show sign in button
                         authBtn.style.display = 'block';
                         authBtn.onclick = () => Clerk.openSignIn();
                     }

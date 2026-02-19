@@ -326,6 +326,11 @@
         };
     }
     
+    // Start compare mode (placeholder)
+    function startCompare() {
+        alert('Compare feature coming soon! Share your map link with friends to compare.');
+    }
+    
     // Export to window
     window.GroundScoreMap = {
         getBeen,
@@ -341,6 +346,7 @@
         copyShareLink,
         loadFromShare,
         getStats,
+        startCompare,
         YEAR_COLORS
     };
     
