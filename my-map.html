@@ -660,6 +660,27 @@
             document.querySelectorAll('.gs-stat-num')[1].textContent = stats.festivals;
             document.querySelectorAll('.gs-stat-num')[2].textContent = stats.years;
             
+            // Show empty state prompt if no festivals
+            let emptyOverlay = document.getElementById('empty-state-overlay');
+            if (been.length === 0) {
+                if (!emptyOverlay) {
+                    emptyOverlay = document.createElement('div');
+                    emptyOverlay.id = 'empty-state-overlay';
+                    emptyOverlay.innerHTML = `
+                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:1000;background:rgba(10,10,15,0.95);padding:40px;border-radius:16px;border:1px solid var(--border);">
+                            <div style="font-size:3rem;margin-bottom:16px;">🗺️</div>
+                            <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;margin-bottom:12px;">Start Your Festival Map</h2>
+                            <p style="color:var(--text-secondary);margin-bottom:24px;max-width:300px;">Browse festivals and add them to your map to track your journey.</p>
+                            <a href="browse.html" style="display:inline-block;padding:14px 32px;background:var(--accent);border-radius:8px;color:#000;font-weight:600;text-decoration:none;">Browse Festivals →</a>
+                        </div>
+                    `;
+                    emptyOverlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;z-index:999;';
+                    document.getElementById('festival-map').appendChild(emptyOverlay);
+                }
+            } else if (emptyOverlay) {
+                emptyOverlay.remove();
+            }
+            
             // Count unique states/countries
             const regions = new Set();
             been.forEach(slug => {

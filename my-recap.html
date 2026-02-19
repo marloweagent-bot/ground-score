@@ -594,7 +594,17 @@
                 <div class="empty-state">
                     <h2>📊 No Festival Data Yet</h2>
                     <p>Add some festivals to your map first, then come back for your personalized recap!</p>
-                    <a href="index.html" class="cta">Browse Festivals</a>
+                    <a href="browse.html" class="cta">Browse Festivals</a>
+                </div>
+            `;
+        }
+        
+        function showSignUpPrompt() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="empty-state">
+                    <h2>🎫 Sign Up to See Your Recap</h2>
+                    <p>Create an account to track your festival journey and get your personalized recap.</p>
+                    <button class="cta" onclick="handleAuthClick()">Sign Up Free</button>
                 </div>
             `;
         }
@@ -791,12 +801,7 @@
             GroundScoreMap.getMapData = () => window._tempRecapData || originalGetMapData();
         }
         
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            generateRecap();
-        });
-        
-        // Initialize Clerk auth
+        // Initialize Clerk auth and then render content
         window.addEventListener('load', async () => {
             if (typeof Clerk !== 'undefined') {
                 try {
@@ -807,12 +812,26 @@
                     if (Clerk.user) {
                         Clerk.mountUserButton(userBtn);
                         authBtn.style.display = 'none';
+                        // User is signed in, show their recap
+                        generateRecap();
                     } else {
                         authBtn.style.display = 'block';
+                        // User not signed in - check if viewing shared data
+                        const hasUrlData = new URLSearchParams(window.location.search).get('data');
+                        if (hasUrlData) {
+                            generateRecap(); // Show shared recap
+                        } else {
+                            showSignUpPrompt(); // Prompt to sign up
+                        }
                     }
                 } catch (err) {
                     console.log('Clerk not configured:', err);
+                    // Fallback: show recap anyway (local storage still works)
+                    generateRecap();
                 }
+            } else {
+                // No Clerk, just show recap
+                generateRecap();
             }
         });
         

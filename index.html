@@ -503,67 +503,6 @@
             text-decoration: underline;
         }
         
-        /* Email Capture */
-        .email-capture {
-            padding: 60px 0;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-        .email-capture h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.75rem;
-            margin-bottom: 12px;
-        }
-        .email-capture p {
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .email-form {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .email-form input {
-            flex: 1;
-            min-width: 250px;
-            padding: 14px 20px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-        .email-form input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .email-form button {
-            padding: 14px 28px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            color: var(--bg-dark);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .email-form button:hover {
-            transform: translateY(-2px);
-        }
-        .email-note {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 12px;
-        }
-        
         /* Footer */
         footer { 
             padding: 40px 0; 
@@ -741,19 +680,6 @@
             <div class="view-all">
                 <a href="festivals/">View all 241 festivals →</a>
             </div>
-        </div>
-    </section>
-    
-    <section class="email-capture">
-        <div class="container">
-            <h2>Get Festival Updates</h2>
-            <p>Be the first to know when new festivals are added and get exclusive pre-sale access from our partners.</p>
-            <form class="email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleEmailSubmit(event)">
-                <input type="email" name="email" placeholder="your@email.com" required>
-                <input type="hidden" name="_subject" value="MyFestMap Newsletter Signup">
-                <button type="submit">Subscribe</button>
-            </form>
-            <p class="email-note">No spam, unsubscribe anytime. We may share relevant festival offers.</p>
         </div>
     </section>
     
