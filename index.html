@@ -577,6 +577,7 @@
                 <a href="browse.html" class="nav-link">Browse Festivals</a>
                 <a href="my-map.html" class="nav-link">📍 My Map</a>
                 <a href="my-recap.html" class="nav-link">📊 My Recap</a>
+                <div id="user-button" style="display:inline-block;"></div>
                 <a href="#" class="nav-link primary" id="auth-btn" onclick="handleAuthClick()">Sign In</a>
             </nav>
         </div>
@@ -822,8 +823,15 @@
         
         function updateAuthUI() {
             const authBtn = document.getElementById('auth-btn');
-            if (Clerk.isSignedIn && Clerk.user) {
-                authBtn.innerHTML = `<img src="${Clerk.user.imageUrl}" style="width:24px;height:24px;border-radius:50%;margin-right:6px;"> ${Clerk.user.firstName || 'Account'}`;
+            const userBtn = document.getElementById('user-button');
+            
+            if (Clerk.user) {
+                // User is signed in - mount user button, hide sign in
+                Clerk.mountUserButton(userBtn);
+                authBtn.style.display = 'none';
+            } else {
+                // Not signed in
+                authBtn.style.display = 'block';
             }
         }
         

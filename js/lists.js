@@ -55,7 +55,9 @@
     function toggleBeen(slug) {
         const list = getBeen();
         const idx = list.indexOf(slug);
-        if (idx === -1) {
+        const isAdding = idx === -1;
+        
+        if (isAdding) {
             list.push(slug);
         } else {
             list.splice(idx, 1);
@@ -63,8 +65,133 @@
         saveBeen(list);
         updateAllButtons();
         updateMyFestivalsSection();
-        return idx === -1; // returns true if added
+        
+        // Show sign-up prompt on 4th pin if not logged in
+        if (isAdding && list.length === 4 && typeof Clerk !== 'undefined' && !Clerk.user) {
+            showSignupPrompt();
+        }
+        
+        return isAdding;
     }
+    
+    function showSignupPrompt() {
+        // Don't show if already dismissed this session
+        if (sessionStorage.getItem('myfestmap_signup_dismissed')) return;
+        
+        const overlay = document.createElement('div');
+        overlay.id = 'signup-prompt-overlay';
+        overlay.innerHTML = `
+            <div class="signup-prompt-modal">
+                <button class="signup-prompt-close" onclick="dismissSignupPrompt()">×</button>
+                <div class="signup-prompt-icon">📍</div>
+                <h3>You're building something great!</h3>
+                <p>Sign in to save your festival map — otherwise you'll lose it when you leave.</p>
+                <button class="signup-prompt-btn" onclick="openSignIn()">Sign In to Save</button>
+                <button class="signup-prompt-skip" onclick="dismissSignupPrompt()">Continue without saving</button>
+            </div>
+        `;
+        
+        // Add styles if not already present
+        if (!document.getElementById('signup-prompt-styles')) {
+            const style = document.createElement('style');
+            style.id = 'signup-prompt-styles';
+            style.textContent = `
+                #signup-prompt-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.85);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                .signup-prompt-modal {
+                    background: #1a1a2e;
+                    border-radius: 20px;
+                    padding: 40px;
+                    max-width: 400px;
+                    text-align: center;
+                    position: relative;
+                    border: 1px solid #2a2a4a;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                }
+                .signup-prompt-close {
+                    position: absolute;
+                    top: 16px;
+                    right: 16px;
+                    background: none;
+                    border: none;
+                    color: #666;
+                    font-size: 24px;
+                    cursor: pointer;
+                }
+                .signup-prompt-close:hover { color: #fff; }
+                .signup-prompt-icon {
+                    font-size: 48px;
+                    margin-bottom: 16px;
+                }
+                .signup-prompt-modal h3 {
+                    color: #fff;
+                    font-size: 1.5rem;
+                    margin-bottom: 12px;
+                }
+                .signup-prompt-modal p {
+                    color: #a0a0b0;
+                    margin-bottom: 24px;
+                    line-height: 1.6;
+                }
+                .signup-prompt-btn {
+                    background: linear-gradient(135deg, #00ff88, #00cc6a);
+                    color: #000;
+                    border: none;
+                    padding: 14px 32px;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    width: 100%;
+                    margin-bottom: 12px;
+                    transition: transform 0.2s;
+                }
+                .signup-prompt-btn:hover {
+                    transform: scale(1.02);
+                }
+                .signup-prompt-skip {
+                    background: none;
+                    border: none;
+                    color: #666;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    padding: 8px;
+                }
+                .signup-prompt-skip:hover { color: #888; }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(overlay);
+    }
+    
+    window.dismissSignupPrompt = function() {
+        const overlay = document.getElementById('signup-prompt-overlay');
+        if (overlay) overlay.remove();
+        sessionStorage.setItem('myfestmap_signup_dismissed', 'true');
+    };
+    
+    window.openSignIn = function() {
+        dismissSignupPrompt();
+        if (typeof Clerk !== 'undefined') {
+            Clerk.openSignIn();
+        }
+    };
     
     function isInWishlist(slug) {
         return getWishlist().includes(slug);

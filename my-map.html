@@ -10,7 +10,14 @@
     <meta property="og:title" content="My Festival Map — MyFestMap">
     <meta property="og:description" content="Check out the festivals I've been to!">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://marloweagent-bot.github.io/ground-score/my-map.html">
+    <meta property="og:url" content="https://myfestmap.com/my-map.html">
+    
+    <!-- Clerk Authentication -->
+    <script
+        data-clerk-publishable-key="pk_test_Y2hhbXBpb24ta2l0LTMwLmNsZXJrLmFjY291bnRzLmRldiQ"
+        src="https://cdn.clerk.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        async
+    ></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -301,10 +308,12 @@
         <div class="container header-inner">
             <a href="index.html" class="logo"><span class="logo-icon">🗺️</span>MyFestMap</a>
             <div class="header-actions">
-                <a href="index.html" class="header-btn">← Browse Festivals</a>
+                <a href="browse.html" class="header-btn">Browse Festivals</a>
                 <a href="my-recap.html" class="header-btn">📊 My Recap</a>
                 <button class="header-btn" onclick="GroundScoreMap.startCompare()">🤝 Compare</button>
                 <button class="header-btn primary" onclick="GroundScoreMap.copyShareLink()">📤 Share</button>
+                <div id="user-button"></div>
+                <button class="header-btn" id="auth-btn" style="display:none;">Sign In</button>
             </div>
         </div>
     </header>
@@ -340,5 +349,30 @@
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/lists.js"></script>
+    <script>
+        // Initialize Clerk auth
+        window.addEventListener('load', async () => {
+            if (typeof Clerk !== 'undefined') {
+                try {
+                    await Clerk.load();
+                    const authBtn = document.getElementById('auth-btn');
+                    const userBtn = document.getElementById('user-button');
+                    
+                    if (Clerk.user) {
+                        // User is signed in - show user button
+                        Clerk.mountUserButton(userBtn);
+                        authBtn.style.display = 'none';
+                    } else {
+                        // User is not signed in - show sign in button
+                        authBtn.style.display = 'block';
+                        authBtn.onclick = () => Clerk.openSignIn();
+                    }
+                } catch (err) {
+                    console.log('Clerk not configured:', err);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

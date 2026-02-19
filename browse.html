@@ -7,6 +7,14 @@
     <meta name="description" content="Browse and filter 240+ music festivals worldwide. Find your perfect festival by continent, size, and more.">
     <meta property="og:title" content="Browse Festivals — MyFestMap">
     <meta property="og:description" content="Browse and filter 240+ music festivals worldwide.">
+    
+    <!-- Clerk Authentication -->
+    <script
+        data-clerk-publishable-key="pk_test_Y2hhbXBpb24ta2l0LTMwLmNsZXJrLmFjY291bnRzLmRldiQ"
+        src="https://cdn.clerk.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        async
+    ></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -277,6 +285,8 @@
                 <a href="index.html">Home</a>
                 <a href="browse.html" class="active">Browse</a>
                 <a href="my-map.html">My Map</a>
+                <div id="user-button" style="display:inline-block;"></div>
+                <a href="#" id="auth-btn" onclick="handleAuthClick()" style="display:none;">Sign In</a>
             </nav>
         </div>
     </header>
@@ -483,6 +493,32 @@
         
         // Initialize
         loadFestivals();
+        
+        // Initialize Clerk auth
+        window.addEventListener('load', async () => {
+            if (typeof Clerk !== 'undefined') {
+                try {
+                    await Clerk.load();
+                    const authBtn = document.getElementById('auth-btn');
+                    const userBtn = document.getElementById('user-button');
+                    
+                    if (Clerk.user) {
+                        Clerk.mountUserButton(userBtn);
+                        authBtn.style.display = 'none';
+                    } else {
+                        authBtn.style.display = 'inline';
+                    }
+                } catch (err) {
+                    console.log('Clerk not configured:', err);
+                }
+            }
+        });
+        
+        function handleAuthClick() {
+            if (typeof Clerk !== 'undefined') {
+                Clerk.openSignIn();
+            }
+        }
     </script>
 </body>
 </html>

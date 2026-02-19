@@ -5,7 +5,7 @@
  * SETUP: Replace CLERK_PUBLISHABLE_KEY with your key from https://dashboard.clerk.com
  */
 
-const CLERK_PUBLISHABLE_KEY = 'pk_test_YOUR_KEY_HERE'; // TODO: Replace with real key
+const CLERK_PUBLISHABLE_KEY = 'pk_test_Y2hhbXBpb24ta2l0LTMwLmNsZXJrLmFjY291bnRzLmRldiQ';
 
 class MyFestMapAuth {
     constructor() {

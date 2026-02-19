@@ -11,6 +11,13 @@
     <meta property="og:description" content="Check out my festival journey!">
     <meta property="og:type" content="website">
     
+    <!-- Clerk Authentication -->
+    <script
+        data-clerk-publishable-key="pk_test_Y2hhbXBpb24ta2l0LTMwLmNsZXJrLmFjY291bnRzLmRldiQ"
+        src="https://cdn.clerk.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        async
+    ></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
@@ -427,8 +434,10 @@
         <div class="container header-inner">
             <a href="index.html" class="logo"><span class="logo-icon">🗺️</span>MyFestMap</a>
             <div class="header-actions">
+                <a href="browse.html" class="header-btn">Browse Festivals</a>
                 <a href="my-map.html" class="header-btn">📍 My Map</a>
-                <a href="index.html" class="header-btn">Browse Festivals</a>
+                <div id="user-button" style="display:inline-block;"></div>
+                <button class="header-btn" id="auth-btn" onclick="handleAuthClick()" style="display:none;">Sign In</button>
             </div>
         </div>
     </header>
@@ -774,6 +783,32 @@
         document.addEventListener('DOMContentLoaded', () => {
             generateRecap();
         });
+        
+        // Initialize Clerk auth
+        window.addEventListener('load', async () => {
+            if (typeof Clerk !== 'undefined') {
+                try {
+                    await Clerk.load();
+                    const authBtn = document.getElementById('auth-btn');
+                    const userBtn = document.getElementById('user-button');
+                    
+                    if (Clerk.user) {
+                        Clerk.mountUserButton(userBtn);
+                        authBtn.style.display = 'none';
+                    } else {
+                        authBtn.style.display = 'block';
+                    }
+                } catch (err) {
+                    console.log('Clerk not configured:', err);
+                }
+            }
+        });
+        
+        function handleAuthClick() {
+            if (typeof Clerk !== 'undefined') {
+                Clerk.openSignIn();
+            }
+        }
     </script>
 </body>
 </html>
