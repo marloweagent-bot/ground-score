@@ -1,0 +1,6 @@
+# MyFestMap robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://myfestmap.com/sitemap.xml
