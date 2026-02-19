@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozora Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #8360c3 0%, #2ebf91 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Dádpuszta, Hungary</span>
+                <span>📅 July 29 - August 3, 2025</span>
+                <span>👥 30,000</span>
+                <span>💵 €180-250</span>
+            </div>
+            <h1>🌀 Ozora Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The world's largest psychedelic trance gathering. A week-long journey into consciousness, community, and unrelenting 4x4 beats in the Hungarian hills. Not a festival — a transformational experience.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The mecca of psytrance. Every subgenre represented — morning full-on, dark psy, progressive, forest, goa. 24/7 music for a full week. Legendary sound systems. If psytrance is your religion, this is the Vatican.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mind-bending production. The main stage dome is iconic. UV art installations everywhere. Intricate decorations that take months to create. At night, it becomes another dimension entirely.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Tribal community energy. 30,000 people united by consciousness exploration. PLUR on psychedelics. Strangers become family. The vibe is intense, loving, weird, and unforgettable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Challenging. Large hilly site. Facilities basic (it's camping, rough terrain). Dust and heat. But the difficulty is part of the initiation. Prepare accordingly.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Surprisingly good for a psytrance festival. Many vegetarian/vegan options. Global cuisines. Chai tents everywhere. You'll need the fuel for a week of dancing.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Rural Hungary, 90 min from Budapest. Festival buses available. Remote location is intentional — you're meant to leave the normal world behind.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Week-long festival for €180-250. Hungary keeps costs down. For the depth of experience, exceptional value. You'd pay this for a weekend elsewhere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Workshops on everything — yoga, meditation, healing arts, consciousness exploration. Art village. Talks on alternative philosophy. It's a lifestyle gathering, not just a music festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Rolling Hungarian hills and forest. A small lake for swimming. Hot summer weather. The natural amphitheater makes the main stage feel epic. Stars at night are incredible.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Legendary within psytrance community. The annual pilgrimage. Less known outside the scene, which is fine — you need to know what you're signing up for.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌀</div>
+                    <div>
+                        <h3>Psytrance Devotees</h3>
+                        <p>If psytrance is your sound, this is the ultimate gathering. Period.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🧘</div>
+                    <div>
+                        <h3>Consciousness Explorers</h3>
+                        <p>Beyond music — workshops, healing, philosophy, community living.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Festival Veterans</h3>
+                        <p>A week of camping. Not for first-timers unless you're ready for intensity.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌈</div>
+                    <div>
+                        <h3>Alternative Seekers</h3>
+                        <p>If mainstream festivals feel empty, this has the depth you're looking for.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Ozora Experience</h2>
+            <p class="intro">One week of psytrance, community, and consciousness in the Hungarian hills.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Late July/Early Aug</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">7 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">Multiple (24/7)</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">30,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes (only option)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>What is Ozora?</h3>
+                <p>Ozora is not really comparable to other festivals. It's a week-long gathering of the global psytrance tribe — part music festival, part spiritual retreat, part temporary utopia experiment. The music never stops (literally 24/7 for a week), and neither does the deeper exploration.</p>
+                <p>Originating from the legendary Goa parties of the '90s, Ozora represents the continuation of that psychedelic dance culture. It's a pilgrimage for those who've found meaning in the trance experience.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Music</h3>
+                <ul>
+                    <li><strong>Main Stage:</strong> The iconic dome. Full-on, progressive, goa trance</li>
+                    <li><strong>Chill Out:</strong> Ambient, downtempo, psychill</li>
+                    <li><strong>Pumpui:</strong> Harder, darker psytrance</li>
+                    <li><strong>Dragon Nest:</strong> Forest psy, hitech</li>
+                    <li><strong>Artistry:</strong> World music, live acts</li>
+                </ul>
+                <p>Artists from across the psytrance spectrum — Ace Ventura, Astrix, Raja Ram, Infected Mushroom, and hundreds more.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Beyond Music</h3>
+                <ul>
+                    <li><strong>Workshops:</strong> Yoga, meditation, breathwork, dance, healing arts</li>
+                    <li><strong>Talks:</strong> Philosophy, environmentalism, alternative living</li>
+                    <li><strong>Art Village:</strong> Creating and exhibiting throughout the week</li>
+                    <li><strong>Healing Area:</strong> Alternative therapies and integration support</li>
+                    <li><strong>The Lake:</strong> Swimming and washing off the dust</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Preparation</h3>
+                <p>This is not a casual weekend festival. Prepare for:</p>
+                <ul>
+                    <li><strong>Camping gear:</strong> Tent, sleeping setup, shade structure essential</li>
+                    <li><strong>Heat:</strong> Hungarian summer can be brutal. Shade, water, electrolytes</li>
+                    <li><strong>Dust:</strong> It gets dusty. Bandanas, goggles if sensitive</li>
+                    <li><strong>Self-sufficiency:</strong> Bring basics, don't rely entirely on vendors</li>
+                    <li><strong>Mental preparation:</strong> A week of intensity requires stamina</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <ul>
+                    <li><strong>Budapest Airport:</strong> 90+ minutes to site</li>
+                    <li><strong>Festival Buses:</strong> Official shuttles from Budapest</li>
+                    <li><strong>Driving:</strong> Parking available (fills up)</li>
+                    <li><strong>Arrive early:</strong> Best camping spots go first days</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

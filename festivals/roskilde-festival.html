@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roskilde Festival — Ground Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>Ground Score</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Roskilde, Denmark</span>
+                <span>📅 June 28 - July 5, 2025</span>
+                <span>👥 130,000</span>
+                <span>💵 DKK 2,400 (~€320)</span>
+            </div>
+            <h1>🇩🇰 Roskilde Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">47</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Northern Europe's biggest and most legendary festival. A non-profit institution since 1972, Roskilde combines world-class headliners with emerging talent across every genre. Eight days of music, art, and Scandinavian summer magic.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Unparalleled diversity across 200+ acts. From rock legends to underground electronic to world music. Past headliners include Radiohead, Kanye West, Kendrick Lamar, and Björk. Discovery is central — expect to find your new favorite artist.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Orange Stage is iconic — one of Europe's largest festival stages. Eight stages total with distinct personalities. Art installations, activism zones, and creative spaces. Over 50 years of refinement shows.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Unique Scandinavian openness and community. Run by volunteers, attended by all ages, connected by shared values. The camping city becomes a temporary utopia. Genuinely special atmosphere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Massive site but well organized after decades of refinement. The camping areas are cities unto themselves. Good facilities throughout. Main stage can get packed but alternatives always available.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent food program with focus on sustainability. Local Danish producers, international cuisine, vegetarian focus. Food Street is a destination in itself. Quality has improved dramatically over years.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>30 minutes from Copenhagen by train. Copenhagen has excellent international connections. Shuttle buses run throughout. Easy to combine with Copenhagen city break. Well-connected for international visitors.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Eight days for around €320 is extraordinary value. Non-profit status means all proceeds go to humanitarian and cultural causes. You're supporting something meaningful. Quality per euro is unmatched.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art exhibitions, activism, debates, workshops, film, and sports. The Rising stage nurtures emerging artists. Camp city has its own social scene. It's a cultural gathering, not just a concert series.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Flat Danish farmland transformed into festival city. Not scenic in traditional sense but the scale creates its own landscape. Long summer days with light until 10pm. Danish weather can be variable — prepare for all conditions.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Lives up to legendary status. Over 50 years of history create deep cultural significance. The hype is deserved — this is a bucket list festival. Everyone should experience Roskilde once.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌍</div>
+                    <div>
+                        <h3>Festival Bucket Listers</h3>
+                        <p>One of Europe's essential festival experiences. If you want to experience legendary festival culture, Roskilde is the pilgrimage.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔍</div>
+                    <div>
+                        <h3>Music Discoverers</h3>
+                        <p>200+ acts across every genre. The programming rewards curiosity. Come for the headliners, leave with new obsessions.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camp City Citizens</h3>
+                        <p>The camping is as important as the music. If you want the full festival community experience, Roskilde's camp city is unmatched.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">✊</div>
+                    <div>
+                        <h3>Values-Driven Festivalgoers</h3>
+                        <p>Non-profit, volunteer-run, cause-supporting. If you want your festival money to do good, Roskilde is the ethical choice.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Roskilde Experience</h2>
+            <p class="intro">Everything you need to know about Northern Europe's legendary festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Jun 28 - Jul 5</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">8 days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">8</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">130,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Stages</h3>
+                <ul>
+                    <li><strong>Orange Stage:</strong> The iconic main stage. One of Europe's biggest. Headliners only.</li>
+                    <li><strong>Arena:</strong> Major indoor venue for significant acts.</li>
+                    <li><strong>Apollo:</strong> Electronic and alternative focus.</li>
+                    <li><strong>Avalon:</strong> World music, folk, and roots.</li>
+                    <li><strong>Gloria:</strong> Hip-hop and urban sounds.</li>
+                    <li><strong>Rising:</strong> Emerging talent — tomorrow's headliners today.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <ul>
+                    <li><strong>Copenhagen:</strong> Fly into Copenhagen Airport (CPH), then 30 min train to Roskilde.</li>
+                    <li><strong>Direct trains:</strong> Regular service from Copenhagen Central.</li>
+                    <li><strong>Shuttle buses:</strong> Run between Roskilde station and festival site.</li>
+                    <li><strong>Driving:</strong> Possible but not recommended. Train is easier.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Camp City</h3>
+                <p>Roskilde's camping is legendary:</p>
+                <ul>
+                    <li><strong>Warm-up days:</strong> First four days are camping-only with emerging acts.</li>
+                    <li><strong>Camp areas:</strong> Each has its own character. Research beforehand.</li>
+                    <li><strong>Bring gear:</strong> Tent, sleeping bag, rain gear essential.</li>
+                    <li><strong>Dream City:</strong> Glamping option with pre-pitched tents.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Arrive early:</strong> Warm-up days are essential for getting the full experience.</li>
+                    <li><strong>Rain gear:</strong> Danish weather. Be prepared for everything.</li>
+                    <li><strong>Pace yourself:</strong> Eight days is a marathon. Sleep when you can.</li>
+                    <li><strong>Volunteer:</strong> Consider volunteering for free ticket. Community experience.</li>
+                    <li><strong>Rising Stage:</strong> Check it daily. Discover before everyone else.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Ground Score — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>
