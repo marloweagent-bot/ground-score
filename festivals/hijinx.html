@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hijinx Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #e74c3c 0%, #9b59b6 100%); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Philadelphia, PA</span>
+                <span>📅 December (2 days)</span>
+                <span>👥 25,000</span>
+                <span>💵 $150-300</span>
+            </div>
+            <h1>🎉 Hijinx Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The East Coast's premier NYE-adjacent bass and EDM festival. Hijinx brings massive lineups to Philadelphia's convention center, offering a heated indoor alternative to freezing outdoor winter events. When it's too cold to camp, you rage inside.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Stacked lineups spanning bass, house, and mainstream EDM. Headliners include names like Excision, Skrillex, Illenium, and John Summit. Strong bass music representation alongside broader EDM appeal. The booking is aggressive and competitive.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Convention center limitations mean production can't rival outdoor festivals, but they maximize what's possible indoors. LED walls, lasers, and staging are solid. It's an arena show vibe, not a festival wonderland — and that's fine for winter.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>East Coast bass heads show up ready to rage. The crowd skews young and energetic. NYE-adjacent timing means celebratory energy. Philly's rave community is tight-knit. The indoor setting concentrates the energy rather than dispersing it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Convention center layout has limitations — multiple stages in one building can mean sound bleed and crowded hallways. Water stations adequate but lines form. Entry can be slow with coat check and security. It's indoor winter logistics.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard convention center vendor fare — adequate but not exciting. Philly has excellent restaurants for pre/post meals. Cheesesteaks await. Prices are typical festival markup. Bring cash for faster lines.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Philadelphia is highly accessible — Amtrak from NYC/DC, cheap flights into PHL. Convention center is downtown with easy public transit. Hotels within walking distance. East Coast accessibility is excellent.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two days of stacked lineups for $150-300 is solid value. Philly hotels are cheaper than NYC. Total trip cost is manageable, especially for the East Coast bass community who can drive in. Strong lineup per dollar.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Limited extras beyond the music — it's primarily a concert experience. After-parties extend the night. The city itself offers plenty to explore. Focus is on the lineups rather than immersive experiences.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>A convention center isn't scenic, but in December that's the point — it's warm inside. Philly itself has charm, and the downtown location puts you in the city's heart. The setting is practical, not magical.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Hijinx has established itself as the East Coast winter EDM destination. The lineups consistently deliver. For bass heads who can't make it west, Hijinx fills the void with heavy booking and good execution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>East Coast Bass Heads</h3>
+                        <p>No need to fly west for heavy lineups. Hijinx brings the bass to Philly with headliners rivaling any festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">❄️</div>
+                    <div>
+                        <h3>Winter Warriors</h3>
+                        <p>Too cold to camp? Rage indoors. Hijinx solves the December festival problem with climate-controlled chaos.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎉</div>
+                    <div>
+                        <h3>NYE Celebrators</h3>
+                        <p>End the year with bass. The December timing makes it a natural pre-NYE celebration with your rave family.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Philly is an underrated city. Combine the fest with cheesesteaks, history, and a real city experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Hijinx lineup reveal hit different this year 🔥"</div>
+                    <div class="stats">1.4M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"East Coast bass heads at Hijinx are a different breed"</div>
+                    <div class="stats">112K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Hijinx 2025 | Philly's Winter Bass Takeover"</div>
+                    <div class="stats">380K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Hijinx Experience</h2>
+            <p class="intro">Everything you need to know about the East Coast's winter EDM destination.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">December</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">2 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~25,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Indoor)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Winter festival logistics differ from summer.</p>
+                <ul>
+                    <li><strong>Coat check:</strong> You'll need to check your coat. Plan for lines and potential waits.</li>
+                    <li><strong>Layers:</strong> It's December in Philly. Dress warm for outside, light for inside.</li>
+                    <li><strong>Book hotels downtown:</strong> Walking distance to the convention center is ideal.</li>
+                    <li><strong>Plan food:</strong> Philly has incredible food. Research cheesesteak spots.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Convention Center</h3>
+                <p>Indoor winter raving has trade-offs.</p>
+                <ul>
+                    <li><strong>Multiple stages:</strong> Main stage, bass stage, house stage — all under one roof.</li>
+                    <li><strong>Sound bleed:</strong> Expect some overlap between areas. Position yourself accordingly.</li>
+                    <li><strong>Climate controlled:</strong> No weather concerns. Consistent comfortable temps.</li>
+                    <li><strong>Capacity:</strong> Can feel crowded at peak times. Find your spot early for headliners.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Hijinx proves you don't need a desert or a forest to throw a proper festival. The lineups compete with summer festivals, and you don't freeze to death."
+                    <cite>— Festival attendee, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Philly Tips</h3>
+                <p>Make the most of the city.</p>
+                <ul>
+                    <li><strong>Cheesesteaks:</strong> Jim's, Pat's, Geno's — have the debate, try them all.</li>
+                    <li><strong>Reading Terminal Market:</strong> Perfect for brunch recovery.</li>
+                    <li><strong>Amtrak accessible:</strong> NYC is 90 min by train. DC is similar.</li>
+                    <li><strong>After-parties:</strong> Check for unofficial events at local venues.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

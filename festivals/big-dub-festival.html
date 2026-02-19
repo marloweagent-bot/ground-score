@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Dub Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #6c5ce7 0%, #00b894 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Artemas, PA</span>
+                <span>📅 July (5 days)</span>
+                <span>👥 3,000</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🔊 Big Dub Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">41</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">A hidden gem for East Coast bass heads, Big Dub delivers underground dubstep, drum & bass, and electronic music on a beautiful Pennsylvania farm. Five days of camping, community, and heavy bass with the intimacy that massive festivals can't match.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Underground bass music focus with dubstep, drum & bass, house, and techno across four stages. The booking emphasizes rising talent and underground legends over mainstream names. Quality sound systems that punch above the festival's weight.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DIY aesthetic with community-built art installations and decorations throughout. Four stages each with distinct personalities. Not flashy production, but authentic and lovingly crafted. The vibe is underground warehouse meets countryside.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is the vibe. Small enough that everyone becomes family over five days. No VIP, no hierarchy — just music lovers camping together. The community is welcoming, the energy is pure, and the bass brings people together. Magic happens here.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>300 acres means space to spread out. Short walks between stages. Daily swim parties at the pond. Well-organized camping areas. Five days allows for a relaxed pace — no rushing, no FOMO. The flow is natural and unhurried.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Food vendors cover the basics with reasonable prices. Five days of camping means bringing your own supplies is smart. The general store has essentials. Communal cooking at campsites is part of the experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Rural Pennsylvania location requires driving. 2 hours from DC/Baltimore, 3 hours from Philly, 4 hours from NYC. Fly into BWI or DCA and rent a car. The remote location is part of the escape, but plan your transport.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Five days of music and camping for under $350 is exceptional value. Compare to a single day at mainstream festivals. The per-day cost is minimal, and the experience is rich. Best value bass festival on the East Coast.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>100+ in-camp activities including daily yoga, swim parties, drum circles, workshops, secret headliner sets, and late-night adventures. The pond swimming alone is worth it. This is a full experience, not just a concert.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Four Quarters Farm is beautiful — rolling hills, forests, a swimming pond, and 300 acres of Pennsylvania countryside. July weather is warm but manageable. Camping under the stars on this land feels right.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Big Dub doesn't overpromise — it delivers exactly what it is: underground bass music, real community, and an escape from the mainstream. If you come with the right expectations, you'll leave transformed. The hype is earned through experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Underground dubstep, drum & bass, and bass music from artists you should know. This is where the real heads gather.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Five days of real camping on beautiful farmland. Bring your gear, set up camp, become neighbors with strangers who become family.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Small, welcoming, and safe — Big Dub is a perfect introduction to festival culture without the overwhelming crowds.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>Night Owls</h3>
+                        <p>Secret headliner sets at night, late-night stages, and music that goes into the early hours. The party doesn't stop.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"Big Dub is the most underrated festival on the East Coast 🔊"</div>
+                    <div class="stats">420K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Day 4 at Big Dub and we've made friends for life"</div>
+                    <div class="stats">28K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Big Dub Festival 2025 | 5 Days of Underground Bass Magic"</div>
+                    <div class="stats">89K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Big Dub Experience</h2>
+            <p class="intro">Everything you need to know about Pennsylvania's underground bass music gathering.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Late July</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">5 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~3,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes (Required)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Five days requires proper preparation.</p>
+                <ul>
+                    <li><strong>Camping essentials:</strong> Tent, sleeping bag, camp chairs, cooking supplies. This is real camping.</li>
+                    <li><strong>Food supplies:</strong> Bring groceries for 5 days. Coolers, ice, and easy-prep meals.</li>
+                    <li><strong>Shade:</strong> July in PA can be hot. Bring a canopy or tarp for daytime shade.</li>
+                    <li><strong>Swimsuit:</strong> Daily swim parties at the pond are essential for staying cool.</li>
+                    <li><strong>Community mindset:</strong> Come ready to share, connect, and be part of something.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Rural location requires planning.</p>
+                <ul>
+                    <li><strong>Driving:</strong> Best option. 2 hours from DC, 3 from Philly, 4 from NYC.</li>
+                    <li><strong>Carpools:</strong> Check the Big Dub Facebook group for ride shares.</li>
+                    <li><strong>Flying:</strong> BWI or DCA, then rent a car. No public transit options.</li>
+                    <li><strong>Arrive Wednesday:</strong> Give yourself time to set up camp before music starts.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Four Quarters Farm is 300 acres of magic.</p>
+                <ul>
+                    <li><strong>Four stages:</strong> Each with distinct sound and style. Main stage, bass stage, house stage, late-night.</li>
+                    <li><strong>The pond:</strong> Daily swim parties. Essential for July heat. Bring a floatie.</li>
+                    <li><strong>Decorations:</strong> Community-built installations throughout. DIY aesthetic done right.</li>
+                    <li><strong>Secret sets:</strong> Headliner sets happen at random times in random places. Stay alert.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Big Dub changed my perspective on what a festival can be. It's not about big names — it's about real music and real people. Five days of pure connection."
+                    <cite>— r/festivals, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Activities Beyond Music</h3>
+                <p>100+ activities throughout the five days.</p>
+                <ul>
+                    <li><strong>Daily yoga:</strong> Morning sessions to start the day right.</li>
+                    <li><strong>Swim parties:</strong> Afternoon pond hangs with DJs.</li>
+                    <li><strong>Drum circle:</strong> Nightly community drumming around the fire.</li>
+                    <li><strong>Workshops:</strong> Flow arts, crafts, and skill shares.</li>
+                    <li><strong>Late-night adventures:</strong> The after-hours discoveries are legendary.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Small size creates real connection.</p>
+                <ul>
+                    <li><strong>Camp neighbors become family:</strong> Five days together bonds people.</li>
+                    <li><strong>Solo-friendly:</strong> Many people come alone and leave with crews.</li>
+                    <li><strong>All skill levels:</strong> Veteran ravers and first-timers welcome equally.</li>
+                    <li><strong>Look out for each other:</strong> The community takes care of its own.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

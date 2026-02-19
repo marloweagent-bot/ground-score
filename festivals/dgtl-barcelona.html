@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGTL Barcelona — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Barcelona, Spain</span>
+                <span>📅 August 8-10, 2025</span>
+                <span>👥 35,000</span>
+                <span>💵 €85-180</span>
+            </div>
+            <h1>♻️ DGTL Barcelona</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The sustainable techno festival from Amsterdam that found a perfect second home in Barcelona. DGTL combines world-class techno lineups with genuine environmental commitment. Industrial aesthetics meet Mediterranean vibes at Parc del Fòrum.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Premium techno and house curation. The lineup balances big names with underground credibility. Expect the likes of Adam Beyer, Amelie Lens, and Maceo Plex alongside rising talent. The sound systems are exceptional across all stages.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Industrial raw aesthetic with DGTL's signature visual production. Impressive stage designs with quality LED installations and VJ work. The Parc del Fòrum setting adds Mediterranean edge to the Dutch industrial formula.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mature, music-focused crowd who appreciate both the beats and the sustainability mission. International mix of techno tourists and Barcelona locals. The environmental ethos attracts a conscious, respectful audience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Well-planned stage distribution across the Fòrum site. Mid-size festival so less crowded than mega-events. Good flow between stages with reasonable walking distances. Adequate facilities throughout.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>DGTL takes food seriously — all vendors are plant-based or sustainable. High-quality options that align with the festival's environmental mission. Not just token veggie burgers but genuinely good food.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Same Parc del Fòrum location as Primavera. Metro L4 direct to site. Barcelona airport is 30 minutes away. The city's excellent public transport makes access seamless.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Competitive pricing for Barcelona techno festival standards. Weekend pass around €180, day tickets from €85. Quality lineup justifies the price. Barcelona August accommodation can be pricey.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sustainability lab showcases environmental innovations. Art installations throughout. The eco-mission creates genuine additional programming beyond music. Circular economy experiments.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Waterfront industrial area with Barcelona as backdrop. August heat is intense — stay hydrated. Sea breeze helps. Sunset views over the Mediterranean add magic to the concrete landscape.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Growing reputation as Barcelona's premier techno festival. Amsterdam DGTL is legendary; Barcelona edition building similar credibility. Known among techno heads, less mainstream visibility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🌱</div>
+                    <div>
+                        <h3>Eco-Conscious Ravers</h3>
+                        <p>If you want to dance without environmental guilt, DGTL leads the industry in genuine sustainability efforts.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Techno Purists</h3>
+                        <p>Quality over quantity. Focused techno and house programming without genre sprawl. Every stage delivers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌴</div>
+                    <div>
+                        <h3>Festival Vacationers</h3>
+                        <p>Barcelona beach holiday meets world-class techno. The perfect August escape combination.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">📸</div>
+                    <div>
+                        <h3>Visual Art Lovers</h3>
+                        <p>DGTL's production design is consistently excellent. Art installations, lighting, and visuals are integral to the experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"DGTL Barcelona sunset session hits different 🌅 Mediterranean techno heaven"</div>
+                    <div class="stats">980K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The production at DGTL continues to blow minds. Sustainable AND stunning."</div>
+                    <div class="stats">145K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"How DGTL Is Making Festivals Sustainable | Documentary"</div>
+                    <div class="stats">420K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete DGTL Barcelona Experience</h2>
+            <p class="intro">Where Dutch techno precision meets Mediterranean passion.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Aug 8-10</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">2PM - 1AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4-5</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">35,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Sustainability Mission</h3>
+                <p>DGTL isn't greenwashing — they're pioneering.</p>
+                <ul>
+                    <li><strong>Circular economy:</strong> Working toward zero-waste festival operations.</li>
+                    <li><strong>Plant-based food:</strong> All vendors required to meet sustainability standards.</li>
+                    <li><strong>Revolution Foundation:</strong> Lab showcasing environmental tech and solutions.</li>
+                    <li><strong>CO2 tracking:</strong> Transparent reporting on festival environmental impact.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Same drill as other Fòrum events.</p>
+                <ul>
+                    <li><strong>Metro:</strong> L4 to El Maresme-Fòrum. Direct and efficient.</li>
+                    <li><strong>Tram:</strong> T4 also reaches the venue.</li>
+                    <li><strong>Night transport:</strong> Night buses run back to central Barcelona.</li>
+                    <li><strong>Bike:</strong> Barcelona's Bicing system + bike parking at venue.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Beat the Heat</h3>
+                <p>August in Barcelona means serious heat.</p>
+                <ul>
+                    <li><strong>Hydrate constantly:</strong> Free water refill stations throughout.</li>
+                    <li><strong>Arrive late afternoon:</strong> Peak sun hours are brutal. Time your arrival.</li>
+                    <li><strong>Shade stages:</strong> Some stages have cover — plan around them.</li>
+                    <li><strong>Dress light:</strong> Breathable fabrics essential. The sea breeze helps after sunset.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "DGTL proves you can have world-class production and world-class environmental responsibility. They're writing the playbook other festivals need to follow."
+                    <cite>— FestPass Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Combine With</h3>
+                <p>Make it a Barcelona summer trip.</p>
+                <ul>
+                    <li><strong>Beach time:</strong> Barceloneta and Nova Icaria beaches are nearby. Pre-party swim.</li>
+                    <li><strong>City exploration:</strong> Daytime for Gaudí, nighttime for techno.</li>
+                    <li><strong>Club nights:</strong> Barcelona's club scene extends the experience. Razzmatazz, Input, Nitsa.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

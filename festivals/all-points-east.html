@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Points East — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Victoria Park, London</span>
+                <span>📅 August 15-24, 2025</span>
+                <span>👥 40,000</span>
+                <span>💵 £75-95</span>
+            </div>
+            <h1>🌳 All Points East</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">East London's premier multi-day festival bringing world-class headliners to Victoria Park. Each day offers a different curated lineup, from indie rock to electronic, making it the most versatile festival experience in the city.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Eclectic, genre-spanning lineups. Past headliners include The Chemical Brothers, LCD Soundsystem, Nick Cave, Massive Attack, and The National. Each day has its own identity and curated supporting acts.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Professional festival production with multiple stages, art installations, and a beautiful park setting. The main stage production matches the caliber of headliners. Tent stages create intimate moments.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>East London's discerning music lovers. The crowd varies day to day depending on the headliner but generally skews towards music enthusiasts who know their stuff. Friendly, relaxed, appreciative.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Victoria Park's layout handles crowds well. Multiple entrance points ease congestion. Bar queues are manageable. The spread-out nature of stages means you're never too crushed except for headline sets.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent food selection with emphasis on East London vendors and quality street food. Good vegetarian and vegan options. Craft beer and cocktail bars elevate the drinks game beyond standard festival fare.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Perfectly located in East London. Mile End and Bethnal Green tube stations nearby. Overground to Hackney Wick. Multiple bus routes. Excellent cycling infrastructure. Night tubes for late departures.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Day tickets typically £75-95 depending on headliner. For the caliber of acts in a major city, this is competitive. Food and drink prices are London-level but not extortionate. The curated experience adds value.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beyond music: comedy tent, spoken word, wellness activities, and art installations. "In the Neighbourhood" midweek program offers free events. The park itself is beautiful for daytime hanging.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Victoria Park is one of London's finest green spaces. Lake views, mature trees, and beautiful landscaping create genuine festival atmosphere. August weather usually cooperates. City skyline provides backdrop.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Consistently delivers quality programming. The curated nature means each day feels intentional rather than random. Has established itself as a respected London institution. Lineup announcements generate genuine excitement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎸</div>
+                    <div>
+                        <h3>Music Obsessives</h3>
+                        <p>Each day is curated with care. If you obsess over lineups and appreciate supporting acts, APE rewards your attention to detail.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>East London Locals</h3>
+                        <p>World-class headliners in your backyard. No travel, no camping, just quality music in Victoria Park.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Genre Explorers</h3>
+                        <p>Different day, different sound. Attend multiple days to experience everything from indie to electronic to alternative.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌿</div>
+                    <div>
+                        <h3>Day Festival Fans</h3>
+                        <p>No camping commitment required. Experience proper festival energy while sleeping in your own bed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete All Points East Experience</h2>
+            <p class="intro">Everything you need to know about East London's multi-genre festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">August 15-24</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">12PM - 10:30PM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">40,000/day</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">All ages</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <ul>
+                    <li><strong>Tube:</strong> Mile End (Central, District, Hammersmith & City) or Bethnal Green (Central).</li>
+                    <li><strong>Overground:</strong> Hackney Wick or Cambridge Heath.</li>
+                    <li><strong>Bus:</strong> Routes 8, 277, 425, D6, S2 serve the area.</li>
+                    <li><strong>Cycling:</strong> Excellent bike infrastructure. Secure parking available.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>In The Neighbourhood</h3>
+                <p>APE runs free midweek events between music days:</p>
+                <ul>
+                    <li><strong>Free entry:</strong> No ticket needed for "In the Neighbourhood" sessions.</li>
+                    <li><strong>Activities:</strong> Food markets, sports, fitness, art, comedy, and local vendors.</li>
+                    <li><strong>Family-friendly:</strong> Kids' activities during daytime hours.</li>
+                    <li><strong>Local focus:</strong> Showcases East London's creative community.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Festival Areas</h3>
+                <ul>
+                    <li><strong>East Stage:</strong> Main stage for headliners. Massive production and sound.</li>
+                    <li><strong>West Stage:</strong> Second stage for support acts and genre showcases.</li>
+                    <li><strong>Tent Stages:</strong> Intimate settings for electronic acts and DJs.</li>
+                    <li><strong>Comedy Tent:</strong> Stand-up and entertainment throughout the day.</li>
+                    <li><strong>Food Village:</strong> Curated selection of London's best street food.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Pick your days:</strong> Each day has a distinct identity. Research lineups carefully.</li>
+                    <li><strong>Early for main stage:</strong> Prime spots for headliners fill up early.</li>
+                    <li><strong>Explore tent stages:</strong> Often where you'll discover new favorites.</li>
+                    <li><strong>Local afterparties:</strong> Hackney venues often host official continuations.</li>
+                    <li><strong>Layers:</strong> August evenings can cool down. Pack accordingly.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

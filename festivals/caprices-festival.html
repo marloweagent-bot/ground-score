@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caprices Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Crans-Montana, Swiss Alps</span>
+                <span>📅 March (2 weekends)</span>
+                <span>👥 35,000</span>
+                <span>💵 €150-400</span>
+            </div>
+            <h1>🏔️ Caprices Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">43</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Underground electronic music in the Swiss Alps. Caprices combines world-class techno and house with ski resort luxury — dance on the mountain during the day, rave until dawn at night. The most scenic techno festival anywhere.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Deep house, minimal techno, and experimental electronic dominate. 80+ artists including legends like Villalobos, Seth Troxler, and emerging underground talent. The booking philosophy prioritizes depth and taste over commercial appeal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Multiple venues across Crans-Montana: mountain stages with Alpine panoramas, intimate clubs, and après-ski parties. The MDRNTY stage offers 360° mountain views while dancing. Indoor venues for all-night sessions. Nature as production.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mix of dedicated techno heads and ski resort crowd creates interesting energy. More refined than muddy festival chaos. Swiss efficiency meets underground culture. Daytime mountain energy, nighttime rave intensity. Multilingual, international crowd.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Venues spread across a ski resort means some travel. Shuttle buses connect locations. Never feels overcrowded. Swiss infrastructure is excellent. Cold weather means bundling up for outdoor sets, but venues are well-organized.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Swiss resort dining — quality is high but so are prices. Fondue and raclette are cultural obligations. Festival food options decent. Crans-Montana has full restaurant scene. Budget for Swiss costs.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Geneva airport is 2.5 hours. Mountain resort means transport planning required. Swiss trains excellent but expensive. Once there, resort shuttle system works well. Not the most accessible, but Swiss logistics are smooth.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Switzerland is expensive — accommodation, food, transport all premium. Festival tickets reasonable (€150-400) but total trip cost is high. If you can afford it, the experience is unique. Budget option this is not.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Skiing and snowboarding during the day before dancing at night. Spa treatments in resort hotels. Mountain hiking, Alpine activities. The combination of winter sports and electronic music is unique. Full resort experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The Swiss Alps in winter. Snow-capped peaks, pristine mountain air, breathtaking panoramas. Dancing at 2000m altitude with Alpine views is surreal. Possibly the most scenic electronic music festival in the world. Setting alone is worth the trip.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Cult status among house and techno aficionados. Not mainstream famous but respected in underground circles. The unique setting and quality programming deliver on reputation. Growing international attendance each year.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎿</div>
+                    <div>
+                        <h3>Ski & Rave Combo</h3>
+                        <p>Shred the slopes by day, dance until dawn. The ultimate combination of winter sports and electronic music.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>House/Techno Heads</h3>
+                        <p>Deep, minimal, and underground booking policy. If you know the artists, you'll appreciate the curation.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💎</div>
+                    <div>
+                        <h3>Luxury Seekers</h3>
+                        <p>Swiss resort setting means quality accommodation, dining, and amenities. Festival experience with comfort.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">📸</div>
+                    <div>
+                        <h3>Scenic Adventurers</h3>
+                        <p>If setting matters, the Alpine backdrop is unmatched. Photos of dancing in the mountains are incredible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Caprices Experience</h2>
+            <p class="intro">Electronic music at altitude in the heart of the Swiss Alps.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">March</div></div>
+                <div class="fact"><div class="label">Format</div><div class="value">2 weekends</div></div>
+                <div class="fact"><div class="label">Venues</div><div class="value">Multiple</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">35,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <ul>
+                    <li><strong>Budget:</strong> Switzerland is expensive. Plan for premium costs on everything.</li>
+                    <li><strong>Accommodation:</strong> Book months ahead. Hotels, chalets, apartments in Crans-Montana.</li>
+                    <li><strong>Ski pass:</strong> Optional but recommended if you want daytime mountain activities.</li>
+                    <li><strong>Clothing:</strong> March weather is cold. Layer up for outdoor stages.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Experience</h3>
+                <ul>
+                    <li><strong>MDRNTY Stage:</strong> Iconic mountain stage with 360° Alpine views.</li>
+                    <li><strong>Night venues:</strong> Clubs and converted spaces for all-night dancing.</li>
+                    <li><strong>Après-ski:</strong> Daytime sets on the slopes, glühwein in hand.</li>
+                    <li><strong>Schedule:</strong> Day activities + evening shows + late-night clubbing.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
+</body>
+</html>

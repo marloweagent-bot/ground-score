@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medusa Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Cullera, Valencia, Spain</span>
+                <span>📅 August 7-11, 2025</span>
+                <span>👥 180,000+</span>
+                <span>💵 €120-200</span>
+            </div>
+            <h1>🐍 Medusa Festival</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">42</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Spain's biggest electronic music festival brings 180,000+ people to the beaches of Valencia for 5 days of EDM, techno, hardstyle, and everything in between. Eight massive stages, 170+ DJs, beachside location. This is Spanish festival culture at full volume.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>170+ DJs across 8 stages covering every electronic genre. From mainstream EDM headliners to underground techno. Hardstyle, trance, house, bass — it's all here. The diversity is a strength.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Massive stage productions with pyro, lasers, and LED walls. The main stage rivals Tomorrowland in scale. Themed areas transport you. Beach setting adds natural beauty to the technical spectacle.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Young, energetic Spanish crowd plus international EDM tourists. The vibe is party-focused — this is about dancing hard and living large. Friendly but intense. Expect spectacle over subtlety.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>180,000 people means crowds. Peak times at main stages get packed. Entry/exit can bottleneck. The size is overwhelming for some. Stay hydrated — August Valencia heat is no joke.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Good variety of food vendors with Spanish and international options. Festival prices but reasonable by European standards. Multiple food areas help distribute crowds.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Valencia airport is 40 minutes away. Shuttle buses from Valencia city. Cullera is a beach town with additional accommodation options. The location is accessible but transport can bottleneck.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>5 days, 170+ artists, 8 stages for around €200 full festival. Camping options are affordable. Spain in general is cheaper than Northern Europe. Strong value proposition.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beach access extends the experience. Pool parties, day programming, themed areas. The 2025 edition features a new Olympus-themed stage. Beyond music there's carnival atmosphere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Beachside location on Spain's Mediterranean coast. Cullera beach provides stunning natural backdrop. August heat is intense but evening sea breeze helps. Beach sunrises are magical.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Best electronic festival in Spain according to multiple awards. Major destination for Southern European EDM fans. Growing international recognition. The scale speaks for itself.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎆</div>
+                    <div>
+                        <h3>EDM Enthusiasts</h3>
+                        <p>If you love big drops, bigger stages, and the full festival spectacle, Medusa delivers EDM maximalism.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏖️</div>
+                    <div>
+                        <h3>Beach Party Lovers</h3>
+                        <p>Festival + Mediterranean beach = perfect combination. Day beach, night rave. The ultimate summer holiday.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">⚡</div>
+                    <div>
+                        <h3>Hardstyle Heads</h3>
+                        <p>Strong hardstyle/hardcore programming makes Medusa a destination for harder dance music fans.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎉</div>
+                    <div>
+                        <h3>Group Travelers</h3>
+                        <p>The camping experience and 5-day duration make this perfect for friend groups looking for an adventure.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The main stage at Medusa is INSANE 🔥 Bigger than I expected"</div>
+                    <div class="stats">2.8M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"5 days, 180,000 people, one beach. This is Medusa Festival."</div>
+                    <div class="stats">195K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Medusa Festival 2024 Aftermovie | Best of Spain's Biggest Festival"</div>
+                    <div class="stats">3.2M views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Medusa Experience</h2>
+            <p class="intro">Spain's electronic music mega-event on the Mediterranean coast.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Aug 7-11</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">5PM - 8AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">8</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">180,000+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Stages</h3>
+                <p>Eight unique areas covering the electronic spectrum.</p>
+                <ul>
+                    <li><strong>Mainstage:</strong> The headliner stage with maximum production. Think Tomorrowland-level spectacle.</li>
+                    <li><strong>Resistance:</strong> Techno and underground sounds. For the serious heads.</li>
+                    <li><strong>Olympus (new 2025):</strong> Themed immersive experience with Greek mythology design.</li>
+                    <li><strong>Hardcore:</strong> Hardstyle, hardcore, gabber. The hard dance destination.</li>
+                    <li><strong>Trance:</strong> For the uplifting trance community.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Beat the Heat</h3>
+                <p>August in Valencia is seriously hot. Plan accordingly.</p>
+                <ul>
+                    <li><strong>Hydrate constantly:</strong> Bring reusable bottles. Refill stations available.</li>
+                    <li><strong>Arrive evening:</strong> The festival really starts at sunset. Beach during the day.</li>
+                    <li><strong>Shade tent:</strong> If camping, invest in a quality shade structure.</li>
+                    <li><strong>Light clothing:</strong> Breathable fabrics essential. Nights cool down.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Camping Options</h3>
+                <p>Multiple camping tiers available.</p>
+                <ul>
+                    <li><strong>Standard camping:</strong> Bring your own tent. Basic facilities.</li>
+                    <li><strong>Premium camping:</strong> Better location, more space, upgraded facilities.</li>
+                    <li><strong>Glamping:</strong> Pre-pitched tents with beds. Festival luxury.</li>
+                    <li><strong>Cullera town:</strong> Hotels and apartments available but book early.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Medusa is Spain's answer to the mega-festivals. It's loud, proud, and unapologetically massive. Not subtle, but if you want the full EDM experience with a Mediterranean backdrop, this delivers."
+                    <cite>— FestPass Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Valencia is your gateway.</p>
+                <ul>
+                    <li><strong>Fly:</strong> Valencia Airport (VLC) is the closest. Budget carriers serve it well.</li>
+                    <li><strong>Shuttle:</strong> Official shuttles from Valencia city to Cullera.</li>
+                    <li><strong>Car:</strong> Parking available but expect traffic on peak entry days.</li>
+                    <li><strong>Train:</strong> Regional trains to Cullera from Valencia.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boomtown Fair — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #ff6b35 0%, #f7c59f 100%); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Hampshire, England</span>
+                <span>📅 August 6-10, 2025</span>
+                <span>👥 66,000</span>
+                <span>💵 £300-400</span>
+            </div>
+            <h1>🎪 Boomtown Fair</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">47</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The most immersive festival experience in the UK. Boomtown isn't just a music festival — it's a living, breathing theatrical city with themed districts, interactive storylines, and bass music that shakes your soul. Pure creative chaos.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Unmatched genre diversity. From drum & bass and dubstep to reggae, ska, punk, and world music. Over 100 stages host everything from intimate acoustic sets to massive bass music temples. The sound systems are absolutely world-class.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Mind-blowing production. Each district is a fully realized world — from the Wild West town to the dystopian metropolis. Actors roam the streets, storylines unfold, and stages are built into impossibly detailed sets. It's Burning Man meets Disneyland meets a massive rave.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Properly alternative crowd who embrace the weird. Fancy dress is practically mandatory, and creativity is celebrated. The community is warm and welcoming, though it can get intense. This is UK underground culture at its finest.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The site is massive and hilly — prepare for walking. But the layout rewards exploration with hidden stages and secret areas. Water points throughout. Arrival can be chaotic but once you're in, it flows beautifully.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Incredible food diversity to match the musical variety. Street food from every corner of the globe, themed restaurants within districts, and genuinely excellent quality. Vegan and vegetarian options are abundant.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Located at Matterley Estate near Winchester. Coach packages available from major UK cities. Southampton Airport is closest. Train to Winchester then shuttle. Expect queues on arrival day but it's well organized.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Five days of non-stop entertainment for around £350. Given the sheer scale and production value, this is outstanding value. Food prices are reasonable. You could spend a week exploring and not see everything.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Theatre performances, secret raves, escape rooms, circus acts, hidden speakeasies, political satire, interactive storylines, art installations. The "extra" IS the festival. There's nothing else like it.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Rolling Hampshire countryside transformed into a parallel universe. The natural bowl creates amazing acoustics. English summer weather applies — pack for all conditions. Beautiful sunsets over the valleys.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Exceeds expectations every single year. The hype is real. People return annually because nothing else scratches this itch. If you want a truly transformative festival experience, Boomtown delivers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Theatre & Music Lovers</h3>
+                        <p>If you want more than just music — if you want a story, characters, and a world to explore — Boomtown is your playground.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>The biggest drum & bass, dubstep, and bassline stages in the UK. Wall-shaking sound systems and legendary line-ups.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎨</div>
+                    <div>
+                        <h3>Creative Souls</h3>
+                        <p>Fancy dress, art, performance, and self-expression are celebrated. The weirder, the better. Bring your most outlandish outfits.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Festival Veterans</h3>
+                        <p>If you've done the mainstream festivals and want something deeper, more alternative, and more challenging, Boomtown awaits.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Boomtown Experience</h2>
+            <p class="intro">Everything you need to know about the UK's most immersive festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">August 6-10</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">24/7</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">100+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">66,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Included</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Districts</h3>
+                <p>Boomtown is organized into themed districts, each with its own stages, storyline, and atmosphere:</p>
+                <ul>
+                    <li><strong>Town Centre:</strong> The bustling heart — shops, street performers, and the main narrative unfolds here.</li>
+                    <li><strong>Lions Den:</strong> Reggae, dub, and roots music paradise. Massive sound systems and conscious vibes.</li>
+                    <li><strong>Sector 6:</strong> Dark, industrial techno and the heavier electronic sounds.</li>
+                    <li><strong>Paradise Heights:</strong> House music haven with disco, funk, and feel-good grooves.</li>
+                    <li><strong>Whistlers Green:</strong> Folk, acoustic, and world music in a more chilled setting.</li>
+                    <li><strong>Relic:</strong> Ancient ruins hosting electronic exploration and experimental sounds.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <ul>
+                    <li><strong>Coach:</strong> Official coaches run from major UK cities. Highly recommended.</li>
+                    <li><strong>Driving:</strong> Car parks available but expect long queues. Arrive Wednesday to beat the rush.</li>
+                    <li><strong>Train:</strong> Winchester station, then festival shuttle.</li>
+                    <li><strong>Flying:</strong> Southampton (30 min) or London Heathrow (1.5 hours).</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Camping Options</h3>
+                <ul>
+                    <li><strong>Standard Camping:</strong> Included in ticket. Bring your own tent. Some areas are very hilly.</li>
+                    <li><strong>Boutique Camping:</strong> Pre-pitched tents, tipis, and glamping options available.</li>
+                    <li><strong>Campervan:</strong> Dedicated fields for vehicles. Book early.</li>
+                    <li><strong>Quiet Camping:</strong> For those who want to actually sleep. Further from stages.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <ul>
+                    <li><strong>Footwear:</strong> Bring proper boots. The site is hilly and can get muddy. Your ankles will thank you.</li>
+                    <li><strong>Costumes:</strong> Pack multiple outfits. Fancy dress isn't optional — it's essential.</li>
+                    <li><strong>Explore:</strong> The best stages are hidden. Wander, get lost, follow the sound.</li>
+                    <li><strong>Pace yourself:</strong> It's five days. Sleep is possible if you plan for it.</li>
+                    <li><strong>Cash:</strong> Some areas are card-only, others cash-preferred. Bring both.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

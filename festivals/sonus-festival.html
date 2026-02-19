@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonus Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header><div class="container header-inner"><a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a><a href="../index.html" class="back-link">← All Festivals</a></div></header>
+    
+    <section class="festival-hero"><div class="container"><div class="festival-meta"><span>📍 Zrće Beach, Pag Island, Croatia</span><span>📅 August (5 days)</span><span>👥 30,000</span><span>💵 €180-300</span></div><h1>🌊 Sonus Festival</h1></div></section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score"><span class="number">43</span><span class="max">/ 50</span></div>
+                <p class="verdict-text">Presented by Time Warp, Sonus brings world-class techno and house to Croatia's legendary party beach. Five days and nights across open-air clubs on Zrće, plus boat parties on the Adriatic. Pure beach techno bliss.</p>
+            </div>
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Time Warp pedigree ensures top-tier techno and house bookings. From Boris Brejcha to Amelie Lens, the lineup covers the spectrum. Well-known names plus underground selectors. Sound systems in beach clubs are serious.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Three open-air beach clubs (Noa, Papaya, Kalypso) each with distinct vibes. Dancing barefoot on the beach under the stars. Boat parties add variety. Production focuses on sound quality and atmosphere over pyrotechnics.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>International techno crowd meets Croatian beach party energy. Mix of dedicated music fans and party tourists. Generally positive atmosphere. The beach setting keeps things relaxed during the day before nighttime intensity.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Zrće Beach is compact — all clubs within walking distance. No camping means commuting from Novalja town. Shuttle buses run regularly. Beach logistics are straightforward. Gets crowded at peak times but manageable.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Beach club food is functional but not exceptional. Novalja town has better dining options. Croatian food generally good and affordable. Beach prices are festival-level. Bring snacks and stay hydrated.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Zadar airport is closest (1.5 hours). Split is further but has more flights. Pag Island requires ferry or bridge. Once on island, Novalja has accommodation. Not the easiest access but typical for Croatian festivals.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>€180-300 for five days of quality techno is reasonable. Croatian prices help offset ticket costs. Accommodation varies widely. Total trip depends on choices. Good value compared to Ibiza equivalent.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Beach swimming and water sports during the day. Boat parties on the Adriatic. Croatian coast exploration. The combination of beach holiday and techno festival is the main draw.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Zrće Beach is legendary for a reason. Crystal-clear Adriatic, dramatic rocky coastline, stunning sunsets. Dancing on the beach under Croatian stars is magical. August weather is perfect — hot days, warm nights.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Time Warp backing gives credibility. Over a decade of reputation building. Well-known in techno circles as quality destination. The beach setting and booking quality deliver on promises.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item"><div class="icon">🎹</div><div><h3>Techno Heads</h3><p>Time Warp quality bookings in a beach setting. The best of both worlds for house and techno fans.</p></div></div>
+                <div class="made-for-item"><div class="icon">🏖️</div><div><h3>Beach Seekers</h3><p>Swim by day, dance by night. The Croatian coast adds holiday vibes to the festival experience.</p></div></div>
+                <div class="made-for-item"><div class="icon">🌙</div><div><h3>Night Owls</h3><p>Beach clubs run until dawn. Five nights of non-stop techno in open-air venues.</p></div></div>
+                <div class="made-for-item"><div class="icon">👯</div><div><h3>Group Trips</h3><p>Beach party vibe suits groups. Easy to split time between dancing and beach relaxation.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Sonus Experience</h2>
+            <p class="intro">Five days of techno on Croatia's legendary party beach.</p>
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">August</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">5 days</div></div>
+                <div class="fact"><div class="label">Clubs</div><div class="value">3-4</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">30,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            <div class="breakdown-section">
+                <h3>The Beach Clubs</h3>
+                <ul>
+                    <li><strong>Noa Beach Club:</strong> Overwater venue with stunning design and views.</li>
+                    <li><strong>Papaya Club:</strong> Massive capacity, famous for big nights.</li>
+                    <li><strong>Kalypso:</strong> More intimate setting, quality bookings.</li>
+                    <li><strong>Boat Parties:</strong> Adriatic cruises with DJ sets.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer><div class="container"><p>FestPass — Find your perfect festival</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
+</body>
+</html>

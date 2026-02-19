@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUKU Music + Art Project — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Mardi Gras World, New Orleans</span>
+                <span>📅 March (2 days)</span>
+                <span>👥 20,000</span>
+                <span>💵 $150-250</span>
+            </div>
+            <h1>🎭 BUKU Music + Art Project</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">40</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">BUKU is New Orleans' boutique gem — intimate enough to feel like a house party, but stacked with major headliners. The industrial waterfront venue and NOLA's inherent weirdness create something special that larger festivals can't replicate.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>BUKU punches way above its weight with bookings. The lineup blends EDM headliners with hip-hop stars and indie acts — think Skrillex into Tyler, the Creator into Tame Impala energy. Sound systems are crisp and the stages are well-separated for minimal bleed.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The industrial warehouse aesthetic of Mardi Gras World creates a gritty, authentic vibe. Art installations pop against concrete and steel. Production quality is solid but not EDC-level — and that's intentional. This is about raw energy over polish.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>This is NOLA — the vibe is built-in. Everyone's here to party, the crowd skews young and energetic, and there's genuine diversity in both music taste and people. The "house party" intimacy creates real connections.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Compact venue means short walks between stages, but also potential crowding during headliners. Water stations adequate. Entry lines can be rough first day. The intimate size is a double-edged sword.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>It's New Orleans — the food is exceptional. Local vendors bring authentic NOLA flavors (gumbo, po'boys, beignets) alongside festival standards. Prices reasonable for a festival. You won't go hungry or unsatisfied.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>New Orleans has a major airport with cheap flights. The venue is walkable from downtown/French Quarter hotels. Rideshare works. No camping needed — you stay in one of America's best party cities.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two days of stacked lineups for $150-250 is strong value. Add that you're in New Orleans with world-class food, nightlife, and culture — the total trip value is excellent. Hotels can vary from budget to bougie.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations, some interactive experiences, but the real "extra" is New Orleans itself. Post-festival, Frenchmen Street and Bourbon Street extend the party. The city is the attraction.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Industrial waterfront with Mississippi River views. It's not naturally scenic but the urban grit fits BUKU's personality perfectly. March weather is typically mild and pleasant.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>BUKU has earned its reputation as a don't-miss boutique festival. Expectations are calibrated correctly — it's not trying to be EDC. What it promises (intimate + stacked + NOLA weird), it delivers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🏙️</div>
+                    <div>
+                        <h3>Urban Explorers</h3>
+                        <p>Festival by day, New Orleans by night. Frenchmen Street jazz, Bourbon Street chaos, late-night gumbo — the city extends the experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Genre-Fluid Music Fans</h3>
+                        <p>BUKU's lineup defies categorization. If you love electronic AND hip-hop AND indie, this is your festival.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💃</div>
+                    <div>
+                        <h3>First-Timers</h3>
+                        <p>Manageable size, great city, quality acts. Perfect entry point to festival culture without being overwhelming.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">👯</div>
+                    <div>
+                        <h3>Group Trip Planners</h3>
+                        <p>New Orleans makes group logistics easy. No camping coordination needed — just book a house or hotel and go.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"BUKU gave us the most insane b2b set 🤯"</div>
+                    <div class="stats">890K views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"New Orleans does festivals different 🎭"</div>
+                    <div class="stats">156K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"BUKU 2024 Vlog + Where To Eat in NOLA"</div>
+                    <div class="stats">245K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete BUKU Experience</h2>
+            <p class="intro">Everything you need to know about New Orleans' premier boutique festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">March</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">2 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">~20,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No (Hotels)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>BUKU is a city festival, so preparation is different from camping events.</p>
+                <ul>
+                    <li><strong>Book hotels early:</strong> French Quarter and Warehouse District are closest. Prices spike during festival weekend.</li>
+                    <li><strong>Plan your NOLA experience:</strong> Build in time for the city. Come early or stay late.</li>
+                    <li><strong>Check the weather:</strong> March in NOLA can be perfect or rainy. Layers and rain gear recommended.</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be on concrete all day, and walking back to hotels at night.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>One of the most accessible festivals in America thanks to New Orleans' infrastructure.</p>
+                <ul>
+                    <li><strong>Fly into MSY:</strong> Major airport, cheap flights, 20-30 min from downtown.</li>
+                    <li><strong>Stay downtown:</strong> French Quarter and CBD are walking distance to venue.</li>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work great. Surge pricing after headliners.</li>
+                    <li><strong>Entry:</strong> Will call and ticket scanning fairly efficient. Arrive before headliners to avoid lines.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Mardi Gras World provides an industrial playground right on the Mississippi.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Outdoor, river-adjacent. Where the biggest acts play.</li>
+                    <li><strong>Power Plant:</strong> Indoor warehouse stage with heavy bass. Gets LOUD.</li>
+                    <li><strong>Ballroom:</strong> More intimate indoor space for hip-hop and experimental.</li>
+                    <li><strong>Float Den:</strong> Unique stage built into Mardi Gras float warehouse.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "BUKU feels like a secret that 20,000 people know about. It's got the intimacy of a warehouse party with festival-level production."
+                    <cite>— FestPass Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <ul>
+                    <li><strong>Food is legitimately good:</strong> This is New Orleans. Expect quality local vendors.</li>
+                    <li><strong>Hydrate:</strong> March can be warm. Water stations available but bring a bottle.</li>
+                    <li><strong>Pace yourself:</strong> New Orleans nightlife will tempt you. Festival + late nights = brutal.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Young, energetic, and diverse — reflecting both the lineup and the city.</p>
+                <ul>
+                    <li><strong>College crowd:</strong> Lots of LSU, Tulane, and regional university students.</li>
+                    <li><strong>Music heads:</strong> People who appreciate genre diversity.</li>
+                    <li><strong>NOLA locals:</strong> The city shows up for its festival.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <ul>
+                    <li><strong>Frenchmen Street:</strong> Live jazz and local music. The real New Orleans nightlife.</li>
+                    <li><strong>Late-night food:</strong> Café Du Monde beignets at 3am is tradition.</li>
+                    <li><strong>Recovery brunch:</strong> NOLA does brunch like nowhere else. Plan accordingly.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

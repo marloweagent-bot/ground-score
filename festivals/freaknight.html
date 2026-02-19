@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freaknight — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6600 0%, #8b0000 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 WaMu Theater, Seattle</span>
+                <span>📅 October (1 night)</span>
+                <span>👥 8,000+</span>
+                <span>💵 $80-150</span>
+            </div>
+            <h1>🎃 Freaknight</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">37</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Pacific Northwest's ultimate Halloween rave. Freaknight brings bass-heavy lineups to Seattle's WaMu Theater for one costumed night of chaos. The PNW rave scene's annual spooky celebration.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bass-heavy focus—dubstep, trap, and hard-hitting EDM dominate. Past headliners include Zomboy, BTSM, Rezz, Space Laces. Three stages cover different subgenres. Sound systems are solid for indoor arena setting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween theming with USC Events' production standards. Spooky decorations, stage design reflecting the theme, and immersive elements throughout. Arena venue limits some possibilities but production is solid.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween brings out the creativity—elaborate costumes everywhere. PNW rave scene is known for being friendly and passionate. The one-night format concentrates energy. Bass music crowds go hard but look out for each other.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Indoor arena means climate control—no weather issues. Three stages spread across the venue. Can get crowded during headliners. Entry lines can be rough—arrive early. Water stations adequate but lines form.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Arena concessions plus some vendors. Limited options for a single-night event. Eat before arriving is the move. Bar service available. Standard arena prices apply.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>WaMu Theater is in Seattle—SEA airport, light rail, tons of hotels. Downtown Seattle location makes logistics easy. Public transit works. Rideshare available. Very accessible for a single-night event.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$80-150 for a full night of bass music is good value. No hotel needed for locals. Even visitors can do this as a single-night trip. Solid lineup for the price point.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Halloween theming is the extra—costume contests, themed areas, spooky decor. The crowd's costumes are half the entertainment. Single-night format limits depth but maximizes the Halloween experience.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Indoor arena—functional, climate controlled, not scenic. Seattle in October can be rainy so indoor is smart. The venue serves the event well without being remarkable itself.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Freaknight is a PNW institution—been running since 2009. Delivers what it promises for Halloween bass heads. The hype matches reality. Essential for Seattle ravers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <span class="icon">🎃</span>
+                    <div>
+                        <h3>Halloween Ravers</h3>
+                        <p>Costumes required (well, strongly encouraged). This is THE PNW Halloween rave.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">🔊</span>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Dubstep, trap, bass house—Freaknight lineups lean heavy. Come ready to headbang.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">🌲</span>
+                    <div>
+                        <h3>PNW Locals</h3>
+                        <p>Seattle's biggest Halloween event. The local scene comes out in force.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">🏃</span>
+                    <div>
+                        <h3>One-Night Warriors</h3>
+                        <p>Full festival experience in a single night. Rage hard, recover the next day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">TikTok</div>
+                    <div class="title">"Freaknight costumes were on another level this year 🎃👻"</div>
+                    <div class="stats">560K views • @pnwravers</div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">Instagram</div>
+                    <div class="title">"Seattle knows how to do Halloween right—Freaknight delivers"</div>
+                    <div class="stats">12K likes • @uscevents</div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">YouTube</div>
+                    <div class="title">"Freaknight 2024 - Seattle's Biggest Halloween Rave"</div>
+                    <div class="stats">78K views • PNW EDM Scene</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>Full Breakdown</h2>
+            <p class="intro">Seattle's legendary Halloween rave, running strong since 2009.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">First Year</div><div class="value">2009</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">3</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Indoor</div><div class="value">Yes</div></div>
+                <div class="fact"><div class="label">Producer</div><div class="value">USC Events</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Freaknight typically happens the weekend before Halloween. Tickets go on sale in late summer once the lineup drops.</p>
+                <ul>
+                    <li>Plan your costume—this is half the experience</li>
+                    <li>Book downtown Seattle hotel if traveling</li>
+                    <li>Arrive early to avoid entry lines</li>
+                    <li>Earplugs recommended—indoor bass is loud</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>WaMu Theater is at Climate Pledge Arena complex in Seattle Center—very accessible.</p>
+                <ul>
+                    <li>Light Rail: Seattle Center station is close</li>
+                    <li>Rideshare: Works well, expect surge at close</li>
+                    <li>Driving: Parking available in area garages</li>
+                    <li>Entry: Can be slow—arrive before headliners</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Three stages spread across the WaMu Theater complex. Main stage for headliners, side stages for variety. Halloween theming throughout—decorations, performers, immersive elements. Production is solid USC Events quality.</p>
+                <div class="quote">
+                    "Freaknight is where Seattle's rave community shows up. The costumes alone are worth attending. Add bass music and it's perfect."
+                    <cite>— r/Seattle</cite>
+                </div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Single-night indoor event is straightforward. No weather concerns, real bathrooms, climate control.</p>
+                <ul>
+                    <li>Eat before arriving—food options limited</li>
+                    <li>Hydrate—dancing all night requires water</li>
+                    <li>Costume comfort matters—you'll be moving</li>
+                    <li>Earplugs for the bass stages</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>PNW rave scene is tight-knit and welcoming. Halloween brings out creativity—expect elaborate costumes and positive vibes. Bass music crowds go hard but community spirit prevails. All ages of ravers from veterans to newcomers.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Event ends around 1:30 AM. Seattle nightlife options exist but most people head home. Recovery day follows. Some unofficial afterparties pop up at local clubs.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Made with ❤️ by festival lovers, for festival lovers</p>
+            <p><a href="../index.html">Back to All Festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

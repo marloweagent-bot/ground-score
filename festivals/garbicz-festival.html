@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbicz Festival — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .festival-hero { height: 300px; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header><div class="container header-inner"><a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a><a href="../index.html" class="back-link">← All Festivals</a></div></header>
+    
+    <section class="festival-hero"><div class="container"><div class="festival-meta"><span>📍 Lake Wielicko, Poland</span><span>📅 July-August (5 days)</span><span>👥 8,000</span><span>💵 €180-250</span></div><h1>🌲 Garbicz Festival</h1></div></section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score"><span class="number">44</span><span class="max">/ 50</span></div>
+                <p class="verdict-text">A utopian gathering in the Polish forest. Garbicz combines underground electronic music with art, nature, and community. Lakeside setting, intimate scale, and conscious curation create one of Europe's most beloved boutique festivals.</p>
+            </div>
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Deep house, techno, ambient, and experimental across multiple stages. Carefully curated underground selectors. Quality over celebrity names. The ambient floor is a standout. Sound systems tuned for the forest setting.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Forest stages, lakeside settings, art installations throughout. Each stage has unique character. Creative visual design integrates with nature. Not mega-production but thoughtful and atmospheric. Magical discovery around every corner.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Intentional community energy. Like-minded ravers from around the world united by love of underground music and nature. Warmth, openness, and genuine connection. Leave pretension at the gate. The vibe is Garbicz's greatest strength.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>8,000 capacity means never crowded. Forest paths connect stages naturally. Lake provides swimming breaks. Compact site with everything walkable. Good facilities for a camping festival. Flow is designed, not chaotic.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div><span class="value">4.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Quality food vendors with vegetarian and vegan focus. Polish prices are affordable. Healthy options alongside festival comfort food. Water access good. Community meals available. Thoughtful curation extends to food.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div><span class="value">3.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Berlin is closest major hub (2 hours). Shuttle buses from Berlin available. Remote Polish location requires planning. Once there, you're immersed. The journey adds to the pilgrimage feeling.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>€180-250 for 5 days of quality programming and community. Polish costs keep everything affordable. Total trip cost reasonable. For what you get — the experience, the setting, the community — exceptional value.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Workshops covering everything from yoga to creative arts. Art installations throughout the forest. Lake swimming. Community spaces for connection. Ambient floor for decompression. The extras define Garbicz as much as the music.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div><span class="value">5.0</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Stunning Polish lakeside forest. Swim in the lake by day, dance under the trees by night. Nature reserve setting creates genuine magic. Sunrises over the water. The setting is a core part of the experience, not just backdrop.</p></div></div>
+                <div class="score-card" onclick="toggleCard(this)"><div class="score-card-header"><div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div><span class="value">4.5</span><span class="expand-icon">▼</span></div><div class="score-card-detail"><p>Cult status among European festival community. Small capacity means tickets sell fast. Those who go become devoted returnees. Not mainstream famous but deeply loved by those who know. The hype is earned.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item"><div class="icon">🌲</div><div><h3>Nature Lovers</h3><p>The forest and lake setting is central to the experience. Swim, hike, and connect with nature between sets.</p></div></div>
+                <div class="made-for-item"><div class="icon">🧘</div><div><h3>Wellness Seekers</h3><p>Yoga, workshops, ambient music, and conscious community. More than just dancing — healing and growth.</p></div></div>
+                <div class="made-for-item"><div class="icon">🎹</div><div><h3>Underground Devotees</h3><p>Deep house, minimal techno, ambient. If you appreciate curation over headliners, Garbicz delivers.</p></div></div>
+                <div class="made-for-item"><div class="icon">🤝</div><div><h3>Community Builders</h3><p>Genuine connection with like-minded people. The community IS the festival. Lifetime friendships form here.</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Garbicz Experience</h2>
+            <p class="intro">Five days of love, art, and chaos in the Polish forest.</p>
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">Late July</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">5 days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">6+</div></div>
+                <div class="fact"><div class="label">Capacity</div><div class="value">8,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
+            </div>
+            <div class="breakdown-section">
+                <h3>The Garbicz Ethos</h3>
+                <ul>
+                    <li><strong>Community:</strong> Intentionally small to foster connection.</li>
+                    <li><strong>Nature:</strong> The lake and forest are participants, not backdrop.</li>
+                    <li><strong>Curation:</strong> Every element thoughtfully considered.</li>
+                    <li><strong>Ambient Floor:</strong> A dedicated space for decompression and contemplation.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer><div class="container"><p>FestPass — Find your perfect festival</p><p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p></div></footer>
+    <script>function toggleCard(card) { card.classList.toggle('expanded'); }</script>
+</body>
+</html>

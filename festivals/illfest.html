@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILLfest — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff6600 0%, #ff0066 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Austin, TX</span>
+                <span>📅 May/June (3 days)</span>
+                <span>👥 20,000+</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🎨 ILLfest</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">39</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">ILLfest merges heavy bass music with world-class street art for a uniquely Austin experience. Think of it as a museum that drops filthy dubstep—where graffiti murals compete with Excision-tier production for your attention.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Heavy bass-focused lineup featuring Excision, GRiZ, LSDREAM, NGHTMRE, and G Jones. Strong experimental bass representation alongside mainstream dubstep. Multiple stages ensure genre variety from riddim to house.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The street art component is what sets ILLfest apart. Live mural painting, massive installations, and world-renowned graffiti artists transform the venue. Stage production is solid with quality visuals and lasers.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Headbangers unite with art enthusiasts for a creative, high-energy atmosphere. The Austin crowd brings Texas hospitality mixed with bass culture friendliness. Less corporate feel than bigger bass festivals.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Travis County Expo Center provides decent space but can feel crowded during headliners. Water stations adequate. Entry lines can be slow during peak hours. Walking distances are manageable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Austin's food truck culture shows up with solid variety. Texas BBQ options, tacos, and standard festival fare. Prices are reasonable by festival standards. Lines can get long during sets.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Austin-Bergstrom Airport is well-connected. The Expo Center is easily accessible by rideshare. Parking available on-site. Hotels throughout Austin offer plenty of options at various price points.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Strong value for a 3-day bass festival with art installations. Ticket prices competitive with similar events. Austin's relatively affordable (for a major city) keeps trip costs reasonable.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The street art component is the star beyond music. Watch artists create massive murals live, interactive installations, and art vendors. Silent disco, food experiences, and Austin's legendary nightlife nearby.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Expo Center isn't naturally scenic—it's an industrial event space. But the art transforms it into something special. Texas heat in late May/early June can be brutal. Indoor and outdoor areas available.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>ILLfest delivers on its promise of bass + art fusion. Growing reputation each year. Those expecting pure rave spectacle might be surprised by the art focus—in a good way. The concept is refreshingly different.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Heavy dubstep and experimental bass lineup rivals dedicated bass festivals. If you headbang, you'll be neck-deep in filth.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎨</div>
+                    <div>
+                        <h3>Art Lovers</h3>
+                        <p>Street art and graffiti culture meets festival production. Watch world-class muralists create live while you rage.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌆</div>
+                    <div>
+                        <h3>City Festival Fans</h3>
+                        <p>No camping required—explore Austin's legendary bars and tacos between sets. Best of both worlds.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🤠</div>
+                    <div>
+                        <h3>Texas Ravers</h3>
+                        <p>A major bass festival in the Lone Star State without traveling to Colorado or Vegas. Regional pride meets national talent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"When the bass drops and the mural behind you comes alive 🎨"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Street art x sound system = ILLfest magic ✨"</div>
+                    <div class="stats">45K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"ILLfest 2025 Full Weekend Vlog | Bass & Art in Austin"</div>
+                    <div class="stats">320K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete ILLfest Experience</h2>
+            <p class="intro">Bass, beats, and aerosol art collide in Austin's most creative festival.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">May/June</div></div>
+                <div class="fact"><div class="label">Length</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">4+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">20K+</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>ILLfest is a city festival—no camping involved. That means you get real beds, real showers, and Austin's legendary food scene.</p>
+                <ul>
+                    <li><strong>Book downtown:</strong> Hotels on 6th Street or East Austin put you close to afterparties and food</li>
+                    <li><strong>Check the art lineup:</strong> Specific muralists are announced—plan which ones to watch create</li>
+                    <li><strong>Hydrate:</strong> Late May in Texas is HOT. Start hydrating days before</li>
+                    <li><strong>Comfortable shoes:</strong> You'll be on your feet all day on concrete</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <ul>
+                    <li><strong>Fly into AUS:</strong> Austin-Bergstrom has direct flights from most major cities</li>
+                    <li><strong>Rideshare:</strong> Uber/Lyft work well—surge pricing moderate after festival</li>
+                    <li><strong>Parking:</strong> On-site parking available for purchase</li>
+                    <li><strong>Entry:</strong> Security is thorough but moves decently. Arrive early for headliners</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>The Travis County Expo Center transforms into a bass-meets-gallery experience:</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Headliners, massive production, biggest bass acts</li>
+                    <li><strong>Art Stage:</strong> Smaller acts with live mural painting backdrop</li>
+                    <li><strong>Indoor Stage:</strong> Climate-controlled escape from Texas heat</li>
+                    <li><strong>Art Walk:</strong> Dedicated area for installations and live painting</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "It's like a museum that throws the filthiest rave. I've never seen anything quite like watching a mural come together while Excision shakes my skeleton."
+                    <cite>— Reddit user, r/aves</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <ul>
+                    <li><strong>Food trucks:</strong> Austin's legendary food truck scene shows up strong</li>
+                    <li><strong>BBQ:</strong> This is Texas—get the brisket</li>
+                    <li><strong>Water:</strong> Free refill stations, bring a hydration pack or empty bottle</li>
+                    <li><strong>Heat management:</strong> Indoor areas provide AC relief. Use them.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Headbangers meet art school kids for a creative, welcoming vibe.</p>
+                <ul>
+                    <li><strong>Bass culture:</strong> Kandi, headbanging, mosh pits at heavy sets</li>
+                    <li><strong>Art appreciation:</strong> Genuine interest in watching murals created</li>
+                    <li><strong>Texas hospitality:</strong> Generally friendly, helpful crowd</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <ul>
+                    <li><strong>6th Street:</strong> Austin's famous bar district is ready for afterparties</li>
+                    <li><strong>East Austin:</strong> Hipster bars and late-night tacos</li>
+                    <li><strong>Breakfast tacos:</strong> It's Austin law—get migas before your flight</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

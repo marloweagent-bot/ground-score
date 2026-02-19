@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Castle — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .festival-hero h1 { font-size: 2rem; }
+            .score-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Bánffy Castle, Cluj, Romania</span>
+                <span>📅 July (4 days)</span>
+                <span>👥 230,000</span>
+                <span>💵 €180-280</span>
+            </div>
+            <h1>⚡ Electric Castle</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">44</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">A multi-genre arts festival set on the grounds of a Gothic castle. Electric Castle blends indie, rock, and electronic music with stunning visual arts and immersive experiences. Romania's answer to Glastonbury, but with more techno and castle vibes.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Electric Castle curates an eclectic mix: indie headliners (George Ezra, Iggy Pop), electronic (Bonobo, Jamie XX), and underground techno. Over 350 artists across multiple stages. More diverse than UNTOLD, appealing to wider musical tastes.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>A 15th-century Gothic castle as your festival backdrop is hard to beat. Stages integrate with the castle grounds, forests, and historic architecture. Immersive visual concepts, art installations, and creative stage design throughout. Genuinely unique setting.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>More alternative crowd than UNTOLD. Creative, curious, and there for discovery rather than just headliners. Strong arts and culture focus attracts a thoughtful demographic. Romanian hospitality combined with international festival community.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>230,000 over 4 days is more manageable than UNTOLD. The castle grounds spread stages naturally, though some walks between areas. Camping on-site creates immersive experience. Good infrastructure for a camping festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Good variety including vegetarian and vegan options. Romanian and international cuisine. Quality is solid — they've improved food offerings each year. Prices reasonable for a European festival. Local wine and craft beer available.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bánffy Castle is 30km from Cluj-Napoca. Shuttle services from Cluj and airport. Less convenient than city-center UNTOLD. Camping is essentially required for the full experience. Pre-planning needed for logistics.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>€180-280 for four days of quality programming in a castle setting is excellent value. Camping keeps accommodation costs minimal. Romanian food and drink prices remain favorable. Comparable to UK festivals at 40% less.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Strong arts programming with installations, theater, and performances. Castle itself is worth exploring — partially restored, partially atmospheric ruins. Workshops, talks, and activities beyond music. True multi-arts festival.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Bánffy Castle provides one of the most unique festival settings in Europe. Rolling hills, forest, and Gothic architecture create otherworldly atmosphere. July weather is perfect — warm days, cool evenings. Dancing under castle towers is magical.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Electric Castle has built its reputation on delivering authentic experiences rather than hype. International press increasingly recognizes it as a must-visit. Less known than UNTOLD but arguably more rewarding for discerning festivalgoers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎭</div>
+                    <div>
+                        <h3>Arts & Culture Seekers</h3>
+                        <p>More than music — installations, theater, visual arts woven through castle grounds. A true multi-disciplinary festival experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Wake up on castle grounds, explore at your own pace, fully immerse for 4 days. This is camping festival done right.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>Rolling Transylvanian hills, forest stages, and castle gardens provide stunning natural backdrop to the music.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎹</div>
+                    <div>
+                        <h3>Genre Explorers</h3>
+                        <p>Eclectic booking policy means you'll discover new artists. Indie, electronic, rock, and everything between.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"This festival is inside a CASTLE?! 🏰 Electric Castle is unreal"</div>
+                    <div class="stats">2.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The art installations here are on another level. Every corner is a photo op."</div>
+                    <div class="stats">340K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Electric Castle Complete Experience: Romania's Hidden Gem Festival"</div>
+                    <div class="stats">720K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Electric Castle Experience</h2>
+            <p class="intro">Four days of arts, music, and magic in one of Europe's most unique festival settings.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">July (4 days)</div></div>
+                <div class="fact"><div class="label">Hours</div><div class="value">24 hours</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">10+</div></div>
+                <div class="fact"><div class="label">Attendance</div><div class="value">230,000</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes (Essential)</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Electric Castle requires camping commitment but rewards with total immersion.</p>
+                <ul>
+                    <li><strong>Flights:</strong> Fly into Cluj-Napoca (CLJ). Shuttles to festival grounds available.</li>
+                    <li><strong>Camping:</strong> Various tiers from basic to glamping. Book early for better options.</li>
+                    <li><strong>Gear:</strong> Bring proper camping equipment — nights can be cool even in July.</li>
+                    <li><strong>Prepare:</strong> Download the app, plan your must-sees, but leave room for discovery.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>More remote than UNTOLD but well-organized logistics.</p>
+                <ul>
+                    <li><strong>Shuttles:</strong> Regular buses from Cluj-Napoca and airport to festival.</li>
+                    <li><strong>Entry:</strong> RFID wristband gives access to camping and festival grounds.</li>
+                    <li><strong>Distance:</strong> 30km from Cluj, but once you're there, you're staying.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Bánffy Castle and surrounding grounds become a fantasy world for four days.</p>
+                <ul>
+                    <li><strong>Main Stage:</strong> Major headliners with castle as backdrop.</li>
+                    <li><strong>Hangar Stage:</strong> Electronic music in industrial setting.</li>
+                    <li><strong>Village Stage:</strong> Intimate acoustic and folk performances.</li>
+                    <li><strong>Silent Disco:</strong> Three channels of music in the forest.</li>
+                    <li><strong>Art installations:</strong> Throughout the grounds — discover as you explore.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Electric Castle combines technology, visual effects, and nature recreation to create a unique summer festival experience. It's Romania's best-kept secret."
+                    <cite>— A World to Travel, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Camping festival logistics done thoughtfully.</p>
+                <ul>
+                    <li><strong>Food:</strong> Multiple food courts with quality options. Romanian cuisine featured.</li>
+                    <li><strong>Water:</strong> Refill stations available throughout.</li>
+                    <li><strong>Facilities:</strong> Upgraded camping has better shower/toilet access.</li>
+                    <li><strong>Bring:</strong> Comfortable shoes — lots of walking on grass and gravel.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>A more alternative crowd than mainstream EDM festivals.</p>
+                <ul>
+                    <li><strong>Demographics:</strong> Arts-inclined, curious, looking for experiences not just headliners.</li>
+                    <li><strong>International:</strong> Growing non-Romanian attendance as reputation spreads.</li>
+                    <li><strong>Energy:</strong> Creative and exploratory rather than aggressive partying.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Transylvania beckons beyond the castle walls.</p>
+                <ul>
+                    <li><strong>Recovery:</strong> Stay in Cluj for a night or two to decompress.</li>
+                    <li><strong>Explore:</strong> Medieval towns, mountain hikes, thermal baths nearby.</li>
+                    <li><strong>Culture:</strong> Cluj has excellent restaurants, bars, and cultural attractions.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

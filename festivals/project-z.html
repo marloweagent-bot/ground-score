@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Z — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #ff0000 0%, #000000 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 NOS Events Center, San Bernardino</span>
+                <span>📅 July (1 day)</span>
+                <span>👥 15,000+</span>
+                <span>💵 $80-150</span>
+            </div>
+            <h1>⚡ Project Z</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">38</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">Bassrush and Basscon unite for the ultimate bass music + hardstyle showdown. Project Z is Insomniac's single-day celebration of everything heavy. Your neck will hurt. That's the point.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two titans collide—Bassrush brings dubstep, riddim, and bass while Basscon delivers hardstyle and hard dance. Headliners like Excision, Virtual Riot, Da Tweekaz, Angerfist. If you want HEAVY, this is concentrated heavy. PK Sound systems hit proper.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS Events Center is Insomniac's SoCal home base—well-designed with multiple stage areas. Production is solid but this is a single-day event, not multi-day spectacle. Five themed stages offer variety within the heavy spectrum.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Headbangers and shufflers unite. The bass community is tight—expect mosh pits, wall of deaths, and aggressive energy channeled positively. Hardstyle brings the European rave culture. Everyone here is committed to going HARD.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS layout is well-established. Single-day means less fatigue management. July heat is brutal—hydration critical. Water stations adequate. Entry can be slow but Insomniac's processes are refined.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Standard Insomniac vendor selection. Prices are typical festival rates. Quality is decent. You're here for bass, not cuisine. Eat before and stay hydrated during.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS Events Center is Insomniac's SoCal fortress. LAX/ONT airports nearby. Plenty of parking. Hotels in San Bernardino area. The venue is accessible if not glamorous. Single-day means no camping needed.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>$80-150 for a full day of top-tier bass and hardstyle acts is excellent value. No hotel if you're local. Even with travel, total cost is very reasonable for the lineup quality. Best value heavy music event in SoCal.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Single-day format limits extras. Some art, vendor village, and typical Insomniac touches. The focus is 100% on the music—that's intentional and appropriate for this event.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">3.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>NOS is functional, not scenic. San Bernardino in July is HOT. The venue works for what it is—a massive outdoor event space. Don't expect natural beauty. Mountains visible in distance.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Project Z delivers exactly what it promises—heavy music, good production, fair price. Insomniac's execution is reliable. For bass and hardstyle fans, this is essential. The hype is calibrated correctly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <span class="icon">🔊</span>
+                    <div>
+                        <h3>Bass Heads</h3>
+                        <p>Dubstep, riddim, bass house—Bassrush has curated the heaviest lineup possible for one day.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">💪</span>
+                    <div>
+                        <h3>Hardstyle Warriors</h3>
+                        <p>Basscon brings the hard dance—hardstyle, hardcore, gabber. European rave culture in SoCal.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">🏃</span>
+                    <div>
+                        <h3>One-Day Warriors</h3>
+                        <p>Can't commit to a full weekend? Project Z is a complete experience in a single day.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <span class="icon">💰</span>
+                    <div>
+                        <h3>Budget Ravers</h3>
+                        <p>Excellent lineup at a reasonable price. No hotel, no camping gear—just show up and rage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">TikTok</div>
+                    <div class="title">"Project Z wall of death had me questioning my life choices 💀"</div>
+                    <div class="stats">1.2M views • @bassdropz</div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">Instagram</div>
+                    <div class="title">"When Bassrush and Basscon unite, necks get broken 🔥"</div>
+                    <div class="stats">34K likes • @bassrush</div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">YouTube</div>
+                    <div class="title">"Project Z 2024 - The Heaviest Day of the Year"</div>
+                    <div class="stats">220K views • Heavy Bass Network</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>Full Breakdown</h2>
+            <p class="intro">Insomniac's single-day bass music and hardstyle showdown.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">First Year</div><div class="value">2016</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">5</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">1 Day</div></div>
+                <div class="fact"><div class="label">Producer</div><div class="value">Insomniac</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Tickets go on sale in late spring for a July date. The lineup announcement drives sales. Price points are very reasonable.</p>
+                <ul>
+                    <li>Single-day event means minimal planning needed</li>
+                    <li>Prepare for extreme heat—July in San Bernardino hits 100°F+</li>
+                    <li>Neck exercises recommended (seriously)</li>
+                    <li>Earplugs essential—the bass is LOUD</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>NOS Events Center is east of LA in San Bernardino. Driving is the most common option.</p>
+                <ul>
+                    <li>Driving: Large parking lots, arrive early to avoid traffic</li>
+                    <li>Shuttles: Insomniac runs shuttles from LA</li>
+                    <li>Rideshare: Works but expect waits at close</li>
+                    <li>Entry: Typical Insomniac—efficient but lines form</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Five stages split between Bassrush (bass music) and Basscon (hard dance). Production is solid Insomniac quality—PK Sound systems, LED walls, lasers. The venue is well-organized with clear stage placement.</p>
+                <div class="quote">
+                    "Project Z is pure concentrated bass energy. If you survive the heat and the mosh pits, you'll leave with permanent bass face."
+                    <cite>— r/aves</cite>
+                </div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Heat is the enemy. Plan accordingly.</p>
+                <ul>
+                    <li>Free water refill stations—USE THEM</li>
+                    <li>Bring a camelbak or hydration pack</li>
+                    <li>Sunscreen essential—minimal shade</li>
+                    <li>Eat before arriving—food is secondary here</li>
+                    <li>Know your limits in the pits</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>Headbangers, shufflers, hardstyle warriors, and bass purists. The crowd knows what they came for. Expect intense energy in the pits but also community support—people help each other up. SoCal bass scene is strong.</p>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>Single-day format means you head home or back to LA after. Some afterparties in LA proper. Recovery is straightforward since it's just one day of destruction.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>Made with ❤️ by festival lovers, for festival lovers</p>
+            <p><a href="../index.html">Back to All Festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

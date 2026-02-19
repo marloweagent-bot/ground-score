@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sónar Barcelona — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Barcelona, Spain</span>
+                <span>📅 June 12-14, 2025</span>
+                <span>👥 130,000</span>
+                <span>💵 €165-275</span>
+            </div>
+            <h1>🔮 Sónar Barcelona</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">47</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The original electronic music and technology festival. For 32 years, Sónar has defined the intersection of advanced music, creativity, and innovation. Two distinct experiences: Sónar by Day and Sónar by Night create the ultimate electronic music journey.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Cutting-edge electronic curation across 10 stages. From experimental to dancefloor, Sónar books artists before they break. 2025's AI-themed edition pushed boundaries further. This is where electronic music's future is unveiled.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Two unique venues: Fira Montjuïc (day) offers exhibition-hall aesthetic perfect for audiovisual installations. Fira Gran Via (night) delivers massive warehouse spaces for proper club experiences. Production is consistently mind-blowing.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Intelligent, curious crowd who appreciate both innovation and groove. Industry professionals mix with pure music lovers. The Sónar+D tech conference adds creative professionals to the mix. Serious but never pretentious.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Well-organized venue layouts with clear stage separation. Day and night venues are in different locations — plan transport. Night venue can get packed at headliners but generally excellent flow.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Good variety at both day and night venues. Mediterranean options, international street food. Night venue focuses on efficiency. Day venue offers more relaxed dining options.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Barcelona is extremely accessible. Day venue (Fira Montjuïc) reached via funicular. Night venue has direct shuttle service. Both venues accessible via public transport.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Excellent value for the caliber of programming. Full festival pass €275, Night-only €165. Day+Night gives access to completely different experiences. The conference access (Sónar+D) adds even more value for creatives.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Sónar+D is a full technology and creativity conference. Audiovisual installations throughout. Workshops, talks, demos. This is music + art + technology fully integrated. The extra programming is world-class.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Indoor festival venues in Barcelona. Day venue has Montjuïc views. Night venue is proper industrial warehouse aesthetic. June weather perfect for moving between air-conditioned venues and outdoor areas.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>32 years of defining electronic music culture. The festival that launched a thousand careers and festivals. When Sónar books an artist, the industry notices. Reputation is unimpeachable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🔬</div>
+                    <div>
+                        <h3>Electronic Innovators</h3>
+                        <p>If you care about what's next in electronic music, not just what's hot, Sónar is essential. This is R&D for dance music.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">💻</div>
+                    <div>
+                        <h3>Creative Technologists</h3>
+                        <p>Sónar+D brings music, art, and technology together. Perfect for designers, developers, and creative thinkers.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🎛️</div>
+                    <div>
+                        <h3>DJ/Producers</h3>
+                        <p>Industry networking, gear demos, workshops. Plus world-class sets to study. The professional electronic music gathering.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌙</div>
+                    <div>
+                        <h3>All-Night Dancers</h3>
+                        <p>Sónar by Night runs until 6am with techno, house, and bass music across massive warehouse spaces. Serious club vibes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"The AI-generated visuals at Sónar 2025 were absolutely insane 🤯"</div>
+                    <div class="stats">2.1M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"Sónar by Night main room. 10,000 people moving as one. Pure techno transcendence."</div>
+                    <div class="stats">180K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Inside Sónar+D: The Future of Music & Technology"</div>
+                    <div class="stats">890K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Sónar Experience</h2>
+            <p class="intro">Two festivals in one: Day and Night, technology and dancefloor.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">June 12-14</div></div>
+                <div class="fact"><div class="label">Day Hours</div><div class="value">12PM - 12AM</div></div>
+                <div class="fact"><div class="label">Night Hours</div><div class="value">9PM - 6AM</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">10+</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">No</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Two Festivals in One</h3>
+                <p>Sónar is unique in offering two distinct experiences.</p>
+                <ul>
+                    <li><strong>Sónar by Day:</strong> Fira Montjuïc. Exhibition-style venue for experimental music, audiovisual performances, and Sónar+D conference. Noon to midnight.</li>
+                    <li><strong>Sónar by Night:</strong> Fira Gran Via. Massive warehouse spaces for full club experience. 9pm to 6am. This is where the heavy techno lives.</li>
+                    <li><strong>Sónar+D:</strong> Conference and creative program running parallel to the music. Talks, workshops, installations.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There</h3>
+                <p>Two venues, two approaches.</p>
+                <ul>
+                    <li><strong>Day venue (Fira Montjuïc):</strong> Metro L1/L3 to Espanya, then funicular. Or walk up through Montjuïc park.</li>
+                    <li><strong>Night venue (Fira Gran Via):</strong> Metro L9 to Fira, or free shuttles from city center.</li>
+                    <li><strong>Plan transport:</strong> The venues are not close to each other. Factor in travel time.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Stage Guide</h3>
+                <p>Where to find your sound.</p>
+                <ul>
+                    <li><strong>SonarClub (Night):</strong> Main techno stage. Where the biggest names play to 10,000+.</li>
+                    <li><strong>SonarPub (Night):</strong> Bass, UK sounds, experimental club music.</li>
+                    <li><strong>SonarLab (Night):</strong> Live acts, A/V performances, boundary-pushing.</li>
+                    <li><strong>SonarHall (Day):</strong> Main day stage for eclectic programming.</li>
+                    <li><strong>SonarDôme (Day):</strong> Intimate stage for local and emerging artists.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "Sónar invented the format that every electronic festival now copies. But they're still ahead — always commissioning, always innovating, always pointing to what's next."
+                    <cite>— FestPass Research, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Survival Tips</h3>
+                <p>Maximize your Sónar experience.</p>
+                <ul>
+                    <li><strong>Do both:</strong> Day and Night are completely different experiences. The combo ticket is worth it.</li>
+                    <li><strong>Rest between:</strong> There's a gap between Day ending and Night starting. Use it to recharge.</li>
+                    <li><strong>Explore Sónar+D:</strong> Even if you're there for music, the installations and talks are worthwhile.</li>
+                    <li><strong>Stay late:</strong> Night venue peaks between 2-5am. Don't leave early.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>

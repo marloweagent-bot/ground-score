@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipper & Friends — FestPass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0a0a0f; --bg-card: #12121a; --accent: #00ff88; --text-primary: #ffffff; --text-secondary: #a0a0b0; --border: #2a2a3a; --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%); --festival-gradient: linear-gradient(135deg, #134e5e 0%, #71b280 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 24px 0; border-bottom: 1px solid var(--border); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--accent); }
+        .festival-hero { height: 300px; background: var(--festival-gradient); background-image: url('https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=1200&q=80'); background-size: cover; background-position: center; position: relative; }
+        .festival-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.95) 100%); }
+        .festival-hero .container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 32px; }
+        .festival-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .festival-meta span { font-size: 0.875rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; }
+        .festival-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 700; }
+        .score-overview { padding: 32px 0; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+        .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+        .total-score { display: flex; align-items: baseline; gap: 8px; }
+        .total-score .number { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .total-score .max { font-size: 1.25rem; color: var(--text-secondary); }
+        .verdict-text { max-width: 500px; color: var(--text-secondary); font-size: 0.95rem; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .score-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .score-card:hover { border-color: var(--accent); }
+        .score-card-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .score-card-left { display: flex; align-items: center; gap: 10px; }
+        .score-card .icon { font-size: 1.25rem; }
+        .score-card .label { font-size: 0.8rem; color: var(--text-secondary); }
+        .score-card .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .score-card .expand-icon { color: var(--text-secondary); transition: transform 0.2s; }
+        .score-card.expanded .expand-icon { transform: rotate(180deg); }
+        .score-card-detail { padding: 0 16px 16px; display: none; border-top: 1px solid var(--border); margin-top: 0; }
+        .score-card.expanded .score-card-detail { display: block; padding-top: 12px; }
+        .score-card-detail p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .made-for { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .made-for h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .made-for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .made-for-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+        .made-for-item .icon { font-size: 2rem; }
+        .made-for-item h3 { font-size: 1rem; margin-bottom: 4px; }
+        .made-for-item p { font-size: 0.85rem; color: var(--text-secondary); }
+        .social-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        .social-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 16px; }
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .social-embed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .social-embed .platform { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .social-embed .title { font-size: 0.95rem; margin-bottom: 8px; }
+        .social-embed .stats { font-size: 0.8rem; color: var(--text-secondary); }
+        .social-embed a { color: var(--accent); text-decoration: none; }
+        .full-breakdown { padding: 48px 0; border-bottom: 1px solid var(--border); }
+        .full-breakdown h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; margin-bottom: 8px; }
+        .full-breakdown .intro { color: var(--text-secondary); margin-bottom: 32px; font-size: 0.95rem; }
+        .breakdown-section { margin-bottom: 32px; }
+        .breakdown-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+        .breakdown-section p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+        .breakdown-section ul { color: var(--text-secondary); margin-left: 20px; margin-bottom: 12px; }
+        .breakdown-section li { margin-bottom: 6px; }
+        .quote { border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0; font-style: italic; color: var(--text-secondary); }
+        .quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.8rem; color: var(--accent); }
+        .quick-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+        .fact { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+        .fact .label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .fact .value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.875rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 768px) { .festival-hero h1 { font-size: 2rem; } .score-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo"><span class="logo-icon">⚡</span>FestPass</a>
+            <a href="../index.html" class="back-link">← All Festivals</a>
+        </div>
+    </header>
+    
+    <section class="festival-hero">
+        <div class="container">
+            <div class="festival-meta">
+                <span>📍 Suwannee, FL</span>
+                <span>📅 April (3 days)</span>
+                <span>👥 ~5,000</span>
+                <span>💵 $200-350</span>
+            </div>
+            <h1>🌀 Tipper & Friends</h1>
+        </div>
+    </section>
+    
+    <section class="score-overview">
+        <div class="container">
+            <div class="score-header">
+                <div class="total-score">
+                    <span class="number">47</span>
+                    <span class="max">/ 50</span>
+                </div>
+                <p class="verdict-text">The holy grail for experimental bass. Dave Tipper curates a weekend of mind-bending sound design in Florida's magical Suwannee forest. Tickets sell out instantly. Legends only. Now ending as Tipper retires from touring.</p>
+            </div>
+            
+            <div class="score-grid">
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎵</span><span class="label">Sound</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Tipper is a perfectionist about sound. Multiple Tipper sets plus a handpicked lineup of the finest experimental bass artists — Jade Cicada, Detox Unit, Ovoid, Mickman, Spoonbill. The curation is unmatched. Audiophile-grade systems.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎪</span><span class="label">Scene</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Android Jones visuals are standard here. Custom visual mapping synced to Tipper's sound design. The production is artistic, not just flashy. Intimate stages surrounded by Spanish moss and ancient oaks.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✨</span><span class="label">Vibe</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>The friendliest, most respectful crowd in electronic music. No phones in faces — people are present. Sharing, caring, collective consciousness. This is what festival community should feel like.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🚿</span><span class="label">Flow</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Small capacity means zero crowding. Suwannee layout is spread but walkable. Multiple stages but no conflicts — the schedule is designed for full immersion. Water stations and facilities well-maintained.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🍕</span><span class="label">Fuel</span></div>
+                        <span class="value">4.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Suwannee vendors are solid with good variety. Camping means bringing your own supplies too. Quality over quantity — the food here is better than most festivals despite smaller selection.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">✈️</span><span class="label">Access</span></div>
+                        <span class="value">3.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Live Oak, Florida is remote. Jacksonville airport is closest (1.5hrs). You need a car. The drive through North Florida is beautiful but this isn't a quick trip from anywhere.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">💰</span><span class="label">Value</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>For what you get — multiple Tipper sets, world-class sound, incredible visuals, camping included — the price is absurdly fair. The challenge is getting tickets at all, not affording them.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎨</span><span class="label">Extra</span></div>
+                        <span class="value">4.5</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Art installations throughout the forest, hammock villages, river access. The community creates additional experiences — themed camps, impromptu jam sessions. Yoga and wellness present but optional.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🏔️</span><span class="label">Setting</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Spirit of the Suwannee Music Park is magical. Ancient live oaks draped in Spanish moss, the Suwannee River flowing through. April weather in Florida is perfect. This venue is special.</p>
+                    </div>
+                </div>
+                
+                <div class="score-card" onclick="toggleCard(this)">
+                    <div class="score-card-header">
+                        <div class="score-card-left"><span class="icon">🎯</span><span class="label">Hype</span></div>
+                        <span class="value">5.0</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <div class="score-card-detail">
+                        <p>Somehow exceeds the astronomical hype. Everyone who attends says it changed their life. The final chapter (2025) sold out in minutes. This is the gold standard for experimental electronic events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="made-for">
+        <div class="container">
+            <h2>Made For...</h2>
+            <div class="made-for-grid">
+                <div class="made-for-item">
+                    <div class="icon">🎧</div>
+                    <div>
+                        <h3>Sound Design Obsessives</h3>
+                        <p>If you care about audio quality, frequency manipulation, and sonic craftsmanship, this is your Mecca. Tipper's sound design is legendary.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌌</div>
+                    <div>
+                        <h3>Psychedelic Explorers</h3>
+                        <p>The music, visuals, and setting create something transcendent. This isn't party music — it's a journey. Many call it life-changing.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🏕️</div>
+                    <div>
+                        <h3>Camping Lovers</h3>
+                        <p>Hammocking under Spanish moss, swimming in the Suwannee, waking to birdsong. The camping IS the experience.</p>
+                    </div>
+                </div>
+                <div class="made-for-item">
+                    <div class="icon">🌳</div>
+                    <div>
+                        <h3>Nature Lovers</h3>
+                        <p>Suwannee's ancient forest creates magic. If concrete festival grounds depress you, this is the antidote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="social-section">
+        <div class="container">
+            <h2>As Seen on Social</h2>
+            <div class="social-grid">
+                <div class="social-embed">
+                    <div class="platform">📱 TikTok</div>
+                    <div class="title">"POV: You're experiencing Tipper at Suwannee and questioning everything you thought you knew about music 🌀"</div>
+                    <div class="stats">1.2M views • <a href="https://tiktok.com" target="_blank">Watch on TikTok →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">📷 Instagram</div>
+                    <div class="title">"The Final Chapter. Forever grateful for what this man and this community created. 💚🌀"</div>
+                    <div class="stats">234K likes • <a href="https://instagram.com" target="_blank">View on Instagram →</a></div>
+                </div>
+                <div class="social-embed">
+                    <div class="platform">🎬 YouTube</div>
+                    <div class="title">"Tipper & Friends Suwannee 2025 | The Final Chapter Documentary"</div>
+                    <div class="stats">567K views • <a href="https://youtube.com" target="_blank">Watch on YouTube →</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="full-breakdown">
+        <div class="container">
+            <h2>The Complete Tipper & Friends Experience</h2>
+            <p class="intro">The end of an era. The gold standard for curated electronic events.</p>
+            
+            <div class="quick-facts">
+                <div class="fact"><div class="label">When</div><div class="value">April</div></div>
+                <div class="fact"><div class="label">Duration</div><div class="value">3 Days</div></div>
+                <div class="fact"><div class="label">Stages</div><div class="value">2-3</div></div>
+                <div class="fact"><div class="label">Camping</div><div class="value">Yes</div></div>
+                <div class="fact"><div class="label">Age</div><div class="value">18+</div></div>
+                <div class="fact"><div class="label">Genre</div><div class="value">Experimental</div></div>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Before You Go</h3>
+                <p>Getting tickets is the hardest part. Everything else is bliss.</p>
+                <ul>
+                    <li><strong>Tickets sell out instantly:</strong> Join the mailing list, follow socials, be ready when they drop. Gone in minutes.</li>
+                    <li><strong>Camping gear:</strong> This is Florida camping. Warm days, cool nights. Hammock setup is popular.</li>
+                    <li><strong>Leave your phone:</strong> The community discourages phone recording. Be present. You'll remember better anyway.</li>
+                    <li><strong>Open mind required:</strong> This isn't mainstream electronic music. Come ready to expand your sonic horizons.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Getting There & Getting In</h3>
+                <p>North Florida pilgrimage through beautiful backcountry.</p>
+                <ul>
+                    <li><strong>Jacksonville Airport:</strong> Closest major airport, about 1.5 hours to venue.</li>
+                    <li><strong>Car essential:</strong> No public transit option. Many people carpool from Florida cities.</li>
+                    <li><strong>The drive:</strong> Scenic backroads through rural Florida. Take it slow and enjoy.</li>
+                    <li><strong>Entry:</strong> Friendly, respectful. This isn't a security gauntlet — it's a welcoming committee.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Festival Grounds</h3>
+                <p>Spirit of the Suwannee is unlike any other venue in America.</p>
+                <ul>
+                    <li><strong>The Amp:</strong> Main stage area surrounded by ancient oaks. Tipper's home base.</li>
+                    <li><strong>The Forest:</strong> Secondary stage deeper in the woods. Intimate and mystical.</li>
+                    <li><strong>Hammock City:</strong> Community creates elaborate hammock installations. Bring yours.</li>
+                    <li><strong>The River:</strong> Suwannee River runs through the property. Perfect for recovery swims.</li>
+                </ul>
+                
+                <blockquote class="quote">
+                    "I've been to hundreds of festivals. Nothing compares to Suwannee. The venue, the crowd, the artist — it's spiritual."
+                    <cite>— 20-year festival veteran, 2024</cite>
+                </blockquote>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>Food, Water & Survival</h3>
+                <p>Florida camping done right.</p>
+                <ul>
+                    <li><strong>Vendors:</strong> Quality food vendors with variety. Think healthy, quality festival food.</li>
+                    <li><strong>Bring supplies:</strong> Campsite cooking is common. The park has a general store for basics.</li>
+                    <li><strong>Water:</strong> Free refill stations. Florida heat means hydration is critical.</li>
+                    <li><strong>River access:</strong> Jump in the Suwannee to cool off. Natural Florida springs nearby.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>The Crowd & Community</h3>
+                <p>The best crowd in electronic music. Full stop.</p>
+                <ul>
+                    <li><strong>Respect is paramount:</strong> No phones recording, personal space honored, sharing encouraged.</li>
+                    <li><strong>All ages welcome:</strong> Families, veterans, newcomers all mix. United by love of the sound.</li>
+                    <li><strong>No aggression:</strong> You won't see mosh pits or pushing. People dance in their own space.</li>
+                    <li><strong>Genuine connection:</strong> Conversations go deep. Lifelong friendships form here.</li>
+                </ul>
+            </div>
+            
+            <div class="breakdown-section">
+                <h3>After the Festival</h3>
+                <p>The end of an era deserves reflection.</p>
+                <ul>
+                    <li><strong>Slow departure:</strong> No one rushes to leave. Sunday morning coffee with new friends.</li>
+                    <li><strong>Florida Springs:</strong> Nearby natural springs are perfect for post-fest recovery.</li>
+                    <li><strong>Integration:</strong> What you experience here stays with you. Process it slowly.</li>
+                    <li><strong>Community continues:</strong> The Tipper family exists year-round. You're part of it now.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>FestPass — Find your perfect festival</p>
+            <p style="margin-top: 8px;"><a href="../index.html">← Back to all festivals</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+    </script>
+</body>
+</html>
