@@ -311,7 +311,7 @@
                 <a href="browse.html" class="header-btn">Browse Festivals</a>
                 <a href="my-recap.html" class="header-btn">📊 My Recap</a>
                 <button class="header-btn" onclick="GroundScoreMap.startCompare()">🤝 Compare</button>
-                <button class="header-btn primary" onclick="GroundScoreMap.copyShareLink()">📤 Share</button>
+                <button class="header-btn primary" onclick="showShareModal()">📤 Share</button>
                 <div id="user-button"></div>
                 <button class="header-btn" id="auth-btn" style="display:none;">Sign In</button>
             </div>
@@ -346,6 +346,202 @@
             <div class="legend-item"><span class="legend-dot" style="background: #00d2d3"></span> 2026</div>
         </div>
     </div>
+    
+    <!-- CTA Banner for inbound users viewing a shared map -->
+    <div id="compare-cta-banner" style="display:none;">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-icon">🎯</div>
+                <div class="cta-text">
+                    <strong>See which festivals you have in common!</strong>
+                    <span>Build your own map to unlock the overlap view</span>
+                </div>
+                <a href="browse.html" class="cta-btn-primary">Start My Map →</a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        #compare-cta-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            border-top: 2px solid var(--accent);
+            padding: 20px 0;
+            z-index: 1000;
+            animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .cta-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cta-icon { font-size: 2rem; }
+        .cta-text { text-align: left; }
+        .cta-text strong { display: block; font-size: 1.1rem; color: #fff; }
+        .cta-text span { color: var(--text-secondary); font-size: 0.9rem; }
+        .cta-btn-primary {
+            background: var(--gradient-1);
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .cta-btn-primary:hover { transform: scale(1.05); }
+        
+        /* Share Modal */
+        #share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .share-modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #12121a 100%);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #2a2a4a;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        }
+        .share-modal-header {
+            margin-bottom: 24px;
+        }
+        .share-modal-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .share-modal-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .share-modal-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .share-preview {
+            background: #0a0a0f;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #2a2a3a;
+        }
+        .share-preview-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .overlap-preview {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            align-items: center;
+        }
+        .overlap-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .overlap-circle.you {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+        .overlap-circle.friend {
+            background: linear-gradient(135deg, #54a0ff, #2e86de);
+            color: #fff;
+        }
+        .overlap-circle .num {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .overlap-circle .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+        .overlap-connector {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        .share-link-box {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .share-link-input {
+            flex: 1;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+        .share-copy-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .share-copy-btn:hover { background: #00cc6a; }
+        .share-copy-btn.copied {
+            background: #10b981;
+        }
+        .share-note {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 12px;
+        }
+        .share-close {
+            background: none;
+            border: 1px solid #3a3a5a;
+            color: var(--text-secondary);
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+        .share-close:hover {
+            border-color: var(--accent);
+            color: #fff;
+        }
+    </style>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
@@ -503,9 +699,29 @@
         }
         
         function renderSharedMap(data) {
-            // Show shared view mode
-            document.querySelector('.page-hero h1').textContent = '📍 Shared Festival Map';
-            document.querySelector('.page-hero .subtitle').textContent = 'Check out this festival journey!';
+            const friendBeen = data.been || [];
+            const friendYears = data.years || {};
+            const myBeen = GroundScoreMap.getBeen();
+            const myYears = GroundScoreMap.getYears();
+            const hasOwnMap = myBeen.length > 0;
+            
+            // Calculate overlap
+            const overlap = friendBeen.filter(f => myBeen.includes(f));
+            
+            // Update header based on context
+            if (hasOwnMap && overlap.length > 0) {
+                document.querySelector('.page-hero h1').textContent = '🎯 Festival Overlap';
+                document.querySelector('.page-hero .subtitle').textContent = 
+                    `You have ${overlap.length} festival${overlap.length === 1 ? '' : 's'} in common!`;
+            } else if (hasOwnMap) {
+                document.querySelector('.page-hero h1').textContent = '📍 Compare Maps';
+                document.querySelector('.page-hero .subtitle').textContent = 'No overlap yet — discover new festivals!';
+            } else {
+                document.querySelector('.page-hero h1').textContent = '📍 A Friend\'s Festival Map';
+                document.querySelector('.page-hero .subtitle').textContent = 'Build your own to see what you have in common!';
+                // Show CTA banner
+                document.getElementById('compare-cta-banner').style.display = 'block';
+            }
             
             // Create map
             map = L.map('festival-map').setView([39.8283, -98.5795], 4);
@@ -516,38 +732,52 @@
                 maxZoom: 19
             }).addTo(map);
             
-            const been = data.been || [];
-            const years = data.years || {};
-            
-            // Update stats
+            // Update stats for friend's map
             let totalVisits = 0;
             const uniqueYears = new Set();
-            Object.values(years).forEach(fy => {
+            Object.values(friendYears).forEach(fy => {
                 fy.forEach(y => {
                     totalVisits++;
                     uniqueYears.add(y);
                 });
             });
             
-            document.querySelectorAll('.gs-stat-num')[0].textContent = totalVisits || been.length;
-            document.querySelectorAll('.gs-stat-num')[1].textContent = been.length;
+            document.querySelectorAll('.gs-stat-num')[0].textContent = totalVisits || friendBeen.length;
+            document.querySelectorAll('.gs-stat-num')[1].textContent = friendBeen.length;
             document.querySelectorAll('.gs-stat-num')[2].textContent = uniqueYears.size;
+            if (hasOwnMap) {
+                document.querySelectorAll('.gs-stat-label')[0].textContent = 'Their Visits';
+                document.querySelectorAll('.gs-stat-label')[1].textContent = 'Their Festivals';
+                // Show overlap in 4th stat
+                document.querySelectorAll('.gs-stat-num')[3].textContent = overlap.length;
+                document.querySelectorAll('.gs-stat-label')[3].textContent = 'In Common';
+            }
             
-            // Add markers
-            been.forEach(slug => {
+            // Add markers for friend's festivals
+            friendBeen.forEach(slug => {
                 const coords = FESTIVAL_COORDS[slug];
                 const fest = festivalsData.find(f => f.slug === slug);
                 if (!coords) return;
                 
-                const festYears = years[slug] || [];
+                const festYears = friendYears[slug] || [];
+                const isOverlap = overlap.includes(slug);
                 const latestYear = festYears.length > 0 ? Math.max(...festYears) : 2024;
-                const color = GroundScoreMap.YEAR_COLORS[latestYear] || '#00ff88';
+                
+                // Different styling for overlap vs friend-only
+                let color, radius;
+                if (isOverlap) {
+                    color = '#ff8800'; // Orange for overlap
+                    radius = 14;
+                } else {
+                    color = '#54a0ff'; // Blue for friend's
+                    radius = 10;
+                }
                 
                 const marker = L.circleMarker([coords.lat, coords.lng], {
-                    radius: 10,
+                    radius: radius,
                     fillColor: color,
-                    color: '#fff',
-                    weight: 2,
+                    color: isOverlap ? '#fff' : '#2e86de',
+                    weight: isOverlap ? 3 : 2,
                     opacity: 1,
                     fillOpacity: 0.8
                 }).addTo(map);
@@ -555,9 +785,11 @@
                 const name = fest ? fest.name : slug;
                 const location = fest ? fest.location : '';
                 const yearText = festYears.length > 0 ? festYears.join(', ') : 'Attended';
+                const overlapBadge = isOverlap ? '<span style="background:#ff8800;color:#000;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:700;">🎯 IN COMMON</span><br>' : '';
                 
                 marker.bindPopup(`
                     <div style="text-align:center;">
+                        ${overlapBadge}
                         <strong style="font-size:1.1rem;">${name}</strong><br>
                         <span style="color:#a0a0b0;">${location}</span><br>
                         <span style="color:${color};font-weight:600;">${yearText}</span>
@@ -567,10 +799,142 @@
                 markers.push(marker);
             });
             
+            // If user has their own map, also show their unique festivals in green
+            if (hasOwnMap) {
+                myBeen.forEach(slug => {
+                    if (friendBeen.includes(slug)) return; // Already shown as overlap
+                    
+                    const coords = FESTIVAL_COORDS[slug];
+                    const fest = festivalsData.find(f => f.slug === slug);
+                    if (!coords) return;
+                    
+                    const festYears = myYears[slug] || [];
+                    const latestYear = festYears.length > 0 ? Math.max(...festYears) : 2024;
+                    const color = '#00ff88'; // Green for yours only
+                    
+                    const marker = L.circleMarker([coords.lat, coords.lng], {
+                        radius: 8,
+                        fillColor: color,
+                        color: '#00cc6a',
+                        weight: 2,
+                        opacity: 0.7,
+                        fillOpacity: 0.6
+                    }).addTo(map);
+                    
+                    const name = fest ? fest.name : slug;
+                    const location = fest ? fest.location : '';
+                    const yearText = festYears.length > 0 ? festYears.join(', ') : 'Attended';
+                    
+                    marker.bindPopup(`
+                        <div style="text-align:center;">
+                            <span style="background:#00ff88;color:#000;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:700;">YOUR FEST</span><br>
+                            <strong style="font-size:1.1rem;">${name}</strong><br>
+                            <span style="color:#a0a0b0;">${location}</span><br>
+                            <span style="color:${color};font-weight:600;">${yearText}</span>
+                        </div>
+                    `);
+                    
+                    markers.push(marker);
+                });
+            }
+            
             if (markers.length > 0) {
                 const group = L.featureGroup(markers);
                 map.fitBounds(group.getBounds().pad(0.1));
             }
+            
+            // Update legend for compare view
+            if (hasOwnMap) {
+                document.querySelector('.map-legend').innerHTML = `
+                    <div class="legend-title">Map Legend</div>
+                    <div class="legend-items">
+                        <div class="legend-item"><span class="legend-dot" style="background: #ff8800"></span> In Common</div>
+                        <div class="legend-item"><span class="legend-dot" style="background: #00ff88"></span> Only You</div>
+                        <div class="legend-item"><span class="legend-dot" style="background: #54a0ff"></span> Only Them</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Share Modal
+        let shareLink = '';
+        
+        function showShareModal() {
+            const stats = GroundScoreMap.getStats();
+            if (stats.festivals === 0) {
+                alert('Add some festivals to your map first!');
+                return;
+            }
+            
+            // Generate share link
+            const data = GroundScoreMap.getMapData();
+            const encoded = btoa(JSON.stringify(data));
+            shareLink = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+            
+            const modal = document.createElement('div');
+            modal.id = 'share-modal';
+            modal.innerHTML = `
+                <div class="share-modal-content">
+                    <div class="share-modal-header">
+                        <div class="share-modal-icon">🔗</div>
+                        <h2>Share Your Festival Map</h2>
+                        <p>Send this to a friend and discover which festivals you have in common!</p>
+                    </div>
+                    
+                    <div class="share-preview">
+                        <div class="share-preview-title">What your friend will see</div>
+                        <div class="overlap-preview">
+                            <div class="overlap-circle you">
+                                <span class="num">${stats.festivals}</span>
+                                <span class="label">Your fests</span>
+                            </div>
+                            <div class="overlap-connector">⟷</div>
+                            <div class="overlap-circle friend">
+                                <span class="num">?</span>
+                                <span class="label">Their fests</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 12px;">
+                            They'll build their map, then see the overlap!
+                        </p>
+                    </div>
+                    
+                    <div class="share-link-box">
+                        <input type="text" class="share-link-input" id="share-link-input" value="${shareLink}" readonly>
+                        <button class="share-copy-btn" onclick="copyShareLink()">Copy Link</button>
+                    </div>
+                    
+                    <p class="share-note">🎯 They'll need to add their festivals before the compare unlocks</p>
+                    
+                    <button class="share-close" onclick="closeShareModal()">Done</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Select the link text
+            setTimeout(() => {
+                document.getElementById('share-link-input').select();
+            }, 100);
+        }
+        
+        function copyShareLink() {
+            const input = document.getElementById('share-link-input');
+            input.select();
+            navigator.clipboard.writeText(shareLink).then(() => {
+                const btn = document.querySelector('.share-copy-btn');
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy Link';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        function closeShareModal() {
+            const modal = document.getElementById('share-modal');
+            if (modal) modal.remove();
         }
         
         // Initialize on load
