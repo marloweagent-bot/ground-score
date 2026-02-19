@@ -1,124 +1,347 @@
 /**
- * Ground Score — Festival Map Feature
+ * MyFestMap — Festival Map Feature
  * Interactive map showing festivals you've attended by year
  */
 
 (function() {
     'use strict';
     
-    const MAP_KEY = 'groundscore_map';
-    
-    // Festival coordinates (lat, lng)
-    // Will be populated from festival data
-        const FESTIVAL_COORDS = {
-        'all-points-east': { lat: 51.5429, lng: -0.0402, name: 'All Points East', location: 'London, UK' },
-        'amsterdam-dance-event': { lat: 52.3676, lng: 4.9041, name: 'Amsterdam Dance Event', location: 'Amsterdam, Netherlands' },
-        'arc-music-festival': { lat: 41.8758, lng: -87.627, name: 'ARC Music Festival', location: 'Chicago, IL' },
-        'arise': { lat: 40.015, lng: -105.2705, name: 'Arise', location: 'Loveland, CO' },
-        'audioriver': { lat: 51.4028, lng: 21.1469, name: 'Audioriver', location: 'Płock, Poland' },
-        'austin-city-limits': { lat: 30.2653, lng: -97.749, name: 'Austin City Limits', location: 'Austin, TX' },
-        'awakenings': { lat: 52.3909, lng: 4.939, name: 'Awakenings', location: 'Amsterdam, Netherlands' },
-        'balaton-sound': { lat: 46.72, lng: 17.62, name: 'Balaton Sound', location: 'Zamárdi, Hungary' },
-        'bass-canyon': { lat: 47.1007, lng: -119.994, name: 'Bass Canyon', location: 'George, WA' },
-        'beyond-wonderland-socal': { lat: 34.0689, lng: -117.648, name: 'Beyond Wonderland', location: 'San Bernardino, CA' },
-        'bonnaroo': { lat: 35.4753, lng: -86.0559, name: 'Bonnaroo', location: 'Manchester, TN' },
-        'boom-festival': { lat: 39.8167, lng: -7.75, name: 'Boom Festival', location: 'Idanha-a-Nova, Portugal' },
-        'boomtown-fair': { lat: 51.1667, lng: -1.4667, name: 'Boomtown Fair', location: 'Hampshire, UK' },
-        'buku': { lat: 29.9511, lng: -90.0715, name: 'BUKU', location: 'New Orleans, LA' },
-        'burning-man': { lat: 40.7864, lng: -119.2065, name: 'Burning Man', location: 'Black Rock City, NV' },
-        'camp-bisco': { lat: 42.54, lng: -74.9242, name: 'Camp Bisco', location: 'Scranton, PA' },
-        'coachella': { lat: 33.6803, lng: -116.2389, name: 'Coachella', location: 'Indio, CA' },
-        'countdown': { lat: 34.0689, lng: -117.648, name: 'Countdown', location: 'San Bernardino, CA' },
-        'countdown-nye': { lat: 34.0689, lng: -117.648, name: 'Countdown NYE', location: 'San Bernardino, CA' },
-        'creamfields': { lat: 53.2787, lng: -2.697, name: 'Creamfields', location: 'Daresbury, UK' },
-        'crssd-festival': { lat: 32.7118, lng: -117.1579, name: 'CRSSD Festival', location: 'San Diego, CA' },
-        'das-energi': { lat: 40.7608, lng: -111.891, name: 'Das Energi', location: 'Salt Lake City, UT' },
-        'day-for-night': { lat: 29.7604, lng: -95.3698, name: 'Day for Night', location: 'Houston, TX' },
-        'dead-rocks': { lat: 39.6655, lng: -105.2057, name: 'Dead Rocks', location: 'Morrison, CO' },
-        'decadence-arizona': { lat: 33.4484, lng: -112.074, name: 'Decadence Arizona', location: 'Phoenix, AZ' },
-        'decadence-colorado': { lat: 39.7392, lng: -104.9903, name: 'Decadence Colorado', location: 'Denver, CO' },
-        'defected-croatia': { lat: 44.1283, lng: 15.2213, name: 'Defected Croatia', location: 'Tisno, Croatia' },
-        'defqon-1': { lat: 52.181, lng: 5.72, name: 'Defqon.1', location: 'Biddinghuizen, Netherlands' },
-        'dekmantel': { lat: 52.3702, lng: 4.8952, name: 'Dekmantel', location: 'Amsterdam, Netherlands' },
-        'desert-daze': { lat: 33.6934, lng: -116.4142, name: 'Desert Daze', location: 'Lake Perris, CA' },
-        'desert-hearts': { lat: 33.705, lng: -116.395, name: 'Desert Hearts', location: 'Los Coyotes, CA' },
-        'dgtl-amsterdam': { lat: 52.3842, lng: 4.8918, name: 'DGTL Amsterdam', location: 'Amsterdam, Netherlands' },
-        'dimensions-festival': { lat: 44.8666, lng: 13.85, name: 'Dimensions Festival', location: 'Pula, Croatia' },
-        'dirtybird-campout': { lat: 35.6772, lng: -120.1625, name: 'Dirtybird Campout', location: 'Modesto, CA' },
-        'dreamstate-sf': { lat: 37.7749, lng: -122.4194, name: 'Dreamstate SF', location: 'San Francisco, CA' },
-        'edc-las-vegas': { lat: 36.27, lng: -115.0095, name: 'EDC Las Vegas', location: 'Las Vegas, NV' },
-        'edc-mexico': { lat: 19.4326, lng: -99.1332, name: 'EDC Mexico', location: 'Mexico City, Mexico' },
-        'edc-orlando': { lat: 28.3608, lng: -81.5507, name: 'EDC Orlando', location: 'Orlando, FL' },
-        'electric-castle': { lat: 46.8722, lng: 23.7517, name: 'Electric Castle', location: 'Bonțida, Romania' },
-        'electric-forest': { lat: 43.6508, lng: -85.9781, name: 'Electric Forest', location: 'Rothbury, MI' },
-        'electric-zoo': { lat: 40.7935, lng: -73.9316, name: 'Electric Zoo', location: 'New York, NY' },
-        'elements-lakewood': { lat: 41.8568, lng: -74.4654, name: 'Elements', location: 'Lakewood, PA' },
-        'escape': { lat: 34.0689, lng: -117.648, name: 'Escape', location: 'San Bernardino, CA' },
-        'exit-festival': { lat: 45.2561, lng: 19.8457, name: 'EXIT Festival', location: 'Novi Sad, Serbia' },
-        'field-day': { lat: 51.5429, lng: -0.0402, name: 'Field Day', location: 'London, UK' },
-        'firefly': { lat: 39.1882, lng: -75.5249, name: 'Firefly', location: 'Dover, DE' },
-        'flow-festival': { lat: 60.1699, lng: 24.9384, name: 'Flow Festival', location: 'Helsinki, Finland' },
-        'fusion-festival': { lat: 53.35, lng: 12.75, name: 'Fusion Festival', location: 'Lärz, Germany' },
-        'garbicz-festival': { lat: 52.295, lng: 15.12, name: 'Garbicz Festival', location: 'Garbicz, Poland' },
-        'gem-and-jam': { lat: 32.2226, lng: -110.9747, name: 'Gem and Jam', location: 'Tucson, AZ' },
-        'glastonbury': { lat: 51.1503, lng: -2.5853, name: 'Glastonbury', location: 'Somerset, UK' },
-        'governors-ball': { lat: 40.7935, lng: -73.9316, name: 'Governors Ball', location: 'New York, NY' },
-        'hangout': { lat: 30.2803, lng: -87.5697, name: 'Hangout', location: 'Gulf Shores, AL' },
-        'hard-summer': { lat: 34.0689, lng: -117.648, name: 'Hard Summer', location: 'San Bernardino, CA' },
-        'heatwave': { lat: 41.882, lng: -87.619, name: 'Heatwave', location: 'Chicago, IL' },
-        'hideout': { lat: 44.5333, lng: 14.9, name: 'Hideout Festival', location: 'Pag, Croatia' },
-        'hijinx': { lat: 39.9526, lng: -75.1652, name: 'Hijinx', location: 'Philadelphia, PA' },
-        'hulaween': { lat: 30.2394, lng: -83.0099, name: 'Hulaween', location: 'Live Oak, FL' },
-        'iii-points': { lat: 25.786, lng: -80.1918, name: 'III Points', location: 'Miami, FL' },
-        'imagine': { lat: 33.6409, lng: -84.4479, name: 'Imagine', location: 'Atlanta, GA' },
-        'kappa-futur': { lat: 45.0703, lng: 7.6869, name: 'Kappa FuturFestival', location: 'Turin, Italy' },
-        'leeds-festival': { lat: 53.9401, lng: -1.6667, name: 'Leeds Festival', location: 'Leeds, UK' },
-        'let-it-roll': { lat: 50.4203, lng: 14.9081, name: 'Let It Roll', location: 'Milovice, Czech Republic' },
-        'lightning-in-a-bottle': { lat: 35.6772, lng: -120.1625, name: 'Lightning in a Bottle', location: 'Bakersfield, CA' },
-        'lollapalooza': { lat: 41.8758, lng: -87.6189, name: 'Lollapalooza', location: 'Chicago, IL' },
-        'lost-in-dreams': { lat: 36.1069, lng: -115.1552, name: 'Lost in Dreams', location: 'Las Vegas, NV' },
-        'lost-lands': { lat: 39.8953, lng: -82.8833, name: 'Lost Lands', location: 'Thornville, OH' },
-        'love-international': { lat: 44.1283, lng: 15.2213, name: 'Love International', location: 'Tisno, Croatia' },
-        'lowlands': { lat: 52.181, lng: 5.72, name: 'Lowlands', location: 'Biddinghuizen, Netherlands' },
-        'medusa-festival': { lat: 39.9864, lng: -0.0513, name: 'Medusa Festival', location: 'Valencia, Spain' },
-        'melt-festival': { lat: 51.57, lng: 12.297, name: 'Melt! Festival', location: 'Gräfenhainichen, Germany' },
-        'movement': { lat: 42.3293, lng: -83.0458, name: 'Movement', location: 'Detroit, MI' },
-        'mysteryland': { lat: 52.431, lng: 5.0676, name: 'Mysteryland', location: 'Haarlemmermeer, Netherlands' },
-        'nature-one': { lat: 49.9833, lng: 7.5333, name: 'Nature One', location: 'Kastellaun, Germany' },
-        'neversea': { lat: 44.1667, lng: 28.65, name: 'Neversea', location: 'Constanța, Romania' },
-        'nocturnal-wonderland': { lat: 34.0689, lng: -117.648, name: 'Nocturnal Wonderland', location: 'San Bernardino, CA' },
-        'north-coast': { lat: 41.882, lng: -87.619, name: 'North Coast', location: 'Chicago, IL' },
-        'okeechobee': { lat: 27.2439, lng: -80.8295, name: 'Okeechobee', location: 'Okeechobee, FL' },
-        'outlook-festival': { lat: 44.8666, lng: 13.85, name: 'Outlook Festival', location: 'Pula, Croatia' },
-        'outside-lands': { lat: 37.7694, lng: -122.4862, name: 'Outside Lands', location: 'San Francisco, CA' },
-        'panorama': { lat: 40.7935, lng: -73.9316, name: 'Panorama', location: 'New York, NY' },
-        'parklife': { lat: 53.4808, lng: -2.2426, name: 'Parklife', location: 'Manchester, UK' },
-        'parookaville': { lat: 51.1667, lng: 6.1333, name: 'Parookaville', location: 'Weeze, Germany' },
-        'portola': { lat: 37.7749, lng: -122.3917, name: 'Portola', location: 'San Francisco, CA' },
-        'primavera-sound-barcelona': { lat: 41.3873, lng: 2.192, name: 'Primavera Sound', location: 'Barcelona, Spain' },
-        'project-z': { lat: 34.0689, lng: -117.648, name: 'Project Z', location: 'San Bernardino, CA' },
-        'reading-festival': { lat: 51.4551, lng: -0.969, name: 'Reading Festival', location: 'Reading, UK' },
-        'rolling-loud': { lat: 25.9579, lng: -80.2388, name: 'Rolling Loud', location: 'Miami, FL' },
-        'second-sky': { lat: 37.7507, lng: -122.2006, name: 'Second Sky', location: 'Oakland, CA' },
-        'shambhala': { lat: 49.3194, lng: -117.6437, name: 'Shambhala', location: 'Salmo River Ranch, BC' },
-        'sonar-barcelona': { lat: 41.3819, lng: 2.177, name: 'Sónar Barcelona', location: 'Barcelona, Spain' },
-        'sonic-bloom': { lat: 38.8859, lng: -106.9808, name: 'Sonic Bloom', location: 'Rye, CO' },
-        'sonus-festival': { lat: 44.5333, lng: 14.9, name: 'Sonus Festival', location: 'Pag, Croatia' },
-        'spring-awakening': { lat: 41.882, lng: -87.619, name: 'Spring Awakening', location: 'Chicago, IL' },
-        'sxsw': { lat: 30.2672, lng: -97.7431, name: 'SXSW', location: 'Austin, TX' },
-        'symbiosis': { lat: 39.62, lng: -122.19, name: 'Symbiosis', location: 'Oakdale, CA' },
-        'sziget': { lat: 47.5438, lng: 19.0529, name: 'Sziget Festival', location: 'Budapest, Hungary' },
-        'time-warp': { lat: 49.4896, lng: 8.4718, name: 'Time Warp', location: 'Mannheim, Germany' },
-        'tomorrowland': { lat: 51.0909, lng: 4.3641, name: 'Tomorrowland', location: 'Boom, Belgium' },
-        'tomorrowland-winter': { lat: 45.2116, lng: 6.6414, name: 'Tomorrowland Winter', location: 'Alpe d\'Huez, France' },
-        'ultra-europe': { lat: 43.5147, lng: 16.4402, name: 'Ultra Europe', location: 'Split, Croatia' },
-        'ultra-miami': { lat: 25.7826, lng: -80.1868, name: 'Ultra Miami', location: 'Miami, FL' },
-        'ultra-music-festival': { lat: 25.7826, lng: -80.1868, name: 'Ultra Music Festival', location: 'Miami, FL' },
-        'untold-festival': { lat: 46.767, lng: 23.58, name: 'UNTOLD Festival', location: 'Cluj-Napoca, Romania' },
-        'wireless-festival': { lat: 51.5625, lng: -0.0744, name: 'Wireless Festival', location: 'London, UK' },
-        'wobbleland': { lat: 37.3382, lng: -121.8863, name: 'Wobbleland', location: 'San Jose, CA' },
-        'world-club-dome': { lat: 50.0333, lng: 8.5667, name: 'World Club Dome', location: 'Frankfurt, Germany' },
-    };
-
+    const MAP_KEY = 'myfestmap_been';
+    const YEARS_KEY = 'myfestmap_years';
     
     // Year colors
+    const YEAR_COLORS = {
+        2018: '#ff6b6b',
+        2019: '#feca57',
+        2020: '#48dbfb',
+        2021: '#ff9ff3',
+        2022: '#54a0ff',
+        2023: '#5f27cd',
+        2024: '#00d2d3',
+        2025: '#00ff88',
+        2026: '#ff8800'
+    };
+    
+    // Get festivals user has been to
+    function getBeen() {
+        return JSON.parse(localStorage.getItem(MAP_KEY) || '[]');
+    }
+    
+    // Get years for each festival
+    function getYears() {
+        return JSON.parse(localStorage.getItem(YEARS_KEY) || '{}');
+    }
+    
+    // Save years
+    function saveYears(years) {
+        localStorage.setItem(YEARS_KEY, JSON.stringify(years));
+    }
+    
+    // Add festival with year
+    function addFestivalYear(slug, year) {
+        // Add to been list if not already there
+        let been = getBeen();
+        if (!been.includes(slug)) {
+            been.push(slug);
+            localStorage.setItem(MAP_KEY, JSON.stringify(been));
+        }
+        
+        // Add year
+        let years = getYears();
+        if (!years[slug]) years[slug] = [];
+        if (!years[slug].includes(year)) {
+            years[slug].push(year);
+            years[slug].sort();
+            saveYears(years);
+        }
+        
+        return years[slug];
+    }
+    
+    // Remove festival year
+    function removeFestivalYear(slug, year) {
+        let years = getYears();
+        if (years[slug]) {
+            years[slug] = years[slug].filter(y => y !== year);
+            if (years[slug].length === 0) {
+                delete years[slug];
+                // Also remove from been list
+                let been = getBeen();
+                been = been.filter(s => s !== slug);
+                localStorage.setItem(MAP_KEY, JSON.stringify(been));
+            }
+            saveYears(years);
+        }
+    }
+    
+    // Get years for a festival
+    function getFestivalYears(slug) {
+        const years = getYears();
+        return years[slug] || [];
+    }
+    
+    // Show year picker modal
+    function showYearPicker(slug, buttonEl) {
+        // Remove any existing picker
+        const existing = document.getElementById('year-picker-modal');
+        if (existing) existing.remove();
+        
+        const currentYears = getFestivalYears(slug);
+        const currentYear = new Date().getFullYear();
+        const availableYears = [];
+        for (let y = currentYear; y >= 2015; y--) {
+            availableYears.push(y);
+        }
+        
+        const modal = document.createElement('div');
+        modal.id = 'year-picker-modal';
+        modal.innerHTML = `
+            <div class="year-picker-backdrop" onclick="GroundScoreMap.closeYearPicker()"></div>
+            <div class="year-picker-content">
+                <div class="year-picker-header">
+                    <h3>📍 Add to My Map</h3>
+                    <p>Which year(s) did you attend?</p>
+                </div>
+                <div class="year-picker-grid">
+                    ${availableYears.map(y => `
+                        <button class="year-btn ${currentYears.includes(y) ? 'selected' : ''}" 
+                                data-year="${y}"
+                                style="${currentYears.includes(y) ? `background: ${YEAR_COLORS[y] || '#00ff88'}; color: #000;` : ''}"
+                                onclick="GroundScoreMap.toggleYear('${slug}', ${y}, this)">
+                            ${y}
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="year-picker-actions">
+                    <button class="year-picker-done" onclick="GroundScoreMap.closeYearPicker()">Done</button>
+                </div>
+            </div>
+        `;
+        
+        // Add styles if not present
+        if (!document.getElementById('year-picker-styles')) {
+            const style = document.createElement('style');
+            style.id = 'year-picker-styles';
+            style.textContent = `
+                #year-picker-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .year-picker-backdrop {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.8);
+                }
+                .year-picker-content {
+                    position: relative;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    padding: 24px;
+                    max-width: 360px;
+                    width: 90%;
+                    border: 1px solid #2a2a4a;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                }
+                .year-picker-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .year-picker-header h3 {
+                    font-size: 1.25rem;
+                    margin-bottom: 4px;
+                    color: #fff;
+                }
+                .year-picker-header p {
+                    color: #a0a0b0;
+                    font-size: 0.9rem;
+                }
+                .year-picker-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 8px;
+                    margin-bottom: 20px;
+                }
+                .year-btn {
+                    padding: 12px;
+                    border: 1px solid #3a3a5a;
+                    border-radius: 8px;
+                    background: #12121a;
+                    color: #fff;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .year-btn:hover {
+                    border-color: #00ff88;
+                    background: rgba(0,255,136,0.1);
+                }
+                .year-btn.selected {
+                    border-color: transparent;
+                }
+                .year-picker-actions {
+                    display: flex;
+                    justify-content: center;
+                }
+                .year-picker-done {
+                    background: linear-gradient(135deg, #00ff88, #00cc6a);
+                    color: #000;
+                    border: none;
+                    padding: 12px 32px;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+                .year-picker-done:hover {
+                    transform: scale(1.02);
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(modal);
+    }
+    
+    // Toggle year selection
+    function toggleYear(slug, year, btnEl) {
+        const currentYears = getFestivalYears(slug);
+        
+        if (currentYears.includes(year)) {
+            // Remove year
+            removeFestivalYear(slug, year);
+            btnEl.classList.remove('selected');
+            btnEl.style.background = '';
+            btnEl.style.color = '';
+        } else {
+            // Add year
+            addFestivalYear(slug, year);
+            btnEl.classList.add('selected');
+            btnEl.style.background = YEAR_COLORS[year] || '#00ff88';
+            btnEl.style.color = '#000';
+            
+            // Show toast
+            if (typeof GroundScoreLists !== 'undefined' && GroundScoreLists.showToast) {
+                GroundScoreLists.showToast(`📍 Added ${year} to your map!`);
+            }
+        }
+        
+        // Update map button on detail page
+        const mapBtn = document.querySelector('.gs-btn-map');
+        if (mapBtn) {
+            updateMapButton(slug, mapBtn);
+        }
+        
+        // Trigger lists update if available
+        if (typeof GroundScoreLists !== 'undefined' && GroundScoreLists.updateAllButtons) {
+            GroundScoreLists.updateAllButtons();
+        }
+    }
+    
+    // Close year picker
+    function closeYearPicker() {
+        const modal = document.getElementById('year-picker-modal');
+        if (modal) modal.remove();
+    }
+    
+    // Update map button appearance based on state
+    function updateMapButton(slug, btnEl) {
+        const years = getFestivalYears(slug);
+        if (years.length > 0) {
+            btnEl.classList.add('active');
+            const yearText = years.length === 1 ? years[0] : `${years.length} years`;
+            btnEl.innerHTML = `<span class="gs-btn-icon">✓</span><span class="gs-btn-text">${yearText}</span>`;
+        } else {
+            btnEl.classList.remove('active');
+            btnEl.innerHTML = `<span class="gs-btn-icon">📍</span><span class="gs-btn-text">Add to Map</span>`;
+        }
+    }
+    
+    // Get map data for my-map.html
+    function getMapData() {
+        const been = getBeen();
+        const years = getYears();
+        return { been, years };
+    }
+    
+    // Copy share link
+    function copyShareLink() {
+        const data = getMapData();
+        const encoded = btoa(JSON.stringify(data));
+        const url = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+        
+        navigator.clipboard.writeText(url).then(() => {
+            if (typeof GroundScoreLists !== 'undefined' && GroundScoreLists.showToast) {
+                GroundScoreLists.showToast('📋 Share link copied!');
+            } else {
+                alert('Share link copied to clipboard!');
+            }
+        });
+    }
+    
+    // Load from share link
+    function loadFromShare() {
+        const params = new URLSearchParams(window.location.search);
+        const shareData = params.get('share');
+        if (shareData) {
+            try {
+                const data = JSON.parse(atob(shareData));
+                return data;
+            } catch (e) {
+                console.error('Invalid share data');
+            }
+        }
+        return null;
+    }
+    
+    // Get stats
+    function getStats() {
+        const been = getBeen();
+        const years = getYears();
+        
+        let totalVisits = 0;
+        const uniqueYears = new Set();
+        
+        Object.values(years).forEach(festYears => {
+            festYears.forEach(y => {
+                totalVisits++;
+                uniqueYears.add(y);
+            });
+        });
+        
+        return {
+            festivals: been.length,
+            totalVisits: totalVisits || been.length,
+            years: uniqueYears.size
+        };
+    }
+    
+    // Export to window
+    window.GroundScoreMap = {
+        getBeen,
+        getYears,
+        getFestivalYears,
+        addFestivalYear,
+        removeFestivalYear,
+        showYearPicker,
+        toggleYear,
+        closeYearPicker,
+        updateMapButton,
+        getMapData,
+        copyShareLink,
+        loadFromShare,
+        getStats,
+        YEAR_COLORS
+    };
+    
+})();

@@ -879,7 +879,9 @@
         saveMyList,
         copyShareLink,
         toggleMyFestivalsPanel,
-        updateMyFestivalsSection
+        updateMyFestivalsSection,
+        showToast,
+        updateAllButtons
     };
     
     // Auto-init on DOMContentLoaded
